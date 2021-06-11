@@ -5,7 +5,7 @@ I created this library as part of an old Windows C++ video project (circa 2005).
 
 It will take me a bit of time to get all of the code posted since here's a lot that I'm updating to modern C++ and removing Visual Studio-specific definitions. This should make the source more portable.
 
-I originally called the project "blipvert" because I was a fan of the Max Headroom series. I keeping the name and, besides, it makes a catchy C++ namespace name, too.
+I originally called the project "blipvert" because I was a fan of the Max Headroom series. I decided to keep the name because makes a catchy C++ namespace name, too.
 
 Regards,
 Don Jordan

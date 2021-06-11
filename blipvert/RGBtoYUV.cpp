@@ -68,10 +68,15 @@ void blipvert::InitRGBtoYUVTables(void)
 }
 
 //
+// Local generic RGB to YUV functions.
+//
+
+
+//
 // RGBX to PackedY422 conversions
 //
 
-void blipvert::RGB32_to_PackedY422(int32_t width, int32_t height,
+void RGB32_to_PackedY422(int32_t width, int32_t height,
                                 uint8_t* out_buf, int32_t out_stride,
                                 uint8_t* in_buf, int32_t in_stride,
                                 int16_t Y0, int16_t Y1, int16_t U, int16_t V, bool flipped)
@@ -112,7 +117,7 @@ void blipvert::RGB32_to_PackedY422(int32_t width, int32_t height,
     }
 }
 
-void blipvert::RGB24_to_PackedY422(int32_t width, int32_t height,
+void RGB24_to_PackedY422(int32_t width, int32_t height,
                                 uint8_t* out_buf, int32_t out_stride,
                                 uint8_t* in_buf, int32_t in_stride,
                                 int16_t Y0, int16_t Y1, int16_t U, int16_t V, bool flipped)
@@ -154,7 +159,7 @@ void blipvert::RGB24_to_PackedY422(int32_t width, int32_t height,
     }
 }
 
-void blipvert::RGB565_to_PackedY422(int32_t width, int32_t height,
+void RGB565_to_PackedY422(int32_t width, int32_t height,
                                     uint8_t* out_buf, int32_t out_stride,
                                     uint8_t* in_buf, int32_t in_stride,
                                     int16_t Y0, int16_t Y1, int16_t U, int16_t V, bool flipped)
@@ -205,7 +210,7 @@ void blipvert::RGB565_to_PackedY422(int32_t width, int32_t height,
     }
 }
 
-void blipvert::RGB555_to_PackedY422(int32_t width, int32_t height,
+void RGB555_to_PackedY422(int32_t width, int32_t height,
                                     uint8_t* out_buf, int32_t out_stride,
                                     uint8_t* in_buf, int32_t in_stride,
                                     int16_t Y0, int16_t Y1, int16_t U, int16_t V, bool flipped)
@@ -256,7 +261,7 @@ void blipvert::RGB555_to_PackedY422(int32_t width, int32_t height,
     }
 }
 
-void blipvert::RGB8_to_PackedY422(int32_t width, int32_t height,
+void RGB8_to_PackedY422(int32_t width, int32_t height,
                                 uint8_t* out_buf, int32_t out_stride,
                                 uint8_t* in_buf, int32_t in_stride, RGBPalette* in_palette,
                                 int16_t Y0, int16_t Y1, int16_t U, int16_t V, bool flipped)
@@ -308,7 +313,7 @@ void blipvert::RGB8_to_PackedY422(int32_t width, int32_t height,
 // RGBx to PlanarYUV
 //
 
-void blipvert::RGB32_to_PlanarYUV(int32_t width, int32_t height,
+void RGB32_to_PlanarYUV(int32_t width, int32_t height,
                                 uint8_t* out_buf, int32_t out_stride,
                                 uint8_t* in_buf, int32_t in_stride,
                                 bool uFirst, int32_t decimation, bool flipped)
@@ -462,7 +467,7 @@ void blipvert::RGB32_to_PlanarYUV(int32_t width, int32_t height,
     }
 }
 
-void blipvert::RGB24_to_PlanarYUV(int32_t width, int32_t height,
+void RGB24_to_PlanarYUV(int32_t width, int32_t height,
                                 uint8_t* out_buf, int32_t out_stride,
                                 uint8_t* in_buf, int32_t in_stride,
                                 bool uFirst, int32_t decimation, bool flipped)
@@ -616,7 +621,7 @@ void blipvert::RGB24_to_PlanarYUV(int32_t width, int32_t height,
     }
 }
 
-void blipvert::RGB565_to_PlanarYUV(int32_t width, int32_t height,
+void RGB565_to_PlanarYUV(int32_t width, int32_t height,
                                 uint8_t* out_buf, int32_t out_stride,
                                 uint8_t* in_buf, int32_t in_stride,
                                 bool uFirst, int32_t decimation, bool flipped)
@@ -793,7 +798,7 @@ void blipvert::RGB565_to_PlanarYUV(int32_t width, int32_t height,
     }
 }
 
-void blipvert::RGB555_to_PlanarYUV(int32_t width, int32_t height,
+void RGB555_to_PlanarYUV(int32_t width, int32_t height,
                                     uint8_t* out_buf, int32_t out_stride,
                                     uint8_t* in_buf, int32_t in_stride,
                                     bool uFirst, int32_t decimation, bool flipped)
@@ -970,7 +975,7 @@ void blipvert::RGB555_to_PlanarYUV(int32_t width, int32_t height,
     }
 }
 
-void blipvert::RGB8_to_PlanarYUV(int32_t width, int32_t height,
+void RGB8_to_PlanarYUV(int32_t width, int32_t height,
                                 uint8_t* out_buf, int32_t out_stride,
                                 uint8_t* in_buf, int32_t in_stride, RGBPalette* in_palette,
                                 bool uFirst, int32_t decimation, bool flipped)
@@ -1149,7 +1154,7 @@ void blipvert::RGB8_to_PlanarYUV(int32_t width, int32_t height,
 }
 
 //
-// RGB32 to YUV conversions
+// Public RGB32 to YUV conversions
 //
 
 void blipvert::RGB32_to_YUY2(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, RGBPalette* in_palette)

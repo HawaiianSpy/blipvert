@@ -70,13 +70,13 @@ namespace blipvert
 #define UnpackRGB555Green(src) ((src & RGB555_GREEN_MASK) >> 2)
 #define UnpackRGB555Blue(src) ((src & RGB555_BLUE_MASK) << 3)
 
-#define UnpackRGB565Word(src, r, g, b)    r = static_cast<BYTE>(UnpackRGB565Red(src));\
-                                        g = static_cast<BYTE>(UnpackRGB565Green(src));\
-                                        b = static_cast<BYTE>(UnpackRGB565Blue(src));
+#define UnpackRGB565Word(src, r, g, b)    r = static_cast<uint8_t>(UnpackRGB565Red(src));\
+                                        g = static_cast<uint8_t>(UnpackRGB565Green(src));\
+                                        b = static_cast<uint8_t>(UnpackRGB565Blue(src));
 
-#define UnpackRGB555Word(src, r, g, b)    r = static_cast<BYTE>(UnpackRGB555Red(src));\
-                                        g = static_cast<BYTE>(UnpackRGB555Green(src));\
-                                        b = static_cast<BYTE>(UnpackRGB555Blue(src));
+#define UnpackRGB555Word(src, r, g, b)    r = static_cast<uint8_t>(UnpackRGB555Red(src));\
+                                        g = static_cast<uint8_t>(UnpackRGB555Green(src));\
+                                        b = static_cast<uint8_t>(UnpackRGB555Blue(src));
 
 #define PackCLJRDword(dest, u, v, y0, y1, y2, y3) (dest = static_cast<int64_t>(\
                                                     (u & 0xFC) >> 2) | ((v & 0xFC) << 4) | \

@@ -164,6 +164,7 @@
     <ClInclude Include="framework.h" />
     <ClInclude Include="legacydefs.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="RGBtoYUV.h" />
     <ClInclude Include="YUVtoRGB.h" />
   </ItemGroup>
   <ItemGroup>
@@ -175,6 +176,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="RGBtoYUV.cpp" />
     <ClCompile Include="YUVtoRGB.cpp" />
   </ItemGroup>
   <ItemGroup>

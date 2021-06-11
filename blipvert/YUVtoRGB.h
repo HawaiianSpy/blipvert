@@ -31,7 +31,7 @@
 
 namespace blipvert
 {
-    extern void InitYUVtoRGBTables(void);
+    void InitYUVtoRGBTables(void);
 
     // YUV (YCbCr) to RGB conversions
     void PackedY422_to_RGB32(int32_t width, int32_t height,

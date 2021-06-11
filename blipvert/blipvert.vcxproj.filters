@@ -33,6 +33,9 @@
     <ClInclude Include="legacydefs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="RGBtoYUV.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="blipvert.cpp">
@@ -45,6 +48,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="YUVtoRGB.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RGBtoYUV.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

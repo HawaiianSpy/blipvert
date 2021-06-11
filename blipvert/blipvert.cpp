@@ -32,6 +32,7 @@
 #include "CommonMacros.h"
 
 #include "YUVtoRGB.h"
+#include "RGBtoYUV.h"
 
 using namespace blipvert;
 
@@ -99,4 +100,5 @@ const Fourcc blipvert::FOURCC_BGRA = MAKEFOURCC('B', 'G', 'R', 'A');
 extern void blipvert::InitializeLibrary(void)
 {
     InitYUVtoRGBTables();
+    InitRGBtoYUVTables();
 }

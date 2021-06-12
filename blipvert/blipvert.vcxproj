@@ -166,7 +166,9 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="RGBtoRGB.h" />
     <ClInclude Include="RGBtoYUV.h" />
+    <ClInclude Include="Utilities.h" />
     <ClInclude Include="YUVtoRGB.h" />
+    <ClInclude Include="YUVtoYUV.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="blipvert.cpp" />
@@ -179,7 +181,9 @@
     </ClCompile>
     <ClCompile Include="RGBtoRGB.cpp" />
     <ClCompile Include="RGBtoYUV.cpp" />
+    <ClCompile Include="Utilities.cpp" />
     <ClCompile Include="YUVtoRGB.cpp" />
+    <ClCompile Include="YUVtoYUV.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\LICENSE" />

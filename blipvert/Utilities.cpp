@@ -136,3 +136,78 @@ void blipvert::Interlaced_to_Progressive(int32_t height, int32_t line_bytes, boo
     }
 }
 
+
+uint32_t blipvert::CalculateBufferSize(MediaFormatID& inFormat, uint32_t width, uint32_t height, uint32_t in_stride)
+{
+    Fourcc fourcc;
+    Fourcc xRefFourcc;
+    int16_t effctiveBitsPerPixel;
+
+    if (width == 0 || height == 0)
+    {
+        return 0;
+    }
+
+    if (!GetVideoFormatInfo(inFormat, fourcc, xRefFourcc, effctiveBitsPerPixel))
+    {
+        return 0;
+    }
+
+    if (effctiveBitsPerPixel <= 0)
+    {
+        return 0;
+    }
+
+    uint32_t bytesPerLine = in_stride;
+    if (bytesPerLine == 0)
+    {
+        uint32_t bitsPerLine = width * static_cast<uint32_t>(effctiveBitsPerPixel);
+        bytesPerLine = ((bitsPerLine + 31) & (~31)) / 8;
+    }
+
+    return bytesPerLine * height;
+}
+
+bool blipvert::IsRGBEncoding(const MediaFormatID& encoding)
+{
+    if (encoding == MVFMT_RGB1 ||
+        encoding == MVFMT_RGB4 ||
+        encoding == MVFMT_RGB8 ||
+        encoding == MVFMT_RGB555 ||
+        encoding == MVFMT_RGB565 ||
+        encoding == MVFMT_RGB24 ||
+        encoding == MVFMT_RGB32 ||
+        encoding == MVFMT_ARGB32 ||
+        encoding == MVFMT_RGBA ||
+        encoding == MVFMT_RGBT ||
+        encoding == MVFMT_RGB_BITFIELDS)
+    {
+        return true;
+    }
+
+    return false;
+}
+
+bool blipvert::IsPalletizedEncoding(const MediaFormatID& encoding)
+{
+    if (encoding == MVFMT_RGB1 ||
+        encoding == MVFMT_RGB4 ||
+        encoding == MVFMT_RGB8)
+    {
+        return true;
+    }
+
+    return false;
+}
+
+bool blipvert::IsRGBFourcc(Fourcc fourcc)
+{
+    if (fourcc == FOURCC_BI_RGB ||
+        fourcc == FOURCC_RGB ||
+        fourcc == FOURCC_BI_BITFIELDS)
+    {
+        return true;
+    }
+
+    return false;
+}

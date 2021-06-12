@@ -26,9 +26,17 @@
 //  SOFTWARE.
 //
 
+#include "legacydefs.h"
+#include <string>
+
 namespace blipvert
 {
     using Fourcc = uint32_t;
+    using MediaFormatID = std::string;
+
+    //
+    // Fourcc video format definitions.
+    //
 
     extern const Fourcc FOURCC_UNDEFINED;
     extern const Fourcc FOURCC_UYVY;
@@ -83,5 +91,134 @@ namespace blipvert
 
     extern const Fourcc FOURCC_BGRA;
 
-    extern void InitializeLibrary(void);
+    extern const Fourcc FOURCC_CPLA;
+    extern const Fourcc FOURCC_IJPG;
+    extern const Fourcc FOURCC_MJPG;
+    extern const Fourcc FOURCC_TVMJ;
+    extern const Fourcc FOURCC_WAKE;
+    extern const Fourcc FOURCC_CFCC;
+    extern const Fourcc FOURCC_Plum;
+    extern const Fourcc FOURCC_DVCS;
+    extern const Fourcc FOURCC_DVSD;
+    extern const Fourcc FOURCC_MDVF;
+    extern const Fourcc FOURCC_dvhd;
+    extern const Fourcc FOURCC_dvsd;
+    extern const Fourcc FOURCC_dvsl;
+
+    //
+    // Media type constants
+    //
+
+    extern const MediaFormatID MVFMT_UNDEFINED;
+    extern const MediaFormatID MVFMT_UYVY;
+    extern const MediaFormatID MVFMT_UYNV;
+    extern const MediaFormatID MVFMT_cyuv;
+    extern const MediaFormatID MVFMT_Y42T;
+    extern const MediaFormatID MVFMT_Y422;
+    extern const MediaFormatID MVFMT_IUYV;
+    extern const MediaFormatID MVFMT_YUY2;
+    extern const MediaFormatID MVFMT_YUYV;
+    extern const MediaFormatID MVFMT_YUNV;
+    extern const MediaFormatID MVFMT_V422;
+    extern const MediaFormatID MVFMT_VYUY;
+    extern const MediaFormatID MVFMT_Y411;
+    extern const MediaFormatID MVFMT_Y41P;
+    extern const MediaFormatID MVFMT_IY41;
+    extern const MediaFormatID MVFMT_Y41T;
+    extern const MediaFormatID MVFMT_Y800;
+    extern const MediaFormatID MVFMT_Y8;
+    extern const MediaFormatID MVFMT_GREY;
+    extern const MediaFormatID MVFMT_IYU2;
+    extern const MediaFormatID MVFMT_Y444;
+    extern const MediaFormatID MVFMT_CLJR;
+    extern const MediaFormatID MVFMT_YUVP;
+    extern const MediaFormatID MVFMT_UYVP;
+    extern const MediaFormatID MVFMT_YVYU;
+    extern const MediaFormatID MVFMT_IYU1;
+    extern const MediaFormatID MVFMT_Y211;
+    extern const MediaFormatID MVFMT_V655;
+    extern const MediaFormatID MVFMT_AYUV;
+
+    extern const MediaFormatID MVFMT_YVU9;
+    extern const MediaFormatID MVFMT_YUV9;
+    extern const MediaFormatID MVFMT_IF09;
+    extern const MediaFormatID MVFMT_IYUV;
+    extern const MediaFormatID MVFMT_P420;
+    extern const MediaFormatID MVFMT_I420;
+    extern const MediaFormatID MVFMT_CLPL;
+    extern const MediaFormatID MVFMT_YV12;
+    extern const MediaFormatID MVFMT_NV12;
+    extern const MediaFormatID MVFMT_NV21;
+    extern const MediaFormatID MVFMT_IMC1;
+    extern const MediaFormatID MVFMT_IMC2;
+    extern const MediaFormatID MVFMT_IMC3;
+    extern const MediaFormatID MVFMT_IMC4;
+    extern const MediaFormatID MVFMT_S340;
+    extern const MediaFormatID MVFMT_S342;
+
+    extern const MediaFormatID MVFMT_RGB1;
+    extern const MediaFormatID MVFMT_RGB4;
+    extern const MediaFormatID MVFMT_RGB8;
+    extern const MediaFormatID MVFMT_RGB565;
+    extern const MediaFormatID MVFMT_RGB555;
+    extern const MediaFormatID MVFMT_RGB24;
+    extern const MediaFormatID MVFMT_RGB32;
+    extern const MediaFormatID MVFMT_ARGB32;
+    extern const MediaFormatID MVFMT_RGBA;
+    extern const MediaFormatID MVFMT_RGBT;
+    extern const MediaFormatID MVFMT_RGB_BITFIELDS;
+
+    extern const MediaFormatID MVFMT_CPLA;
+    extern const MediaFormatID MVFMT_IJPG;
+    extern const MediaFormatID MVFMT_MJPG;
+    extern const MediaFormatID MVFMT_TVMJ;
+    extern const MediaFormatID MVFMT_WAKE;
+    extern const MediaFormatID MVFMT_CFCC;
+    extern const MediaFormatID MVFMT_Plum;
+    extern const MediaFormatID MVFMT_DVCS;
+    extern const MediaFormatID MVFMT_DVSD;
+    extern const MediaFormatID MVFMT_MDVF;
+    extern const MediaFormatID MVFMT_dvhd;
+    extern const MediaFormatID MVFMT_dvsd;
+    extern const MediaFormatID MVFMT_dvsl;
+
+    //
+    // Procedure pointer type for all colorspace transforms.
+    //
+    // Parameters:
+    //      width & height: Dimensions in pixels of the video frame (inout and output).
+    //      out_buf:        Byte pointer to the output buffer for the transform function.
+    //      out_stride:     The number of bytes per row for the output buffer. 0 (zero) tells the function to
+    //                      use the default bytes/row for the target output format.
+    //      in_buf:         Byte pointer to the input buffer for the transform function.
+    //      in_stride:      The number of bytes per row for the input buffer. 0 (zero) tells the function to
+    //                      use the default bytes/row for the target input format.
+    //      flipped:        true = flip the output bitmap vertically.
+    //      in_palette:     Pointer the palette for a palletized input bitmap. Ignored for non-palletized input bitmap formats.
+    typedef void(__cdecl* t_transformfunc) (int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, RGBQUAD* in_palette);
+
+    // IMPORTANT: Must be called before using any of the colorspace transforms since it initializes the lookup tables.
+    void InitializeLibrary(void);
+
+    // Finds a video transform for the given input / output media formats.
+    // Returns nullptr if a match couldn't be found.
+    t_transformfunc FindVideoTransform(MediaFormatID& inFormat, MediaFormatID& outFormat);
+
+    // Returns information about the given video format.
+    //
+    // Parameters:
+    //      inFormat:               IN -> The media ID to query.
+    //      fourcc:                 OUT -> The fourcc code for the media format. Returns FOURCC_UNDEFINED if no fourcc is available.
+    //      xRefFourcc:             OUT -> The master fourcc format if the given format is a duplicate, FOURCC_UNDEFINED otherwise.
+    //      effctiveBitsPerPixel:   OUT -> The effective bits per pixel for the given format. Returns -1 if undefined.
+    //  Returns true if the format was found, false if not.
+    bool GetVideoFormatInfo(MediaFormatID& inFormat, Fourcc& fourcc, Fourcc& xRefFourcc, int16_t& effctiveBitsPerPixel);
+
+    // Returns the MediaFormatID fro a given fourcc code.
+    //
+    // Parameters:
+    //      fourcc:         IN -> The fourcc codue to lookup.
+    //      outFormat:      OUT -> The MediaFormatID that matches the fourcc code.
+    // Returns true if a match ewas found, false otherwise.
+    bool GetVideoFormatID(Fourcc fourcc, MediaFormatID& outFormat);
 }

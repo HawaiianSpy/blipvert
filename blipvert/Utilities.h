@@ -26,15 +26,34 @@
 //  SOFTWARE.
 //
 
+#include "blipvert.h"
 
 namespace blipvert
 {
-    // For slow, but more accurate conversion of single pixel values
+    // For a slow, but more accurate conversion of single pixel values
     void YUV_to_RGB(uint8_t Y, uint8_t U, uint8_t V, uint8_t* R, uint8_t* G, uint8_t* B);
     void RGB_to_YUV(uint8_t R, uint8_t G, uint8_t B, uint8_t* Y, uint8_t* U, uint8_t* V);
 
     // For interlacing de-interlacing bitmaps
     void Progressive_to_Interlaced(int32_t height, int32_t line_bytes, bool flipped, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride);
     void Interlaced_to_Progressive(int32_t height, int32_t line_bytes, bool flipped, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride);
+
+    // Calculates size of the buffer given the video format and dimensions.
+    //
+    // Parameters:
+    //      inFormat:           The media ID to calculate.
+    //      width & height:     The dimensions of the bitmap in pixels.
+    //      in_stride:          The number of bytes per row in the bitmap. 0 (zero) tells the function to use the default size for the given the format.
+    // Returns the size of the buffer in bytes. Returns 0 if the format is not found, a parameter is invalid, or the internalformat info in incomplete.
+    uint32_t CalculateBufferSize(MediaFormatID& inFormat, uint32_t width, uint32_t height, uint32_t in_stride = 0);
+
+    // Returns TRUE if the encoding is RGB
+    bool IsRGBEncoding(const MediaFormatID& encoding);
+
+    // Returns TRUE if the encoding is RGB with a palette
+    bool IsPalletizedEncoding(const MediaFormatID& encoding);
+
+    // Returns TRUE if the fourcc is RGB
+    bool IsRGBFourcc(Fourcc fourcc);
 }
 

@@ -34,4 +34,4 @@ typedef struct {
     uint8_t    rgbGreen;
     uint8_t    rgbRed;
     uint8_t    rgbReserved;
-} RGBPalette;
+} RGBQUAD;

@@ -212,7 +212,7 @@ namespace blipvert
     //      xRefFourcc:             OUT -> The master fourcc format if the given format is a duplicate, FOURCC_UNDEFINED otherwise.
     //      effctiveBitsPerPixel:   OUT -> The effective bits per pixel for the given format. Returns -1 if undefined.
     //  Returns true if the format was found, false if not.
-    bool GetVideoFormatInfo(MediaFormatID& inFormat, Fourcc& fourcc, Fourcc& xRefFourcc, int16_t& effctiveBitsPerPixel);
+    bool GetVideoFormatInfo(const MediaFormatID& inFormat, Fourcc& fourcc, Fourcc& xRefFourcc, int16_t& effctiveBitsPerPixel);
 
     // Returns the MediaFormatID fro a given fourcc code.
     //

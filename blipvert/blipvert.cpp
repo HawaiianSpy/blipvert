@@ -636,12 +636,12 @@ VideoFormatInfo VideoFmtTable[] = {
     {MVFMT_dvsd, FOURCC_dvsd, FOURCC_UNDEFINED, -1},
     {MVFMT_dvsl, FOURCC_dvsl, FOURCC_UNDEFINED, -1},
 
-    {MVFMT_UNDEFINED, 0, 0, -1}
+    {MVFMT_UNDEFINED, FOURCC_UNDEFINED, FOURCC_UNDEFINED, -1}
 };
 
 map<MediaFormatID, t_transformfunc> TransformMap;
 map<MediaFormatID, VideoFormatInfo*> MediaFormatInfoMap;
-map<Fourcc, MediaFormatID> FourccToIDMap;
+map<Fourcc, const MediaFormatID> FourccToIDMap;
 
 void blipvert::InitializeLibrary(void)
 {
@@ -680,10 +680,36 @@ t_transformfunc blipvert::FindVideoTransform(const MediaFormatID& inFormat, cons
         return *(it->second);
     }
 
+    // Not found, so try cross-referenced formats in case there's a known duplicate definition.
+    Fourcc infourcc;
+    Fourcc inxRefFourcc;
+    int16_t ineffctiveBitsPerPixel;
+
+    Fourcc outfourcc;
+    Fourcc outxRefFourcc;
+    int16_t outeffctiveBitsPerPixel;
+
+    if (GetVideoFormatInfo(inFormat, infourcc, inxRefFourcc, ineffctiveBitsPerPixel) &&
+        GetVideoFormatInfo(outFormat, outfourcc, outxRefFourcc, outeffctiveBitsPerPixel))
+    {
+        MediaFormatID inid;
+        MediaFormatID outid;
+        if (GetVideoFormatID(inxRefFourcc, inid) && GetVideoFormatID(outxRefFourcc, outid))
+        {
+            key = inid + outid;
+            map<MediaFormatID, t_transformfunc>::iterator it = TransformMap.find(key);
+            if (it != TransformMap.end())
+            {
+                return *(it->second);
+            }
+        }
+    }
+
+
     return nullptr;
 }
 
-bool blipvert::GetVideoFormatInfo(MediaFormatID& inFormat, Fourcc& fourcc, Fourcc& xRefFourcc, int16_t& effctiveBitsPerPixel)
+bool blipvert::GetVideoFormatInfo(const MediaFormatID& inFormat, Fourcc& fourcc, Fourcc& xRefFourcc, int16_t& effctiveBitsPerPixel)
 {
     map<MediaFormatID, VideoFormatInfo*>::iterator it = MediaFormatInfoMap.find(inFormat);
     if (it != MediaFormatInfoMap.end())
@@ -699,7 +725,7 @@ bool blipvert::GetVideoFormatInfo(MediaFormatID& inFormat, Fourcc& fourcc, Fourc
 
 bool blipvert::GetVideoFormatID(Fourcc fourcc, MediaFormatID& outFormat)
 {
-    map<Fourcc, MediaFormatID>::iterator it = FourccToIDMap.find(fourcc);
+    map<Fourcc, const MediaFormatID>::iterator it = FourccToIDMap.find(fourcc);
     if (it != FourccToIDMap.end())
     {
         outFormat = it->second;

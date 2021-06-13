@@ -82,6 +82,14 @@ void blipvert::InitYUVtoRGBTables(void)
     }
 }
 
+void blipvert::FastYUVtoRGB(uint8_t Y, uint8_t U, uint8_t V, uint8_t* R, uint8_t* G, uint8_t* B)
+{
+    int32_t Yprime = luminance_table[Y];
+    *B = saturation_table[Yprime + u_table[U]];
+    *G = saturation_table[Yprime + uv_table[U][V]];
+    *R = saturation_table[Yprime + v_table[V]];
+}
+
 //
 // Local generic packed YUV to RGB functions
 //

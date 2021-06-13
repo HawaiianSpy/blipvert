@@ -67,6 +67,13 @@ void blipvert::InitRGBtoYUVTables(void)
     }
 }
 
+void blipvert::FastRGBtoYUV(uint8_t R, uint8_t G, uint8_t B, uint8_t* Y, uint8_t* U, uint8_t* V)
+{
+    *Y = static_cast<uint8_t>(((yr_table[R] + yg_table[G] + yb_table[B]) >> 15) + 16);
+    *U = static_cast<uint8_t>(((ur_table[R] + ug_table[G] + ub_table[B]) >> 15) + 128);
+    *V = static_cast<uint8_t>(((vr_table[R] + vg_table[G] + vb_table[B]) >> 15) + 128);
+}
+
 //
 // Local generic RGB to YUV functions.
 //

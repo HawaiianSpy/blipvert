@@ -30,7 +30,7 @@
 
 using namespace blipvert;
 
-void blipvert::YUV_to_RGB(uint8_t Y, uint8_t U, uint8_t V, uint8_t* R, uint8_t* G, uint8_t* B)
+void blipvert::SlowYUVtoRGB(uint8_t Y, uint8_t U, uint8_t V, uint8_t* R, uint8_t* G, uint8_t* B)
 {
     if (!R || !G || !B)
         return;
@@ -61,7 +61,7 @@ void blipvert::YUV_to_RGB(uint8_t Y, uint8_t U, uint8_t V, uint8_t* R, uint8_t* 
     *B = static_cast<uint8_t>(BF);
 }
 
-void blipvert::RGB_to_YUV(uint8_t R, uint8_t G, uint8_t B, uint8_t* Y, uint8_t* U, uint8_t* V)
+void blipvert::SlowRGBtoYUV(uint8_t R, uint8_t G, uint8_t B, uint8_t* Y, uint8_t* U, uint8_t* V)
 {
     if (!Y || !U || !V)
         return;

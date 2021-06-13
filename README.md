@@ -9,7 +9,7 @@ I originally called the project "blipvert" because I was a fan of the Max Headro
 
 ******************
 
-TESTING STATUS as of 12 June, 2021: The root transform functions were tested back in the day. HOWEVER, I need to spot test some of them to see if I broke anyting replacing the old Visual Studio defines with those for modern C++. The functions for finding the transforms and converting the format IDs have NOT been tested, as is true for the utility functions. To sum up, the project status is, "Hey man, it builds." Feel free to post an issue if you find a problem.
+TESTING STATUS as of 13 June, 2021: The root transform functions were tested back in the day. HOWEVER, I need to spot test some of them to see if I broke anyting replacing the old Visual Studio defines with those for modern C++. I have started unit tests for the library, but mostly, project status is, "Hey man, it builds!"
 
 Regards,
 

@@ -45,7 +45,7 @@ namespace blipvert
     //      width & height:     The dimensions of the bitmap in pixels.
     //      in_stride:          The number of bytes per row in the bitmap. 0 (zero) tells the function to use the default size for the given the format.
     // Returns the size of the buffer in bytes. Returns 0 if the format is not found, a parameter is invalid, or the internalformat info in incomplete.
-    uint32_t CalculateBufferSize(MediaFormatID& inFormat, uint32_t width, uint32_t height, uint32_t in_stride = 0);
+    uint32_t CalculateBufferSize(const MediaFormatID& inFormat, uint32_t width, uint32_t height, uint32_t in_stride = 0);
 
     // Returns TRUE if the encoding is RGB
     bool IsRGBEncoding(const MediaFormatID& encoding);

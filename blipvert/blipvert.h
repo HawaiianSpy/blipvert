@@ -183,7 +183,7 @@ namespace blipvert
     extern const MediaFormatID MVFMT_dvsl;
 
     //
-    // Procedure pointer type for all colorspace transforms.
+    // Function pointer type for all colorspace transforms.
     //
     // Parameters:
     //      width & height: Dimensions in pixels of the video frame (inout and output).
@@ -194,14 +194,16 @@ namespace blipvert
     //      in_stride:      The number of bytes per row for the input buffer. 0 (zero) tells the function to
     //                      use the default bytes/row for the target input format.
     //      flipped:        true = flip the output bitmap vertically.
-    //      in_palette:     Pointer the palette for a palletized input bitmap. Ignored for non-palletized input bitmap formats.
+    //      in_palette:     Pointer to the palette for a palletized input bitmap. Ignored for non-palletized input bitmap formats.
     typedef void(__cdecl* t_transformfunc) (int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, RGBQUAD* in_palette);
 
-    // IMPORTANT: Must be called before using any of the colorspace transforms since it initializes the lookup tables.
+    // IMPORTANT: This must be called before using any of the colorspace transforms since it initializes the lookup tables.
     void InitializeLibrary(void);
 
     // Finds a video transform for the given input / output media formats.
-    // Returns nullptr if a match couldn't be found.
+    // Returns a t_transformfunc pointer for the requested transform function. Retuns nullptr if a match couldn't be found.
+    // Note: Since there exists duplicate fourcc definitions for the same bitmap format, the main 
+    //       definition name will be used if a duplicate format was requested.
     t_transformfunc FindVideoTransform(const MediaFormatID& inFormat, const MediaFormatID& outFormat);
 
     // Returns information about the given video format.
@@ -214,11 +216,11 @@ namespace blipvert
     //  Returns true if the format was found, false if not.
     bool GetVideoFormatInfo(const MediaFormatID& inFormat, Fourcc& fourcc, Fourcc& xRefFourcc, int16_t& effctiveBitsPerPixel);
 
-    // Returns the MediaFormatID fro a given fourcc code.
+    // Returns the MediaFormatID for a given fourcc code.
     //
     // Parameters:
     //      fourcc:         IN -> The fourcc codue to lookup.
     //      outFormat:      OUT -> The MediaFormatID that matches the fourcc code.
-    // Returns true if a match ewas found, false otherwise.
+    // Returns true if a match was found, false otherwise.
     bool GetVideoFormatID(Fourcc fourcc, MediaFormatID& outFormat);
 }

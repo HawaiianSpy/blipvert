@@ -27,6 +27,7 @@
 #include "pch.h"
 #include "CppUnitTest.h"
 
+#include "blipvert.h"
 #include "Utilities.h"
 #include "YUVtoRGB.h"
 #include "RGBtoYUV.h"
@@ -38,7 +39,7 @@ using namespace blipvert;
 
 namespace BlipvertUnitTests
 {
-	TEST_CLASS(PixelConversion_UnitTests)
+	TEST_CLASS(Utilities_UnitTests)
 	{
 	public:
 
@@ -128,6 +129,15 @@ namespace BlipvertUnitTests
 			}
 
 			Assert::AreEqual(static_cast<int>(1), static_cast<int>(maxdelta), L"YUVtoRGBPixel_UnitTest Maximum deviation from slow to fast calculations != 1.");
+		}
+
+		TEST_METHOD(CalculateBufferSize_UnitTest)
+		{
+			uint32_t size = CalculateBufferSize(MVFMT_UYVY, 2592, 1944);
+			Assert::AreEqual(static_cast<uint32_t>(10077696), size, L"Unexpected size returnd for buffer calculation.");
+
+			size = CalculateBufferSize(MVFMT_UYVY, 2592, 1944, 5500);
+			Assert::AreEqual(static_cast<uint32_t>(5500 * 1944), size, L"Unexpected size returnd for buffer calculation.");
 		}
 
 	private:

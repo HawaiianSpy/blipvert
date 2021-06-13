@@ -137,7 +137,7 @@ void blipvert::Interlaced_to_Progressive(int32_t height, int32_t line_bytes, boo
 }
 
 
-uint32_t blipvert::CalculateBufferSize(MediaFormatID& inFormat, uint32_t width, uint32_t height, uint32_t in_stride)
+uint32_t blipvert::CalculateBufferSize(const MediaFormatID& inFormat, uint32_t width, uint32_t height, uint32_t in_stride)
 {
     Fourcc fourcc;
     Fourcc xRefFourcc;
@@ -158,11 +158,12 @@ uint32_t blipvert::CalculateBufferSize(MediaFormatID& inFormat, uint32_t width, 
         return 0;
     }
 
-    uint32_t bytesPerLine = in_stride;
-    if (bytesPerLine == 0)
+    uint32_t bitsPerLine = width * static_cast<uint32_t>(effctiveBitsPerPixel);
+    uint32_t bytesPerLine = ((bitsPerLine + 31) & (~31)) / 8;
+
+    if (in_stride > bytesPerLine)
     {
-        uint32_t bitsPerLine = width * static_cast<uint32_t>(effctiveBitsPerPixel);
-        bytesPerLine = ((bitsPerLine + 31) & (~31)) / 8;
+        bytesPerLine = in_stride;
     }
 
     return bytesPerLine * height;

@@ -540,7 +540,7 @@ TransformTableEntry TransformTable[] = {
 
     { MVFMT_IY41, MVFMT_Y41P, IY41_to_Y41P },
 
-    { MVFMT_UNDEFINED, nullptr, nullptr }
+    { MVFMT_UNDEFINED, MVFMT_UNDEFINED, nullptr }
 };
 
 
@@ -671,7 +671,7 @@ void blipvert::InitializeLibrary(void)
     }
 }
 
-t_transformfunc blipvert::FindVideoTransform(MediaFormatID& inFormat, MediaFormatID& outFormat)
+t_transformfunc blipvert::FindVideoTransform(const MediaFormatID& inFormat, const MediaFormatID& outFormat)
 {
     MediaFormatID key = inFormat + outFormat;
     map<MediaFormatID, t_transformfunc>::iterator it = TransformMap.find(key);

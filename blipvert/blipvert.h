@@ -202,7 +202,7 @@ namespace blipvert
 
     // Finds a video transform for the given input / output media formats.
     // Returns nullptr if a match couldn't be found.
-    t_transformfunc FindVideoTransform(MediaFormatID& inFormat, MediaFormatID& outFormat);
+    t_transformfunc FindVideoTransform(const MediaFormatID& inFormat, const MediaFormatID& outFormat);
 
     // Returns information about the given video format.
     //

@@ -14,7 +14,7 @@ Regarding testing: The transform functions were tested back in the day using thi
 3. Transform whatever the output bitmap was into a format that can be displayed by a video renderer.
 4. Does it look like the same video stream that went in? If so, "pass." If not, "fail." 
 
-I have started implementing unit tests for the library functions, and as time permits unit tests for the transforms as well.
+I have started implementing unit tests for the library functions and, as time permits, unit tests for the transforms also.
 
 Regards,
 

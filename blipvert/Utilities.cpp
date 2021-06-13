@@ -143,7 +143,7 @@ uint32_t blipvert::CalculateBufferSize(const MediaFormatID& inFormat, uint32_t w
     Fourcc xRefFourcc;
     int16_t effctiveBitsPerPixel;
 
-    if (width == 0 || height == 0 || width % 4 != 0) // All pixel widths must be multiples of 4
+    if (width == 0 || height == 0)
     {
         return 0;
     }

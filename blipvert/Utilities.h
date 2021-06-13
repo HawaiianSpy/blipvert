@@ -39,8 +39,13 @@ namespace blipvert
     void Interlaced_to_Progressive(int32_t height, int32_t line_bytes, bool flipped, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride);
 
     /**********************************************************************
-    * IMPORTANT: All pixel bitmap widths must be multiples of 4 
-    * to accomodate the packed YUV formats!
+    * IMPORTANT: All pixel bitmap dimensions (width & height) should  be  
+    * multiples of 4 to accomodate the packed YUV formats. You can get away
+    * with non-modus-four values for many of the transforms, but following
+    * that rule will insure maximum compatibilty across the transform library.
+    * The consequences for living on the edge? Some of the transforms may
+    * try coloring outside the lines. Of course you can experiment with
+    * playing with the buffer sizes and the stride values to work around that.
     * ********************************************************************/
     // Calculates size of the buffer given the video format and dimensions.
     //

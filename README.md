@@ -32,7 +32,7 @@ June 13, 2021
 #### Data Types:
 
 #### MediaFormatID
-A string value representing a video bitmap format. Since there aren't fourcc codes for *all* the formats (RGB bitmaps for example), these strings can be converted to fourcc codes it happens to match one.
+A string value representing a video bitmap format. These strings can be converted to fourcc codes if it happens to match one. But there are some formats (e.g. RGBs) that don't have corresponding fourcc codes.
 
 
 #### Fourcc

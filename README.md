@@ -14,13 +14,12 @@ Regarding testing: The transform functions were tested back in the day using thi
 3. Transform whatever the output bitmap was into a format that can be displayed by a video renderer.
 4. Does it look like the same video stream that went in? If so, "pass." If not, "fail." 
 
-I suppose one could implement an automated testing regimen to compare the outputs, but Since the conversion back and forth between RGB and YUV bitmaps is lossy, it would probably be more trouble than it's worth. However, I will spot test some of the transforms to see if I broke anyting replacing the old Visual Studio defines with those for modern C++. I have started unit tests for the library, but mostly, the project testing status is, "Hey man, it builds!"
+I have started implementing unit tests for the library functions, and as time permits unit tests for the transforms as well.
 
 Regards,
 
 Don Jordan
 
-June 13, 2021
 
 ******************************
 

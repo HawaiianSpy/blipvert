@@ -55,7 +55,28 @@ void blipvert::Fill_RGB32(uint8_t red, uint8_t green, uint8_t blue, uint8_t alph
     } while (--height);
 }
 
-void blipvert::Fill_RGB24(uint8_t red, uint8_t green, uint8_t blue, int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride)
+bool blipvert::Check_RGB32(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha, int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride)
+{
+    if (!stride)
+        stride = width * 4;
+
+    uint32_t fill = static_cast<uint32_t>(((((alpha) & 0xFF) << 24) | (((red) & 0xFF) << 16) | (((green) & 0xFF) << 8) | ((blue) & 0xFF)));
+    do
+    {
+        uint32_t* pdst = reinterpret_cast<uint32_t*>(pBuffer);
+        int32_t hcount = width;
+        do
+        {
+            if (*pdst++ != fill) return false;
+        } while (--hcount);
+
+        pBuffer += stride;
+    } while (--height);
+
+    return true;
+}
+
+bool blipvert::Check_RGB24(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha, int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride)
 {
     if (!stride)
         stride = width * 3;
@@ -67,12 +88,14 @@ void blipvert::Fill_RGB24(uint8_t red, uint8_t green, uint8_t blue, int32_t widt
         int32_t hcount = width;
         do
         {
-            *reinterpret_cast<uint32_t*>(pdst) = fill;
+            if ((*reinterpret_cast<uint32_t*>(pdst) & 0x00FFFFFF) != fill) return false;
             pdst += 3;
         } while (--hcount);
 
         pBuffer += stride;
     } while (--height);
+
+    return true;
 }
 
 
@@ -96,6 +119,30 @@ void blipvert::Fill_RGB565(uint8_t red, uint8_t green, uint8_t blue, int32_t wid
 
         pBuffer += stride;
     } while (--height);
+}
+
+bool blipvert::Check_RGB565(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha, int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride)
+{
+    if (!stride)
+        stride = width * 2;
+
+    uint16_t fill;
+    PackRGB565Word(fill, red, green, blue);
+
+    do
+    {
+        uint16_t* pdst = reinterpret_cast<uint16_t*>(pBuffer);
+        int32_t hcount = width;
+        do
+        {
+            if (*pdst != fill) return false;
+            pdst++;
+        } while (--hcount);
+
+        pBuffer += stride;
+    } while (--height);
+
+    return true;
 }
 
 void blipvert::Fill_RGB555(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha, int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride)
@@ -122,6 +169,34 @@ void blipvert::Fill_RGB555(uint8_t red, uint8_t green, uint8_t blue, uint8_t alp
 
         pBuffer += stride;
     } while (--height);
+}
+
+bool blipvert::Check_RGB555(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha, int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride)
+{
+    if (!stride)
+        stride = width * 2;
+
+    uint16_t fill;
+    PackRGB555Word(fill, red, green, blue);
+    if (alpha)
+        fill |= 0x8000;
+    else
+        fill &= 0x7FFF;
+
+    do
+    {
+        uint16_t* pdst = reinterpret_cast<uint16_t*>(pBuffer);
+        int32_t hcount = width;
+        do
+        {
+            if (*pdst != fill) return false;
+            pdst++;
+        } while (--hcount);
+
+        pBuffer += stride;
+    } while (--height);
+
+    return true;
 }
 
 //

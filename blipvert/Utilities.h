@@ -38,6 +38,10 @@ namespace blipvert
     void Progressive_to_Interlaced(int32_t height, int32_t line_bytes, bool flipped, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride);
     void Interlaced_to_Progressive(int32_t height, int32_t line_bytes, bool flipped, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride);
 
+    /**********************************************************************
+    * IMPORTANT: All pixel bitmap widths must be multiples of 4 
+    * to accomodate the packed YUV formats!
+    * ********************************************************************/
     // Calculates size of the buffer given the video format and dimensions.
     //
     // Parameters:

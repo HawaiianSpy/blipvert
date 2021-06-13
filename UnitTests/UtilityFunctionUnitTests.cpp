@@ -134,10 +134,10 @@ namespace BlipvertUnitTests
 		TEST_METHOD(CalculateBufferSize_UnitTest)
 		{
 			uint32_t size = CalculateBufferSize(MVFMT_UYVY, 2592, 1944);
-			Assert::AreEqual(static_cast<uint32_t>(10077696), size, L"Unexpected size returnd for buffer calculation.");
+			Assert::AreEqual(static_cast<uint32_t>(10077696), size, L"Unexpected size returned for buffer calculation.");
 
 			size = CalculateBufferSize(MVFMT_UYVY, 2592, 1944, 5500);
-			Assert::AreEqual(static_cast<uint32_t>(5500 * 1944), size, L"Unexpected size returnd for buffer calculation.");
+			Assert::AreEqual(static_cast<uint32_t>(5500 * 1944), size, L"Unexpected size returned for buffer calculation.");
 		}
 
 	private:

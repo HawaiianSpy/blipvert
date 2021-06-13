@@ -29,6 +29,8 @@ June 13, 2021
 
 ### Header file: blipvert.h (Start Here)
 
+#### IMPORTANT NOTE: All pixel bitmap widths must be multiples of 4 to accomodate the packed YUV formats!
+
 #### Data Types:
 
 #### MediaFormatID

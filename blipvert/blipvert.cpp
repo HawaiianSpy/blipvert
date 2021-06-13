@@ -49,6 +49,16 @@ typedef struct {
 } TransformTableEntry;
 
 typedef struct {
+    const MediaFormatID& target;
+    t_rgbcheckfunc pProcAddr;
+} RGBCheckEntry;
+
+typedef struct {
+    const MediaFormatID& target;
+    t_yuvcheckfunc pProcAddr;
+} YUVCheckEntry;
+
+typedef struct {
     const MediaFormatID formatId;       // The string format ID
     Fourcc fourcc;                      // Fourcc code
     Fourcc xRefFourcc;                  // cross-referenced fourcc or what this fourcc is a duplicate of format-wise.
@@ -543,7 +553,6 @@ TransformTableEntry TransformTable[] = {
     { MVFMT_UNDEFINED, MVFMT_UNDEFINED, nullptr }
 };
 
-
 VideoFormatInfo VideoFmtTable[] = {
     // Packed YUV Formats:
     // UYVY master format
@@ -639,9 +648,36 @@ VideoFormatInfo VideoFmtTable[] = {
     {MVFMT_UNDEFINED, FOURCC_UNDEFINED, FOURCC_UNDEFINED, -1}
 };
 
+RGBCheckEntry RGBCheckFuncTable[] = {
+    {MVFMT_RGB32, Check_RGB32},
+    {MVFMT_RGB24, Check_RGB24},
+    {MVFMT_RGB565, Check_RGB565},
+    {MVFMT_RGB555, Check_RGB555},
+    {MVFMT_UNDEFINED, nullptr}
+};
+
+YUVCheckEntry YUVCheckFuncTable[] = {
+    {MVFMT_YUY2, Check_YUY2},
+    {MVFMT_UYVY, Check_UYVY},
+    {MVFMT_YVYU, Check_YVYU},
+    {MVFMT_VYUY, Check_VYUY},
+    {MVFMT_IYUV, Check_IYUV},
+    {MVFMT_YV12, Check_YV12},
+    {MVFMT_YVU9, Check_YVU9},
+    {MVFMT_YUV9, Check_YUV9},
+    {MVFMT_IYU1, Check_IYU1},
+    {MVFMT_IYU2, Check_IYU2},
+    {MVFMT_Y800, Check_Y800},
+    {MVFMT_Y41P, Check_Y41P},
+    {MVFMT_CLJR, Check_CLJR},
+    {MVFMT_UNDEFINED, nullptr}
+};
+
 map<MediaFormatID, t_transformfunc> TransformMap;
 map<MediaFormatID, VideoFormatInfo*> MediaFormatInfoMap;
 map<Fourcc, const MediaFormatID> FourccToIDMap;
+map<MediaFormatID, t_rgbcheckfunc> RGBCheckFuncMap;
+map<MediaFormatID, t_yuvcheckfunc> YUVCheckFuncMap;
 
 void blipvert::InitializeLibrary(void)
 {
@@ -669,6 +705,42 @@ void blipvert::InitializeLibrary(void)
 
         index++;
     }
+
+    index = 0;
+    while (RGBCheckFuncTable[index].pProcAddr != nullptr)
+    {
+        RGBCheckFuncMap.insert(make_pair(RGBCheckFuncTable[index].target, RGBCheckFuncTable[index].pProcAddr));
+        index++;
+    }
+
+    index = 0;
+    while (YUVCheckFuncTable[index].pProcAddr != nullptr)
+    {
+        YUVCheckFuncMap.insert(make_pair(YUVCheckFuncTable[index].target, YUVCheckFuncTable[index].pProcAddr));
+        index++;
+    }
+}
+
+t_rgbcheckfunc blipvert::FindRGBCheckFunction(const MediaFormatID& target)
+{
+    map<MediaFormatID, t_rgbcheckfunc>::iterator it = RGBCheckFuncMap.find(target);
+    if (it != RGBCheckFuncMap.end())
+    {
+        return *(it->second);
+    }
+
+    return nullptr;
+}
+
+t_yuvcheckfunc blipvert::FindYUVCheckFunction(const MediaFormatID& target)
+{
+    map<MediaFormatID, t_yuvcheckfunc>::iterator it = YUVCheckFuncMap.find(target);
+    if (it != YUVCheckFuncMap.end())
+    {
+        return *(it->second);
+    }
+
+    return nullptr;
 }
 
 t_transformfunc blipvert::FindVideoTransform(const MediaFormatID& inFormat, const MediaFormatID& outFormat)

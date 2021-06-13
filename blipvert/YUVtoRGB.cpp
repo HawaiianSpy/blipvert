@@ -2013,10 +2013,12 @@ void blipvert::IYU2_to_RGB32(int32_t width, int32_t height,
         int32_t hcount = width;
         while (hcount)
         {
-            int32_t Y = luminance_table[psrc[1]];
-            pdst[0] = saturation_table[Y + u_table[psrc[0]]];               // blue
-            pdst[1] = saturation_table[Y + uv_table[psrc[0]][psrc[2]]];     // green
-            pdst[2] = saturation_table[Y + v_table[psrc[2]]];               // red
+            int32_t Yprime = luminance_table[psrc[1]];
+            int32_t U = psrc[0];
+            int32_t V = psrc[2];
+            pdst[0] = saturation_table[Yprime + u_table[U]];        // blue
+            pdst[1] = saturation_table[Yprime + uv_table[U][V]];    // green
+            pdst[2] = saturation_table[Yprime + v_table[V]];        // red
             pdst[3] = 0xFF;
 
             psrc += 3;
@@ -2055,10 +2057,12 @@ void blipvert::IYU2_to_RGB24(int32_t width, int32_t height,
         int32_t hcount = width;
         while (hcount)
         {
-            int32_t Y = luminance_table[psrc[1]];
-            pdst[0] = saturation_table[Y + u_table[psrc[0]]];               // blue
-            pdst[1] = saturation_table[Y + uv_table[psrc[0]][psrc[2]]];     // green
-            pdst[2] = saturation_table[Y + v_table[psrc[2]]];               // red
+            int32_t Yprime = luminance_table[psrc[1]];
+            int32_t U = psrc[0];
+            int32_t V = psrc[2];
+            pdst[0] = saturation_table[Yprime + u_table[U]];        // blue
+            pdst[1] = saturation_table[Yprime + uv_table[U][V]];    // green
+            pdst[2] = saturation_table[Yprime + v_table[V]];        // red
 
             psrc += 3;
             pdst += 3;
@@ -2096,10 +2100,12 @@ void blipvert::IYU2_to_RGB565(int32_t width, int32_t height,
         int32_t hcount = width;
         while (hcount)
         {
-            int32_t Y = luminance_table[psrc[1]];
-            PackRGB565Word(*pdst++, saturation_table[Y + v_table[psrc[2]]],
-                saturation_table[Y + uv_table[psrc[0]][psrc[2]]],
-                saturation_table[Y + u_table[psrc[0]]]);
+            int32_t Yprime = luminance_table[psrc[1]];
+            int32_t U = psrc[0];
+            int32_t V = psrc[2];
+            PackRGB565Word(*pdst++, saturation_table[Yprime + v_table[V]],
+                saturation_table[Yprime + uv_table[U][V]],
+                saturation_table[Yprime + u_table[U]]);
 
             psrc += 3;
             hcount--;
@@ -2136,10 +2142,12 @@ void blipvert::IYU2_to_RGB555(int32_t width, int32_t height,
         int32_t hcount = width;
         while (hcount)
         {
-            int32_t Y = luminance_table[psrc[1]];
-            PackRGB555Word(*pdst++, saturation_table[Y + v_table[psrc[2]]],
-                saturation_table[Y + uv_table[psrc[0]][psrc[2]]],
-                saturation_table[Y + u_table[psrc[0]]]);
+            int32_t Yprime = luminance_table[psrc[1]];
+            int32_t U = psrc[0];
+            int32_t V = psrc[2];
+            PackRGB555Word(*pdst++, saturation_table[Yprime + v_table[V]],
+                saturation_table[Yprime + uv_table[U][V]],
+                saturation_table[Yprime + u_table[U]]);
             psrc += 3;
             hcount--;
         }

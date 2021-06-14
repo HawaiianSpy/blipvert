@@ -195,7 +195,7 @@ void RGB565_to_PackedY422(int32_t width, int32_t height,
             uint8_t blue1;
             UnpackRGB565Word(psrc[0], red1, green1, blue1)
 
-                uint8_t red2;
+            uint8_t red2;
             uint8_t green2;
             uint8_t blue2;
             UnpackRGB565Word(psrc[1], red2, green2, blue2)
@@ -246,7 +246,7 @@ void RGB555_to_PackedY422(int32_t width, int32_t height,
             uint8_t blue1;
             UnpackRGB555Word(psrc[0], red1, green1, blue1)
 
-                uint8_t red2;
+            uint8_t red2;
             uint8_t green2;
             uint8_t blue2;
             UnpackRGB555Word(psrc[1], red2, green2, blue2)

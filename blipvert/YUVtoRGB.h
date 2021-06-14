@@ -33,7 +33,7 @@ namespace blipvert
 {
     void InitYUVtoRGBTables(void);
 
-    // Lookup table conversion of single pixel.
+    // Lookup table conversion of single pixel value..
     void FastYUVtoRGB(uint8_t Y, uint8_t U, uint8_t V, uint8_t* R, uint8_t* G, uint8_t* B);
 
     // YUV (YCbCr) to RGB conversions

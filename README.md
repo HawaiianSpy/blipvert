@@ -56,7 +56,7 @@ See the comments in the header files for details on parameters, etc.
 Returns a function pointer that will convert the requested input format to the requested output format.
 
 
-#### bool GetVideoFormatInfo(const MediaFormatID& inFormat, Fourcc& fourcc, Fourcc& xRefFourcc, int16_t& effctiveBitsPerPixel);
+#### bool GetVideoFormatInfo(const MediaFormatID& inFormat, Fourcc& fourcc, Fourcc& xRefFourcc, int16_t& effectiveBitsPerPixel);
 Returns useful information about the media type including the fourcc code (if it exists), main fourcc code (if the matching fourcc code is a duplicate), and the bits / pixel (good for calculating the buffer size).
 
 #### bool GetVideoFormatID(Fourcc fourcc, MediaFormatID& outFormat);

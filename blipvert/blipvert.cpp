@@ -62,7 +62,7 @@ typedef struct {
     const MediaFormatID formatId;       // The string format ID
     Fourcc fourcc;                      // Fourcc code
     Fourcc xRefFourcc;                  // cross-referenced fourcc or what this fourcc is a duplicate of format-wise.
-    int16_t effctiveBitsPerPixel;       // Effective bits per pixel of this format.
+    int16_t effectiveBitsPerPixel;       // Effective bits per pixel of this format.
 } VideoFormatInfo;
 
 typedef struct {
@@ -679,6 +679,8 @@ map<Fourcc, const MediaFormatID> FourccToIDMap;
 map<MediaFormatID, t_rgbcheckfunc> RGBCheckFuncMap;
 map<MediaFormatID, t_yuvcheckfunc> YUVCheckFuncMap;
 
+bool IsInitialized = false;
+
 void blipvert::InitializeLibrary(void)
 {
     InitYUVtoRGBTables();
@@ -719,6 +721,8 @@ void blipvert::InitializeLibrary(void)
         YUVCheckFuncMap.insert(make_pair(YUVCheckFuncTable[index].target, YUVCheckFuncTable[index].pProcAddr));
         index++;
     }
+
+    IsInitialized = true;
 }
 
 t_rgbcheckfunc blipvert::FindRGBCheckFunction(const MediaFormatID& target)
@@ -781,14 +785,14 @@ t_transformfunc blipvert::FindVideoTransform(const MediaFormatID& inFormat, cons
     return nullptr;
 }
 
-bool blipvert::GetVideoFormatInfo(const MediaFormatID& inFormat, Fourcc& fourcc, Fourcc& xRefFourcc, int16_t& effctiveBitsPerPixel)
+bool blipvert::GetVideoFormatInfo(const MediaFormatID& inFormat, Fourcc& fourcc, Fourcc& xRefFourcc, int16_t& effectiveBitsPerPixel)
 {
     map<MediaFormatID, VideoFormatInfo*>::iterator it = MediaFormatInfoMap.find(inFormat);
     if (it != MediaFormatInfoMap.end())
     {
         fourcc = it->second->fourcc;
         xRefFourcc = it->second->xRefFourcc;
-        effctiveBitsPerPixel = it->second->effctiveBitsPerPixel;
+        effectiveBitsPerPixel = it->second->effectiveBitsPerPixel;
         return true;
     }
 

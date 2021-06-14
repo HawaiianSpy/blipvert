@@ -182,6 +182,8 @@ namespace blipvert
     extern const MediaFormatID MVFMT_dvsd;
     extern const MediaFormatID MVFMT_dvsl;
 
+    extern bool IsInitialized; // true / false that the library has been initialized.
+
     //
     // Function pointer type for all colorspace transforms.
     //
@@ -220,9 +222,9 @@ namespace blipvert
     //      inFormat:               IN -> The media ID to query.
     //      fourcc:                 OUT -> The fourcc code for the media format. Returns FOURCC_UNDEFINED if no fourcc is available.
     //      xRefFourcc:             OUT -> The master fourcc format if the given format is a duplicate, FOURCC_UNDEFINED otherwise.
-    //      effctiveBitsPerPixel:   OUT -> The effective bits per pixel for the given format. Returns -1 if undefined.
+    //      effectiveBitsPerPixel:   OUT -> The effective bits per pixel for the given format. Returns -1 if undefined.
     //  Returns true if the format was found, false if not.
-    bool GetVideoFormatInfo(const MediaFormatID& inFormat, Fourcc& fourcc, Fourcc& xRefFourcc, int16_t& effctiveBitsPerPixel);
+    bool GetVideoFormatInfo(const MediaFormatID& inFormat, Fourcc& fourcc, Fourcc& xRefFourcc, int16_t& effectiveBitsPerPixel);
 
     // Returns the MediaFormatID for a given fourcc code.
     //

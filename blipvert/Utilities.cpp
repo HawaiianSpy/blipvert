@@ -141,24 +141,24 @@ uint32_t blipvert::CalculateBufferSize(const MediaFormatID& inFormat, uint32_t w
 {
     Fourcc fourcc;
     Fourcc xRefFourcc;
-    int16_t effctiveBitsPerPixel;
+    int16_t effectiveBitsPerPixel;
 
     if (width == 0 || height == 0)
     {
         return 0;
     }
 
-    if (!GetVideoFormatInfo(inFormat, fourcc, xRefFourcc, effctiveBitsPerPixel))
+    if (!GetVideoFormatInfo(inFormat, fourcc, xRefFourcc, effectiveBitsPerPixel))
     {
         return 0;
     }
 
-    if (effctiveBitsPerPixel <= 0)
+    if (effectiveBitsPerPixel <= 0)
     {
         return 0;
     }
 
-    uint32_t bitsPerLine = width * static_cast<uint32_t>(effctiveBitsPerPixel);
+    uint32_t bitsPerLine = width * static_cast<uint32_t>(effectiveBitsPerPixel);
     uint32_t bytesPerLine = ((bitsPerLine + 31) & (~31)) / 8;
 
     if (in_stride > bytesPerLine)

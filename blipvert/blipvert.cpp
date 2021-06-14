@@ -679,7 +679,7 @@ map<Fourcc, const MediaFormatID> FourccToIDMap;
 map<MediaFormatID, t_rgbcheckfunc> RGBCheckFuncMap;
 map<MediaFormatID, t_yuvcheckfunc> YUVCheckFuncMap;
 
-bool IsInitialized = false;
+bool blipvert::IsInitialized = false;
 
 void blipvert::InitializeLibrary(void)
 {

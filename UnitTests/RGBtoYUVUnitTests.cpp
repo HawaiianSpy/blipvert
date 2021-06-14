@@ -215,12 +215,6 @@ namespace BlipvertUnitTests
 			memset(rgbBufPtr, 0, rgbBufBize);
 			decodeTransPtr(width, height, rgbBufPtr, 0, yuvBufPtr, 0, false, nullptr);
 
-			uint8_t R1;
-			uint8_t G1;
-			uint8_t B1;
-			uint8_t A1 = alpha;
-			FastYUVtoRGB(Y, U, V, &R1, &G1, &B1);
-
 			Assert::IsTrue(rgbCheckFunctPtr(Y, Y, Y, 255, width, height, rgbBufPtr, 0), L"RGB buffer did not contain expected values.");
 		}
 	};

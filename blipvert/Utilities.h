@@ -41,7 +41,7 @@ namespace blipvert
     /**********************************************************************
     * IMPORTANT: All pixel bitmap dimensions (width & height) should  be  
     * multiples of 4 to accomodate the packed YUV formats. You can get away
-    * with non-modus-four values for many of the transforms, but following
+    * with non-modulo-four values for many of the transforms, but following
     * that rule will insure maximum compatibilty across the transform library.
     * The consequences for living on the edge? Some of the transforms may
     * try coloring outside the lines. Of course you can experiment with

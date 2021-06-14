@@ -91,9 +91,15 @@ namespace BlipvertUnitTests
 		//{
 		//}
 
-		//TEST_METHOD(RGB32_to_Y800_UnitTest)
-		//{
-		//}
+		TEST_METHOD(RGB32_to_Y800_UnitTest)
+		{
+			TestY800Results(MVFMT_RGB32, 128, 128, 128, 255);
+			TestY800Results(MVFMT_RGB32, 255, 255, 255, 255);
+			TestY800Results(MVFMT_RGB32, 0, 0, 0, 255);
+			TestY800Results(MVFMT_RGB32, 255, 0, 0, 255);
+			TestY800Results(MVFMT_RGB32, 0, 255, 0, 255);
+			TestY800Results(MVFMT_RGB32, 0, 0, 255, 255);
+		}
 
 		//TEST_METHOD(RGB32_to_Y41P_UnitTest)
 		//{
@@ -164,6 +170,58 @@ namespace BlipvertUnitTests
 			FastYUVtoRGB(Y, U, V, &R1, &G1, &B1);
 
 			Assert::IsTrue(rgbCheckFunctPtr(R1, G1, B1, A1, width, height, rgbBufPtr, 0), L"RGB buffer did not contain expected values.");
+		}
+
+		void TestY800Results(const MediaFormatID& rgbFormat, uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha)
+		{
+			// RGB to YUV
+			t_transformfunc encodeTransPtr = FindVideoTransform(rgbFormat, MVFMT_Y800);
+			Assert::IsNotNull(reinterpret_cast<void*>(encodeTransPtr), L"encodeTransPtr returned a null function pointer.");
+
+			// YUV to RGB
+			t_transformfunc decodeTransPtr = FindVideoTransform(MVFMT_Y800, rgbFormat);
+			Assert::IsNotNull(reinterpret_cast<void*>(decodeTransPtr), L"decodeTransPtr returned a null function pointer.");
+
+			t_rgbcheckfunc rgbCheckFunctPtr = FindRGBCheckFunction(rgbFormat);
+			Assert::IsNotNull(reinterpret_cast<void*>(rgbCheckFunctPtr), L"rgbCheckFunctPtr returned a null function pointer.");
+
+			t_yuvcheckfunc yuvCheckFunctPtr = FindYUVCheckFunction(MVFMT_Y800);
+			Assert::IsNotNull(reinterpret_cast<void*>(yuvCheckFunctPtr), L"yuvCheckFunctPtr returned a null function pointer.");
+
+			uint32_t width = 16;
+			uint32_t height = 16;
+
+			uint32_t rgbBufBize = CalculateBufferSize(rgbFormat, width, height);
+			uint32_t yuvBufBize = CalculateBufferSize(MVFMT_Y800, width, height);
+
+			std::unique_ptr<uint8_t[]> rgbBuf(new uint8_t[rgbBufBize]);
+			uint8_t* rgbBufPtr = rgbBuf.get();
+			memset(rgbBufPtr, 0, rgbBufBize);
+			std::unique_ptr<uint8_t[]> yuvBuf(new uint8_t[yuvBufBize]);
+			uint8_t* yuvBufPtr = yuvBuf.get();
+			memset(yuvBufPtr, 0, yuvBufBize);
+
+			Fill_RGB32(red, green, blue, alpha, width, height, rgbBufPtr);
+
+			encodeTransPtr(width, height, yuvBufPtr, 0, rgbBufPtr, 0, false, nullptr);
+
+			uint8_t Y;
+			uint8_t U;
+			uint8_t V;
+			FastRGBtoYUV(red, green, blue, &Y, &U, &V);
+
+			Assert::IsTrue(yuvCheckFunctPtr(Y, U, V, width, height, yuvBufPtr, 0), L"YUV buffer did not contain expected values.");
+
+			memset(rgbBufPtr, 0, rgbBufBize);
+			decodeTransPtr(width, height, rgbBufPtr, 0, yuvBufPtr, 0, false, nullptr);
+
+			uint8_t R1;
+			uint8_t G1;
+			uint8_t B1;
+			uint8_t A1 = alpha;
+			FastYUVtoRGB(Y, U, V, &R1, &G1, &B1);
+
+			Assert::IsTrue(rgbCheckFunctPtr(Y, Y, Y, 255, width, height, rgbBufPtr, 0), L"RGB buffer did not contain expected values.");
 		}
 	};
 }

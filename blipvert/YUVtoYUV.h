@@ -46,15 +46,6 @@ namespace blipvert
     void Fill_Y41P(uint8_t y_level, uint8_t u_level, uint8_t v_level, int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride = 0);
     void Fill_CLJR(uint8_t y_level, uint8_t u_level, uint8_t v_level, int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride = 0);
 
-    // YUV colorspace check functions (testing)
-    bool Check_YUY2(uint8_t y_level, uint8_t u_level, uint8_t v_level, int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride = 0);
-    bool Check_UYVY(uint8_t y_level, uint8_t u_level, uint8_t v_level, int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride = 0);
-    bool Check_YVYU(uint8_t y_level, uint8_t u_level, uint8_t v_level, int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride = 0);
-    bool Check_VYUY(uint8_t y_level, uint8_t u_level, uint8_t v_level, int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride = 0);
-    bool Check_IYU1(uint8_t y_level, uint8_t u_level, uint8_t v_level, int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride = 0);
-    bool Check_IYU2(uint8_t y_level, uint8_t u_level, uint8_t v_level, int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride = 0);
-    bool Check_Y800(uint8_t y_level, uint8_t u_level, uint8_t v_level, int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride = 0);
-
 
     // YUV (YCbCr) to YUV (YCbCr) conversions
     void YUY2_to_UYVY(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, RGBQUAD* in_palette = nullptr);

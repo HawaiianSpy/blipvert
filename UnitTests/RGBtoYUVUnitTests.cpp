@@ -144,6 +144,55 @@ namespace BlipvertUnitTests
 		return true;
 	}
 
+	bool Check_IYU1(uint8_t y_level, uint8_t u_level, uint8_t v_level,
+		int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride)
+	{
+		if (!stride)
+			stride = width * 12 / 8;
+
+		for (int32_t h = 0; h < height; h++)
+		{
+			uint8_t* pdst = pBuffer;
+			for (int32_t w = 0; w < width; w += 4)
+			{
+				if (pdst[0] != u_level) return false;
+				if (pdst[1] != y_level) return false;
+				if (pdst[2] != y_level) return false;
+				if (pdst[3] != v_level) return false;
+				if (pdst[4] != y_level) return false;
+				if (pdst[5] != y_level) return false;
+				pdst += 6;
+			}
+
+			pBuffer += stride;
+		}
+
+		return true;
+	}
+
+	bool Check_IYU2(uint8_t y_level, uint8_t u_level, uint8_t v_level,
+		int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride)
+	{
+		if (!stride)
+			stride = width * 3;
+
+		for (int32_t h = 0; h < height; h++)
+		{
+			uint8_t* pdst = pBuffer;
+			for (int32_t w = 0; w < width; w++)
+			{
+				if (pdst[0] != u_level) return false;
+				if (pdst[1] != y_level) return false;
+				if (pdst[2] != v_level) return false;
+				pdst += 3;
+			}
+
+			pBuffer += stride;
+		}
+
+		return true;
+	}
+
 	typedef struct {
 		const MediaFormatID& target;
 		t_yuvcheckfunc pProcAddr;

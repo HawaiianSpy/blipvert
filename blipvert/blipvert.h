@@ -199,9 +199,6 @@ namespace blipvert
     //      in_palette:     Pointer to the palette for a palletized input bitmap. Ignored for non-palletized input bitmap formats.
     typedef void(__cdecl* t_transformfunc) (int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, RGBQUAD* in_palette);
 
-    // Testing buffer check functions
-    typedef bool(__cdecl* t_rgbcheckfunc) (uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha, int32_t width, int32_t height, uint8_t* pBuffer, int32_t stridee);
-    typedef bool(__cdecl* t_yuvcheckfunc) (uint8_t y_level, uint8_t u_level, uint8_t v_level, int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride);
 
     // IMPORTANT: This must be called before using any of the colorspace transforms since it initializes the lookup tables.
     void InitializeLibrary(void);
@@ -211,11 +208,6 @@ namespace blipvert
     // Note: Since there exists duplicate fourcc definitions for the same bitmap format, the main 
     //       definition name will be used if a duplicate format was requested.
     t_transformfunc FindVideoTransform(const MediaFormatID& inFormat, const MediaFormatID& outFormat);
-
-    // Function pointer for testing.
-    t_rgbcheckfunc FindRGBCheckFunction(const MediaFormatID& target);
-    t_yuvcheckfunc FindYUVCheckFunction(const MediaFormatID& target);
-
     // Returns information about the given video format.
     //
     // Parameters:

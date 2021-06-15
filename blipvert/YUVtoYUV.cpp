@@ -60,40 +60,15 @@ void Fill_PackedY422(uint8_t y_level, uint8_t u_level, uint8_t v_level,
     }
 }
 
-bool Check_PackedY422(uint8_t y_level, uint8_t u_level, uint8_t v_level,
-    int32_t width, int32_t height,
-    uint8_t* out_buf, int32_t out_stride,
-    int32_t y0_offset, int32_t y1_offset, int32_t u_offset, int32_t v_offset)
-{
-    if (!out_stride)
-        out_stride = width * 2;
-
-    uint32_t fill = static_cast<uint32_t>((y_level << (y0_offset * 8)) | (y_level << (y1_offset * 8)) | \
-        (u_level << (u_offset * 8)) | (v_level << (v_offset * 8)));
-
-    for (int32_t h = 0; h < height; h++)
-    {
-        uint32_t* pdst = reinterpret_cast<uint32_t*>(out_buf);
-        for (int32_t w = 0; w < width; w += 2)
-        {
-            if (*pdst++ != fill) return false;
-        }
-
-        out_buf += out_stride;
-    }
-
-    return true;
-}
-
 void Fill_PlanarYUV(uint8_t y_level, uint8_t u_level, uint8_t v_level,
     int32_t width, int32_t height,
     uint8_t* out_buf, int32_t out_stride,
-    int32_t out_decimation, bool out_ufirst)
+    bool uFirst, int32_t decimation, bool flipped)
 {
-    int32_t uv_width = width / out_decimation;
-    int32_t uv_height = height / out_decimation;
+    int32_t uv_width = width / decimation;
+    int32_t uv_height = height / decimation;
 
-    int32_t y_stride, uv_stride;
+    int16_t y_stride, uv_stride;
     if (!out_stride)
     {
         y_stride = width;
@@ -107,7 +82,7 @@ void Fill_PlanarYUV(uint8_t y_level, uint8_t u_level, uint8_t v_level,
 
     uint8_t* vplane;
     uint8_t* uplane;
-    if (out_ufirst)
+    if (uFirst)
     {
         uplane = out_buf + (y_stride * height);
         vplane = uplane + (uv_stride * uv_height);
@@ -118,40 +93,86 @@ void Fill_PlanarYUV(uint8_t y_level, uint8_t u_level, uint8_t v_level,
         uplane = vplane + (uv_stride * uv_height);
     }
 
-    uint32_t fill = static_cast<uint32_t>(y_level | y_level << 8 | y_level << 16 | y_level << 24);
-    for (int32_t h = 0; h < height; h++)
+    if (flipped)
     {
-        uint32_t* yp = reinterpret_cast<uint32_t*>(out_buf);
-        for (int32_t w = 0; w < width; w += 4)
-        {
-            yp[w] = fill;
-        }
-        out_buf += y_stride;
+        out_buf += (y_stride * (height - 1));
+        uplane += (uv_stride * (uv_height - 1));
+        vplane += (uv_stride * (uv_height - 1));
+        y_stride = -y_stride;
+        uv_stride = -uv_stride;
     }
 
-    for (int32_t h = 0; h < uv_height; h++)
+    uint16_t red;
+    uint16_t green;
+    uint16_t blue;
+
+    if (decimation == 2)
     {
-        uint8_t* up = uplane;
-        uint8_t* vp = vplane;
-        for (int32_t w = 0; w < uv_width; w++)
+        for (int32_t y = 0; y < height; y += 2)
         {
-            up[w] = u_level;
-            vp[w] = v_level;
+            uint8_t* yp = out_buf;
+            for (int32_t x = 0; x < width; x += 2)
+            {
+                yp[0] = y_level;
+                yp[1] = y_level;
+                yp[y_stride] = y_level;
+                yp[y_stride + 1] = y_level;
+                uplane[x >> 1] = u_level;
+                vplane[x >> 1] = v_level;
+                yp += 2;
+            }
+            out_buf += (y_stride * 2);
+
+            uplane += uv_stride;
+            vplane += uv_stride;
         }
-        uplane += uv_stride;
-        vplane += uv_stride;
+    }
+    else if (decimation == 4)
+    {
+        for (int32_t y = 0; y < height; y += 4)
+        {
+            uint8_t* yp = out_buf;
+            for (int32_t x = 0; x < width; x += 4)
+            {
+                red = 0;
+                green = 0;
+                blue = 0;
+
+                int32_t is = 0;
+                int32_t ys = 0;
+
+                for (int32_t dec = 0; dec < 4; dec++)
+                {
+                    yp[ys] = y_level;
+                    yp[ys + 1] = y_level;
+                    yp[ys + 2] = y_level;
+                    yp[ys + 3] = y_level;
+                    ys += y_stride;
+                }
+
+                uplane[x >> 2] = u_level;
+                vplane[x >> 2] = v_level;
+
+                yp += 4;
+            }
+            out_buf += (y_stride * 4);
+
+            uplane += uv_stride;
+            vplane += uv_stride;
+        }
     }
 }
+
 
 bool Check_PlanarYUV(uint8_t y_level, uint8_t u_level, uint8_t v_level,
     int32_t width, int32_t height,
     uint8_t* out_buf, int32_t out_stride,
-    int32_t out_decimation, bool out_ufirst)
+    bool uFirst, int32_t decimation, bool flipped)
 {
-    int32_t uv_width = width / out_decimation;
-    int32_t uv_height = height / out_decimation;
+    int32_t uv_width = width / decimation;
+    int32_t uv_height = height / decimation;
 
-    int32_t y_stride, uv_stride;
+    int16_t y_stride, uv_stride;
     if (!out_stride)
     {
         y_stride = width;
@@ -165,7 +186,7 @@ bool Check_PlanarYUV(uint8_t y_level, uint8_t u_level, uint8_t v_level,
 
     uint8_t* vplane;
     uint8_t* uplane;
-    if (out_ufirst)
+    if (uFirst)
     {
         uplane = out_buf + (y_stride * height);
         vplane = uplane + (uv_stride * uv_height);
@@ -176,28 +197,73 @@ bool Check_PlanarYUV(uint8_t y_level, uint8_t u_level, uint8_t v_level,
         uplane = vplane + (uv_stride * uv_height);
     }
 
-    uint32_t fill = static_cast<uint32_t>(y_level | y_level << 8 | y_level << 16 | y_level << 24);
-    for (int32_t h = 0; h < height; h++)
+    if (flipped)
     {
-        uint32_t* yp = reinterpret_cast<uint32_t*>(out_buf);
-        for (int32_t w = 0; w < width; w += 4)
-        {
-            if (yp[w] != fill) return false;
-        }
-        out_buf += y_stride;
+        out_buf += (y_stride * (height - 1));
+        uplane += (uv_stride * (uv_height - 1));
+        vplane += (uv_stride * (uv_height - 1));
+        y_stride = -y_stride;
+        uv_stride = -uv_stride;
     }
 
-    for (int32_t h = 0; h < uv_height; h++)
+    uint16_t red;
+    uint16_t green;
+    uint16_t blue;
+
+    if (decimation == 2)
     {
-        uint8_t* up = uplane;
-        uint8_t* vp = vplane;
-        for (int32_t w = 0; w < uv_width; w++)
+        for (int32_t y = 0; y < height; y += 2)
         {
-            if (up[w] != u_level) return false;
-            if (vp[w] != v_level) return false;
+            uint8_t* yp = out_buf;
+            for (int32_t x = 0; x < width; x += 2)
+            {
+                if (yp[0] != y_level) return false;
+                if (yp[1] != y_level) return false;
+                if (yp[y_stride] != y_level) return false;
+                if (yp[y_stride + 1] != y_level) return false;
+                if (uplane[x >> 1] != u_level) return false;
+                if (vplane[x >> 1] != v_level) return false;
+                yp += 2;
+            }
+            out_buf += (y_stride * 2);
+
+            uplane += uv_stride;
+            vplane += uv_stride;
         }
-        uplane += uv_stride;
-        vplane += uv_stride;
+    }
+    else if (decimation == 4)
+    {
+        for (int32_t y = 0; y < height; y += 4)
+        {
+            uint8_t* yp = out_buf;
+            for (int32_t x = 0; x < width; x += 4)
+            {
+                red = 0;
+                green = 0;
+                blue = 0;
+
+                int32_t is = 0;
+                int32_t ys = 0;
+
+                for (int32_t dec = 0; dec < 4; dec++)
+                {
+                    if (yp[ys] != y_level) return false;
+                    if (yp[ys + 1] != y_level) return false;
+                    if (yp[ys + 2] != y_level) return false;
+                    if (yp[ys + 3] != y_level) return false;
+                    ys += y_stride;
+                }
+
+                if (uplane[x >> 2] != u_level) return false;
+                if (vplane[x >> 2] != v_level) return false;
+
+                yp += 4;
+            }
+            out_buf += (y_stride * 4);
+
+            uplane += uv_stride;
+            vplane += uv_stride;
+        }
     }
 
     return true;
@@ -2793,27 +2859,10 @@ void blipvert::Fill_YUY2(uint8_t y_level, uint8_t u_level, uint8_t v_level, int3
         0, 2, 1, 3);
 }
 
-bool blipvert::Check_YUY2(uint8_t y_level, uint8_t u_level, uint8_t v_level, int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride)
-{
-    return Check_PackedY422(y_level, u_level, v_level,
-        width, height,
-        pBuffer, stride,
-        0, 2, 1, 3);
-}
-
 void blipvert::Fill_UYVY(uint8_t y_level, uint8_t u_level, uint8_t v_level,
     int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride)
 {
     Fill_PackedY422(y_level, u_level, v_level,
-        width, height,
-        pBuffer, stride,
-        1, 3, 0, 2);
-}
-
-bool blipvert::Check_UYVY(uint8_t y_level, uint8_t u_level, uint8_t v_level,
-    int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride)
-{
-    return Check_PackedY422(y_level, u_level, v_level,
         width, height,
         pBuffer, stride,
         1, 3, 0, 2);
@@ -2828,15 +2877,6 @@ void blipvert::Fill_YVYU(uint8_t y_level, uint8_t u_level, uint8_t v_level,
         0, 2, 3, 1);
 }
 
-bool blipvert::Check_YVYU(uint8_t y_level, uint8_t u_level, uint8_t v_level,
-    int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride)
-{
-    return Check_PackedY422(y_level, u_level, v_level,
-        width, height,
-        pBuffer, stride,
-        0, 2, 3, 1);
-}
-
 void blipvert::Fill_VYUY(uint8_t y_level, uint8_t u_level, uint8_t v_level,
     int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride)
 {
@@ -2846,85 +2886,28 @@ void blipvert::Fill_VYUY(uint8_t y_level, uint8_t u_level, uint8_t v_level,
         1, 3, 2, 0);
 }
 
-bool blipvert::Check_VYUY(uint8_t y_level, uint8_t u_level, uint8_t v_level,
-    int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride)
-{
-    return Check_PackedY422(y_level, u_level, v_level,
-        width, height,
-        pBuffer, stride,
-        1, 3, 2, 0);
-}
-
 void blipvert::Fill_IYUV(uint8_t y_level, uint8_t u_level, uint8_t v_level,
     int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride)
 {
-    Fill_PlanarYUV(y_level, u_level, v_level,
-        width, height,
-        pBuffer, stride,
-        2, true);
-}
-
-bool blipvert::Check_IYUV(uint8_t y_level, uint8_t u_level, uint8_t v_level,
-    int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride)
-{
-    return Check_PlanarYUV(y_level, u_level, v_level,
-        width, height,
-        pBuffer, stride,
-        2, true);
+    Fill_PlanarYUV(y_level, u_level, v_level, width, height, pBuffer, stride, true, 2, true);
 }
 
 void blipvert::Fill_YV12(uint8_t y_level, uint8_t u_level, uint8_t v_level,
     int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride)
 {
-    Fill_PlanarYUV(y_level, u_level, v_level,
-        width, height,
-        pBuffer, stride,
-        2, false);
-}
-
-bool blipvert::Check_YV12(uint8_t y_level, uint8_t u_level, uint8_t v_level,
-    int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride)
-{
-    return Check_PlanarYUV(y_level, u_level, v_level,
-        width, height,
-        pBuffer, stride,
-        2, false);
+    Fill_PlanarYUV(y_level, u_level, v_level, width, height, pBuffer, stride, false, 2, false);
 }
 
 void blipvert::Fill_YVU9(uint8_t y_level, uint8_t u_level, uint8_t v_level,
     int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride)
 {
-    Fill_PlanarYUV(y_level, u_level, v_level,
-        width, height,
-        pBuffer, stride,
-        4, false);
-}
-
-bool blipvert::Check_YVU9(uint8_t y_level, uint8_t u_level, uint8_t v_level,
-    int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride)
-{
-    return Check_PlanarYUV(y_level, u_level, v_level,
-        width, height,
-        pBuffer, stride,
-        4, false);
+    Fill_PlanarYUV(y_level, u_level, v_level, width, height, pBuffer, stride, false, 4, false);
 }
 
 void blipvert::Fill_YUV9(uint8_t y_level, uint8_t u_level, uint8_t v_level,
     int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride)
 {
-    Fill_PlanarYUV(y_level, u_level, v_level,
-        width, height,
-        pBuffer, stride,
-        4, true);
-}
-
-bool blipvert::Check_YUV9(uint8_t y_level, uint8_t u_level, uint8_t v_level,
-    int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride)
-{
-    return Check_PlanarYUV(y_level, u_level, v_level,
-        width, height,
-        pBuffer, stride,
-        4, true);
+    Fill_PlanarYUV(y_level, u_level, v_level, width, height, pBuffer, stride, true, 4, true);
 }
 
 void blipvert::Fill_IYU1(uint8_t y_level, uint8_t u_level, uint8_t v_level,
@@ -3042,109 +3025,62 @@ void blipvert::Fill_Y800(uint8_t y_level, int32_t width, int32_t height, uint8_t
     }
 }
 
-bool blipvert::Check_Y800(uint8_t y_level, uint8_t u_level, uint8_t v_level, int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride)
-{
-    if (!stride)
-        stride = width;
-
-    for (int32_t h = 0; h < height; h++)
-    {
-        uint8_t* pdst = pBuffer;
-        for (int32_t w = 0; w < width; w++)
-        {
-            if (*pdst++ != y_level) return false;
-        }
-
-        pBuffer += stride;
-    }
-
-    return true;
-}
-
 void blipvert::Fill_Y41P(uint8_t y_level, uint8_t u_level, uint8_t v_level, int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride)
 {
     if (!stride)
         stride = width / 8 * 12;
 
-    uint32_t fill0 = static_cast<uint32_t>(u_level | y_level << 8 | v_level << 16 | y_level << 24);
-    uint32_t fill1 = static_cast<uint32_t>(y_level | y_level << 8 | y_level << 16 | y_level << 24);
-    for (int32_t h = 0; h < height; h++)
+    while (height)
     {
-        uint32_t* pdst = reinterpret_cast<uint32_t*>(pBuffer);
-        for (int32_t w = 0; w < width; w += 8)
+        uint8_t* pdst = pBuffer;
+        int32_t hcount = width;
+        while (hcount)
         {
-            pdst[0] = fill0;
-            pdst[1] = fill0;
-            pdst[2] = fill1;
+            pdst[0] = u_level;
+            pdst[2] = v_level;
+
+            pdst[1] = y_level;
+            pdst[3] = y_level;
+            pdst[5] = y_level;
+            pdst[7] = y_level;
+
+            pdst[4] = u_level;
+            pdst[6] = v_level;
+
+            pdst[8] = y_level;
+            pdst[9] = y_level;
+            pdst[10] = y_level;
+            pdst[11] = y_level;
+
             pdst += 12;
+            hcount -= 8;
         }
 
         pBuffer += stride;
+        height--;
     }
 }
 
-bool blipvert::Check_Y41P(uint8_t y_level, uint8_t u_level, uint8_t v_level, int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride)
-{
-    if (!stride)
-        stride = width / 8 * 12;
-
-    uint32_t fill0 = static_cast<uint32_t>(u_level | y_level << 8 | v_level << 16 | y_level << 24);
-    uint32_t fill1 = static_cast<uint32_t>(y_level | y_level << 8 | y_level << 16 | y_level << 24);
-    for (int32_t h = 0; h < height; h++)
-    {
-        uint32_t* pdst = reinterpret_cast<uint32_t*>(pBuffer);
-        for (int32_t w = 0; w < width; w += 8)
-        {
-            if (pdst[0] != fill0) return false;
-            if (pdst[1] != fill0) return false;
-            if (pdst[2] != fill1) return false;
-            pdst += 12;
-        }
-
-        pBuffer += stride;
-    }
-
-    return true;
-}
-
-void blipvert::Fill_CLJR(uint8_t y_level, uint8_t u_level, uint8_t v_level, int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride)
+void Fill_CLJR(uint8_t y_level, uint8_t u_level, uint8_t v_level, int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride)
 {
     if (!stride)
         stride = width;
 
     uint32_t fill;
     PackCLJRDword(fill, u_level, v_level, y_level, y_level, y_level, y_level);
-    for (int32_t h = 0; h < height; h++)
+    while (height)
     {
         uint32_t* pdst = reinterpret_cast<uint32_t*>(pBuffer);
-        for (int32_t w = 0; w < width; w += 4)
+        int32_t hcount = width;
+        while (hcount)
         {
             *pdst++ = fill;
+            hcount -= 4;
         }
 
         pBuffer += stride;
+        height--;
     }
-}
-
-bool blipvert::Check_CLJR(uint8_t y_level, uint8_t u_level, uint8_t v_level, int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride)
-{
-    if (!stride)
-        stride = width;
-
-    uint32_t fill;
-    PackCLJRDword(fill, u_level, v_level, y_level, y_level, y_level, y_level);
-    for (int32_t h = 0; h < height; h++)
-    {
-        uint32_t* pdst = reinterpret_cast<uint32_t*>(pBuffer);
-        for (int32_t w = 0; w < width; w += 4)
-        {
-            if (*pdst++ != fill) return false;
-        }
-
-        pBuffer += stride;
-    }
-
-    return true;
 }
 
 //

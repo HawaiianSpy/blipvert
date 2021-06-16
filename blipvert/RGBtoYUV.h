@@ -35,6 +35,10 @@ namespace blipvert
     // Lookup table conversion of single pixel value.
     void FastRGBtoYUV(uint8_t R, uint8_t G, uint8_t B, uint8_t* Y, uint8_t* U, uint8_t* V);
 
+    // Conversion in place of RGBx color to RGBx in grey scale.
+    void RGB32_to_InPlaceGreyscale(int32_t  width, int32_t height, uint8_t* buf, int32_t stride = 0);
+    void RGB24_to_InPlaceGreyscale(int32_t  width, int32_t height, uint8_t* buf, int32_t stride = 0);
+
     // RGB to YUV (YCbCr) conversions
 
     void RGB32_to_YUY2(int32_t  width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, RGBQUAD* in_palette = nullptr);

@@ -74,6 +74,83 @@ void blipvert::FastRGBtoYUV(uint8_t R, uint8_t G, uint8_t B, uint8_t* Y, uint8_t
     *V = static_cast<uint8_t>(((vr_table[R] + vg_table[G] + vb_table[B]) >> 15) + 128);
 }
 
+// Conversion in place of RGBx color to RGBx in grey scale.
+
+void blipvert::RGB32_to_InPlaceGreyscale(int32_t  width, int32_t height, uint8_t* buf, int32_t stride)
+{
+    if (!stride)
+    {
+        uint32_t count = width * height;
+        while (count)
+        {
+            uint8_t Y = static_cast<uint8_t>(((yr_table[buf[2]] + yg_table[buf[1]] + yb_table[buf[0]]) >> 15) + 16);
+            buf[0] = Y;    // blue
+            buf[1] = Y;    // green
+            buf[2] = Y;    // red
+            buf += 4;
+            count--;
+        }
+    }
+    else
+    {
+        while (height)
+        {
+            uint8_t* psrc = buf;
+            int32_t hcount = width;
+            while (hcount)
+            {
+                uint8_t Y = static_cast<uint8_t>(((yr_table[psrc[2]] + yg_table[psrc[1]] + yb_table[psrc[0]]) >> 15) + 16);
+                psrc[0] = Y;
+                psrc[1] = Y;
+                psrc[2] = Y;
+                psrc += 4;
+                hcount--;
+            }
+
+            buf += stride;
+            height--;
+        }
+    }
+}
+
+void blipvert::RGB24_to_InPlaceGreyscale(int32_t  width, int32_t height, uint8_t* buf, int32_t stride)
+{
+    if (!stride)
+    {
+        uint32_t count = width * height;
+        while (count)
+        {
+            uint8_t Y = static_cast<uint8_t>(((yr_table[buf[2]] + yg_table[buf[1]] + yb_table[buf[0]]) >> 15) + 16);
+            buf[0] = Y;    // blue
+            buf[1] = Y;    // green
+            buf[2] = Y;    // red
+            buf += 3;
+            count--;
+        }
+    }
+    else
+    {
+        while (height)
+        {
+            uint8_t* psrc = buf;
+            int32_t hcount = width;
+            while (hcount)
+            {
+                uint8_t Y = static_cast<uint8_t>(((yr_table[psrc[2]] + yg_table[psrc[1]] + yb_table[psrc[0]]) >> 15) + 16);
+                psrc[0] = Y;
+                psrc[1] = Y;
+                psrc[2] = Y;
+                psrc += 3;
+                hcount--;
+            }
+
+            buf += stride;
+            height--;
+        }
+    }
+}
+
+
 //
 // Local generic RGB to YUV functions.
 //
@@ -195,7 +272,7 @@ void RGB565_to_PackedY422(int32_t width, int32_t height,
             uint8_t blue1;
             UnpackRGB565Word(psrc[0], red1, green1, blue1)
 
-            uint8_t red2;
+                uint8_t red2;
             uint8_t green2;
             uint8_t blue2;
             UnpackRGB565Word(psrc[1], red2, green2, blue2)
@@ -246,7 +323,7 @@ void RGB555_to_PackedY422(int32_t width, int32_t height,
             uint8_t blue1;
             UnpackRGB555Word(psrc[0], red1, green1, blue1)
 
-            uint8_t red2;
+                uint8_t red2;
             uint8_t green2;
             uint8_t blue2;
             UnpackRGB555Word(psrc[1], red2, green2, blue2)

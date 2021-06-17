@@ -27,11 +27,28 @@
 //
 
 
-// Place holder for GDI RGBQUAD from wingdih
+namespace blipvert
+{
+    extern int32_t yr_table[256];
+    extern int32_t yg_table[256];
+    extern int32_t yb_table[256];
+    extern int32_t ur_table[256];
+    extern int32_t ug_table[256];
+    extern int32_t ub_table[256];
+    extern int32_t vr_table[256];
+    extern int32_t vg_table[256];
+    extern int32_t vb_table[256];
 
-typedef struct {
-    uint8_t    rgbBlue;
-    uint8_t    rgbGreen;
-    uint8_t    rgbRed;
-    uint8_t    rgbReserved;
-} xRGBQUAD;
+    extern int32_t luminance_table[256];
+    extern int32_t u_table[256];
+    extern int32_t v_table[256];
+    extern int32_t uv_table[256][256];
+    extern uint8_t saturation_table[900];
+
+    extern uint32_t rgb32_greyscale[256];
+    extern uint16_t rgb565_greyscale[256];
+    extern uint16_t rgb555_greyscale[256];
+
+    void InitLookupTables();
+}
+

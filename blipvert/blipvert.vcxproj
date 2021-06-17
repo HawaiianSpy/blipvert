@@ -163,9 +163,11 @@
     <ClInclude Include="CommonMacros.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="legacydefs.h" />
+    <ClInclude Include="LookupTables.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="RGBtoRGB.h" />
     <ClInclude Include="RGBtoYUV.h" />
+    <ClInclude Include="ToGreyscale.h" />
     <ClInclude Include="Utilities.h" />
     <ClInclude Include="YUVtoRGB.h" />
     <ClInclude Include="YUVtoYUV.h" />
@@ -173,6 +175,7 @@
   <ItemGroup>
     <ClCompile Include="blipvert.cpp" />
     <ClCompile Include="CommonMacros.cpp" />
+    <ClCompile Include="LookupTables.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -181,6 +184,7 @@
     </ClCompile>
     <ClCompile Include="RGBtoRGB.cpp" />
     <ClCompile Include="RGBtoYUV.cpp" />
+    <ClCompile Include="ToGreyscale.cpp" />
     <ClCompile Include="Utilities.cpp" />
     <ClCompile Include="YUVtoRGB.cpp" />
     <ClCompile Include="YUVtoYUV.cpp" />

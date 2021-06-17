@@ -34,6 +34,10 @@ namespace blipvert
     void SlowYUVtoRGB(uint8_t Y, uint8_t U, uint8_t V, uint8_t* R, uint8_t* G, uint8_t* B);
     void SlowRGBtoYUV(uint8_t R, uint8_t G, uint8_t B, uint8_t* Y, uint8_t* U, uint8_t* V);
 
+    // Lookup table conversions of single pixel value..
+    void FastYUVtoRGB(uint8_t Y, uint8_t U, uint8_t V, uint8_t* R, uint8_t* G, uint8_t* B);
+    void FastRGBtoYUV(uint8_t R, uint8_t G, uint8_t B, uint8_t* Y, uint8_t* U, uint8_t* V);
+
     // For interlacing de-interlacing bitmaps
     void Progressive_to_Interlaced(int32_t height, int32_t line_bytes, bool flipped, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride);
     void Interlaced_to_Progressive(int32_t height, int32_t line_bytes, bool flipped, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride);

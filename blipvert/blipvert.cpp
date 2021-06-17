@@ -30,6 +30,7 @@
 #include "framework.h"
 #include "blipvert.h"
 #include "CommonMacros.h"
+#include "LookupTables.h"
 
 #include "YUVtoRGB.h"
 #include "RGBtoYUV.h"
@@ -646,8 +647,7 @@ bool blipvert::IsInitialized = false;
 
 void blipvert::InitializeLibrary(void)
 {
-    InitYUVtoRGBTables();
-    InitRGBtoYUVTables();
+    InitLookupTables();
 
     // Build lookup maps
     uint16_t index = 0;

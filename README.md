@@ -61,6 +61,9 @@ See the comments in the header files for details on parameters, etc.
 #### t_transformfunc FindVideoTransform(const MediaFormatID& inFormat, const MediaFormatID& outFormat);
 Returns a function pointer that will convert the requested input format to the requested output format.
 
+#### t_greyscalefunc FindGreyscaleTransform(const MediaFormatID& inFormat);
+Returns a function pointer that will perform an in-place conversion of the bitmap to greyscale.
+
 
 #### bool GetVideoFormatInfo(const MediaFormatID& inFormat, Fourcc& fourcc, Fourcc& xRefFourcc, int16_t& effectiveBitsPerPixel);
 Returns useful information about the media type including the fourcc code (if it exists), main fourcc code (if the matching fourcc code is a duplicate), and the bits / pixel (good for calculating the buffer size).

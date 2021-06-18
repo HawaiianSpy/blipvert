@@ -19,6 +19,7 @@ I added some spot unit tests for the transforms converting RGB32 to YUV formats 
 Regards,
 
 Don Jordan
+
 San Diego, California, USA
 
 P.S. If you found this library helpful and have improvements/bug fixes to contribute, I would appreciate it if you would submit them back here for review. Thanks.

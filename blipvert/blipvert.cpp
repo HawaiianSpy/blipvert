@@ -42,12 +42,16 @@
 using namespace std;
 using namespace blipvert;
 
-
 typedef struct {
     const MediaFormatID& inputEncoding;
     const MediaFormatID& outputEncoding;
     t_transformfunc pProcAddr;
 } TransformTableEntry;
+
+typedef struct {
+    const MediaFormatID& inputEncoding;
+    t_greyscalefunc pProcAddr;
+} GreyscaleTableEntry;
 
 typedef struct {
     const MediaFormatID formatId;       // The string format ID
@@ -544,6 +548,27 @@ TransformTableEntry TransformTable[] = {
     { MVFMT_UNDEFINED, MVFMT_UNDEFINED, nullptr }
 };
 
+GreyscaleTableEntry GreyscaleTable[] = {
+    { MVFMT_RGB32, RGB32_to_Greyscale },
+    { MVFMT_RGB24, RGB24_to_Greyscale },
+    { MVFMT_RGB565, RGB565_to_Greyscale },
+    { MVFMT_RGB555, RGB555_to_Greyscale },
+    { MVFMT_RGB8, RGB8_to_Greyscale },
+    { MVFMT_UYVY, UYVY_to_Greyscale },
+    { MVFMT_YVYU, YVYU_to_Greyscale },
+    { MVFMT_VYUY, VYUY_to_Greyscale },
+    { MVFMT_YUY2, YUY2_to_Greyscale },
+    { MVFMT_IYUV, IYUV_to_Greyscale },
+    { MVFMT_YV12, YV12_to_Greyscale },
+    { MVFMT_YVU9, YVU9_to_Greyscale },
+    { MVFMT_YUV9, YUV9_to_Greyscale },
+    { MVFMT_IYU1, IYU1_to_Greyscale },
+    { MVFMT_IYU2, IYU2_to_Greyscale },
+    { MVFMT_Y41P, Y41P_to_Greyscale },
+    { MVFMT_CLJR, CLJR_to_Greyscale },
+    { MVFMT_UNDEFINED, nullptr }
+};
+
 VideoFormatInfo VideoFmtTable[] = {
     // Packed YUV Formats:
     // UYVY master format
@@ -640,6 +665,7 @@ VideoFormatInfo VideoFmtTable[] = {
 };
 
 map<MediaFormatID, t_transformfunc> TransformMap;
+map<MediaFormatID, t_greyscalefunc> GreyscaleMap;
 map<MediaFormatID, VideoFormatInfo*> MediaFormatInfoMap;
 map<Fourcc, const MediaFormatID> FourccToIDMap;
 
@@ -655,6 +681,13 @@ void blipvert::InitializeLibrary(void)
     {
         MediaFormatID key = TransformTable[index].inputEncoding + TransformTable[index].outputEncoding;
         TransformMap.insert(make_pair(key, TransformTable[index].pProcAddr));
+        index++;
+    }
+
+    index = 0;
+    while (GreyscaleTable[index].pProcAddr != nullptr)
+    {
+        GreyscaleMap.insert(make_pair(GreyscaleTable[index].inputEncoding, GreyscaleTable[index].pProcAddr));
         index++;
     }
 
@@ -702,6 +735,36 @@ t_transformfunc blipvert::FindVideoTransform(const MediaFormatID& inFormat, cons
             key = inid + outid;
             map<MediaFormatID, t_transformfunc>::iterator it = TransformMap.find(key);
             if (it != TransformMap.end())
+            {
+                return *(it->second);
+            }
+        }
+    }
+
+
+    return nullptr;
+}
+
+t_greyscalefunc blipvert::FindGreyscaleTransform(const MediaFormatID& inFormat)
+{
+    map<MediaFormatID, t_greyscalefunc>::iterator it = GreyscaleMap.find(inFormat);
+    if (it != GreyscaleMap.end())
+    {
+        return *(it->second);
+    }
+
+    // Not found, so try cross-referenced formats in case there's a known duplicate definition.
+    Fourcc infourcc;
+    Fourcc inxRefFourcc;
+    int16_t effctiveBitsPerPixel;
+
+    if (GetVideoFormatInfo(inFormat, infourcc, inxRefFourcc, effctiveBitsPerPixel))
+    {
+        MediaFormatID inid;
+        if (GetVideoFormatID(inxRefFourcc, inid))
+        {
+            map<MediaFormatID, t_greyscalefunc>::iterator it = GreyscaleMap.find(inid);
+            if (it != GreyscaleMap.end())
             {
                 return *(it->second);
             }

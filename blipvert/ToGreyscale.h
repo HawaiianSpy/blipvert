@@ -31,7 +31,7 @@
 namespace blipvert
 {
     // In-place conversion of bitmaps to greyscale.
-    typedef void(__cdecl* t_greyscalefunc) (int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette);
+    typedef void(__cdecl* t_greyscalefunc) (int32_t width, int32_t height, uint8_t* buf, int32_t stride, xRGBQUAD* in_palette);
 
     void RGB32_to_Greyscale(int32_t  width, int32_t height, uint8_t* buf, int32_t stride = 0, xRGBQUAD* in_palette = 0);
     void RGB24_to_Greyscale(int32_t  width, int32_t height, uint8_t* buf, int32_t stride = 0, xRGBQUAD* in_palette = 0);
@@ -48,6 +48,7 @@ namespace blipvert
     void YV12_to_Greyscale(int32_t  width, int32_t height, uint8_t* buf, int32_t stride = 0, xRGBQUAD* in_palette = 0);
     void YVU9_to_Greyscale(int32_t  width, int32_t height, uint8_t* buf, int32_t stride = 0, xRGBQUAD* in_palette = 0);
     void YUV9_to_Greyscale(int32_t  width, int32_t height, uint8_t* buf, int32_t stride = 0, xRGBQUAD* in_palette = 0);
+
     void IYU1_to_Greyscale(int32_t  width, int32_t height, uint8_t* buf, int32_t stride = 0, xRGBQUAD* in_palette = 0);
     void IYU2_to_Greyscale(int32_t  width, int32_t height, uint8_t* buf, int32_t stride = 0, xRGBQUAD* in_palette = 0);
     void Y41P_to_Greyscale(int32_t  width, int32_t height, uint8_t* buf, int32_t stride = 0, xRGBQUAD* in_palette = 0);

@@ -51,17 +51,34 @@ namespace BlipvertUnitTests
 		{
 			t_transformfunc func = FindVideoTransform(MVFMT_UYVY, MVFMT_RGB32);
 			Assert::IsNotNull(reinterpret_cast<void*>(func), L"FindVideoTransform returned a null function pointer.");
-			Assert::AreEqual(reinterpret_cast<void*>(UYVY_to_RGB32), reinterpret_cast<void*>(func), L"FindValidTransform_UnitTest returned the wrong function pointer.");
+			Assert::AreEqual(reinterpret_cast<void*>(UYVY_to_RGB32), reinterpret_cast<void*>(func), L"FindVideoTransform returned the wrong function pointer.");
 
 			func = FindVideoTransform(MVFMT_cyuv, MVFMT_Y411);
 			Assert::IsNotNull(reinterpret_cast<void*>(func), L"FindVideoTransform returned a null function pointer.");
-			Assert::AreEqual(reinterpret_cast<void*>(UYVY_to_IYU1), reinterpret_cast<void*>(func), L"FindValidTransform_UnitTest returned the wrong function pointer.");
+			Assert::AreEqual(reinterpret_cast<void*>(UYVY_to_IYU1), reinterpret_cast<void*>(func), L"FindVideoTransform returned the wrong function pointer.");
 		}
 
 		TEST_METHOD(FindInvalidTransform_UnitTest)
 		{
 			t_transformfunc func = FindVideoTransform(MVFMT_UYVY, MVFMT_Plum);
 			Assert::IsNull(reinterpret_cast<void*>(func), L"FindVideoTransform returned a non-null function pointer.");
+		}
+
+		TEST_METHOD(FindGreyscaleTransform_UnitTest)
+		{
+			t_greyscalefunc func = FindGreyscaleTransform(MVFMT_UYVY);
+			Assert::IsNotNull(reinterpret_cast<void*>(func), L"FindGreyscaleTransform returned a null function pointer.");
+			Assert::AreEqual(reinterpret_cast<void*>(UYVY_to_Greyscale), reinterpret_cast<void*>(func), L"FFindGreyscaleTransform returned the wrong function pointer.");
+
+			func = FindGreyscaleTransform(MVFMT_cyuv);
+			Assert::IsNotNull(reinterpret_cast<void*>(func), L"FindGreyscaleTransform returned a null function pointer.");
+			Assert::AreEqual(reinterpret_cast<void*>(UYVY_to_Greyscale), reinterpret_cast<void*>(func), L"FindGreyscaleTransform returned the wrong function pointer.");
+		}
+
+		TEST_METHOD(FindInvalidGreyscaleTransform_UnitTest)
+		{
+			t_greyscalefunc func = FindGreyscaleTransform(MVFMT_Plum);
+			Assert::IsNull(reinterpret_cast<void*>(func), L"FindGreyscaleTransform returned a non-null function pointer.");
 		}
 	};
 

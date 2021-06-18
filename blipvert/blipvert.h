@@ -27,6 +27,7 @@
 //
 
 #include "legacydefs.h"
+#include "ToGreyscale.h"
 #include <string>
 
 namespace blipvert
@@ -208,6 +209,13 @@ namespace blipvert
     // Note: Since there exists duplicate fourcc definitions for the same bitmap format, the main 
     //       definition name will be used if a duplicate format was requested.
     t_transformfunc FindVideoTransform(const MediaFormatID& inFormat, const MediaFormatID& outFormat);
+
+    // Finds a to greyscale video transform for the given input media format.
+    // Returns a t_greyscalefunc pointer for the requested transform function. Retuns nullptr if a match couldn't be found.
+    // Note: Since there exists duplicate fourcc definitions for the same bitmap format, the main 
+    //       definition name will be used if a duplicate format was requested.
+    t_greyscalefunc FindGreyscaleTransform(const MediaFormatID& inFormat);
+
     // Returns information about the given video format.
     //
     // Parameters:

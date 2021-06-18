@@ -152,13 +152,14 @@ uint32_t blipvert::CalculateBufferSize(const MediaFormatID& inFormat, uint32_t w
     Fourcc fourcc;
     Fourcc xRefFourcc;
     int16_t effectiveBitsPerPixel;
+    ColorspaceType ctype;
 
     if (width == 0 || height == 0)
     {
         return 0;
     }
 
-    if (!GetVideoFormatInfo(inFormat, fourcc, xRefFourcc, effectiveBitsPerPixel))
+    if (!GetVideoFormatInfo(inFormat, fourcc, xRefFourcc, effectiveBitsPerPixel, ctype))
     {
         return 0;
     }

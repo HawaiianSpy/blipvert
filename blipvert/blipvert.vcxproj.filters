@@ -51,6 +51,9 @@
     <ClInclude Include="ToGreyscale.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ToFillColor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="blipvert.cpp">
@@ -81,6 +84,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ToGreyscale.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ToFillColor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

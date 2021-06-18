@@ -78,7 +78,7 @@ namespace blipvert
                                         g = static_cast<uint8_t>(UnpackRGB555Green(src));\
                                         b = static_cast<uint8_t>(UnpackRGB555Blue(src));
 
-#define PackCLJRDword(dest, u, v, y0, y1, y2, y3) (dest = static_cast<int64_t>(\
+#define PackCLJRDword(dest, u, v, y0, y1, y2, y3) (dest = static_cast<uint32_t>(\
                                                     (u & 0xFC) >> 2) | ((v & 0xFC) << 4) | \
                                                     ((y0 & 0xF8) << 9) | ((y1 & 0xF8) << 14)| \
                                                     ((y2 & 0xF8) << 19) | ((y3 & 0xF8) << 24));

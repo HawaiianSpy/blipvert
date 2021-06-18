@@ -28,12 +28,24 @@
 
 #include "legacydefs.h"
 #include "ToGreyscale.h"
+#include "ToFillColor.h"
 #include <string>
 
 namespace blipvert
 {
     using Fourcc = uint32_t;
     using MediaFormatID = std::string;
+
+    typedef enum class ColorspaceType : unsigned short
+    {
+        Unknown = 0,        // I dunno, beats me.
+        YUV = 1,            // YUV
+        RGB = 2,            // RGB no alpha channel
+        ARGB = 3,           // RGB with alpha channel
+        BGR = 4,            // BGR
+        ABGR = 5,           // BGR with alpha channel
+        Codec = 6           // Codec of some kind
+    } ColorspaceType;
 
     //
     // Fourcc video format definitions.
@@ -216,15 +228,22 @@ namespace blipvert
     //       definition name will be used if a duplicate format was requested.
     t_greyscalefunc FindGreyscaleTransform(const MediaFormatID& inFormat);
 
+    // Finds a color fill video transform for the given input media format.
+    // Returns a t_fillcolorfunc pointer for the requested transform function. Retuns nullptr if a match couldn't be found.
+    // Note: Since there exists duplicate fourcc definitions for the same bitmap format, the main 
+    //       definition name will be used if a duplicate format was requested.
+    t_fillcolorfunc FindFillColorTransform(const MediaFormatID& inFormat);
+
     // Returns information about the given video format.
     //
     // Parameters:
     //      inFormat:               IN -> The media ID to query.
     //      fourcc:                 OUT -> The fourcc code for the media format. Returns FOURCC_UNDEFINED if no fourcc is available.
     //      xRefFourcc:             OUT -> The master fourcc format if the given format is a duplicate, FOURCC_UNDEFINED otherwise.
-    //      effectiveBitsPerPixel:   OUT -> The effective bits per pixel for the given format. Returns -1 if undefined.
+    //      effectiveBitsPerPixel:  OUT -> The effective bits per pixel for the given format. Returns -1 if undefined.
+    //      ctype:                  OUT -> An enum indicating the colorspace of the bitmap.
     //  Returns true if the format was found, false if not.
-    bool GetVideoFormatInfo(const MediaFormatID& inFormat, Fourcc& fourcc, Fourcc& xRefFourcc, int16_t& effectiveBitsPerPixel);
+    bool GetVideoFormatInfo(const MediaFormatID& inFormat, Fourcc& fourcc, Fourcc& xRefFourcc, int16_t& effectiveBitsPerPixel, ColorspaceType& ctype);
 
     // Returns the MediaFormatID for a given fourcc code.
     //

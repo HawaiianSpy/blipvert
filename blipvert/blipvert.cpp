@@ -54,10 +54,16 @@ typedef struct {
 } GreyscaleTableEntry;
 
 typedef struct {
+    const MediaFormatID& inputEncoding;
+    t_fillcolorfunc pProcAddr;
+} FillcolorTableEntry;
+
+typedef struct {
     const MediaFormatID formatId;       // The string format ID
     Fourcc fourcc;                      // Fourcc code
     Fourcc xRefFourcc;                  // cross-referenced fourcc or what this fourcc is a duplicate of format-wise.
     int16_t effectiveBitsPerPixel;       // Effective bits per pixel of this format.
+    ColorspaceType type;
 } VideoFormatInfo;
 
 typedef struct {
@@ -569,103 +575,125 @@ GreyscaleTableEntry GreyscaleTable[] = {
     { MVFMT_UNDEFINED, nullptr }
 };
 
+FillcolorTableEntry FillColorTable[] = {
+    { MVFMT_RGB32, Fill_RGB32 },
+    { MVFMT_RGB24, Fill_RGB24 },
+    { MVFMT_RGB565, Fill_RGB565 },
+    { MVFMT_RGB555, Fill_RGB555 },
+    { MVFMT_YUY2, Fill_YUY2 },
+    { MVFMT_UYVY, Fill_UYVY },
+    { MVFMT_YVYU, Fill_YVYU },
+    { MVFMT_VYUY, Fill_VYUY },
+    { MVFMT_IYUV, Fill_IYUV },
+    { MVFMT_YV12, Fill_YV12 },
+    { MVFMT_YVU9, Fill_YVU9 },
+    { MVFMT_YUV9, Fill_YUV9 },
+    { MVFMT_IYU1, Fill_IYU1 },
+    { MVFMT_IYU2, Fill_IYU2 },
+    { MVFMT_IYU2, Fill_Y800 },
+    { MVFMT_Y41P, Fill_Y41P },
+    { MVFMT_CLJR, Fill_CLJR },
+    { MVFMT_UNDEFINED, nullptr }
+};
+
 VideoFormatInfo VideoFmtTable[] = {
     // Packed YUV Formats:
     // UYVY master format
-    {MVFMT_UYVY, FOURCC_UYVY, FOURCC_UYVY, 16},
-    {MVFMT_Y422, FOURCC_Y422, FOURCC_UYVY, 16},
-    {MVFMT_UYNV, FOURCC_UYNV, FOURCC_UYVY, 16},
-    {MVFMT_cyuv, FOURCC_cyuv, FOURCC_UYVY, 16},
-    {MVFMT_V422, FOURCC_V422, FOURCC_UYVY, 16},
+    {MVFMT_UYVY, FOURCC_UYVY, FOURCC_UYVY, 16, ColorspaceType::YUV},
+    {MVFMT_Y422, FOURCC_Y422, FOURCC_UYVY, 16, ColorspaceType::YUV},
+    {MVFMT_UYNV, FOURCC_UYNV, FOURCC_UYVY, 16, ColorspaceType::YUV},
+    {MVFMT_cyuv, FOURCC_cyuv, FOURCC_UYVY, 16, ColorspaceType::YUV},
+    {MVFMT_V422, FOURCC_V422, FOURCC_UYVY, 16, ColorspaceType::YUV},
 
     // YUY2 master format
-    {MVFMT_YUY2, FOURCC_YUY2, FOURCC_YUY2, 16},
-    {MVFMT_YUYV, FOURCC_YUYV, FOURCC_YUY2, 16},
-    {MVFMT_YUNV, FOURCC_YUNV, FOURCC_YUY2, 16},
+    {MVFMT_YUY2, FOURCC_YUY2, FOURCC_YUY2, 16, ColorspaceType::YUV},
+    {MVFMT_YUYV, FOURCC_YUYV, FOURCC_YUY2, 16, ColorspaceType::YUV},
+    {MVFMT_YUNV, FOURCC_YUNV, FOURCC_YUY2, 16, ColorspaceType::YUV},
 
     // Y800 master format
-    {MVFMT_Y800, FOURCC_Y800, FOURCC_Y800, 8},
-    {MVFMT_Y8, FOURCC_Y8, FOURCC_Y800, 8},
-    {MVFMT_GREY, FOURCC_GREY, FOURCC_Y800},
+    {MVFMT_Y800, FOURCC_Y800, FOURCC_Y800, 8, ColorspaceType::YUV},
+    {MVFMT_Y8, FOURCC_Y8, FOURCC_Y800, 8, ColorspaceType::YUV},
+    {MVFMT_GREY, FOURCC_GREY, FOURCC_Y800,8, ColorspaceType::YUV},
 
     // IYU1 master format
-    {MVFMT_IYU1, FOURCC_IYU1, FOURCC_IYU1, 12},
-    {MVFMT_Y411, FOURCC_Y411, FOURCC_IYU1, 12},
+    {MVFMT_IYU1, FOURCC_IYU1, FOURCC_IYU1, 12, ColorspaceType::YUV},
+    {MVFMT_Y411, FOURCC_Y411, FOURCC_IYU1, 12, ColorspaceType::YUV},
 
     // IYU2 master format
-    {MVFMT_IYU2, FOURCC_IYU2, FOURCC_IYU2, 24},
-    {MVFMT_Y444, FOURCC_Y444, FOURCC_IYU2, 24},
+    {MVFMT_IYU2, FOURCC_IYU2, FOURCC_IYU2, 24, ColorspaceType::YUV},
+    {MVFMT_Y444, FOURCC_Y444, FOURCC_IYU2, 24, ColorspaceType::YUV},
 
     // Packed YUV formats with no known duplicate definitions
-    {MVFMT_Y41P, FOURCC_Y41P, FOURCC_UNDEFINED, 12},
+    {MVFMT_Y41P, FOURCC_Y41P, FOURCC_UNDEFINED, 12, ColorspaceType::YUV},
     // Y41T is identical to Y41P except for the fact that the least significant bit of
     // each Y component forms a chromakey channel.
-    {MVFMT_Y41T, FOURCC_Y41T, FOURCC_UNDEFINED, 12},
+    {MVFMT_Y41T, FOURCC_Y41T, FOURCC_UNDEFINED, 12, ColorspaceType::YUV},
     // Y42T is identical to UYVY except for the fact that the least significant bit of
     // each Y component forms a chromakey channel. 
-    {MVFMT_Y42T, FOURCC_Y42T, FOURCC_UNDEFINED, 16},
+    {MVFMT_Y42T, FOURCC_Y42T, FOURCC_UNDEFINED, 16, ColorspaceType::YUV},
     // IY41 is basically the same as Y41P with the exception that the data is interlaced. Lines are
     // ordered 0,2,4,....,1,3,5.... instead of 0,1,2,3,4,5,....
-    {MVFMT_IY41, FOURCC_IY41, FOURCC_UNDEFINED, 12},
+    {MVFMT_IY41, FOURCC_IY41, FOURCC_UNDEFINED, 12, ColorspaceType::YUV},
     // IUYV is basically the same as UYVY with the exception that the data is interlaced. Lines are
     // ordered 0,2,4,....,1,3,5.... instead of 0,1,2,3,4,5,....
-    {MVFMT_IUYV, FOURCC_IUYV, FOURCC_UNDEFINED, 16},
-    {MVFMT_CLJR, FOURCC_CLJR, FOURCC_UNDEFINED, 8},
-    {MVFMT_YUVP, FOURCC_YUVP, FOURCC_UNDEFINED, 24},
-    {MVFMT_UYVP, FOURCC_UYVP, FOURCC_UNDEFINED, 24},
-    {MVFMT_YVYU, FOURCC_YVYU, FOURCC_UNDEFINED, 16},
-    {MVFMT_Y211, FOURCC_Y211, FOURCC_UNDEFINED, 8},
-    {MVFMT_V655, FOURCC_V655, FOURCC_UNDEFINED, 16},
-    {MVFMT_AYUV, FOURCC_AYUV, FOURCC_UNDEFINED, 32},
-    {MVFMT_VYUY, FOURCC_VYUY, FOURCC_UNDEFINED, 16},
+    {MVFMT_IUYV, FOURCC_IUYV, FOURCC_UNDEFINED, 16, ColorspaceType::YUV},
+    {MVFMT_CLJR, FOURCC_CLJR, FOURCC_UNDEFINED, 8, ColorspaceType::YUV},
+    {MVFMT_YUVP, FOURCC_YUVP, FOURCC_UNDEFINED, 24, ColorspaceType::YUV},
+    {MVFMT_UYVP, FOURCC_UYVP, FOURCC_UNDEFINED, 24, ColorspaceType::YUV},
+    {MVFMT_YVYU, FOURCC_YVYU, FOURCC_UNDEFINED, 16, ColorspaceType::YUV},
+    {MVFMT_Y211, FOURCC_Y211, FOURCC_UNDEFINED, 8, ColorspaceType::YUV},
+    {MVFMT_V655, FOURCC_V655, FOURCC_UNDEFINED, 16, ColorspaceType::YUV},
+    {MVFMT_AYUV, FOURCC_AYUV, FOURCC_UNDEFINED, 32, ColorspaceType::YUV},
+    {MVFMT_VYUY, FOURCC_VYUY, FOURCC_UNDEFINED, 16, ColorspaceType::YUV},
 
     // Planar YUV Formats:
     // IYUV master format
-    {MVFMT_IYUV, FOURCC_IYUV, FOURCC_IYUV, 12},
-    {MVFMT_P420, FOURCC_P420, FOURCC_IYUV, 12},
-    {MVFMT_I420, FOURCC_I420, FOURCC_IYUV, 12},
-    {MVFMT_CLPL, FOURCC_CLPL, FOURCC_IYUV, 12},
+    {MVFMT_IYUV, FOURCC_IYUV, FOURCC_IYUV, 12, ColorspaceType::YUV},
+    {MVFMT_P420, FOURCC_P420, FOURCC_IYUV, 12, ColorspaceType::YUV},
+    {MVFMT_I420, FOURCC_I420, FOURCC_IYUV, 12, ColorspaceType::YUV},
+    {MVFMT_CLPL, FOURCC_CLPL, FOURCC_IYUV, 12, ColorspaceType::YUV},
 
     // Planar YUV with no known duplicate definitions
-    {MVFMT_YV12, FOURCC_YV12, FOURCC_UNDEFINED, 12},
-    {MVFMT_YVU9, FOURCC_YVU9, FOURCC_UNDEFINED, 9},
-    {MVFMT_YUV9, FOURCC_YUV9, FOURCC_UNDEFINED, 9},
-    {MVFMT_IF09, FOURCC_IF09, FOURCC_UNDEFINED, 9},
+    {MVFMT_YV12, FOURCC_YV12, FOURCC_UNDEFINED, 12, ColorspaceType::YUV},
+    {MVFMT_YVU9, FOURCC_YVU9, FOURCC_UNDEFINED, 9, ColorspaceType::YUV},
+    {MVFMT_YUV9, FOURCC_YUV9, FOURCC_UNDEFINED, 9, ColorspaceType::YUV},
+    {MVFMT_IF09, FOURCC_IF09, FOURCC_UNDEFINED, 9, ColorspaceType::YUV},
 
     // RGB Formats:
-    {MVFMT_RGB1, FOURCC_UNDEFINED, FOURCC_UNDEFINED, 1},
-    {MVFMT_RGB4, FOURCC_UNDEFINED, FOURCC_UNDEFINED, 4},
-    {MVFMT_RGB8, FOURCC_UNDEFINED, FOURCC_UNDEFINED, 8},
-    {MVFMT_RGB555, FOURCC_UNDEFINED, FOURCC_UNDEFINED, 16},
-    {MVFMT_RGB565, FOURCC_UNDEFINED, FOURCC_UNDEFINED, 16},
-    {MVFMT_RGB24, FOURCC_UNDEFINED, FOURCC_UNDEFINED, 24},
-    {MVFMT_RGB32, FOURCC_UNDEFINED, FOURCC_UNDEFINED, 32},
-    {MVFMT_ARGB32, FOURCC_UNDEFINED, FOURCC_UNDEFINED, 32},
-    {MVFMT_RGBA, FOURCC_RGBA, FOURCC_UNDEFINED, 32},
-    {MVFMT_RGBT, FOURCC_RGBT, FOURCC_UNDEFINED, -1},
-    {MVFMT_RGB_BITFIELDS, FOURCC_BI_BITFIELDS, FOURCC_UNDEFINED, -1},
+    {MVFMT_RGB1, FOURCC_UNDEFINED, FOURCC_UNDEFINED, 1, ColorspaceType::RGB},
+    {MVFMT_RGB4, FOURCC_UNDEFINED, FOURCC_UNDEFINED, 4, ColorspaceType::RGB},
+    {MVFMT_RGB8, FOURCC_UNDEFINED, FOURCC_UNDEFINED, 8, ColorspaceType::RGB},
+    {MVFMT_RGB555, FOURCC_UNDEFINED, FOURCC_UNDEFINED, 16, ColorspaceType::ARGB},
+    {MVFMT_RGB565, FOURCC_UNDEFINED, FOURCC_UNDEFINED, 16, ColorspaceType::RGB},
+    {MVFMT_RGB24, FOURCC_UNDEFINED, FOURCC_UNDEFINED, 24, ColorspaceType::RGB},
+    {MVFMT_RGB32, FOURCC_UNDEFINED, FOURCC_UNDEFINED, 32, ColorspaceType::ARGB},
+    {MVFMT_ARGB32, FOURCC_UNDEFINED, FOURCC_UNDEFINED, 32, ColorspaceType::ARGB},
+    {MVFMT_RGBA, FOURCC_RGBA, FOURCC_UNDEFINED, 32, ColorspaceType::ARGB},
+    {MVFMT_RGBT, FOURCC_RGBT, FOURCC_UNDEFINED, -1, ColorspaceType::RGB},
+    {MVFMT_RGB_BITFIELDS, FOURCC_BI_BITFIELDS, FOURCC_UNDEFINED, -1, ColorspaceType::RGB},
 
     // Misc formats for which MS has a GUIDs defined.
-    {MVFMT_CPLA, FOURCC_CPLA, FOURCC_UNDEFINED, -1},
-    {MVFMT_IJPG, FOURCC_IJPG, FOURCC_UNDEFINED, -1},
-    {MVFMT_MJPG, FOURCC_MJPG, FOURCC_UNDEFINED, -1},
-    {MVFMT_TVMJ, FOURCC_TVMJ, FOURCC_UNDEFINED, -1},
-    {MVFMT_WAKE, FOURCC_WAKE, FOURCC_UNDEFINED, -1},
-    {MVFMT_CFCC, FOURCC_CFCC, FOURCC_UNDEFINED, -1},
-    {MVFMT_Plum, FOURCC_Plum, FOURCC_UNDEFINED, -1},
-    {MVFMT_DVCS, FOURCC_DVCS, FOURCC_UNDEFINED, -1},
-    {MVFMT_DVSD, FOURCC_DVSD, FOURCC_UNDEFINED, -1},
-    {MVFMT_MDVF, FOURCC_MDVF, FOURCC_UNDEFINED, -1},
+    {MVFMT_CPLA, FOURCC_CPLA, FOURCC_UNDEFINED, -1, ColorspaceType::Unknown},
+    {MVFMT_IJPG, FOURCC_IJPG, FOURCC_UNDEFINED, -1, ColorspaceType::Unknown},
+    {MVFMT_MJPG, FOURCC_MJPG, FOURCC_UNDEFINED, -1, ColorspaceType::Unknown},
+    {MVFMT_TVMJ, FOURCC_TVMJ, FOURCC_UNDEFINED, -1, ColorspaceType::Unknown},
+    {MVFMT_WAKE, FOURCC_WAKE, FOURCC_UNDEFINED, -1, ColorspaceType::Unknown},
+    {MVFMT_CFCC, FOURCC_CFCC, FOURCC_UNDEFINED, -1, ColorspaceType::Unknown},
+    {MVFMT_Plum, FOURCC_Plum, FOURCC_UNDEFINED, -1, ColorspaceType::Unknown},
+    {MVFMT_DVCS, FOURCC_DVCS, FOURCC_UNDEFINED, -1, ColorspaceType::Unknown},
+    {MVFMT_DVSD, FOURCC_DVSD, FOURCC_UNDEFINED, -1, ColorspaceType::Unknown},
+    {MVFMT_MDVF, FOURCC_MDVF, FOURCC_UNDEFINED, -1, ColorspaceType::Unknown},
 
-    {MVFMT_dvhd, FOURCC_dvhd, FOURCC_UNDEFINED, -1},
-    {MVFMT_dvsd, FOURCC_dvsd, FOURCC_UNDEFINED, -1},
-    {MVFMT_dvsl, FOURCC_dvsl, FOURCC_UNDEFINED, -1},
+    {MVFMT_dvhd, FOURCC_dvhd, FOURCC_UNDEFINED, -1, ColorspaceType::Unknown},
+    {MVFMT_dvsd, FOURCC_dvsd, FOURCC_UNDEFINED, -1, ColorspaceType::Unknown},
+    {MVFMT_dvsl, FOURCC_dvsl, FOURCC_UNDEFINED, -1, ColorspaceType::Unknown},
 
     {MVFMT_UNDEFINED, FOURCC_UNDEFINED, FOURCC_UNDEFINED, -1}
 };
 
 map<MediaFormatID, t_transformfunc> TransformMap;
 map<MediaFormatID, t_greyscalefunc> GreyscaleMap;
+map<MediaFormatID, t_fillcolorfunc> FillColorMap;
 map<MediaFormatID, VideoFormatInfo*> MediaFormatInfoMap;
 map<Fourcc, const MediaFormatID> FourccToIDMap;
 
@@ -688,6 +716,13 @@ void blipvert::InitializeLibrary(void)
     while (GreyscaleTable[index].pProcAddr != nullptr)
     {
         GreyscaleMap.insert(make_pair(GreyscaleTable[index].inputEncoding, GreyscaleTable[index].pProcAddr));
+        index++;
+    }
+
+    index = 0;
+    while (FillColorTable[index].pProcAddr != nullptr)
+    {
+        FillColorMap.insert(make_pair(FillColorTable[index].inputEncoding, FillColorTable[index].pProcAddr));
         index++;
     }
 
@@ -720,13 +755,15 @@ t_transformfunc blipvert::FindVideoTransform(const MediaFormatID& inFormat, cons
     Fourcc infourcc;
     Fourcc inxRefFourcc;
     int16_t ineffctiveBitsPerPixel;
+    ColorspaceType inCtype;
 
     Fourcc outfourcc;
     Fourcc outxRefFourcc;
     int16_t outeffctiveBitsPerPixel;
+    ColorspaceType outCtype;
 
-    if (GetVideoFormatInfo(inFormat, infourcc, inxRefFourcc, ineffctiveBitsPerPixel) &&
-        GetVideoFormatInfo(outFormat, outfourcc, outxRefFourcc, outeffctiveBitsPerPixel))
+    if (GetVideoFormatInfo(inFormat, infourcc, inxRefFourcc, ineffctiveBitsPerPixel, inCtype) &&
+        GetVideoFormatInfo(outFormat, outfourcc, outxRefFourcc, outeffctiveBitsPerPixel, outCtype))
     {
         MediaFormatID inid;
         MediaFormatID outid;
@@ -740,7 +777,6 @@ t_transformfunc blipvert::FindVideoTransform(const MediaFormatID& inFormat, cons
             }
         }
     }
-
 
     return nullptr;
 }
@@ -756,9 +792,10 @@ t_greyscalefunc blipvert::FindGreyscaleTransform(const MediaFormatID& inFormat)
     // Not found, so try cross-referenced formats in case there's a known duplicate definition.
     Fourcc infourcc;
     Fourcc inxRefFourcc;
-    int16_t effctiveBitsPerPixel;
+    int16_t ineffctiveBitsPerPixel;
+    ColorspaceType inCtype;
 
-    if (GetVideoFormatInfo(inFormat, infourcc, inxRefFourcc, effctiveBitsPerPixel))
+    if (GetVideoFormatInfo(inFormat, infourcc, inxRefFourcc, ineffctiveBitsPerPixel, inCtype))
     {
         MediaFormatID inid;
         if (GetVideoFormatID(inxRefFourcc, inid))
@@ -771,11 +808,40 @@ t_greyscalefunc blipvert::FindGreyscaleTransform(const MediaFormatID& inFormat)
         }
     }
 
+    return nullptr;
+}
+
+t_fillcolorfunc blipvert::FindFillColorTransform(const MediaFormatID& inFormat)
+{
+    map<MediaFormatID, t_fillcolorfunc>::iterator it = FillColorMap.find(inFormat);
+    if (it != FillColorMap.end())
+    {
+        return *(it->second);
+    }
+
+    // Not found, so try cross-referenced formats in case there's a known duplicate definition.
+    Fourcc infourcc;
+    Fourcc inxRefFourcc;
+    int16_t ineffctiveBitsPerPixel;
+    ColorspaceType inCtype;
+
+    if (GetVideoFormatInfo(inFormat, infourcc, inxRefFourcc, ineffctiveBitsPerPixel, inCtype))
+    {
+        MediaFormatID inid;
+        if (GetVideoFormatID(inxRefFourcc, inid))
+        {
+            map<MediaFormatID, t_fillcolorfunc>::iterator it = FillColorMap.find(inid);
+            if (it != FillColorMap.end())
+            {
+                return *(it->second);
+            }
+        }
+    }
 
     return nullptr;
 }
 
-bool blipvert::GetVideoFormatInfo(const MediaFormatID& inFormat, Fourcc& fourcc, Fourcc& xRefFourcc, int16_t& effectiveBitsPerPixel)
+bool blipvert::GetVideoFormatInfo(const MediaFormatID& inFormat, Fourcc& fourcc, Fourcc& xRefFourcc, int16_t& effectiveBitsPerPixel, ColorspaceType& ctype)
 {
     map<MediaFormatID, VideoFormatInfo*>::iterator it = MediaFormatInfoMap.find(inFormat);
     if (it != MediaFormatInfoMap.end())
@@ -783,6 +849,7 @@ bool blipvert::GetVideoFormatInfo(const MediaFormatID& inFormat, Fourcc& fourcc,
         fourcc = it->second->fourcc;
         xRefFourcc = it->second->xRefFourcc;
         effectiveBitsPerPixel = it->second->effectiveBitsPerPixel;
+        ctype = it->second->type;
         return true;
     }
 

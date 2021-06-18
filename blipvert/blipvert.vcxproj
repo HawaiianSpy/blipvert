@@ -167,6 +167,7 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="RGBtoRGB.h" />
     <ClInclude Include="RGBtoYUV.h" />
+    <ClInclude Include="ToFillColor.h" />
     <ClInclude Include="ToGreyscale.h" />
     <ClInclude Include="Utilities.h" />
     <ClInclude Include="YUVtoRGB.h" />
@@ -184,6 +185,7 @@
     </ClCompile>
     <ClCompile Include="RGBtoRGB.cpp" />
     <ClCompile Include="RGBtoYUV.cpp" />
+    <ClCompile Include="ToFillColor.cpp" />
     <ClCompile Include="ToGreyscale.cpp" />
     <ClCompile Include="Utilities.cpp" />
     <ClCompile Include="YUVtoRGB.cpp" />

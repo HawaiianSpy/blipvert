@@ -33,6 +33,7 @@
 #include "YUVtoRGB.h"
 #include "RGBtoRGB.h"
 #include "YUVtoYUV.h"
+#include "ToFillColor.h"
 
 #include <memory>
 

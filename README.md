@@ -64,6 +64,8 @@ Returns a function pointer that will convert the requested input format to the r
 #### t_greyscalefunc FindGreyscaleTransform(const MediaFormatID& inFormat);
 Returns a function pointer that will perform an in-place conversion of the bitmap to greyscale.
 
+#### t_fillcolorfunc FindFillColorTransform(const MediaFormatID& inFormat);
+Returns a function pointer that will perform an in-place colot fill of the bitmap.
 
 #### bool GetVideoFormatInfo(const MediaFormatID& inFormat, Fourcc& fourcc, Fourcc& xRefFourcc, int16_t& effectiveBitsPerPixel);
 Returns useful information about the media type including the fourcc code (if it exists), main fourcc code (if the matching fourcc code is a duplicate), and the bits / pixel (good for calculating the buffer size).

@@ -27,6 +27,7 @@
 #include "pch.h"
 #include "ToFillColor.h"
 #include "CommonMacros.h"
+#include "LookupTables.h"
 #include <cstring>
 
 using namespace blipvert;
@@ -237,10 +238,6 @@ void Fill_PlanarYUV(uint8_t y_level, uint8_t u_level, uint8_t v_level,
         uv_stride = -uv_stride;
     }
 
-    uint16_t red;
-    uint16_t green;
-    uint16_t blue;
-
     if (decimation == 2)
     {
         for (int32_t y = 0; y < height; y += 2)
@@ -269,10 +266,6 @@ void Fill_PlanarYUV(uint8_t y_level, uint8_t u_level, uint8_t v_level,
             uint8_t* yp = out_buf;
             for (int32_t x = 0; x < width; x += 4)
             {
-                red = 0;
-                green = 0;
-                blue = 0;
-
                 int32_t is = 0;
                 int32_t ys = 0;
 
@@ -436,29 +429,18 @@ void blipvert::Fill_Y41P(uint8_t y_level, uint8_t u_level, uint8_t v_level, uint
     if (!stride)
         stride = width / 8 * 12;
 
+    uint32_t yuvfill = (y_level << 24 | v_level << 16 | y_level << 8 | u_level);
+    uint32_t yfill = rgb32_greyscale[y_level];
+
     while (height)
     {
-        uint8_t* pdst = buf;
+        uint32_t* pdst = reinterpret_cast<uint32_t*>(buf);
         int32_t hcount = width;
         while (hcount)
         {
-            pdst[0] = u_level;
-            pdst[2] = v_level;
-
-            pdst[1] = y_level;
-            pdst[3] = y_level;
-            pdst[5] = y_level;
-            pdst[7] = y_level;
-
-            pdst[4] = u_level;
-            pdst[6] = v_level;
-
-            pdst[8] = y_level;
-            pdst[9] = y_level;
-            pdst[10] = y_level;
-            pdst[11] = y_level;
-
-            pdst += 12;
+            *pdst++ = yuvfill;
+            *pdst++ = yuvfill;
+            *pdst++ = yfill;
             hcount -= 8;
         }
 

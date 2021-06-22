@@ -53,6 +53,15 @@ namespace BlipvertUnitTests
 			Assert::IsNotNull(reinterpret_cast<void*>(func), L"FindVideoTransform returned a null function pointer.");
 			Assert::AreEqual(reinterpret_cast<void*>(UYVY_to_RGB32), reinterpret_cast<void*>(func), L"FindVideoTransform returned the wrong function pointer.");
 
+			func = FindVideoTransform(MVFMT_RGB555, MVFMT_ARGB32);
+			Assert::IsNotNull(reinterpret_cast<void*>(func), L"FindVideoTransform returned a null function pointer.");
+			Assert::AreEqual(reinterpret_cast<void*>(RGB555_to_ARGB32), reinterpret_cast<void*>(func), L"FindVideoTransform returned the wrong function pointer.");
+
+			 func = FindVideoTransform(MVFMT_ARGB32, MVFMT_RGB555);
+			Assert::IsNotNull(reinterpret_cast<void*>(func), L"FindVideoTransform returned a null function pointer.");
+			Assert::AreEqual(reinterpret_cast<void*>(ARGB32_to_RGB555), reinterpret_cast<void*>(func), L"FindVideoTransform returned the wrong function pointer.");
+
+
 			func = FindVideoTransform(MVFMT_cyuv, MVFMT_Y411);
 			Assert::IsNotNull(reinterpret_cast<void*>(func), L"FindVideoTransform returned a null function pointer.");
 			Assert::AreEqual(reinterpret_cast<void*>(UYVY_to_IYU1), reinterpret_cast<void*>(func), L"FindVideoTransform returned the wrong function pointer.");

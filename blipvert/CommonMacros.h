@@ -62,21 +62,32 @@ namespace blipvert
                                                                 (((g) & 0xF8) << 2) | \
                                                                 (((r) & 0xF8) << 7)));
 
+#define PackARGB555Word(dest, a, r, g, b) (dest = static_cast<uint16_t>((a ? 0x8000 : 0x0000) | \
+                                                                (((b) & 0xF8) >> 3) | \
+                                                                (((g) & 0xF8) << 2) | \
+                                                                (((r) & 0xF8) << 7)));
+
 #define UnpackRGB565Red(src) ((src & RGB565_RED_MASK) >> 8)
 #define UnpackRGB565Green(src) ((src & RGB565_GREEN_MASK) >> 3)
 #define UnpackRGB565Blue(src) ((src & RGB565_BLUE_MASK) << 3)
 
+#define UnpackRGB555Alpha(src) ((src & 0x8000) ? 0xFF : 0x00)
 #define UnpackRGB555Red(src) ((src & RGB555_RED_MASK) >> 7)
 #define UnpackRGB555Green(src) ((src & RGB555_GREEN_MASK) >> 2)
 #define UnpackRGB555Blue(src) ((src & RGB555_BLUE_MASK) << 3)
 
-#define UnpackRGB565Word(src, r, g, b)    r = static_cast<uint8_t>(UnpackRGB565Red(src));\
+#define UnpackRGB565Word(src, r, g, b)  r = static_cast<uint8_t>(UnpackRGB565Red(src));\
                                         g = static_cast<uint8_t>(UnpackRGB565Green(src));\
                                         b = static_cast<uint8_t>(UnpackRGB565Blue(src));
 
-#define UnpackRGB555Word(src, r, g, b)    r = static_cast<uint8_t>(UnpackRGB555Red(src));\
+#define UnpackRGB555Word(src, r, g, b)  r = static_cast<uint8_t>(UnpackRGB555Red(src));\
                                         g = static_cast<uint8_t>(UnpackRGB555Green(src));\
                                         b = static_cast<uint8_t>(UnpackRGB555Blue(src));
+
+#define UnpackARGB555Word(src, a, r, g, b)  a = static_cast<uint8_t>(UnpackRGB555Alpha(src)); \
+                                            r = static_cast<uint8_t>(UnpackRGB555Red(src));\
+                                            g = static_cast<uint8_t>(UnpackRGB555Green(src));\
+                                            b = static_cast<uint8_t>(UnpackRGB555Blue(src));
 
 #define PackCLJRDword(dest, u, v, y0, y1, y2, y3) (dest = static_cast<uint32_t>(\
                                                     (u & 0xFC) >> 2) | ((v & 0xFC) << 4) | \

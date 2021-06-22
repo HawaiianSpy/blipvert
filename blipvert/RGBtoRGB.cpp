@@ -145,6 +145,39 @@ void blipvert::RGB32_to_RGB555(int32_t width, int32_t height,
     } while (--height);
 }
 
+void blipvert::ARGB32_to_RGB555(int32_t width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD* in_palette)
+{
+    if (!out_stride)
+        out_stride = width * 2;
+
+    if (!in_stride)
+        in_stride = width * 4;
+
+    if (flipped)
+    {
+        out_buf += (out_stride * (height - 1));
+        out_stride = -out_stride;
+    }
+
+    do
+    {
+        uint8_t* psrc = in_buf;
+        uint16_t* pdst = reinterpret_cast<uint16_t*>(out_buf);
+        int32_t hcount = width;
+        do
+        {
+            PackARGB555Word(*pdst++, psrc[3], psrc[2], psrc[1], psrc[0]);
+            psrc += 4;
+        } while (--hcount);
+
+        in_buf += in_stride;
+        out_buf += out_stride;
+    } while (--height);
+}
+
 //
 // RGB24 to RGBX conversions
 //
@@ -287,8 +320,42 @@ void blipvert::RGB555_to_RGB32(int32_t width, int32_t height,
         {
             uint16_t source = *psrc;
             UnpackRGB555Word(source, pdst[2], pdst[1], pdst[0])
-                pdst[3] = 0xFF;
+            pdst[3] = 0xFF;
+            psrc++;
+            pdst += 4;
+        } while (--hcount);
 
+        in_buf += in_stride;
+        out_buf += out_stride;
+    } while (--height);
+}
+
+void blipvert::RGB555_to_ARGB32(int32_t width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD* in_palette)
+{
+    if (!out_stride)
+        out_stride = width * 4;
+
+    if (!in_stride)
+        in_stride = width * 2;
+
+    if (flipped)
+    {
+        out_buf += (out_stride * (height - 1));
+        out_stride = -out_stride;
+    }
+
+    do
+    {
+        uint16_t* psrc = reinterpret_cast<uint16_t*>(in_buf);
+        uint8_t* pdst = out_buf;
+        int32_t hcount = width;
+        do
+        {
+            uint16_t source = *psrc;
+            UnpackARGB555Word(source, pdst[3], pdst[2], pdst[1], pdst[0])
             psrc++;
             pdst += 4;
         } while (--hcount);

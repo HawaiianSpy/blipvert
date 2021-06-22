@@ -52,50 +52,50 @@ namespace blipvert
     //
 
     extern const Fourcc FOURCC_UNDEFINED;
-    extern const Fourcc FOURCC_UYVY;
-    extern const Fourcc FOURCC_UYNV;
-    extern const Fourcc FOURCC_cyuv;
-    extern const Fourcc FOURCC_Y42T;
-    extern const Fourcc FOURCC_Y422;
-    extern const Fourcc FOURCC_IUYV;
-    extern const Fourcc FOURCC_YUY2;
-    extern const Fourcc FOURCC_YUYV;
-    extern const Fourcc FOURCC_YUNV;
-    extern const Fourcc FOURCC_V422;
-    extern const Fourcc FOURCC_VYUY;
-    extern const Fourcc FOURCC_Y411;
-    extern const Fourcc FOURCC_Y41P;
-    extern const Fourcc FOURCC_IY41;
-    extern const Fourcc FOURCC_Y41T;
-    extern const Fourcc FOURCC_Y800;
-    extern const Fourcc FOURCC_Y8;
-    extern const Fourcc FOURCC_GREY;
-    extern const Fourcc FOURCC_IYU2;
+    extern const Fourcc FOURCC_UYVY;            // https://www.fourcc.org/pixel-format/yuv-uyvy/
+    extern const Fourcc FOURCC_UYNV;            // A direct copy of YUY2
+    extern const Fourcc FOURCC_cyuv;            // https://www.fourcc.org/pixel-format/yuv-cyuv/
+    extern const Fourcc FOURCC_Y42T;            // https://www.fourcc.org/pixel-format/yuv-y42t/
+    extern const Fourcc FOURCC_Y422;            // Direct copy of UYVY
+    extern const Fourcc FOURCC_IUYV;            // Interlaced version of UYVY
+    extern const Fourcc FOURCC_YUY2;            // https://www.fourcc.org/pixel-format/yuv-yuy2/
+    extern const Fourcc FOURCC_YUYV;            // Duplicate of YUY2
+    extern const Fourcc FOURCC_YUNV;            // Duplicate of YUY2
+    extern const Fourcc FOURCC_V422;            // An upside down version of UYVY.
+    extern const Fourcc FOURCC_VYUY;            // ATI Packed YUV Data (format unknown)
+    extern const Fourcc FOURCC_Y411;            // https://www.fourcc.org/pixel-format/yuv-y411/
+    extern const Fourcc FOURCC_Y41P;            // https://www.fourcc.org/pixel-format/yuv-y41p/
+    extern const Fourcc FOURCC_IY41;            // https://www.fourcc.org/pixel-format/yuv-iy41/
+    extern const Fourcc FOURCC_Y41T;            // https://www.fourcc.org/pixel-format/yuv-y41t/
+    extern const Fourcc FOURCC_Y800;            // https://www.fourcc.org/pixel-format/yuv-y800/
+    extern const Fourcc FOURCC_Y8;              // Duplicate of Y800
+    extern const Fourcc FOURCC_GREY;            // Duplicate of Y800
+    extern const Fourcc FOURCC_IYU2;            // https://www.fourcc.org/pixel-format/yuv-iyu2/
     extern const Fourcc FOURCC_Y444;
-    extern const Fourcc FOURCC_CLJR;
-    extern const Fourcc FOURCC_YUVP;
-    extern const Fourcc FOURCC_UYVP;
-    extern const Fourcc FOURCC_YVYU;
-    extern const Fourcc FOURCC_IYU1;
-    extern const Fourcc FOURCC_Y211;
-    extern const Fourcc FOURCC_V655;
-    extern const Fourcc FOURCC_AYUV;
-    extern const Fourcc FOURCC_YVU9;
-    extern const Fourcc FOURCC_YUV9;
-    extern const Fourcc FOURCC_IF09;
-    extern const Fourcc FOURCC_IYUV;
+    extern const Fourcc FOURCC_CLJR;            // https://www.fourcc.org/pixel-format/yuv-cljr/
+    extern const Fourcc FOURCC_YUVP;            // https://www.fourcc.org/pixel-format/yuv-yuvp/   
+    extern const Fourcc FOURCC_UYVP;            // YCbCr 4:2:2 extended precision 10-bits per component in U0Y0V0Y1 order. ???
+    extern const Fourcc FOURCC_YVYU;            // https://www.fourcc.org/pixel-format/yuv-yvyu/
+    extern const Fourcc FOURCC_IYU1;            // https://www.fourcc.org/pixel-format/yuv-iyu1/
+    extern const Fourcc FOURCC_Y211;            // https://www.fourcc.org/pixel-format/yuv-y211/
+    extern const Fourcc FOURCC_V655;            // 16 bit YUV 4:2:2 format registered by Vitec Multimedia. ???
+    extern const Fourcc FOURCC_AYUV;            // https://www.fourcc.org/pixel-format/yuv-ayuv/
+    extern const Fourcc FOURCC_YVU9;            // https://www.fourcc.org/pixel-format/yuv-yvu9/
+    extern const Fourcc FOURCC_YUV9;            // https://www.fourcc.org/pixel-format/yuv-yuv9/
+    extern const Fourcc FOURCC_IF09;            // https://www.fourcc.org/pixel-format/yuv-if09/
+    extern const Fourcc FOURCC_IYUV;            // Duplicate FOURCC, identical to I420.
     extern const Fourcc FOURCC_P420;
-    extern const Fourcc FOURCC_I420;
-    extern const Fourcc FOURCC_CLPL;
-    extern const Fourcc FOURCC_YV12;
+    extern const Fourcc FOURCC_I420;            // https://www.fourcc.org/pixel-format/yuv-i420/
+    extern const Fourcc FOURCC_CLPL;            // https://www.fourcc.org/pixel-format/yuv-clpl/
+    extern const Fourcc FOURCC_YV12;            // https://www.fourcc.org/pixel-format/yuv-yv12/
 
-    extern const Fourcc FOURCC_BI_RGB;
-    extern const Fourcc FOURCC_RGB;
-    extern const Fourcc FOURCC_BI_RLE8;
-    extern const Fourcc FOURCC_RLE8;
-    extern const Fourcc FOURCC_BI_RLE4;
-    extern const Fourcc FOURCC_RLE4;
-    extern const Fourcc FOURCC_BI_BITFIELDS;
+    extern const Fourcc FOURCC_BI_RGB;          // https://www.fourcc.org/pixel-format/rgb-bi_rgb/
+    extern const Fourcc FOURCC_RGB;             // Alias for BI_RGB
+    extern const Fourcc FOURCC_BI_RLE8;         // https://www.fourcc.org/pixel-format/rgb-bi_rle8/
+    extern const Fourcc FOURCC_RLE8;            // Alias for BI_RLE8
+    extern const Fourcc FOURCC_BI_RLE4;         // https://www.fourcc.org/pixel-format/rgb-bi_rle4/
+    extern const Fourcc FOURCC_RLE4;            // Alias for BI_RLE4
+    extern const Fourcc FOURCC_BI_BITFIELDS;    // https://www.fourcc.org/pixel-format/rgb-bi_bitfields/
     extern const Fourcc FOURCC_BI_JPEG;
     extern const Fourcc FOURCC_BI_PNG;
 
@@ -160,12 +160,12 @@ namespace blipvert
     extern const MediaFormatID MVFMT_I420;
     extern const MediaFormatID MVFMT_CLPL;
     extern const MediaFormatID MVFMT_YV12;
-    extern const MediaFormatID MVFMT_NV12;
-    extern const MediaFormatID MVFMT_NV21;
-    extern const MediaFormatID MVFMT_IMC1;
-    extern const MediaFormatID MVFMT_IMC2;
-    extern const MediaFormatID MVFMT_IMC3;
-    extern const MediaFormatID MVFMT_IMC4;
+    extern const MediaFormatID MVFMT_NV12;          // https://www.fourcc.org/pixel-format/yuv-nv12/
+    extern const MediaFormatID MVFMT_NV21;          // https://www.fourcc.org/pixel-format/yuv-nv21/
+    extern const MediaFormatID MVFMT_IMC1;          // https://www.fourcc.org/pixel-format/yuv-imc1/
+    extern const MediaFormatID MVFMT_IMC2;          // https://www.fourcc.org/pixel-format/yuv-imc2/
+    extern const MediaFormatID MVFMT_IMC3;          // As IMC1 except that U and V are swapped
+    extern const MediaFormatID MVFMT_IMC4;          // As IMC2 except that U and V are swapped
     extern const MediaFormatID MVFMT_S340;
     extern const MediaFormatID MVFMT_S342;
 

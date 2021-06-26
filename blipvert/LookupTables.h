@@ -45,6 +45,8 @@ namespace blipvert
     extern int32_t uv_table[256][256];
     extern uint8_t saturation_table[900];
 
+    extern uint32_t ayuv_greyscale[256];
+    extern uint32_t rgba_greyscale[256];
     extern uint32_t rgb32_greyscale[256];
     extern uint16_t rgb565_greyscale[256];
     extern uint16_t rgb555_greyscale[256];

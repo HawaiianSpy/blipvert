@@ -2378,3 +2378,223 @@ void blipvert::Y800_to_RGB555(int32_t width, int32_t height,
     }
 }
 
+void blipvert::AYUV_to_RGBA(int32_t width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD*)
+{
+    if (!out_stride)
+        out_stride = width * 4;
+
+    if (!in_stride)
+        in_stride = width * 4;
+
+    if (flipped)
+    {
+        out_buf += (out_stride * (height - 1));
+        out_stride = -out_stride;
+    }
+
+    while (height)
+    {
+        uint8_t* psrc = in_buf;
+        uint8_t* pdst = out_buf;
+        int32_t hcount = width;
+        while (hcount)
+        {
+            int32_t blue = u_table[psrc[1]];
+            int32_t green = uv_table[psrc[1]][psrc[0]];
+            int32_t red = v_table[psrc[0]];
+
+            int32_t Y = luminance_table[psrc[2]];
+            pdst[0] = saturation_table[Y + blue];
+            pdst[1] = saturation_table[Y + green];
+            pdst[2] = saturation_table[Y + red];
+            pdst[3] = psrc[3];
+
+            psrc += 4;
+            pdst += 4;
+            hcount--;
+        }
+
+        in_buf += in_stride;
+        out_buf += out_stride;
+
+        height--;
+    }
+}
+
+void blipvert::AYUV_to_RGB32(int32_t width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD*)
+{
+    if (!out_stride)
+        out_stride = width * 4;
+
+    if (!in_stride)
+        in_stride = width * 4;
+
+    if (flipped)
+    {
+        out_buf += (out_stride * (height - 1));
+        out_stride = -out_stride;
+    }
+
+    while (height)
+    {
+        uint8_t* psrc = in_buf;
+        uint8_t* pdst = out_buf;
+        int32_t hcount = width;
+        while (hcount)
+        {
+            int32_t blue = u_table[psrc[1]];
+            int32_t green = uv_table[psrc[1]][psrc[0]];
+            int32_t red = v_table[psrc[0]];
+
+            int32_t Y = luminance_table[psrc[2]];
+            pdst[0] = saturation_table[Y + blue];
+            pdst[1] = saturation_table[Y + green];
+            pdst[2] = saturation_table[Y + red];
+            pdst[3] = 0xFF;
+
+            psrc += 4;
+            pdst += 4;
+            hcount--;
+        }
+
+        in_buf += in_stride;
+        out_buf += out_stride;
+
+        height--;
+    }
+}
+
+void blipvert::AYUV_to_RGB24(int32_t width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD*)
+{
+    if (!out_stride)
+        out_stride = width * 3;
+
+    if (!in_stride)
+        in_stride = width * 4;
+
+    if (flipped)
+    {
+        out_buf += (out_stride * (height - 1));
+        out_stride = -out_stride;
+    }
+
+    while (height)
+    {
+        uint8_t* psrc = in_buf;
+        uint8_t* pdst = out_buf;
+        int32_t hcount = width;
+        while (hcount)
+        {
+            int32_t blue = u_table[psrc[1]];
+            int32_t green = uv_table[psrc[1]][psrc[0]];
+            int32_t red = v_table[psrc[0]];
+
+            int32_t Y = luminance_table[psrc[2]];
+            pdst[0] = saturation_table[Y + blue];
+            pdst[1] = saturation_table[Y + green];
+            pdst[2] = saturation_table[Y + red];
+
+            psrc += 4;
+            pdst += 3;
+            hcount--;
+        }
+
+        in_buf += in_stride;
+        out_buf += out_stride;
+
+        height--;
+    }
+}
+
+void blipvert::AYUV_to_RGB565(int32_t width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD*)
+{
+    if (!out_stride)
+        out_stride = width * 2;
+
+    if (!in_stride)
+        in_stride = width * 4;
+
+    if (flipped)
+    {
+        out_buf += (out_stride * (height - 1));
+        out_stride = -out_stride;
+    }
+
+    while (height)
+    {
+        uint8_t* psrc = in_buf;
+        uint16_t* pdst = reinterpret_cast<uint16_t*>(out_buf);
+        int32_t hcount = width;
+        while (hcount)
+        {
+            int32_t blue = u_table[psrc[1]];
+            int32_t green = uv_table[psrc[1]][psrc[0]];
+            int32_t red = v_table[psrc[0]];
+            int32_t Y = luminance_table[psrc[2]];
+            PackRGB565Word(*pdst, saturation_table[Y + red], saturation_table[Y + green], saturation_table[Y + blue]);
+
+            psrc += 4;
+            pdst++;
+            hcount--;
+        }
+
+        in_buf += in_stride;
+        out_buf += out_stride;
+
+        height--;
+    }
+}
+
+void blipvert::AYUV_to_RGB555(int32_t width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD*)
+{
+    if (!out_stride)
+        out_stride = width * 2;
+
+    if (!in_stride)
+        in_stride = width * 4;
+
+    if (flipped)
+    {
+        out_buf += (out_stride * (height - 1));
+        out_stride = -out_stride;
+    }
+
+    while (height)
+    {
+        uint8_t* psrc = in_buf;
+        uint16_t* pdst = reinterpret_cast<uint16_t*>(out_buf);
+        int32_t hcount = width;
+        while (hcount)
+        {
+            int32_t blue = u_table[psrc[1]];
+            int32_t green = uv_table[psrc[1]][psrc[0]];
+            int32_t red = v_table[psrc[0]];
+            int32_t Y = luminance_table[psrc[2]];
+            PackARGB555Word(*pdst, psrc[3], saturation_table[Y + red], saturation_table[Y + green], saturation_table[Y + blue]);
+
+            psrc += 4;
+            pdst++;
+            hcount--;
+        }
+
+        in_buf += in_stride;
+        out_buf += out_stride;
+
+        height--;
+    }
+}

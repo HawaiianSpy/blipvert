@@ -36,7 +36,7 @@ using namespace blipvert;
 // RGB color fill functions
 //
 
-void blipvert::Fill_RGB32(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha, int32_t width, int32_t height, uint8_t* buf, int32_t stride)
+void blipvert::Fill_RGBA(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha, int32_t width, int32_t height, uint8_t* buf, int32_t stride)
 {
     uint32_t fill = static_cast<uint32_t>(((((alpha) & 0xFF) << 24) | (((red) & 0xFF) << 16) | (((green) & 0xFF) << 8) | ((blue) & 0xFF)));
 
@@ -64,6 +64,11 @@ void blipvert::Fill_RGB32(uint8_t red, uint8_t green, uint8_t blue, uint8_t alph
             buf += stride;
         } while (--height);
     }
+}
+
+void blipvert::Fill_RGB32(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha, int32_t width, int32_t height, uint8_t* buf, int32_t stride)
+{
+    Fill_RGBA(red, green, blue, 0xFF, width, height, buf, stride);
 }
 
 void blipvert::Fill_RGB24(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha, int32_t width, int32_t height, uint8_t* buf, int32_t stride)
@@ -470,4 +475,10 @@ void blipvert::Fill_CLJR(uint8_t y_level, uint8_t u_level, uint8_t v_level, uint
         buf += stride;
         height--;
     }
+}
+
+void blipvert::Fill_AYUV(uint8_t y_level, uint8_t u_level, uint8_t v_level, uint8_t alpha,
+    int32_t width, int32_t height, uint8_t* buf, int32_t stride)
+{
+    Fill_RGBA(y_level, u_level, v_level, alpha, width, height, buf, stride);
 }

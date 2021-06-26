@@ -40,12 +40,22 @@ namespace blipvert
     {
         Unknown = 0,        // I dunno, beats me.
         YUV = 1,            // YUV
-        RGB = 2,            // RGB no alpha channel
-        ARGB = 3,           // RGB with alpha channel
-        BGR = 4,            // BGR
-        ABGR = 5,           // BGR with alpha channel
-        Codec = 6           // Codec of some kind
+        AYUV = 2,           // YUV with alpha channel or transparency bit
+        RGB = 3,            // RGB
+        ARGB = 4,           // RGB with alpha channel or transparency bit
+        BGR = 5,            // BGR
+        ABGR = 6,           // BGR with alpha channel or transparency bit
+        Codec = 7           // Codec of some kind
     } ColorspaceType;
+
+    typedef struct {
+        const MediaFormatID formatId;       // The string format ID
+        Fourcc fourcc;                      // Fourcc code
+        Fourcc xRefFourcc;                  // cross-referenced fourcc or what this fourcc is a duplicate of format-wise.
+        int16_t effectiveBitsPerPixel;      // Effective bits per pixel of this format.
+        ColorspaceType type;                // YUV, RGB, etc.
+        bool hasAlpha;                      // The format has an alpha / transparency value.
+    } VideoFormatInfo;
 
     //
     // Fourcc video format definitions.
@@ -89,6 +99,15 @@ namespace blipvert
     extern const Fourcc FOURCC_CLPL;            // https://www.fourcc.org/pixel-format/yuv-clpl/
     extern const Fourcc FOURCC_YV12;            // https://www.fourcc.org/pixel-format/yuv-yv12/
 
+    extern const Fourcc FOURCC_NV12;            // https://www.fourcc.org/pixel-format/yuv-nv12/
+    extern const Fourcc FOURCC_NV21;            // https://www.fourcc.org/pixel-format/yuv-nv21/
+    extern const Fourcc FOURCC_IMC1;            // https://www.fourcc.org/pixel-format/yuv-imc1/
+    extern const Fourcc FOURCC_IMC2;            // https://www.fourcc.org/pixel-format/yuv-imc2/
+    extern const Fourcc FOURCC_IMC3;            // As IMC1 except that U and V are swapped
+    extern const Fourcc FOURCC_IMC4;            // As IMC2 except that U and V are swapped
+    extern const Fourcc FOURCC_S340;
+    extern const Fourcc FOURCC_S342;
+
     extern const Fourcc FOURCC_BI_RGB;          // https://www.fourcc.org/pixel-format/rgb-bi_rgb/
     extern const Fourcc FOURCC_RGB;             // Alias for BI_RGB
     extern const Fourcc FOURCC_BI_RLE8;         // https://www.fourcc.org/pixel-format/rgb-bi_rle8/
@@ -99,7 +118,8 @@ namespace blipvert
     extern const Fourcc FOURCC_BI_JPEG;
     extern const Fourcc FOURCC_BI_PNG;
 
-    extern const Fourcc FOURCC_RGBA;
+    extern const Fourcc FOURCC_RGBA;            // https://www.fourcc.org/pixel-format/rgb-rgba/
+                                                // I've never encountered an RGBA that wasn't 32 bits, therfore 32-bits is asumed here.
     extern const Fourcc FOURCC_RGBT;
 
     extern const Fourcc FOURCC_BGRA;
@@ -160,12 +180,13 @@ namespace blipvert
     extern const MediaFormatID MVFMT_I420;
     extern const MediaFormatID MVFMT_CLPL;
     extern const MediaFormatID MVFMT_YV12;
-    extern const MediaFormatID MVFMT_NV12;          // https://www.fourcc.org/pixel-format/yuv-nv12/
-    extern const MediaFormatID MVFMT_NV21;          // https://www.fourcc.org/pixel-format/yuv-nv21/
-    extern const MediaFormatID MVFMT_IMC1;          // https://www.fourcc.org/pixel-format/yuv-imc1/
-    extern const MediaFormatID MVFMT_IMC2;          // https://www.fourcc.org/pixel-format/yuv-imc2/
-    extern const MediaFormatID MVFMT_IMC3;          // As IMC1 except that U and V are swapped
-    extern const MediaFormatID MVFMT_IMC4;          // As IMC2 except that U and V are swapped
+
+    extern const MediaFormatID MVFMT_NV12; 
+    extern const MediaFormatID MVFMT_NV21;
+    extern const MediaFormatID MVFMT_IMC1;
+    extern const MediaFormatID MVFMT_IMC2;
+    extern const MediaFormatID MVFMT_IMC3;
+    extern const MediaFormatID MVFMT_IMC4;
     extern const MediaFormatID MVFMT_S340;
     extern const MediaFormatID MVFMT_S342;
 
@@ -176,8 +197,7 @@ namespace blipvert
     extern const MediaFormatID MVFMT_RGB555;
     extern const MediaFormatID MVFMT_RGB24;
     extern const MediaFormatID MVFMT_RGB32;
-    extern const MediaFormatID MVFMT_ARGB32;
-    extern const MediaFormatID MVFMT_RGBA;
+    extern const MediaFormatID MVFMT_RGBA; 
     extern const MediaFormatID MVFMT_RGBT;
     extern const MediaFormatID MVFMT_RGB_BITFIELDS;
 
@@ -237,13 +257,10 @@ namespace blipvert
     // Returns information about the given video format.
     //
     // Parameters:
-    //      inFormat:               IN -> The media ID to query.
-    //      fourcc:                 OUT -> The fourcc code for the media format. Returns FOURCC_UNDEFINED if no fourcc is available.
-    //      xRefFourcc:             OUT -> The master fourcc format if the given format is a duplicate, FOURCC_UNDEFINED otherwise.
-    //      effectiveBitsPerPixel:  OUT -> The effective bits per pixel for the given format. Returns -1 if undefined.
-    //      ctype:                  OUT -> An enum indicating the colorspace of the bitmap.
+    //      inFormat:       IN  -> The ID of the media type.
+    //      info:           OUT -> The info on the media type.
     //  Returns true if the format was found, false if not.
-    bool GetVideoFormatInfo(const MediaFormatID& inFormat, Fourcc& fourcc, Fourcc& xRefFourcc, int16_t& effectiveBitsPerPixel, ColorspaceType& ctype);
+    bool GetVideoFormatInfo(const MediaFormatID& format, VideoFormatInfo& info);
 
     // Returns the MediaFormatID for a given fourcc code.
     //

@@ -32,6 +32,37 @@
 
 using namespace blipvert;
 
+void blipvert::RGBA_to_Greyscale(int32_t  width, int32_t height, uint8_t* buf, int32_t stride, xRGBQUAD* in_palette)
+{
+    if (!stride)
+    {
+        uint32_t count = width * height;
+        while (count)
+        {
+            *reinterpret_cast<uint32_t*>(buf) = (*reinterpret_cast<uint32_t*>(buf) & 0xFF000000) | rgba_greyscale[static_cast<uint8_t>(((yr_table[buf[2]] + yg_table[buf[1]] + yb_table[buf[0]]) >> 15) + 16)];
+            buf += 4;
+            count--;
+        }
+    }
+    else
+    {
+        while (height)
+        {
+            uint8_t* pdst = buf;
+            int32_t hcount = width;
+            while (hcount)
+            {
+                *reinterpret_cast<uint32_t*>(pdst) = (*reinterpret_cast<uint32_t*>(pdst) & 0xFF000000) | rgba_greyscale[static_cast<uint8_t>(((yr_table[pdst[2]] + yg_table[pdst[1]] + yb_table[pdst[0]]) >> 15) + 16)];
+                pdst += 4;
+                hcount--;
+            }
+
+            buf += stride;
+            height--;
+        }
+    }
+}
+
 void blipvert::RGB32_to_Greyscale(int32_t  width, int32_t height, uint8_t* buf, int32_t stride, xRGBQUAD* in_palette)
 {
     if (!stride)
@@ -221,6 +252,38 @@ void PackedY422_to_Greyscale(int32_t width, int32_t height, uint8_t* buf, int32_
         }
 
         buf += stride;
+    }
+}
+
+
+void blipvert::AYUV_to_Greyscale(int32_t  width, int32_t height, uint8_t* buf, int32_t stride, xRGBQUAD* in_palette)
+{
+    if (!stride)
+    {
+        uint32_t count = width * height;
+        while (count)
+        {
+            *reinterpret_cast<uint32_t*>(buf) = (*reinterpret_cast<uint32_t*>(buf) & 0xFFFF0000);
+            buf += 4;
+            count--;
+        }
+    }
+    else
+    {
+        while (height)
+        {
+            uint8_t* pdst = buf;
+            int32_t hcount = width;
+            while (hcount)
+            {
+                *reinterpret_cast<uint32_t*>(pdst) = (*reinterpret_cast<uint32_t*>(pdst) & 0xFFFF0000);
+                pdst += 4;
+                hcount--;
+            }
+
+            buf += stride;
+            height--;
+        }
     }
 }
 

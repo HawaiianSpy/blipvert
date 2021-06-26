@@ -149,27 +149,23 @@ void blipvert::Interlaced_to_Progressive(int32_t height, int32_t line_bytes, boo
 
 uint32_t blipvert::CalculateBufferSize(const MediaFormatID& inFormat, uint32_t width, uint32_t height, uint32_t in_stride)
 {
-    Fourcc fourcc;
-    Fourcc xRefFourcc;
-    int16_t effectiveBitsPerPixel;
-    ColorspaceType ctype;
-
     if (width == 0 || height == 0)
     {
         return 0;
     }
 
-    if (!GetVideoFormatInfo(inFormat, fourcc, xRefFourcc, effectiveBitsPerPixel, ctype))
+    VideoFormatInfo info;
+    if (!GetVideoFormatInfo(inFormat, info))
     {
         return 0;
     }
 
-    if (effectiveBitsPerPixel <= 0)
+    if (info.effectiveBitsPerPixel <= 0)
     {
         return 0;
     }
 
-    uint32_t bitsPerLine = width * static_cast<uint32_t>(effectiveBitsPerPixel);
+    uint32_t bitsPerLine = width * static_cast<uint32_t>(info.effectiveBitsPerPixel);
     uint32_t bytesPerLine = ((bitsPerLine + 31) & (~31)) / 8;
 
     if (in_stride > bytesPerLine)
@@ -189,7 +185,6 @@ bool blipvert::IsRGBEncoding(const MediaFormatID& encoding)
         encoding == MVFMT_RGB565 ||
         encoding == MVFMT_RGB24 ||
         encoding == MVFMT_RGB32 ||
-        encoding == MVFMT_ARGB32 ||
         encoding == MVFMT_RGBA ||
         encoding == MVFMT_RGBT ||
         encoding == MVFMT_RGB_BITFIELDS)

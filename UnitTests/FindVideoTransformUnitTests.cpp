@@ -53,13 +53,13 @@ namespace BlipvertUnitTests
 			Assert::IsNotNull(reinterpret_cast<void*>(func), L"FindVideoTransform returned a null function pointer.");
 			Assert::AreEqual(reinterpret_cast<void*>(UYVY_to_RGB32), reinterpret_cast<void*>(func), L"FindVideoTransform returned the wrong function pointer.");
 
-			func = FindVideoTransform(MVFMT_RGB555, MVFMT_ARGB32);
+			func = FindVideoTransform(MVFMT_RGB555, MVFMT_RGBA);
 			Assert::IsNotNull(reinterpret_cast<void*>(func), L"FindVideoTransform returned a null function pointer.");
-			Assert::AreEqual(reinterpret_cast<void*>(RGB555_to_ARGB32), reinterpret_cast<void*>(func), L"FindVideoTransform returned the wrong function pointer.");
+			Assert::AreEqual(reinterpret_cast<void*>(RGB555_to_RGBA), reinterpret_cast<void*>(func), L"FindVideoTransform returned the wrong function pointer.");
 
-			 func = FindVideoTransform(MVFMT_ARGB32, MVFMT_RGB555);
+			 func = FindVideoTransform(MVFMT_RGBA, MVFMT_RGB555);
 			Assert::IsNotNull(reinterpret_cast<void*>(func), L"FindVideoTransform returned a null function pointer.");
-			Assert::AreEqual(reinterpret_cast<void*>(ARGB32_to_RGB555), reinterpret_cast<void*>(func), L"FindVideoTransform returned the wrong function pointer.");
+			Assert::AreEqual(reinterpret_cast<void*>(RGBA_to_RGB555), reinterpret_cast<void*>(func), L"FindVideoTransform returned the wrong function pointer.");
 
 
 			func = FindVideoTransform(MVFMT_cyuv, MVFMT_Y411);
@@ -118,25 +118,19 @@ namespace BlipvertUnitTests
 
 		TEST_METHOD(GetValidVideoFormatInfo_UnitTest)
 		{
-			Fourcc outfourcc;
-			Fourcc outxRefFourcc;
-			int16_t outeffctiveBitsPerPixel;
-			ColorspaceType ctype;
+			VideoFormatInfo info;
 
-			Assert::IsTrue(GetVideoFormatInfo(MVFMT_YUNV, outfourcc, outxRefFourcc, outeffctiveBitsPerPixel, ctype), L"GetVideoFormatInfo: Expected to find format info.");
-			Assert::AreEqual(FOURCC_YUNV, outfourcc, L"GetVideoFormatInfo: Wrong fourcc returned for media ID.");
-			Assert::AreEqual(FOURCC_YUY2, outxRefFourcc, L"GetVideoFormatInfo: Wrong cross-referenced fourcc returned for media ID.");
-			Assert::AreEqual(static_cast<int32_t>(outeffctiveBitsPerPixel), 16, L"GetVideoFormatInfo: Wrong bpp returned for media ID.");
+			Assert::IsTrue(GetVideoFormatInfo(MVFMT_YUNV, info), L"GetVideoFormatInfo: Expected to find format info.");
+			Assert::AreEqual(FOURCC_YUNV, info.fourcc, L"GetVideoFormatInfo: Wrong fourcc returned for media ID.");
+			Assert::AreEqual(FOURCC_YUY2, info.xRefFourcc, L"GetVideoFormatInfo: Wrong cross-referenced fourcc returned for media ID.");
+			Assert::AreEqual(static_cast<int32_t>(info.effectiveBitsPerPixel), 16, L"GetVideoFormatInfo: Wrong bpp returned for media ID.");
 		}
 
 		TEST_METHOD(GetInvalidVideoFormatInfo_UnitTest)
 		{
-			Fourcc outfourcc;
-			Fourcc outxRefFourcc;
-			int16_t outeffctiveBitsPerPixel;
-			ColorspaceType ctype;
+			VideoFormatInfo info;
 
-			Assert::IsFalse(GetVideoFormatInfo(MVFMT_UNDEFINED, outfourcc, outxRefFourcc, outeffctiveBitsPerPixel, ctype), L"GetVideoFormatInfo: Expected to not find format info.");
+			Assert::IsFalse(GetVideoFormatInfo(MVFMT_UNDEFINED, info), L"GetVideoFormatInfo: Expected to not find format info.");
 		}
 	};
 

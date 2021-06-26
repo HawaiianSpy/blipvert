@@ -28,6 +28,7 @@
 #include "pch.h"
 #include "RGBtoRGB.h"
 #include "CommonMacros.h"
+#include <cstring>
 
 using namespace blipvert;
 
@@ -145,7 +146,7 @@ void blipvert::RGB32_to_RGB555(int32_t width, int32_t height,
     } while (--height);
 }
 
-void blipvert::ARGB32_to_RGB555(int32_t width, int32_t height,
+void blipvert::RGBA_to_RGB555(int32_t width, int32_t height,
     uint8_t* out_buf, int32_t out_stride,
     uint8_t* in_buf, int32_t in_stride,
     bool flipped, xRGBQUAD* in_palette)
@@ -173,6 +174,69 @@ void blipvert::ARGB32_to_RGB555(int32_t width, int32_t height,
             psrc += 4;
         } while (--hcount);
 
+        in_buf += in_stride;
+        out_buf += out_stride;
+    } while (--height);
+}
+
+void blipvert::RGBA_to_RGB32(int32_t width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD* in_palette)
+{
+    if (!out_stride)
+        out_stride = width * 4;
+
+    if (!in_stride)
+        in_stride = width * 4;
+
+    if (flipped)
+    {
+        out_buf += (out_stride * (height - 1));
+        out_stride = -out_stride;
+    }
+
+    do
+    {
+        uint32_t* psrc = reinterpret_cast<uint32_t*>(in_buf);
+        uint32_t* pdst = reinterpret_cast<uint32_t*>(out_buf);
+        int32_t hcount = width;
+        do
+        {
+            *pdst++ = *psrc++ | 0xFF000000;
+        } while (--hcount);
+
+        in_buf += in_stride;
+        out_buf += out_stride;
+    } while (--height);
+}
+
+void blipvert::RGB32_to_RGBA(int32_t width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD* in_palette)
+{
+    if (!out_stride)
+        out_stride = width * 4;
+
+    if (!in_stride)
+        in_stride = width * 4;
+
+    if (flipped)
+    {
+        out_buf += (out_stride * (height - 1));
+        out_stride = -out_stride;
+    }
+
+    if (out_stride == in_stride && !flipped)
+    {
+        memcpy(out_buf, in_buf, out_stride * height);
+        return;
+    }
+
+    do
+    {
+        memcpy(out_buf, in_buf, width * 4);
         in_buf += in_stride;
         out_buf += out_stride;
     } while (--height);
@@ -330,7 +394,7 @@ void blipvert::RGB555_to_RGB32(int32_t width, int32_t height,
     } while (--height);
 }
 
-void blipvert::RGB555_to_ARGB32(int32_t width, int32_t height,
+void blipvert::RGB555_to_RGBA(int32_t width, int32_t height,
     uint8_t* out_buf, int32_t out_stride,
     uint8_t* in_buf, int32_t in_stride,
     bool flipped, xRGBQUAD* in_palette)

@@ -197,10 +197,9 @@ void blipvert::RGB555_to_Greyscale(int32_t  width, int32_t height, uint8_t* buf,
     }
 }
 
-
-void blipvert::RGB8_to_Greyscale(int32_t  width, int32_t height, uint8_t* buf, int32_t stride, xRGBQUAD* in_palette)
+void Palletized_to_Greyscale(int32_t  width, int32_t height, uint8_t* buf, int32_t stride, xRGBQUAD* in_palette, uint16_t num_colors)
 {
-    for (uint16_t index = 0; index++; index < 256)
+    for (uint16_t index = 0; index < num_colors; index++)
     {
         uint8_t Y = static_cast<uint8_t>(((yr_table[in_palette[index].rgbRed] + \
             yg_table[in_palette[index].rgbGreen] + \
@@ -210,6 +209,21 @@ void blipvert::RGB8_to_Greyscale(int32_t  width, int32_t height, uint8_t* buf, i
         in_palette[index].rgbGreen = Y;
         in_palette[index].rgbBlue = Y;
     }
+}
+
+void blipvert::RGB8_to_Greyscale(int32_t  width, int32_t height, uint8_t* buf, int32_t stride, xRGBQUAD* in_palette)
+{
+    Palletized_to_Greyscale(width, height, buf, stride, in_palette, 256);
+}
+
+void blipvert::RGB4_to_Greyscale(int32_t  width, int32_t height, uint8_t* buf, int32_t stride, xRGBQUAD* in_palette)
+{
+    Palletized_to_Greyscale(width, height, buf, stride, in_palette, 16);
+}
+
+void blipvert::RGB1_to_Greyscale(int32_t  width, int32_t height, uint8_t* buf, int32_t stride, xRGBQUAD* in_palette)
+{
+    Palletized_to_Greyscale(width, height, buf, stride, in_palette, 2);
 }
 
 

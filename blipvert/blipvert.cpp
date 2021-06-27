@@ -256,6 +256,18 @@ TransformTableEntry TransformTable[] = {
     { MVFMT_RGB8, MVFMT_RGB565, RGB8_to_RGB565 },
     { MVFMT_RGB8, MVFMT_RGB555, RGB8_to_RGB555 },
 
+    { MVFMT_RGB4, MVFMT_RGBA, RGB4_to_RGB32 },
+    { MVFMT_RGB4, MVFMT_RGB32, RGB4_to_RGB32 },
+    { MVFMT_RGB4, MVFMT_RGB24, RGB4_to_RGB24 },
+    { MVFMT_RGB4, MVFMT_RGB565, RGB4_to_RGB565 },
+    { MVFMT_RGB4, MVFMT_RGB555, RGB4_to_RGB555 },
+
+    { MVFMT_RGB1, MVFMT_RGBA, RGB1_to_RGB32 },
+    { MVFMT_RGB1, MVFMT_RGB32, RGB1_to_RGB32 },
+    { MVFMT_RGB1, MVFMT_RGB24, RGB1_to_RGB24 },
+    { MVFMT_RGB1, MVFMT_RGB565, RGB1_to_RGB565 },
+    { MVFMT_RGB1, MVFMT_RGB555, RGB1_to_RGB555 },
+
     // YUV to RGB
 
     { MVFMT_AYUV, MVFMT_RGBA, AYUV_to_RGBA },
@@ -652,6 +664,8 @@ GreyscaleTableEntry GreyscaleTable[] = {
     { MVFMT_RGB565, RGB565_to_Greyscale },
     { MVFMT_RGB555, RGB555_to_Greyscale },
     { MVFMT_RGB8, RGB8_to_Greyscale },
+    { MVFMT_RGB4, RGB4_to_Greyscale },
+    { MVFMT_RGB1, RGB1_to_Greyscale },
     { MVFMT_AYUV, AYUV_to_Greyscale },
     { MVFMT_UYVY, UYVY_to_Greyscale },
     { MVFMT_YVYU, YVYU_to_Greyscale },

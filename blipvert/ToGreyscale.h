@@ -39,6 +39,8 @@ namespace blipvert
     void RGB565_to_Greyscale(int32_t  width, int32_t height, uint8_t* buf, int32_t stride = 0, xRGBQUAD* in_palette = 0);
     void RGB555_to_Greyscale(int32_t  width, int32_t height, uint8_t* buf, int32_t stride = 0, xRGBQUAD* in_palette = 0);
     void RGB8_to_Greyscale(int32_t  width, int32_t height, uint8_t* buf, int32_t stride = 0, xRGBQUAD* in_palette = 0);
+    void RGB4_to_Greyscale(int32_t  width, int32_t height, uint8_t* buf, int32_t stride = 0, xRGBQUAD* in_palette = 0);
+    void RGB1_to_Greyscale(int32_t  width, int32_t height, uint8_t* buf, int32_t stride = 0, xRGBQUAD* in_palette = 0);
 
     void AYUV_to_Greyscale(int32_t  width, int32_t height, uint8_t* buf, int32_t stride = 0, xRGBQUAD* in_palette = 0);
 

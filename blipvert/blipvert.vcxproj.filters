@@ -95,6 +95,6 @@
     <None Include="..\LICENSE" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Version Information.txt" />
+    <Text Include="..\Version Information.txt" />
   </ItemGroup>
 </Project>

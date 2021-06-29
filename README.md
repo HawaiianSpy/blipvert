@@ -39,38 +39,38 @@ Read the header files for the details. Fairly self-explainatory.
 
 #### Data Types:
 
-#### MediaFormatID
+#### ```MediaFormatID```
 A string value representing a video bitmap format. These strings can be converted to fourcc codes if it happens to match one. But there are some formats (e.g. RGBs) that don't have corresponding fourcc codes.
 #
-#### Fourcc
+#### ```Fourcc```
 A 32-bit unsigned integer containing a real fourcc code.
 #
-#### t_transformfunc
+#### ```t_transformfunc```
 The function pointer definition used for all of the transform functions.
 #
-#### VideoFormatInfo
+#### ```VideoFormatInfo```
 Structure containing info for a particular video format.
 #
 #### Functions:
 See the comments in the header files for details on parameters, etc.
 
 
-#### void InitializeLibrary(void);
+#### ```void InitializeLibrary(void);```
 *Always call this function first to initialize the library!* This sets up the lookup tables and maps that makes this code do it's thing.
 #
-#### t_transformfunc FindVideoTransform(const MediaFormatID& inFormat, const MediaFormatID& outFormat);
+#### ```t_transformfunc FindVideoTransform(const MediaFormatID& inFormat, const MediaFormatID& outFormat);```
 Returns a function pointer that will convert the requested input format to the requested output format.
 #
-#### t_greyscalefunc FindGreyscaleTransform(const MediaFormatID& inFormat);
+#### ```t_greyscalefunc FindGreyscaleTransform(const MediaFormatID& inFormat);```
 Returns a function pointer that will perform an in-place conversion of the bitmap to greyscale.
 #
-#### t_fillcolorfunc FindFillColorTransform(const MediaFormatID& inFormat);
+#### ```t_fillcolorfunc FindFillColorTransform(const MediaFormatID& inFormat);```
 Returns a function pointer that will perform an in-place color fill of the bitmap.
 #
-#### bool GetVideoFormatInfo(const MediaFormatID& inFormat, VideoFormatInfo& info);
+#### ```bool GetVideoFormatInfo(const MediaFormatID& inFormat, VideoFormatInfo& info);```
 Returns useful information about the media type.
 #
-#### bool GetVideoFormatID(Fourcc fourcc, MediaFormatID& outFormat);
+#### ```bool GetVideoFormatID(Fourcc fourcc, MediaFormatID& outFormat);```
 Returns the MediaFormatID for the given fourcc code.
 
 ******************************
@@ -79,18 +79,18 @@ Returns the MediaFormatID for the given fourcc code.
 
 #### Functions:
 
-#### void SlowYUVtoRGB(uint8_t Y, uint8_t U, uint8_t V, uint8_t* R, uint8_t* G, uint8_t* B);
-#### void SlowRGBtoYUV(uint8_t R, uint8_t G, uint8_t B, uint8_t* Y, uint8_t* U, uint8_t* V);
+#### ```void SlowYUVtoRGB(uint8_t Y, uint8_t U, uint8_t V, uint8_t* R, uint8_t* G, uint8_t* B);```
+#### ```void SlowRGBtoYUV(uint8_t R, uint8_t G, uint8_t B, uint8_t* Y, uint8_t* U, uint8_t* V);```
 Accurate floating-point colorspace conversion functions. Slow but percise.
 #
-#### void FastYUVtoRGB(uint8_t Y, uint8_t U, uint8_t V, uint8_t* R, uint8_t* G, uint8_t* B);
-#### void FastRGBtoYUV(uint8_t R, uint8_t G, uint8_t B, uint8_t* Y, uint8_t* U, uint8_t* V);
+#### ```void FastYUVtoRGB(uint8_t Y, uint8_t U, uint8_t V, uint8_t* R, uint8_t* G, uint8_t* B);```
+#### ```void FastRGBtoYUV(uint8_t R, uint8_t G, uint8_t B, uint8_t* Y, uint8_t* U, uint8_t* V);```
 Fast colospace conversion using lookup tables. Good enough for 99.5% of the applications out there for 8-bit channels. Maximum variation is 1 bit + or -.
 #
- #### uint32_t CalculateBufferSize(const MediaFormatID& inFormat, uint32_t width, uint32_t height, uint32_t in_stride = 0);
+#### ```uint32_t CalculateBufferSize(const MediaFormatID& inFormat, uint32_t width, uint32_t height, uint32_t in_stride = 0);```
  Calculates size of the buffer given the video format and dimensions.
 #
-#### bool IsRGBEncoding(const MediaFormatID& encoding);
-#### bool IsPalletizedEncoding(const MediaFormatID& encoding);
-#### bool IsRGBFourcc(Fourcc fourcc);
+#### ```bool IsRGBEncoding(const MediaFormatID& encoding);```
+#### ```bool IsPalletizedEncoding(const MediaFormatID& encoding);```
+#### ```bool IsRGBFourcc(Fourcc fourcc);```
 Returns *true* if the input is what the function name states, and returns *false* otherwise.

@@ -698,7 +698,7 @@ FillcolorTableEntry FillColorTable[] = {
     { MVFMT_YUV9, Fill_YUV9 },
     { MVFMT_IYU1, Fill_IYU1 },
     { MVFMT_IYU2, Fill_IYU2 },
-    { MVFMT_IYU2, Fill_Y800 },
+    { MVFMT_Y800, Fill_Y800 },
     { MVFMT_Y41P, Fill_Y41P },
     { MVFMT_CLJR, Fill_CLJR },
     { MVFMT_AYUV, Fill_AYUV },

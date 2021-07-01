@@ -428,6 +428,25 @@ void blipvert::Fill_Y800(uint8_t y_level, uint8_t u_level, uint8_t v_level, uint
     }
 }
 
+void blipvert::Fill_Y16(uint8_t y_level, uint8_t u_level, uint8_t v_level, uint8_t alpha,
+    int32_t width, int32_t height, uint8_t* buf, int32_t stride)
+{
+    if (!stride)
+        stride = width * 2;
+
+    for (int32_t h = 0; h < height; h++)
+    {
+        uint8_t* pdst = buf;
+        for (int32_t w = 0; w < width; w++)
+        {
+            *pdst++ = 0;
+            *pdst++ = y_level;
+        }
+
+        buf += stride;
+    }
+}
+
 void blipvert::Fill_Y41P(uint8_t y_level, uint8_t u_level, uint8_t v_level, uint8_t alpha,
     int32_t width, int32_t height, uint8_t* buf, int32_t stride)
 {

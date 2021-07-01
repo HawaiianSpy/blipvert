@@ -434,13 +434,14 @@ void blipvert::Fill_Y16(uint8_t y_level, uint8_t u_level, uint8_t v_level, uint8
     if (!stride)
         stride = width * 2;
 
+    uint16_t fill = static_cast<uint16_t>(y_level) << 8;
+
     for (int32_t h = 0; h < height; h++)
     {
-        uint8_t* pdst = buf;
+        uint16_t* pdst = reinterpret_cast<uint16_t*>(buf);
         for (int32_t w = 0; w < width; w++)
         {
-            *pdst++ = 0;
-            *pdst++ = y_level;
+            *pdst++ = fill;
         }
 
         buf += stride;

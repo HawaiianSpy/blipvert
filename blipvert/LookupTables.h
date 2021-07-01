@@ -26,6 +26,7 @@
 //  SOFTWARE.
 //
 
+#include "legacydefs.h"
 
 namespace blipvert
 {
@@ -50,6 +51,10 @@ namespace blipvert
     extern uint32_t rgb32_greyscale[256];
     extern uint16_t rgb565_greyscale[256];
     extern uint16_t rgb555_greyscale[256];
+
+    extern xRGBQUAD rgb1_greyscale_palette[2];
+    extern xRGBQUAD rgb4_greyscale_palette[16];
+    extern xRGBQUAD rgb8_greyscale_palette[256];
 
     void InitLookupTables();
 }

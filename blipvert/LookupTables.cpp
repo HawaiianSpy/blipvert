@@ -54,6 +54,10 @@ uint32_t blipvert::rgb32_greyscale[256];
 uint16_t blipvert::rgb565_greyscale[256];
 uint16_t blipvert::rgb555_greyscale[256];
 
+xRGBQUAD blipvert::rgb1_greyscale_palette[2] { { 0, 0, 0, 255} , {255, 255, 255, 255} };
+xRGBQUAD blipvert::rgb4_greyscale_palette[16];
+xRGBQUAD blipvert::rgb8_greyscale_palette[256];
+
 void blipvert::InitLookupTables()
 {
     //    Build the RGB to YUV conversion lookup tables.
@@ -63,6 +67,8 @@ void blipvert::InitLookupTables()
      //    Y =  0.257R + 0.504G + 0.098B + 16
      //    U = -0.148R - 0.291G + 0.439B + 128
      //    V =  0.439R - 0.368G - 0.071B + 128
+
+    xRGBQUAD quad = { 0xFF, 0xFF,0xFF,0xFF };
 
     for (int16_t index = 0; index < 256; index++)
     {
@@ -85,6 +91,21 @@ void blipvert::InitLookupTables()
         rgb32_greyscale[index] = static_cast<uint32_t>(index) | (static_cast<uint32_t>(index) << 8) | (static_cast<uint32_t>(index) << 16) | 0xFF000000;
         PackRGB565Word(rgb565_greyscale[index], static_cast<uint16_t>(index), static_cast<uint16_t>(index), static_cast<uint16_t>(index));
         PackRGB555Word(rgb555_greyscale[index], static_cast<uint16_t>(index), static_cast<uint16_t>(index), static_cast<uint16_t>(index));
+
+        quad.rgbBlue = static_cast<uint8_t>(index);
+        quad.rgbGreen = static_cast<uint8_t>(index);
+        quad.rgbRed = static_cast<uint8_t>(index);
+        rgb8_greyscale_palette[index] = quad;
+    }
+
+    for (int16_t index = 0; index <= 16; index++)
+    {
+        uint8_t value = index * 16;
+        if (value > 255) value = 255;
+        quad.rgbBlue = value;
+        quad.rgbGreen = value;
+        quad.rgbRed = value;
+        rgb8_greyscale_palette[index] = quad;
     }
 
     //    Build the YUV to RGB conversion lookup tables.

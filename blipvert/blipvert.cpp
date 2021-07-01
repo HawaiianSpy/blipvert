@@ -90,6 +90,7 @@ const Fourcc blipvert::FOURCC_Y41T = MAKEFOURCC('Y', '4', '1', 'T');
 const Fourcc blipvert::FOURCC_Y800 = MAKEFOURCC('Y', '8', '0', '0');
 const Fourcc blipvert::FOURCC_Y8 = MAKEFOURCC('Y', '8', ' ', ' ');
 const Fourcc blipvert::FOURCC_GREY = MAKEFOURCC('G', 'R', 'E', 'Y');
+const Fourcc blipvert::FOURCC_Y16 = MAKEFOURCC('Y', '1', '6', ' ');
 const Fourcc blipvert::FOURCC_IYU2 = MAKEFOURCC('I', 'Y', 'U', '2');
 const Fourcc blipvert::FOURCC_Y444 = MAKEFOURCC('Y', '4', '4', '4');
 const Fourcc blipvert::FOURCC_CLJR = MAKEFOURCC('C', 'L', 'J', 'R');
@@ -167,6 +168,7 @@ const MediaFormatID blipvert::MVFMT_Y41T("Y41T");
 const MediaFormatID blipvert::MVFMT_Y800("Y800");
 const MediaFormatID blipvert::MVFMT_Y8("Y8");
 const MediaFormatID blipvert::MVFMT_GREY("GREY");
+const MediaFormatID blipvert::MVFMT_Y16("Y16");
 const MediaFormatID blipvert::MVFMT_IYU2("IYU2");
 const MediaFormatID blipvert::MVFMT_Y444("Y444");
 const MediaFormatID blipvert::MVFMT_CLJR("CLJR");
@@ -353,6 +355,12 @@ TransformTableEntry TransformTable[] = {
     { MVFMT_Y800, MVFMT_RGB565, Y800_to_RGB565 },
     { MVFMT_Y800, MVFMT_RGB555, Y800_to_RGB555 },
 
+    { MVFMT_Y16, MVFMT_RGBA, Y16_to_RGB32 },
+    { MVFMT_Y16, MVFMT_RGB32, Y16_to_RGB32 },
+    { MVFMT_Y16, MVFMT_RGB24, Y16_to_RGB24 },
+    { MVFMT_Y16, MVFMT_RGB565, Y16_to_RGB565 },
+    { MVFMT_Y16, MVFMT_RGB555, Y16_to_RGB555 },
+
     { MVFMT_AYUV, MVFMT_RGBA, AYUV_to_RGBA },
     { MVFMT_AYUV, MVFMT_RGB32, AYUV_to_RGB32 },
     { MVFMT_AYUV, MVFMT_RGB24, AYUV_to_RGB24 },
@@ -375,6 +383,7 @@ TransformTableEntry TransformTable[] = {
     { MVFMT_RGBA, MVFMT_Y41P, RGB32_to_Y41P },
     { MVFMT_RGBA, MVFMT_CLJR, RGB32_to_CLJR },
     { MVFMT_RGBA, MVFMT_Y800, RGB32_to_Y800 },
+    { MVFMT_RGBA, MVFMT_Y16, RGB32_to_Y16 },
 
     { MVFMT_RGB32, MVFMT_YUY2, RGB32_to_YUY2 },
     { MVFMT_RGB32, MVFMT_UYVY, RGB32_to_UYVY },
@@ -389,6 +398,7 @@ TransformTableEntry TransformTable[] = {
     { MVFMT_RGB32, MVFMT_Y41P, RGB32_to_Y41P },
     { MVFMT_RGB32, MVFMT_CLJR, RGB32_to_CLJR },
     { MVFMT_RGB32, MVFMT_Y800, RGB32_to_Y800 },
+    { MVFMT_RGB32, MVFMT_Y16, RGB32_to_Y16 },
     { MVFMT_RGB32, MVFMT_AYUV, RGB32_to_AYUV },
 
     { MVFMT_RGB24, MVFMT_YUY2, RGB24_to_YUY2 },
@@ -404,6 +414,7 @@ TransformTableEntry TransformTable[] = {
     { MVFMT_RGB24, MVFMT_Y41P, RGB24_to_Y41P },
     { MVFMT_RGB24, MVFMT_CLJR, RGB24_to_CLJR },
     { MVFMT_RGB24, MVFMT_Y800, RGB24_to_Y800 },
+    { MVFMT_RGB24, MVFMT_Y16, RGB24_to_Y16 },
     { MVFMT_RGB24, MVFMT_AYUV, RGB24_to_AYUV },
 
     { MVFMT_RGB565, MVFMT_YUY2, RGB565_to_YUY2 },
@@ -419,6 +430,7 @@ TransformTableEntry TransformTable[] = {
     { MVFMT_RGB565, MVFMT_Y41P, RGB565_to_Y41P },
     { MVFMT_RGB565, MVFMT_CLJR, RGB565_to_CLJR },
     { MVFMT_RGB565, MVFMT_Y800, RGB565_to_Y800 },
+    { MVFMT_RGB565, MVFMT_Y16, RGB565_to_Y16 },
     { MVFMT_RGB565, MVFMT_AYUV, RGB565_to_AYUV },
 
     { MVFMT_RGB555, MVFMT_YUY2, RGB555_to_YUY2 },
@@ -434,6 +446,7 @@ TransformTableEntry TransformTable[] = {
     { MVFMT_RGB555, MVFMT_Y41P, RGB555_to_Y41P },
     { MVFMT_RGB555, MVFMT_CLJR, RGB555_to_CLJR },
     { MVFMT_RGB555, MVFMT_Y800, RGB555_to_Y800 },
+    { MVFMT_RGB555, MVFMT_Y16, RGB555_to_Y16 },
     { MVFMT_RGB555, MVFMT_AYUV, RGB555_to_AYUV },
 
     { MVFMT_RGB8, MVFMT_YUY2, RGB8_to_YUY2 },
@@ -449,6 +462,7 @@ TransformTableEntry TransformTable[] = {
     { MVFMT_RGB8, MVFMT_Y41P, RGB8_to_Y41P },
     { MVFMT_RGB8, MVFMT_CLJR, RGB8_to_CLJR },
     { MVFMT_RGB8, MVFMT_Y800, RGB8_to_Y800 },
+    { MVFMT_RGB8, MVFMT_Y16, RGB8_to_Y16 },
     { MVFMT_RGB8, MVFMT_AYUV, RGB8_to_AYUV },
 
     // YUV to YUV
@@ -727,6 +741,9 @@ VideoFormatInfo VideoFmtTable[] = {
     {MVFMT_Y800, FOURCC_Y800, FOURCC_Y800, 8, ColorspaceType::YUV, false},
     {MVFMT_Y8, FOURCC_Y8, FOURCC_Y800, 8, ColorspaceType::YUV, false},
     {MVFMT_GREY, FOURCC_GREY, FOURCC_Y800,8, ColorspaceType::YUV, false},
+
+    // Y16
+    {MVFMT_Y16, FOURCC_Y16, FOURCC_UNDEFINED, 16, ColorspaceType::YUV, false},
 
     // IYU1 master format
     {MVFMT_IYU1, FOURCC_IYU1, FOURCC_IYU1, 12, ColorspaceType::YUV, false},

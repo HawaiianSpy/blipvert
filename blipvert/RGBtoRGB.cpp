@@ -1054,7 +1054,7 @@ void blipvert::RGB1_to_RGB24(int32_t width, int32_t height,
     }
 
     if (in_palette == nullptr)
-        in_palette = rgb4_greyscale_palette;
+        in_palette = rgb1_greyscale_palette;
 
     if (flipped)
     {
@@ -1113,7 +1113,7 @@ void blipvert::RGB1_to_RGB565(int32_t width, int32_t height,
     }
 
     if (in_palette == nullptr)
-        in_palette = rgb4_greyscale_palette;
+        in_palette = rgb1_greyscale_palette;
 
     if (flipped)
     {
@@ -1173,7 +1173,7 @@ void blipvert::RGB1_to_RGB555(int32_t width, int32_t height,
     }
 
     if (in_palette == nullptr)
-        in_palette = rgb4_greyscale_palette;
+        in_palette = rgb1_greyscale_palette;
 
     if (flipped)
     {

@@ -48,6 +48,12 @@ A 32-bit unsigned integer containing a real fourcc code.
 #### ```t_transformfunc```
 The function pointer definition used for all of the transform functions.
 #
+#### ```t_greyscalefunc```
+The function pointer definition used for in-place conversion to greyscale.
+#
+#### ```t_fillcolorfunc```
+The function pointer definition used for in-place color fills.
+#
 #### ```VideoFormatInfo```
 Structure containing info for a particular video format.
 #

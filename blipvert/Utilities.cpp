@@ -31,42 +31,38 @@
 
 using namespace blipvert;
 
-void blipvert::SlowYUVtoRGB(uint8_t Y, uint8_t U, uint8_t V, uint8_t* R, uint8_t* G, uint8_t* B)
+void blipvert::SlowYUVtoRGB(double Y, double U, double V, double* R, double* G, double* B)
 {
-    double RF = 1.164 * static_cast<double>(Y) + 1.596 * static_cast<double>(V) - 204.288;
+    double RF = 1.164 * Y + 1.596 * V - 204.288;
     if (RF > 255.0)
         RF = 255.0;
     else if (RF < 0.0)
         RF = 0.0;
 
-    *R = static_cast<uint8_t>(RF);
+    *R = RF;
 
-    double GF = 1.164 * static_cast<double>(Y) - 0.813 * static_cast<double>(V) - \
-        0.391 * static_cast<double>(U) + 154.112;
+    double GF = 1.164 * Y - 0.813 * V - 0.391 * U + 154.112;
     if (GF > 255.0)
         GF = 255.0;
     else if (GF < 0.0)
         GF = 0.0;
 
-    *G = static_cast<uint8_t>(GF);
+    *G = GF;
 
-    double BF = 1.164 * static_cast<double>(Y) + 2.018 * static_cast<double>(U) - 276.928;
+    double BF = 1.164 * Y + 2.018 * U - 276.928;
     if (BF > 255.0)
         BF = 255.0;
     else if (BF < 0.0)
         BF = 0.0;
 
-    *B = static_cast<uint8_t>(BF);
+    *B = BF;
 }
 
-void blipvert::SlowRGBtoYUV(uint8_t R, uint8_t G, uint8_t B, uint8_t* Y, uint8_t* U, uint8_t* V)
+void blipvert::SlowRGBtoYUV(double R, double G, double B, double* Y, double* U, double* V)
 {
-    *Y = static_cast<uint8_t>((0.257 * static_cast<double>(R)) + (0.504 * static_cast<double>(G)) + \
-        (0.098 * static_cast<double>(B)) + 16);
-    *U = static_cast<uint8_t>(-(0.148 * static_cast<double>(R)) - (0.291 * static_cast<double>(G)) + \
-        (0.439 * static_cast<double>(B)) + 128);
-    *V = static_cast<uint8_t>((0.439 * static_cast<double>(R)) - (0.368 * static_cast<double>(G)) - \
-        (0.071 * static_cast<double>(B)) + 128);
+    *Y = 0.257 * R + 0.504 * G + 0.098 *B + 16;
+    *U = -(0.148 * R) - 0.291 * G + 0.439 * B + 128;
+    *V = 0.439 * R - 0.368 * G - 0.071 * B + 128;
 }
 
 void blipvert::FastYUVtoRGB(uint8_t Y, uint8_t U, uint8_t V, uint8_t* R, uint8_t* G, uint8_t* B)

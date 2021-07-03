@@ -57,16 +57,16 @@ namespace BlipvertUnitTests
 						uint8_t fV;
 						FastRGBtoYUV(static_cast<uint8_t>(R), static_cast<uint8_t>(G), static_cast<uint8_t>(B), &fY, &fU, &fV);
 
-						uint8_t sY;
-						uint8_t sU;
-						uint8_t sV;
-						SlowRGBtoYUV(static_cast<uint8_t>(R), static_cast<uint8_t>(G), static_cast<uint8_t>(B), &sY, &sU, &sV);
+						double sY;
+						double sU;
+						double sV;
+						SlowRGBtoYUV(R, G, B, &sY, &sU, &sV);
 
 						if (sY != fY || sU != fU || sV != fV)
 						{
-							uint8_t dy = delta(sY, fY);
-							uint8_t du = delta(sU, fU);
-							uint8_t dv = delta(sV, fV);
+							uint8_t dy = delta(static_cast<uint8_t>(sY), fY);
+							uint8_t du = delta(static_cast<uint8_t>(sU), fU);
+							uint8_t dv = delta(static_cast<uint8_t>(sV), fV);
 							if (dy > maxdelta)
 							{
 								maxdelta = dy;
@@ -101,16 +101,16 @@ namespace BlipvertUnitTests
 						uint8_t fB;
 						FastYUVtoRGB(static_cast<uint8_t>(Y), static_cast<uint8_t>(U), static_cast<uint8_t>(V), &fR, &fG, &fB);
 
-						uint8_t sR;
-						uint8_t sG;
-						uint8_t sB;
-						SlowYUVtoRGB(static_cast<uint8_t>(Y), static_cast<uint8_t>(U), static_cast<uint8_t>(V), &sR, &sG, &sB);
+						double sR;
+						double sG;
+						double sB;
+						SlowYUVtoRGB(Y, U, V, &sR, &sG, &sB);
 
 						if (sR != fR || sG != fG || sB != fB)
 						{
-							uint8_t dr = delta(sR, fR);
-							uint8_t dg = delta(sG, fG);
-							uint8_t db = delta(sB, fB);
+							uint8_t dr = delta(static_cast<uint8_t>(sR), fR);
+							uint8_t dg = delta(static_cast<uint8_t>(sG), fG);
+							uint8_t db = delta(static_cast<uint8_t>(sB), fB);
 							if (dr > maxdelta)
 							{
 								maxdelta = dr;

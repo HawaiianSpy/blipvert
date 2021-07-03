@@ -31,8 +31,8 @@
 namespace blipvert
 {
     // For a slow, but more accurate conversion of single pixel values.
-    void SlowYUVtoRGB(uint8_t Y, uint8_t U, uint8_t V, uint8_t* R, uint8_t* G, uint8_t* B);
-    void SlowRGBtoYUV(uint8_t R, uint8_t G, uint8_t B, uint8_t* Y, uint8_t* U, uint8_t* V);
+    void SlowYUVtoRGB(double Y, double U, double V, double* R, double* G, double* B);
+    void SlowRGBtoYUV(double R, double G, double B, double* Y, double* U, double* V);
 
     // Lookup table conversions of single pixel value.
     void FastYUVtoRGB(uint8_t Y, uint8_t U, uint8_t V, uint8_t* R, uint8_t* G, uint8_t* B);

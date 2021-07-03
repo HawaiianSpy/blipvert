@@ -28,6 +28,7 @@
 #include "pch.h"
 #include "RGBtoRGB.h"
 #include "CommonMacros.h"
+#include "LookupTables.h"
 #include <cstring>
 
 using namespace blipvert;
@@ -624,6 +625,9 @@ void blipvert::RGB8_to_RGB32(int32_t width, int32_t height,
     if (!in_stride)
         in_stride = width;
 
+    if (in_palette == nullptr)
+        in_palette = rgb8_greyscale_palette;
+
     if (flipped)
     {
         out_buf += (out_stride * (height - 1));
@@ -655,6 +659,9 @@ void blipvert::RGB8_to_RGB24(int32_t width, int32_t height,
 
     if (!in_stride)
         in_stride = width;
+
+    if (in_palette == nullptr)
+        in_palette = rgb8_greyscale_palette;
 
     if (flipped)
     {
@@ -693,6 +700,9 @@ void blipvert::RGB8_to_RGB565(int32_t width, int32_t height,
     if (!in_stride)
         in_stride = width;
 
+    if (in_palette == nullptr)
+        in_palette = rgb8_greyscale_palette;
+
     if (flipped)
     {
         out_buf += (out_stride * (height - 1));
@@ -727,6 +737,9 @@ void blipvert::RGB8_to_RGB555(int32_t width, int32_t height,
 
     if (!in_stride)
         in_stride = width;
+
+    if (in_palette == nullptr)
+        in_palette = rgb8_greyscale_palette;
 
     if (flipped)
     {
@@ -774,6 +787,9 @@ void blipvert::RGB4_to_RGB32(int32_t width, int32_t height,
         }
     }
 
+    if (in_palette == nullptr)
+        in_palette = rgb4_greyscale_palette;
+
     if (flipped)
     {
         out_buf += (out_stride * (height - 1));
@@ -819,6 +835,9 @@ void blipvert::RGB4_to_RGB24(int32_t width, int32_t height,
             in_stride++;
         }
     }
+
+    if (in_palette == nullptr)
+        in_palette = rgb4_greyscale_palette;
 
     if (flipped)
     {
@@ -868,6 +887,9 @@ void blipvert::RGB4_to_RGB565(int32_t width, int32_t height,
         }
     }
 
+    if (in_palette == nullptr)
+        in_palette = rgb4_greyscale_palette;
+
     if (flipped)
     {
         out_buf += (out_stride * (height - 1));
@@ -916,6 +938,9 @@ void blipvert::RGB4_to_RGB555(int32_t width, int32_t height,
             in_stride++;
         }
     }
+
+    if (in_palette == nullptr)
+        in_palette = rgb4_greyscale_palette;
 
     if (flipped)
     {
@@ -969,6 +994,9 @@ void blipvert::RGB1_to_RGB32(int32_t width, int32_t height,
             in_stride++;
         }
     }
+
+    if (in_palette == nullptr)
+        in_palette = rgb1_greyscale_palette;
 
     if (flipped)
     {
@@ -1024,6 +1052,9 @@ void blipvert::RGB1_to_RGB24(int32_t width, int32_t height,
             in_stride++;
         }
     }
+
+    if (in_palette == nullptr)
+        in_palette = rgb1_greyscale_palette;
 
     if (flipped)
     {
@@ -1081,6 +1112,9 @@ void blipvert::RGB1_to_RGB565(int32_t width, int32_t height,
         }
     }
 
+    if (in_palette == nullptr)
+        in_palette = rgb1_greyscale_palette;
+
     if (flipped)
     {
         out_buf += (out_stride * (height - 1));
@@ -1137,6 +1171,9 @@ void blipvert::RGB1_to_RGB555(int32_t width, int32_t height,
             in_stride++;
         }
     }
+
+    if (in_palette == nullptr)
+        in_palette = rgb1_greyscale_palette;
 
     if (flipped)
     {

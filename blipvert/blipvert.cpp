@@ -90,6 +90,7 @@ const Fourcc blipvert::FOURCC_Y41T = MAKEFOURCC('Y', '4', '1', 'T');
 const Fourcc blipvert::FOURCC_Y800 = MAKEFOURCC('Y', '8', '0', '0');
 const Fourcc blipvert::FOURCC_Y8 = MAKEFOURCC('Y', '8', ' ', ' ');
 const Fourcc blipvert::FOURCC_GREY = MAKEFOURCC('G', 'R', 'E', 'Y');
+const Fourcc blipvert::FOURCC_Y16 = MAKEFOURCC('Y', '1', '6', ' ');
 const Fourcc blipvert::FOURCC_IYU2 = MAKEFOURCC('I', 'Y', 'U', '2');
 const Fourcc blipvert::FOURCC_Y444 = MAKEFOURCC('Y', '4', '4', '4');
 const Fourcc blipvert::FOURCC_CLJR = MAKEFOURCC('C', 'L', 'J', 'R');
@@ -167,6 +168,7 @@ const MediaFormatID blipvert::MVFMT_Y41T("Y41T");
 const MediaFormatID blipvert::MVFMT_Y800("Y800");
 const MediaFormatID blipvert::MVFMT_Y8("Y8");
 const MediaFormatID blipvert::MVFMT_GREY("GREY");
+const MediaFormatID blipvert::MVFMT_Y16("Y16");
 const MediaFormatID blipvert::MVFMT_IYU2("IYU2");
 const MediaFormatID blipvert::MVFMT_Y444("Y444");
 const MediaFormatID blipvert::MVFMT_CLJR("CLJR");
@@ -353,6 +355,12 @@ TransformTableEntry TransformTable[] = {
     { MVFMT_Y800, MVFMT_RGB565, Y800_to_RGB565 },
     { MVFMT_Y800, MVFMT_RGB555, Y800_to_RGB555 },
 
+    { MVFMT_Y16, MVFMT_RGBA, Y16_to_RGB32 },
+    { MVFMT_Y16, MVFMT_RGB32, Y16_to_RGB32 },
+    { MVFMT_Y16, MVFMT_RGB24, Y16_to_RGB24 },
+    { MVFMT_Y16, MVFMT_RGB565, Y16_to_RGB565 },
+    { MVFMT_Y16, MVFMT_RGB555, Y16_to_RGB555 },
+
     { MVFMT_AYUV, MVFMT_RGBA, AYUV_to_RGBA },
     { MVFMT_AYUV, MVFMT_RGB32, AYUV_to_RGB32 },
     { MVFMT_AYUV, MVFMT_RGB24, AYUV_to_RGB24 },
@@ -375,6 +383,7 @@ TransformTableEntry TransformTable[] = {
     { MVFMT_RGBA, MVFMT_Y41P, RGB32_to_Y41P },
     { MVFMT_RGBA, MVFMT_CLJR, RGB32_to_CLJR },
     { MVFMT_RGBA, MVFMT_Y800, RGB32_to_Y800 },
+    { MVFMT_RGBA, MVFMT_Y16, RGB32_to_Y16 },
 
     { MVFMT_RGB32, MVFMT_YUY2, RGB32_to_YUY2 },
     { MVFMT_RGB32, MVFMT_UYVY, RGB32_to_UYVY },
@@ -389,6 +398,7 @@ TransformTableEntry TransformTable[] = {
     { MVFMT_RGB32, MVFMT_Y41P, RGB32_to_Y41P },
     { MVFMT_RGB32, MVFMT_CLJR, RGB32_to_CLJR },
     { MVFMT_RGB32, MVFMT_Y800, RGB32_to_Y800 },
+    { MVFMT_RGB32, MVFMT_Y16, RGB32_to_Y16 },
     { MVFMT_RGB32, MVFMT_AYUV, RGB32_to_AYUV },
 
     { MVFMT_RGB24, MVFMT_YUY2, RGB24_to_YUY2 },
@@ -404,6 +414,7 @@ TransformTableEntry TransformTable[] = {
     { MVFMT_RGB24, MVFMT_Y41P, RGB24_to_Y41P },
     { MVFMT_RGB24, MVFMT_CLJR, RGB24_to_CLJR },
     { MVFMT_RGB24, MVFMT_Y800, RGB24_to_Y800 },
+    { MVFMT_RGB24, MVFMT_Y16, RGB24_to_Y16 },
     { MVFMT_RGB24, MVFMT_AYUV, RGB24_to_AYUV },
 
     { MVFMT_RGB565, MVFMT_YUY2, RGB565_to_YUY2 },
@@ -419,6 +430,7 @@ TransformTableEntry TransformTable[] = {
     { MVFMT_RGB565, MVFMT_Y41P, RGB565_to_Y41P },
     { MVFMT_RGB565, MVFMT_CLJR, RGB565_to_CLJR },
     { MVFMT_RGB565, MVFMT_Y800, RGB565_to_Y800 },
+    { MVFMT_RGB565, MVFMT_Y16, RGB565_to_Y16 },
     { MVFMT_RGB565, MVFMT_AYUV, RGB565_to_AYUV },
 
     { MVFMT_RGB555, MVFMT_YUY2, RGB555_to_YUY2 },
@@ -434,6 +446,7 @@ TransformTableEntry TransformTable[] = {
     { MVFMT_RGB555, MVFMT_Y41P, RGB555_to_Y41P },
     { MVFMT_RGB555, MVFMT_CLJR, RGB555_to_CLJR },
     { MVFMT_RGB555, MVFMT_Y800, RGB555_to_Y800 },
+    { MVFMT_RGB555, MVFMT_Y16, RGB555_to_Y16 },
     { MVFMT_RGB555, MVFMT_AYUV, RGB555_to_AYUV },
 
     { MVFMT_RGB8, MVFMT_YUY2, RGB8_to_YUY2 },
@@ -449,6 +462,7 @@ TransformTableEntry TransformTable[] = {
     { MVFMT_RGB8, MVFMT_Y41P, RGB8_to_Y41P },
     { MVFMT_RGB8, MVFMT_CLJR, RGB8_to_CLJR },
     { MVFMT_RGB8, MVFMT_Y800, RGB8_to_Y800 },
+    { MVFMT_RGB8, MVFMT_Y16, RGB8_to_Y16 },
     { MVFMT_RGB8, MVFMT_AYUV, RGB8_to_AYUV },
 
     // YUV to YUV
@@ -463,6 +477,7 @@ TransformTableEntry TransformTable[] = {
     { MVFMT_AYUV, MVFMT_IYU1, AYUV_to_IYU1 },
     { MVFMT_AYUV, MVFMT_IYU2, AYUV_to_IYU2 },
     { MVFMT_AYUV, MVFMT_Y800, AYUV_to_Y800 },
+    { MVFMT_AYUV, MVFMT_Y16, AYUV_to_Y16 },
     { MVFMT_AYUV, MVFMT_CLJR, AYUV_to_CLJR },
     { MVFMT_AYUV, MVFMT_Y41P, AYUV_to_Y41P },
 
@@ -476,6 +491,7 @@ TransformTableEntry TransformTable[] = {
     { MVFMT_YUY2, MVFMT_IYU1, YUY2_to_IYU1 },
     { MVFMT_YUY2, MVFMT_IYU2, YUY2_to_IYU2 },
     { MVFMT_YUY2, MVFMT_Y800, YUY2_to_Y800 },
+    { MVFMT_YUY2, MVFMT_Y16, YUY2_to_Y16 },
     { MVFMT_YUY2, MVFMT_CLJR, YUY2_to_CLJR },
     { MVFMT_YUY2, MVFMT_Y41P, YUY2_to_Y41P },
     { MVFMT_YUY2, MVFMT_AYUV, YUY2_to_AYUV },
@@ -490,6 +506,7 @@ TransformTableEntry TransformTable[] = {
     { MVFMT_UYVY, MVFMT_IYU1, UYVY_to_IYU1 },
     { MVFMT_UYVY, MVFMT_IYU2, UYVY_to_IYU2 },
     { MVFMT_UYVY, MVFMT_Y800, UYVY_to_Y800 },
+    { MVFMT_UYVY, MVFMT_Y16, UYVY_to_Y16 },
     { MVFMT_UYVY, MVFMT_CLJR, UYVY_to_CLJR },
     { MVFMT_UYVY, MVFMT_Y41P, UYVY_to_Y41P },
     { MVFMT_UYVY, MVFMT_IUYV, UYVY_to_IUYV },
@@ -505,6 +522,7 @@ TransformTableEntry TransformTable[] = {
     { MVFMT_YVYU, MVFMT_IYU1, YVYU_to_IYU1 },
     { MVFMT_YVYU, MVFMT_IYU2, YVYU_to_IYU2 },
     { MVFMT_YVYU, MVFMT_Y800, YVYU_to_Y800 },
+    { MVFMT_YVYU, MVFMT_Y16, YVYU_to_Y16 },
     { MVFMT_YVYU, MVFMT_CLJR, YVYU_to_CLJR },
     { MVFMT_YVYU, MVFMT_Y41P, YVYU_to_Y41P },
     { MVFMT_YVYU, MVFMT_AYUV, YVYU_to_AYUV },
@@ -519,6 +537,7 @@ TransformTableEntry TransformTable[] = {
     { MVFMT_VYUY, MVFMT_IYU1, VYUY_to_IYU1 },
     { MVFMT_VYUY, MVFMT_IYU2, VYUY_to_IYU2 },
     { MVFMT_VYUY, MVFMT_Y800, VYUY_to_Y800 },
+    { MVFMT_VYUY, MVFMT_Y16, VYUY_to_Y16 },
     { MVFMT_VYUY, MVFMT_CLJR, VYUY_to_CLJR },
     { MVFMT_VYUY, MVFMT_Y41P, VYUY_to_Y41P },
     { MVFMT_VYUY, MVFMT_AYUV, VYUY_to_AYUV },
@@ -533,6 +552,7 @@ TransformTableEntry TransformTable[] = {
     { MVFMT_IYUV, MVFMT_IYU1, IYUV_to_IYU1 },
     { MVFMT_IYUV, MVFMT_IYU2, IYUV_to_IYU2 },
     { MVFMT_IYUV, MVFMT_Y800, IYUV_to_Y800 },
+    { MVFMT_IYUV, MVFMT_Y16, IYUV_to_Y16 },
     { MVFMT_IYUV, MVFMT_CLJR, IYUV_to_CLJR },
     { MVFMT_IYUV, MVFMT_Y41P, IYUV_to_Y41P },
     { MVFMT_IYUV, MVFMT_AYUV, IYUV_to_AYUV },
@@ -547,6 +567,7 @@ TransformTableEntry TransformTable[] = {
     { MVFMT_YV12, MVFMT_IYU1, YV12_to_IYU1 },
     { MVFMT_YV12, MVFMT_IYU2, YV12_to_IYU2 },
     { MVFMT_YV12, MVFMT_Y800, YV12_to_Y800 },
+    { MVFMT_YV12, MVFMT_Y16, YV12_to_Y16 },
     { MVFMT_YV12, MVFMT_CLJR, YV12_to_CLJR },
     { MVFMT_YV12, MVFMT_Y41P, YV12_to_Y41P },
     { MVFMT_YV12, MVFMT_AYUV, YV12_to_AYUV },
@@ -561,6 +582,7 @@ TransformTableEntry TransformTable[] = {
     { MVFMT_YVU9, MVFMT_IYU1, YVU9_to_IYU1 },
     { MVFMT_YVU9, MVFMT_IYU2, YVU9_to_IYU2 },
     { MVFMT_YVU9, MVFMT_Y800, YVU9_to_Y800 },
+    { MVFMT_YVU9, MVFMT_Y16, YVU9_to_Y16 },
     { MVFMT_YVU9, MVFMT_CLJR, YVU9_to_CLJR },
     { MVFMT_YVU9, MVFMT_Y41P, YVU9_to_Y41P },
     { MVFMT_YVU9, MVFMT_AYUV, YVU9_to_AYUV },
@@ -575,6 +597,7 @@ TransformTableEntry TransformTable[] = {
     { MVFMT_YUV9, MVFMT_IYU1, YUV9_to_IYU1 },
     { MVFMT_YUV9, MVFMT_IYU2, YUV9_to_IYU2 },
     { MVFMT_YUV9, MVFMT_Y800, YUV9_to_Y800 },
+    { MVFMT_YUV9, MVFMT_Y16, YUV9_to_Y16 },
     { MVFMT_YUV9, MVFMT_CLJR, YUV9_to_CLJR },
     { MVFMT_YUV9, MVFMT_Y41P, YUV9_to_Y41P },
     { MVFMT_YUV9, MVFMT_AYUV, YUV9_to_AYUV },
@@ -589,6 +612,7 @@ TransformTableEntry TransformTable[] = {
     { MVFMT_IYU1, MVFMT_YUV9, IYU1_to_YUV9 },
     { MVFMT_IYU1, MVFMT_IYU2, IYU1_to_IYU2 },
     { MVFMT_IYU1, MVFMT_Y800, IYU1_to_Y800 },
+    { MVFMT_IYU1, MVFMT_Y16, IYU1_to_Y16 },
     { MVFMT_IYU1, MVFMT_CLJR, IYU1_to_CLJR },
     { MVFMT_IYU1, MVFMT_Y41P, IYU1_to_Y41P },
     { MVFMT_IYU1, MVFMT_AYUV, IYU1_to_AYUV },
@@ -603,6 +627,7 @@ TransformTableEntry TransformTable[] = {
     { MVFMT_IYU2, MVFMT_YUV9, IYU2_to_YUV9 },
     { MVFMT_IYU2, MVFMT_IYU1, IYU2_to_IYU1 },
     { MVFMT_IYU2, MVFMT_Y800, IYU2_to_Y800 },
+    { MVFMT_IYU2, MVFMT_Y16, IYU2_to_Y16 },
     { MVFMT_IYU2, MVFMT_CLJR, IYU2_to_CLJR },
     { MVFMT_IYU2, MVFMT_Y41P, IYU2_to_Y41P },
     { MVFMT_IYU2, MVFMT_AYUV, IYU2_to_AYUV },
@@ -620,6 +645,22 @@ TransformTableEntry TransformTable[] = {
     { MVFMT_Y800, MVFMT_CLJR, Y800_to_CLJR },
     { MVFMT_Y800, MVFMT_Y41P, Y800_to_Y41P },
     { MVFMT_Y800, MVFMT_AYUV, Y800_to_AYUV },
+    { MVFMT_Y800, MVFMT_Y16, Y800_to_Y16 },
+
+    { MVFMT_Y16, MVFMT_YUY2, Y16_to_YUY2 },
+    { MVFMT_Y16, MVFMT_UYVY, Y16_to_UYVY },
+    { MVFMT_Y16, MVFMT_YVYU, Y16_to_YVYU },
+    { MVFMT_Y16, MVFMT_VYUY, Y16_to_VYUY },
+    { MVFMT_Y16, MVFMT_IYUV, Y16_to_IYUV },
+    { MVFMT_Y16, MVFMT_YV12, Y16_to_YV12 },
+    { MVFMT_Y16, MVFMT_YVU9, Y16_to_YVU9 },
+    { MVFMT_Y16, MVFMT_YUV9, Y16_to_YUV9 },
+    { MVFMT_Y16, MVFMT_IYU1, Y16_to_IYU1 },
+    { MVFMT_Y16, MVFMT_IYU2, Y16_to_IYU2 },
+    { MVFMT_Y16, MVFMT_CLJR, Y16_to_CLJR },
+    { MVFMT_Y16, MVFMT_Y41P, Y16_to_Y41P },
+    { MVFMT_Y16, MVFMT_AYUV, Y16_to_AYUV },
+    { MVFMT_Y16, MVFMT_Y800, Y16_to_Y800 },
 
     { MVFMT_CLJR, MVFMT_YUY2, CLJR_to_YUY2 },
     { MVFMT_CLJR, MVFMT_UYVY, CLJR_to_UYVY },
@@ -632,6 +673,7 @@ TransformTableEntry TransformTable[] = {
     { MVFMT_CLJR, MVFMT_IYU1, CLJR_to_IYU1 },
     { MVFMT_CLJR, MVFMT_IYU2, CLJR_to_IYU2 },
     { MVFMT_CLJR, MVFMT_Y800, CLJR_to_Y800 },
+    { MVFMT_CLJR, MVFMT_Y16, CLJR_to_Y16 },
     { MVFMT_CLJR, MVFMT_Y41P, CLJR_to_Y41P },
     { MVFMT_CLJR, MVFMT_AYUV, CLJR_to_AYUV },
 
@@ -646,6 +688,7 @@ TransformTableEntry TransformTable[] = {
     { MVFMT_Y41P, MVFMT_IYU1, Y41P_to_IYU1 },
     { MVFMT_Y41P, MVFMT_IYU2, Y41P_to_IYU2 },
     { MVFMT_Y41P, MVFMT_Y800, Y41P_to_Y800 },
+    { MVFMT_Y41P, MVFMT_Y16, Y41P_to_Y16 },
     { MVFMT_Y41P, MVFMT_CLJR, Y41P_to_CLJR },
     { MVFMT_Y41P, MVFMT_IY41, Y41P_to_IY41 },
     { MVFMT_Y41P, MVFMT_AYUV, Y41P_to_AYUV },
@@ -699,6 +742,7 @@ FillcolorTableEntry FillColorTable[] = {
     { MVFMT_IYU1, Fill_IYU1 },
     { MVFMT_IYU2, Fill_IYU2 },
     { MVFMT_Y800, Fill_Y800 },
+    { MVFMT_Y16, Fill_Y16 },
     { MVFMT_Y41P, Fill_Y41P },
     { MVFMT_CLJR, Fill_CLJR },
     { MVFMT_AYUV, Fill_AYUV },
@@ -727,6 +771,9 @@ VideoFormatInfo VideoFmtTable[] = {
     {MVFMT_Y800, FOURCC_Y800, FOURCC_Y800, 8, ColorspaceType::YUV, false},
     {MVFMT_Y8, FOURCC_Y8, FOURCC_Y800, 8, ColorspaceType::YUV, false},
     {MVFMT_GREY, FOURCC_GREY, FOURCC_Y800,8, ColorspaceType::YUV, false},
+
+    // Y16
+    {MVFMT_Y16, FOURCC_Y16, FOURCC_UNDEFINED, 16, ColorspaceType::YUV, false},
 
     // IYU1 master format
     {MVFMT_IYU1, FOURCC_IYU1, FOURCC_IYU1, 12, ColorspaceType::YUV, false},

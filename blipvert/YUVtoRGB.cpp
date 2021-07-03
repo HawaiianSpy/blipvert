@@ -2378,6 +2378,156 @@ void blipvert::Y800_to_RGB555(int32_t width, int32_t height,
     }
 }
 
+//
+// Y16 format to RGB
+//
+
+void blipvert::Y16_to_RGB32(int32_t width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD* in_palette)
+{
+    if (!out_stride)
+        out_stride = width * 4;
+
+    if (!in_stride)
+        in_stride = width * 2;
+
+    if (flipped)
+    {
+        out_buf += (out_stride * (height - 1));
+        out_stride = -out_stride;
+    }
+
+    while (height)
+    {
+        uint8_t* psrc = in_buf + 1; // we want the upper 8 bits of little-endian.
+        uint8_t* pdst = out_buf;
+        uint32_t hcount = width;
+        while (hcount)
+        {
+            *reinterpret_cast<uint32_t*>(pdst) = rgb32_greyscale[*psrc];
+            psrc += 2;
+            pdst += 4;
+            hcount--;
+        }
+
+        in_buf += in_stride;
+        out_buf += out_stride;
+        height--;
+    }
+}
+
+void blipvert::Y16_to_RGB24(int32_t width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD* in_palette)
+{
+    if (!out_stride)
+        out_stride = width * 4;
+
+    if (!in_stride)
+        in_stride = width * 2;
+
+    if (flipped)
+    {
+        out_buf += (out_stride * (height - 1));
+        out_stride = -out_stride;
+    }
+
+    while (height)
+    {
+        uint8_t* psrc = in_buf + 1; // we want the upper 8 bits of little-endian.
+        uint8_t* pdst = out_buf;
+        uint32_t hcount = width;
+        while (hcount)
+        {
+            *reinterpret_cast<uint32_t*>(pdst) = rgb32_greyscale[*psrc];
+            psrc += 2;
+            pdst += 3;
+            hcount--;
+        }
+
+        in_buf += in_stride;
+        out_buf += out_stride;
+        height--;
+    }
+}
+
+void blipvert::Y16_to_RGB565(int32_t width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD* in_palette)
+{
+    out_stride = width * 4;
+
+    if (!in_stride)
+        in_stride = width * 2;
+
+    if (flipped)
+    {
+        out_buf += (out_stride * (height - 1));
+        out_stride = -out_stride;
+    }
+
+    while (height)
+    {
+        uint8_t* psrc = in_buf + 1; // we want the upper 8 bits of little-endian.
+        uint8_t* pdst = out_buf;
+        uint32_t hcount = width;
+        while (hcount)
+        {
+            *reinterpret_cast<uint32_t*>(pdst) = rgb565_greyscale[*psrc];
+            psrc += 2;
+            pdst += 2;
+            hcount--;
+        }
+
+        in_buf += in_stride;
+        out_buf += out_stride;
+        height--;
+    }
+}
+
+void blipvert::Y16_to_RGB555(int32_t width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD* in_palette)
+{
+    out_stride = width * 4;
+
+    if (!in_stride)
+        in_stride = width * 2;
+
+    if (flipped)
+    {
+        out_buf += (out_stride * (height - 1));
+        out_stride = -out_stride;
+    }
+
+    while (height)
+    {
+        uint8_t* psrc = in_buf + 1; // we want the upper 8 bits of little-endian.
+        uint8_t* pdst = out_buf;
+        uint32_t hcount = width;
+        while (hcount)
+        {
+            *reinterpret_cast<uint32_t*>(pdst) = rgb555_greyscale[*psrc];
+            psrc += 2;
+            pdst += 2;
+            hcount--;
+        }
+
+        in_buf += in_stride;
+        out_buf += out_stride;
+        height--;
+    }
+}
+
+//
+// AYUV format to RGB
+//
+
 void blipvert::AYUV_to_RGBA(int32_t width, int32_t height,
     uint8_t* out_buf, int32_t out_stride,
     uint8_t* in_buf, int32_t in_stride,

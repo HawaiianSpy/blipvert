@@ -75,6 +75,8 @@ BufferCheckEntry BufferCheckFuncTable[] = {
 	{MVFMT_CLJR, Check_CLJR},
 	{MVFMT_Y800, Check_Y800},
 	{MVFMT_Y16, Check_Y16},
+	{MVFMT_AYUV, Check_AYUV},
+	{MVFMT_RGBA, Check_RGBA},
 	{MVFMT_RGB32, Check_RGB32},
 	{MVFMT_RGB24, Check_RGB24},
 	{MVFMT_RGB565, Check_RGB565},
@@ -398,6 +400,10 @@ bool BlipvertUnitTests::Check_Y16(uint8_t ry_level, uint8_t gu_level, uint8_t bv
 
 	return true;
 }
+bool BlipvertUnitTests::Check_AYUV(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha, int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride)
+{
+	return Check_RGBA(ry_level, gu_level, bv_level, alpha, width, height, pBuffer, stride);
+}
 
 bool BlipvertUnitTests::Check_IYU1(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha,
 	int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride)
@@ -448,7 +454,7 @@ bool BlipvertUnitTests::Check_IYU2(uint8_t ry_level, uint8_t gu_level, uint8_t b
 	return true;
 }
 
-bool BlipvertUnitTests::Check_RGB32(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha, int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride)
+bool BlipvertUnitTests::Check_RGBA(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha, int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride)
 {
 	if (!stride)
 		stride = width * 4;
@@ -467,6 +473,11 @@ bool BlipvertUnitTests::Check_RGB32(uint8_t ry_level, uint8_t gu_level, uint8_t 
 	} while (--height);
 
 	return true;
+}
+
+bool BlipvertUnitTests::Check_RGB32(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha, int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride)
+{
+	return Check_RGBA(ry_level, gu_level, bv_level, 255, width, height, pBuffer, stride);
 }
 
 

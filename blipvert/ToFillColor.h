@@ -28,7 +28,7 @@
 
 namespace blipvert
 {
-    typedef void(__cdecl* t_fillcolorfunc) (uint8_t red_y_level, uint8_t green_u_level, uint8_t blue_v_level, uint8_t alpha, int32_t width, int32_t height, uint8_t* buf, int32_t stride);
+    typedef void(__cdecl* t_fillcolorfunc) (uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha, int32_t width, int32_t height, uint8_t* buf, int32_t stride);
 
     // RGB Colorspace fill functions
     void Fill_RGBA(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha, int32_t width, int32_t height, uint8_t* buf, int32_t stride = 0);
@@ -36,6 +36,9 @@ namespace blipvert
     void Fill_RGB24(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha, int32_t width, int32_t height, uint8_t* buf, int32_t stride = 0);
     void Fill_RGB565(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha, int32_t width, int32_t height, uint8_t* buf, int32_t stride = 0);
     void Fill_RGB555(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha, int32_t width, int32_t height, uint8_t* buf, int32_t stride = 0);
+
+    // Writes 32 bits at a time by overlapping the MSB. Must a have buffer that is at least 1 byte larger than a expected.
+    void Fill_RGB24_Faster(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha, int32_t width, int32_t height, uint8_t* buf, int32_t stride);
 
     // YUV colorspace fill functions
     void Fill_YUY2(uint8_t y_level, uint8_t u_level, uint8_t v_level, uint8_t alpha, int32_t width, int32_t height, uint8_t* buf, int32_t stride = 0);

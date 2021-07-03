@@ -73,6 +73,37 @@ void blipvert::Fill_RGB32(uint8_t red, uint8_t green, uint8_t blue, uint8_t alph
 
 void blipvert::Fill_RGB24(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha, int32_t width, int32_t height, uint8_t* buf, int32_t stride)
 {
+    if (!stride)
+    {
+        uint32_t count = width * height;
+        while (count)
+        {
+            *buf++ = blue;
+            *buf++ = green;
+            *buf++ = red;
+            count--;
+        }
+    }
+    else
+    {
+        do
+        {
+            uint8_t* pdst = buf;
+            int32_t hcount = width;
+            do
+            {
+                *pdst++ = blue;
+                *pdst++ = green;
+                *pdst++ = red;
+            } while (--hcount);
+
+            buf += stride;
+        } while (--height);
+    }
+}
+
+void blipvert::Fill_RGB24_Faster(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha, int32_t width, int32_t height, uint8_t* buf, int32_t stride)
+{
     uint32_t fill = static_cast<uint32_t>(((((alpha) & 0xFF) << 24) | (((red) & 0xFF) << 16) | (((green) & 0xFF) << 8) | ((blue) & 0xFF)));
 
     if (!stride)
@@ -114,8 +145,7 @@ void blipvert::Fill_RGB565(uint8_t red, uint8_t green, uint8_t blue, uint8_t alp
         uint32_t count = width * height;
         while (count)
         {
-            *pdst = fill;
-            pdst++;
+            *pdst++ = fill;
             count--;
         }
     }
@@ -127,8 +157,7 @@ void blipvert::Fill_RGB565(uint8_t red, uint8_t green, uint8_t blue, uint8_t alp
             int32_t hcount = width;
             do
             {
-                *pdst = fill;
-                pdst++;
+                *pdst++ = fill;
             } while (--hcount);
 
             buf += stride;
@@ -139,11 +168,7 @@ void blipvert::Fill_RGB565(uint8_t red, uint8_t green, uint8_t blue, uint8_t alp
 void blipvert::Fill_RGB555(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha, int32_t width, int32_t height, uint8_t* buf, int32_t stride)
 {
     uint16_t fill;
-    PackRGB555Word(fill, red, green, blue);
-    if (alpha)
-        fill |= 0x8000;
-    else
-        fill &= 0x7FFF;
+    PackARGB555Word(fill, alpha, red, green, blue);
 
     if (!stride)
     {
@@ -151,8 +176,7 @@ void blipvert::Fill_RGB555(uint8_t red, uint8_t green, uint8_t blue, uint8_t alp
         uint32_t count = width * height;
         while (count)
         {
-            *pdst = fill;
-            pdst++;
+            *pdst++ = fill;
             count--;
         }
     }
@@ -165,8 +189,7 @@ void blipvert::Fill_RGB555(uint8_t red, uint8_t green, uint8_t blue, uint8_t alp
             int32_t hcount = width;
             do
             {
-                *pdst = fill;
-                pdst++;
+                *pdst++ = fill;
             } while (--hcount);
 
             buf += stride;

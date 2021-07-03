@@ -729,6 +729,7 @@ FillcolorTableEntry FillColorTable[] = {
     { MVFMT_RGBA, Fill_RGBA },
     { MVFMT_RGB32, Fill_RGB32 },
     { MVFMT_RGB24, Fill_RGB24 },
+    //{ MVFMT_RGB24, Fill_RGB24_Faster },
     { MVFMT_RGB565, Fill_RGB565 },
     { MVFMT_RGB555, Fill_RGB555 },
     { MVFMT_YUY2, Fill_YUY2 },

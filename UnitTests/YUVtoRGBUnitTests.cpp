@@ -410,7 +410,7 @@ namespace BlipvertUnitTests
 			uint8_t Y;
 			uint8_t U;
 			uint8_t V;
-			FastRGBtoYUV(red & 0xF8, green & 0xF8, blue & 0xF8, &Y, &U, &V);
+			FastRGBtoYUV(red , green, blue, &Y, &U, &V);
 
 			fullBufFunctPtr(Y, U, V, alpha, width, height, yuvBufPtr, 0);
 

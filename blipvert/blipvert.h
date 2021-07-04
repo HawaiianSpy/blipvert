@@ -120,7 +120,7 @@ namespace blipvert
     extern const Fourcc FOURCC_BI_PNG;
 
     extern const Fourcc FOURCC_RGBA;            // https://www.fourcc.org/pixel-format/rgb-rgba/
-                                                // I've never encountered an RGBA that wasn't 32 bits, therfore 32-bits is asumed here.
+                                                // I've never encountered an RGBA that wasn't 32 bits, therfore 32-bits is assumed here.
     extern const Fourcc FOURCC_RGBT;
 
     extern const Fourcc FOURCC_BGRA;

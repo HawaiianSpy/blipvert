@@ -301,38 +301,36 @@ void PlanarYUV_to_RGB32(int32_t width, int32_t height,
 
             for (int16_t x = 0; x < width; x += 2)
             {
+                int32_t bprime = u_table[*up];
+                int32_t gprime = uv_table[*up][*vp];
+                int32_t rprime = v_table[*vp];
+
                 // column 1 row 1
                 int32_t Y = luminance_table[yp[0]];
-                pdst[0] = saturation_table[Y + u_table[up[0]]];                                    // blue
-                pdst[1] = saturation_table[Y + uv_table[up[0]][vp[0]]];                            // green
-                pdst[2] = saturation_table[Y + v_table[vp[0]]];                                    // red
+                pdst[0] = saturation_table[Y + bprime];                     // blue
+                pdst[1] = saturation_table[Y + gprime];                     // green
+                pdst[2] = saturation_table[Y + rprime];                     // red
                 pdst[3] = 0xFF;
 
                 // column 1 row 2
-                uint16_t u_avg_bot = (static_cast<uint16_t>(up[0]) + static_cast<uint16_t>(up[uv_stride])) >> 1;
-                uint16_t v_avg_bot = (static_cast<uint16_t>(vp[0]) + static_cast<uint16_t>(vp[uv_stride])) >> 1;
                 Y = luminance_table[yp[y_stride]];
-                pdst[out_stride] = saturation_table[Y + u_table[u_avg_bot]];                    // blue
-                pdst[1 + out_stride] = saturation_table[Y + uv_table[u_avg_bot][v_avg_bot]];    // green
-                pdst[2 + out_stride] = saturation_table[Y + v_table[v_avg_bot]];                // red
+                pdst[out_stride] = saturation_table[Y + bprime];            // blue
+                pdst[1 + out_stride] = saturation_table[Y + gprime];        // green
+                pdst[2 + out_stride] = saturation_table[Y + rprime];        // red
                 pdst[3 + out_stride] = 0xFF;
 
                 // column 2 row 1
-                uint16_t u_avg_top = (static_cast<uint16_t>(up[0]) + static_cast<uint16_t>(up[1])) >> 1;
-                uint16_t v_avg_top = (static_cast<uint16_t>(vp[0]) + static_cast<uint16_t>(vp[1])) >> 1;
                 Y = luminance_table[yp[1]];
-                pdst[4] = saturation_table[Y + u_table[u_avg_top]];                        // blue
-                pdst[5] = saturation_table[Y + uv_table[u_avg_top][v_avg_top]];            // green
-                pdst[6] = saturation_table[Y + v_table[v_avg_top]];                        // red
+                pdst[4] = saturation_table[Y + bprime];                     // blue
+                pdst[5] = saturation_table[Y + gprime];                     // green
+                pdst[6] = saturation_table[Y + rprime];                     // red
                 pdst[7] = 0xFF;
 
                 // column 2 row 2
-                uint16_t u_avg_tb = (u_avg_bot + u_avg_top) >> 1;
-                uint16_t v_avg_tb = (v_avg_bot + v_avg_top) >> 1;
                 Y = luminance_table[yp[1 + y_stride]];
-                pdst[4 + out_stride] = saturation_table[Y + u_table[u_avg_tb]];                // blue
-                pdst[5 + out_stride] = saturation_table[Y + uv_table[u_avg_tb][v_avg_tb]];    // green
-                pdst[6 + out_stride] = saturation_table[Y + v_table[v_avg_tb]];                // red
+                pdst[4 + out_stride] = saturation_table[Y + bprime];        // blue
+                pdst[5 + out_stride] = saturation_table[Y + gprime];        // green
+                pdst[6 + out_stride] = saturation_table[Y + rprime];        // red
                 pdst[7 + out_stride] = 0xFF;
 
                 pdst += 8;
@@ -358,48 +356,18 @@ void PlanarYUV_to_RGB32(int32_t width, int32_t height,
 
             for (int16_t x = 0; x < width; x += 4)
             {
-                uint16_t u_avg_col[4];
-                u_avg_col[0] = up[0];
-                u_avg_col[1] = static_cast<uint16_t>(((static_cast<uint32_t>(up[0]) * 768) + \
-                    (static_cast<uint32_t>(up[1]) * 256)) >> 10);
-                u_avg_col[2] = (static_cast<uint16_t>(up[0]) + static_cast<uint16_t>(up[1])) >> 1;
-                u_avg_col[3] = static_cast<uint16_t>(((static_cast<uint32_t>(up[0]) * 256) + \
-                    (static_cast<uint32_t>(up[1]) * 768)) >> 10);
-
-                uint16_t u_avg_row[4];
-                u_avg_row[0] = up[0];
-                u_avg_row[1] = static_cast<uint16_t>(((static_cast<uint32_t>(up[0]) * 768) + \
-                    (static_cast<uint32_t>(up[uv_stride]) * 256)) >> 10);
-                u_avg_row[2] = (static_cast<uint16_t>(up[0]) + static_cast<uint16_t>(up[uv_stride])) >> 1;
-                u_avg_row[3] = static_cast<uint16_t>(((static_cast<uint32_t>(up[0]) * 256) + \
-                    (static_cast<uint32_t>(up[uv_stride]) * 768)) >> 10);
-
-                uint16_t v_avg_col[4];
-                v_avg_col[0] = vp[0];
-                v_avg_col[1] = static_cast<uint16_t>(((static_cast<uint32_t>(vp[0]) * 768) + \
-                    (static_cast<uint32_t>(vp[1]) * 256)) >> 10);
-                v_avg_col[2] = (static_cast<uint16_t>(vp[0]) + static_cast<uint16_t>(vp[1])) >> 1;
-                v_avg_col[3] = static_cast<uint16_t>(((static_cast<uint32_t>(vp[0]) * 256) + \
-                    (static_cast<uint32_t>(vp[1]) * 768)) >> 10);
-
-                uint16_t v_avg_row[4];
-                v_avg_row[0] = vp[0];
-                v_avg_row[1] = static_cast<uint16_t>(((static_cast<uint32_t>(vp[0]) * 768) + \
-                    (static_cast<uint32_t>(vp[uv_stride]) * 256)) >> 10);
-                v_avg_row[2] = (static_cast<uint16_t>(vp[0]) + static_cast<uint16_t>(vp[uv_stride])) >> 1;
-                v_avg_row[3] = static_cast<uint16_t>(((static_cast<uint32_t>(vp[0]) * 256) + \
-                    (static_cast<uint32_t>(vp[uv_stride]) * 768)) >> 10);
+                int32_t bprime = u_table[*up];
+                int32_t gprime = uv_table[*up][*vp];
+                int32_t rprime = v_table[*vp];
 
                 for (int16_t row = 0; row < 4; row++)
                 {
                     for (int16_t col = 0; col < 4; col++)
                     {
                         int32_t Y = luminance_table[yp[col + y_stride * row]];
-                        uint16_t u_val = (u_avg_col[col] + u_avg_row[row]) >> 1;
-                        uint16_t v_val = (v_avg_col[col] + v_avg_row[row]) >> 1;
-                        pdst[col * 4 + out_stride * row] = saturation_table[Y + u_table[u_val]];                // blue
-                        pdst[1 + col * 4 + out_stride * row] = saturation_table[Y + uv_table[u_val][v_val]];    // green
-                        pdst[2 + col * 4 + out_stride * row] = saturation_table[Y + v_table[v_val]];            // red
+                        pdst[col * 4 + out_stride * row] = saturation_table[Y + bprime];            // blue
+                        pdst[1 + col * 4 + out_stride * row] = saturation_table[Y + gprime];        // green
+                        pdst[2 + col * 4 + out_stride * row] = saturation_table[Y + rprime];        // red
                         pdst[3 + col * 4 + out_stride * row] = 0xFF;
                     }
                 }
@@ -476,35 +444,33 @@ void PlanarYUV_to_RGB24(int32_t width, int32_t height,
 
             for (int16_t x = 0; x < width; x += 2)
             {
+                int32_t bprime = u_table[*up];
+                int32_t gprime = uv_table[*up][*vp];
+                int32_t rprime = v_table[*vp];
+
                 // column 1 row 1
                 int32_t Y = luminance_table[yp[0]];
-                pdst[0] = saturation_table[Y + u_table[up[0]]];                                    // blue
-                pdst[1] = saturation_table[Y + uv_table[up[0]][vp[0]]];                            // green
-                pdst[2] = saturation_table[Y + v_table[vp[0]]];                                    // red
+                pdst[0] = saturation_table[Y + bprime];                     // blue
+                pdst[1] = saturation_table[Y + gprime];                     // green
+                pdst[2] = saturation_table[Y + rprime];                     // red
 
                 // column 1 row 2
-                uint16_t u_avg_bot = (static_cast<uint16_t>(up[0]) + static_cast<uint16_t>(up[uv_stride])) >> 1;
-                uint16_t v_avg_bot = (static_cast<uint16_t>(vp[0]) + static_cast<uint16_t>(vp[uv_stride])) >> 1;
                 Y = luminance_table[yp[y_stride]];
-                pdst[out_stride] = saturation_table[Y + u_table[u_avg_bot]];                    // blue
-                pdst[1 + out_stride] = saturation_table[Y + uv_table[u_avg_bot][v_avg_bot]];    // green
-                pdst[2 + out_stride] = saturation_table[Y + v_table[v_avg_bot]];                // red
+                pdst[out_stride] = saturation_table[Y + bprime];            // blue
+                pdst[1 + out_stride] = saturation_table[Y + gprime];        // green
+                pdst[2 + out_stride] = saturation_table[Y + rprime];        // red
 
                 // column 2 row 1
-                uint16_t u_avg_top = (static_cast<uint16_t>(up[0]) + static_cast<uint16_t>(up[1])) >> 1;
-                uint16_t v_avg_top = (static_cast<uint16_t>(vp[0]) + static_cast<uint16_t>(vp[1])) >> 1;
                 Y = luminance_table[yp[1]];
-                pdst[3] = saturation_table[Y + u_table[u_avg_top]];                                // blue
-                pdst[4] = saturation_table[Y + uv_table[u_avg_top][v_avg_top]];                    // green
-                pdst[5] = saturation_table[Y + v_table[v_avg_top]];                                // red
+                pdst[3] = saturation_table[Y + bprime];                     // blue
+                pdst[4] = saturation_table[Y + gprime];                     // green
+                pdst[5] = saturation_table[Y + rprime];                     // red
 
                 // column 2 row 2
-                uint16_t u_avg_tb = (u_avg_bot + u_avg_top) >> 1;
-                uint16_t v_avg_tb = (v_avg_bot + v_avg_top) >> 1;
                 Y = luminance_table[yp[1 + y_stride]];
-                pdst[3 + out_stride] = saturation_table[Y + u_table[u_avg_tb]];                    // blue
-                pdst[4 + out_stride] = saturation_table[Y + uv_table[u_avg_tb][v_avg_tb]];        // green
-                pdst[5 + out_stride] = saturation_table[Y + v_table[v_avg_tb]];                    // red
+                pdst[3 + out_stride] = saturation_table[Y + bprime];        // blue
+                pdst[4 + out_stride] = saturation_table[Y + gprime];        // green
+                pdst[5 + out_stride] = saturation_table[Y + rprime];        // red
 
                 pdst += 6;
                 yp += 2;
@@ -529,48 +495,18 @@ void PlanarYUV_to_RGB24(int32_t width, int32_t height,
 
             for (int16_t x = 0; x < width; x += 4)
             {
-                uint16_t u_avg_col[4];
-                u_avg_col[0] = up[0];
-                u_avg_col[1] = static_cast<uint16_t>(((static_cast<uint32_t>(up[0]) * 768) + \
-                    (static_cast<uint32_t>(up[1]) * 256)) >> 10);
-                u_avg_col[2] = (static_cast<uint16_t>(up[0]) + static_cast<uint16_t>(up[1])) >> 1;
-                u_avg_col[3] = static_cast<uint16_t>(((static_cast<uint32_t>(up[0]) * 256) + \
-                    (static_cast<uint32_t>(up[1]) * 768)) >> 10);
-
-                uint16_t u_avg_row[4];
-                u_avg_row[0] = up[0];
-                u_avg_row[1] = static_cast<uint16_t>(((static_cast<uint32_t>(up[0]) * 768) + \
-                    (static_cast<uint32_t>(up[uv_stride]) * 256)) >> 10);
-                u_avg_row[2] = (static_cast<uint16_t>(up[0]) + static_cast<uint16_t>(up[uv_stride])) >> 1;
-                u_avg_row[3] = static_cast<uint16_t>(((static_cast<uint32_t>(up[0]) * 256) + \
-                    (static_cast<uint32_t>(up[uv_stride]) * 768)) >> 10);
-
-                uint16_t v_avg_col[4];
-                v_avg_col[0] = vp[0];
-                v_avg_col[1] = static_cast<uint16_t>(((static_cast<uint32_t>(vp[0]) * 768) + \
-                    (static_cast<uint32_t>(vp[1]) * 256)) >> 10);
-                v_avg_col[2] = (static_cast<uint16_t>(vp[0]) + static_cast<uint16_t>(vp[1])) >> 1;
-                v_avg_col[3] = static_cast<uint16_t>(((static_cast<uint32_t>(vp[0]) * 256) + \
-                    (static_cast<uint32_t>(vp[1]) * 768)) >> 10);
-
-                uint16_t v_avg_row[4];
-                v_avg_row[0] = vp[0];
-                v_avg_row[1] = static_cast<uint16_t>(((static_cast<uint32_t>(vp[0]) * 768) + \
-                    (static_cast<uint32_t>(vp[uv_stride]) * 256)) >> 10);
-                v_avg_row[2] = (static_cast<uint16_t>(vp[0]) + static_cast<uint16_t>(vp[uv_stride])) >> 1;
-                v_avg_row[3] = static_cast<uint16_t>(((static_cast<uint32_t>(vp[0]) * 256) + \
-                    (static_cast<uint32_t>(vp[uv_stride]) * 768)) >> 10);
+                int32_t bprime = u_table[*up];
+                int32_t gprime = uv_table[*up][*vp];
+                int32_t rprime = v_table[*vp];
 
                 for (int16_t row = 0; row < 4; row++)
                 {
                     for (int16_t col = 0; col < 4; col++)
                     {
                         int32_t Y = luminance_table[yp[col + y_stride * row]];
-                        uint16_t u_val = (u_avg_col[col] + u_avg_row[row]) >> 1;
-                        uint16_t v_val = (v_avg_col[col] + v_avg_row[row]) >> 1;
-                        pdst[col * 3 + out_stride * row] = saturation_table[Y + u_table[u_val]];                // blue
-                        pdst[1 + col * 3 + out_stride * row] = saturation_table[Y + uv_table[u_val][v_val]];    // green
-                        pdst[2 + col * 3 + out_stride * row] = saturation_table[Y + v_table[v_val]];            // red
+                        pdst[col * 3 + out_stride * row] = saturation_table[Y + bprime];            // blue
+                        pdst[1 + col * 3 + out_stride * row] = saturation_table[Y + gprime];        // green
+                        pdst[2 + col * 3 + out_stride * row] = saturation_table[Y + rprime];        // red
                     }
                 }
 
@@ -646,39 +582,37 @@ void PlanarYUV_to_RGB565(int32_t width, int32_t height,
 
             for (int16_t x = 0; x < width; x += 2)
             {
+                int32_t bprime = u_table[*up];
+                int32_t gprime = uv_table[*up][*vp];
+                int32_t rprime = v_table[*vp];
+
                 // column 1 row 1
                 int32_t Y = luminance_table[yp[0]];
                 PackRGB565Word(*(reinterpret_cast<uint16_t*>(pdst)),
-                    saturation_table[Y + v_table[vp[0]]],                // red
-                    saturation_table[Y + uv_table[up[0]][vp[0]]],        // green
-                    saturation_table[Y + u_table[up[0]]]);                // blue
+                    saturation_table[Y + rprime],       // red
+                    saturation_table[Y + gprime],       // green
+                    saturation_table[Y + bprime]);      // blue
 
                 // column 1 row 2
-                uint16_t u_avg_bot = (static_cast<uint16_t>(up[0]) + static_cast<uint16_t>(up[uv_stride])) >> 1;
-                uint16_t v_avg_bot = (static_cast<uint16_t>(vp[0]) + static_cast<uint16_t>(vp[uv_stride])) >> 1;
                 Y = luminance_table[yp[y_stride]];
                 PackRGB565Word(*(reinterpret_cast<uint16_t*>(pdst + out_stride)),
-                    saturation_table[Y + v_table[v_avg_bot]],               // red
-                    saturation_table[Y + uv_table[u_avg_bot][v_avg_bot]],   // green
-                    saturation_table[Y + u_table[u_avg_bot]]);              // blue
+                    saturation_table[Y + rprime],       // red
+                    saturation_table[Y + gprime],       // green
+                    saturation_table[Y + bprime]);      // blue
 
                 // column 2 row 1
-                uint16_t u_avg_top = (static_cast<uint16_t>(up[0]) + static_cast<uint16_t>(up[1])) >> 1;
-                uint16_t v_avg_top = (static_cast<uint16_t>(vp[0]) + static_cast<uint16_t>(vp[1])) >> 1;
                 Y = luminance_table[yp[1]];
                 PackRGB565Word(*(reinterpret_cast<uint16_t*>(pdst + 2)),
-                    saturation_table[Y + v_table[v_avg_top]],                   // red
-                    saturation_table[Y + uv_table[u_avg_top][v_avg_top]],       // green
-                    saturation_table[Y + u_table[u_avg_top]]);                  // blue
+                    saturation_table[Y + rprime],       // red
+                    saturation_table[Y + gprime],       // green
+                    saturation_table[Y + bprime]);      // blue
 
                 // column 2 row 2
-                uint16_t u_avg_tb = (u_avg_bot + u_avg_top) >> 1;
-                uint16_t v_avg_tb = (v_avg_bot + v_avg_top) >> 1;
                 Y = luminance_table[yp[1 + y_stride]];
                 PackRGB565Word(*(reinterpret_cast<uint16_t*>(pdst + 2 + out_stride)),
-                    saturation_table[Y + v_table[v_avg_tb]],                // red
-                    saturation_table[Y + uv_table[u_avg_tb][v_avg_tb]],     // green
-                    saturation_table[Y + u_table[u_avg_tb]]);               // blue
+                    saturation_table[Y + rprime],       // red
+                    saturation_table[Y + gprime],       // green
+                    saturation_table[Y + bprime]);      // blue
 
                 pdst += 4;
                 yp += 2;
@@ -703,49 +637,19 @@ void PlanarYUV_to_RGB565(int32_t width, int32_t height,
 
             for (int16_t x = 0; x < width; x += 4)
             {
-                uint16_t u_avg_col[4];
-                u_avg_col[0] = up[0];
-                u_avg_col[1] = static_cast<uint16_t>(((static_cast<uint32_t>(up[0]) * 768) + \
-                    (static_cast<uint32_t>(up[1]) * 256)) >> 10);
-                u_avg_col[2] = (static_cast<uint16_t>(up[0]) + static_cast<uint16_t>(up[1])) >> 1;
-                u_avg_col[3] = static_cast<uint16_t>(((static_cast<uint32_t>(up[0]) * 256) + \
-                    (static_cast<uint32_t>(up[1]) * 768)) >> 10);
-
-                uint16_t u_avg_row[4];
-                u_avg_row[0] = up[0];
-                u_avg_row[1] = static_cast<uint16_t>(((static_cast<uint32_t>(up[0]) * 768) + \
-                    (static_cast<uint32_t>(up[uv_stride]) * 256)) >> 10);
-                u_avg_row[2] = (static_cast<uint16_t>(up[0]) + static_cast<uint16_t>(up[uv_stride])) >> 1;
-                u_avg_row[3] = static_cast<uint16_t>(((static_cast<uint32_t>(up[0]) * 256) + \
-                    (static_cast<uint32_t>(up[uv_stride]) * 768)) >> 10);
-
-                uint16_t v_avg_col[4];
-                v_avg_col[0] = vp[0];
-                v_avg_col[1] = static_cast<uint16_t>(((static_cast<uint32_t>(vp[0]) * 768) + \
-                    (static_cast<uint32_t>(vp[1]) * 256)) >> 10);
-                v_avg_col[2] = (static_cast<uint16_t>(vp[0]) + static_cast<uint16_t>(vp[1])) >> 1;
-                v_avg_col[3] = static_cast<uint16_t>(((static_cast<uint32_t>(vp[0]) * 256) + \
-                    (static_cast<uint32_t>(vp[1]) * 768)) >> 10);
-
-                uint16_t v_avg_row[4];
-                v_avg_row[0] = vp[0];
-                v_avg_row[1] = static_cast<uint16_t>(((static_cast<uint32_t>(vp[0]) * 768) + \
-                    (static_cast<uint32_t>(vp[uv_stride]) * 256)) >> 10);
-                v_avg_row[2] = (static_cast<uint16_t>(vp[0]) + static_cast<uint16_t>(vp[uv_stride])) >> 1;
-                v_avg_row[3] = static_cast<uint16_t>(((static_cast<uint32_t>(vp[0]) * 256) + \
-                    (static_cast<uint32_t>(vp[uv_stride]) * 768)) >> 10);
+                int32_t bprime = u_table[*up];
+                int32_t gprime = uv_table[*up][*vp];
+                int32_t rprime = v_table[*vp];
 
                 for (int16_t row = 0; row < 4; row++)
                 {
                     for (int16_t col = 0; col < 4; col++)
                     {
                         int32_t Y = luminance_table[yp[col + y_stride * row]];
-                        uint16_t u_val = (u_avg_col[col] + u_avg_row[row]) >> 1;
-                        uint16_t v_val = (v_avg_col[col] + v_avg_row[row]) >> 1;
                         PackRGB565Word(*(reinterpret_cast<uint16_t*>(pdst + col * 2 + out_stride * row)),
-                            saturation_table[Y + v_table[v_val]],               // red
-                            saturation_table[Y + uv_table[u_val][v_val]],       // green
-                            saturation_table[Y + u_table[u_val]]);              // blue
+                            saturation_table[Y + rprime],       // red
+                            saturation_table[Y + gprime],       // green
+                            saturation_table[Y + bprime]);      // blue
                     }
                 }
 
@@ -817,41 +721,43 @@ void PlanarYUV_to_RGB555(int32_t width, int32_t height,
             uint8_t* yp = in_buf;
             uint8_t* up = uplane;
             uint8_t* vp = vplane;
-            uint16_t* pdst = reinterpret_cast<uint16_t*>(out_buf);
+            uint8_t* pdst = out_buf;
 
             for (int16_t x = 0; x < width; x += 2)
             {
+                int32_t bprime = u_table[*up];
+                int32_t gprime = uv_table[*up][*vp];
+                int32_t rprime = v_table[*vp];
+
                 // column 1 row 1
                 int32_t Y = luminance_table[yp[0]];
-                PackRGB555Word(pdst[0], saturation_table[Y + v_table[vp[0]]],   // red
-                    saturation_table[Y + uv_table[up[0]][vp[0]]],               // green
-                    saturation_table[Y + u_table[up[0]]]);                      // blue
+                PackRGB555Word(*reinterpret_cast<uint16_t*>(pdst),
+                    saturation_table[Y + rprime],       // red
+                    saturation_table[Y + gprime],       // green
+                    saturation_table[Y + bprime]);      // blue
 
                 // column 1 row 2
-                uint16_t u_avg_bot = (static_cast<uint16_t>(up[0]) + static_cast<uint16_t>(up[uv_stride])) >> 1;
-                uint16_t v_avg_bot = (static_cast<uint16_t>(vp[0]) + static_cast<uint16_t>(vp[uv_stride])) >> 1;
                 Y = luminance_table[yp[y_stride]];
-                PackRGB555Word(pdst[out_stride], saturation_table[Y + v_table[v_avg_bot]],  // red
-                    saturation_table[Y + uv_table[u_avg_bot][v_avg_bot]],                   // green
-                    saturation_table[Y + u_table[u_avg_bot]]);                              // blue
+                PackRGB555Word(*reinterpret_cast<uint16_t*>(pdst + out_stride),
+                    saturation_table[Y + rprime],       // red
+                    saturation_table[Y + gprime],       // green
+                    saturation_table[Y + bprime]);      // blue
 
                 // column 2 row 1
-                uint16_t u_avg_top = (static_cast<uint16_t>(up[0]) + static_cast<uint16_t>(up[1])) >> 1;
-                uint16_t v_avg_top = (static_cast<uint16_t>(vp[0]) + static_cast<uint16_t>(vp[1])) >> 1;
                 Y = luminance_table[yp[1]];
-                PackRGB555Word(pdst[1], saturation_table[Y + v_table[v_avg_top]],   // red
-                    saturation_table[Y + uv_table[u_avg_top][v_avg_top]],           // green
-                    saturation_table[Y + u_table[u_avg_top]]);                      // blue
+                PackRGB555Word(*reinterpret_cast<uint16_t*>(pdst + 2),
+                    saturation_table[Y + rprime],       // red
+                    saturation_table[Y + gprime],       // green
+                    saturation_table[Y + bprime]);      // blue
 
                 // column 2 row 2
-                uint16_t u_avg_tb = (u_avg_bot + u_avg_top) >> 1;
-                uint16_t v_avg_tb = (v_avg_bot + v_avg_top) >> 1;
                 Y = luminance_table[yp[1 + y_stride]];
-                PackRGB555Word(pdst[1 + out_stride], saturation_table[Y + v_table[v_avg_tb]],   // red
-                    saturation_table[Y + uv_table[u_avg_tb][v_avg_tb]],                         // green
-                    saturation_table[Y + u_table[u_avg_tb]]);                                   // blue
+                PackRGB555Word(*reinterpret_cast<uint16_t*>(pdst + 2 + out_stride),
+                    saturation_table[Y + rprime],       // red
+                    saturation_table[Y + gprime],       // green
+                    saturation_table[Y + bprime]);      // blue
 
-                pdst += 1;
+                pdst += 4;
                 yp += 2;
                 up++;
                 vp++;
@@ -874,49 +780,19 @@ void PlanarYUV_to_RGB555(int32_t width, int32_t height,
 
             for (int16_t x = 0; x < width; x += 4)
             {
-                uint16_t u_avg_col[4];
-                u_avg_col[0] = up[0];
-                u_avg_col[1] = static_cast<uint16_t>(((static_cast<uint32_t>(up[0]) * 768) + \
-                    (static_cast<uint32_t>(up[1]) * 256)) >> 10);
-                u_avg_col[2] = (static_cast<uint16_t>(up[0]) + static_cast<uint16_t>(up[1])) >> 1;
-                u_avg_col[3] = static_cast<uint16_t>(((static_cast<uint32_t>(up[0]) * 256) + \
-                    (static_cast<uint32_t>(up[1]) * 768)) >> 10);
-
-                uint16_t u_avg_row[4];
-                u_avg_row[0] = up[0];
-                u_avg_row[1] = static_cast<uint16_t>(((static_cast<uint32_t>(up[0]) * 768) + \
-                    (static_cast<uint32_t>(up[uv_stride]) * 256)) >> 10);
-                u_avg_row[2] = (static_cast<uint16_t>(up[0]) + static_cast<uint16_t>(up[uv_stride])) >> 1;
-                u_avg_row[3] = static_cast<uint16_t>(((static_cast<uint32_t>(up[0]) * 256) + \
-                    (static_cast<uint32_t>(up[uv_stride]) * 768)) >> 10);
-
-                uint16_t v_avg_col[4];
-                v_avg_col[0] = vp[0];
-                v_avg_col[1] = static_cast<uint16_t>(((static_cast<uint32_t>(vp[0]) * 768) + \
-                    (static_cast<uint32_t>(vp[1]) * 256)) >> 10);
-                v_avg_col[2] = (static_cast<uint16_t>(vp[0]) + static_cast<uint16_t>(vp[1])) >> 1;
-                v_avg_col[3] = static_cast<uint16_t>(((static_cast<uint32_t>(vp[0]) * 256) + \
-                    (static_cast<uint32_t>(vp[1]) * 768)) >> 10);
-
-                uint16_t v_avg_row[4];
-                v_avg_row[0] = vp[0];
-                v_avg_row[1] = static_cast<uint16_t>(((static_cast<uint32_t>(vp[0]) * 768) + \
-                    (static_cast<uint32_t>(vp[uv_stride]) * 256)) >> 10);
-                v_avg_row[2] = (static_cast<uint16_t>(vp[0]) + static_cast<uint16_t>(vp[uv_stride])) >> 1;
-                v_avg_row[3] = static_cast<uint16_t>(((static_cast<uint32_t>(vp[0]) * 256) + \
-                    (static_cast<uint32_t>(vp[uv_stride]) * 768)) >> 10);
+                int32_t bprime = u_table[*up];
+                int32_t gprime = uv_table[*up][*vp];
+                int32_t rprime = v_table[*vp];
 
                 for (int16_t row = 0; row < 4; row++)
                 {
                     for (int16_t col = 0; col < 4; col++)
                     {
                         int32_t Y = luminance_table[yp[col + y_stride * row]];
-                        uint16_t u_val = (u_avg_col[col] + u_avg_row[row]) >> 1;
-                        uint16_t v_val = (v_avg_col[col] + v_avg_row[row]) >> 1;
                         PackRGB555Word(*(reinterpret_cast<uint16_t*>(pdst + col * 2 + out_stride * row)),
-                            saturation_table[Y + v_table[v_val]],                // red
-                            saturation_table[Y + uv_table[u_val][v_val]],        // green
-                            saturation_table[Y + u_table[u_val]]);                // blue
+                            saturation_table[Y + rprime],       // red
+                            saturation_table[Y + gprime],       // green
+                            saturation_table[Y + bprime]);      // blue
                     }
                 }
 

@@ -478,7 +478,7 @@ void blipvert::Fill_Y41P(uint8_t y_level, uint8_t u_level, uint8_t v_level, uint
         stride = width / 8 * 12;
 
     uint32_t yuvfill = (y_level << 24 | v_level << 16 | y_level << 8 | u_level);
-    uint32_t yfill = rgb32_greyscale[y_level];
+    uint32_t yfill = (y_level << 24 | y_level << 16 | y_level << 8 | y_level);
 
     while (height)
     {

@@ -44,7 +44,7 @@ using namespace blipvert;
 
 namespace BlipvertUnitTests
 {
-	TEST_CLASS(RGBtoVUVUnitTests)
+	TEST_CLASS(RGBtoYUVUnitTests)
 	{
 	public:
 

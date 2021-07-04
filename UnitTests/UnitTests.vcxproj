@@ -171,6 +171,7 @@
     <ClCompile Include="FindVideoTransformUnitTests.cpp" />
     <ClCompile Include="RGBtoYUVUnitTests.cpp" />
     <ClCompile Include="UtilityFunctionUnitTests.cpp" />
+    <ClCompile Include="YUVtoRGBUnitTests.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BufferChecks.h" />

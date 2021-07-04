@@ -14,7 +14,7 @@ Regarding testing: The transform functions were tested back in the day using thi
 3. Transform whatever the output bitmap was into a format that can be displayed by a video renderer.
 4. Does it look like the same video stream that went in? If so, "pass." If not, "fail." 
 
-I added some spot unit tests for the transforms converting RGB32 to YUV formats and back to RGB32. Unit tests for the YUV formats that average the color channel values (U & V) for a lossy type of compression are just too messy to implement in a practical manner for this project. I also added some unit tests for the library functions and for the RGB to YUV / YUV to RGB lookup tables.
+I'm working on a complete unit test suite for all of the transforms and the utility functions.
 
 Regards,
 

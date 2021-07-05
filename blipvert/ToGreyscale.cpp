@@ -28,6 +28,7 @@
 #include "ToGreyscale.h"
 #include "LookupTables.h"
 #include "CommonMacros.h"
+#include "blipvert.h"
 #include <cstring>
 
 using namespace blipvert;
@@ -96,31 +97,68 @@ void blipvert::RGB32_to_Greyscale(int32_t  width, int32_t height, uint8_t* buf, 
 
 void blipvert::RGB24_to_Greyscale(int32_t  width, int32_t height, uint8_t* buf, int32_t stride, xRGBQUAD* in_palette)
 {
-    if (!stride)
+    if (UseFasterLooping)
     {
-        uint32_t count = width * height;
-        while (count)
+        if (!stride)
         {
-            *reinterpret_cast<uint32_t*>(buf) = rgb32_greyscale[static_cast<uint8_t>(((yr_table[buf[2]] + yg_table[buf[1]] + yb_table[buf[0]]) >> 15) + 16)];
-            buf += 3;
-            count--;
+            uint32_t count = width * height;
+            while (count)
+            {
+                *reinterpret_cast<uint32_t*>(buf) = rgb32_greyscale[static_cast<uint8_t>(((yr_table[buf[2]] + yg_table[buf[1]] + yb_table[buf[0]]) >> 15) + 16)];
+                buf += 3;
+                count--;
+            }
+        }
+        else
+        {
+            while (height)
+            {
+                uint8_t* pdst = buf;
+                int32_t hcount = width;
+                while (hcount)
+                {
+                    *reinterpret_cast<uint32_t*>(pdst) = rgb32_greyscale[static_cast<uint8_t>(((yr_table[pdst[2]] + yg_table[pdst[1]] + yb_table[pdst[0]]) >> 15) + 16)];
+                    pdst += 3;
+                    hcount--;
+                }
+
+                buf += stride;
+                height--;
+            }
         }
     }
     else
     {
-        while (height)
+        if (!stride)
         {
-            uint8_t* pdst = buf;
-            int32_t hcount = width;
-            while (hcount)
+            uint32_t count = width * height;
+            while (count)
             {
-                *reinterpret_cast<uint32_t*>(pdst) = rgb32_greyscale[static_cast<uint8_t>(((yr_table[pdst[2]] + yg_table[pdst[1]] + yb_table[pdst[0]]) >> 15) + 16)];
-                pdst += 3;
-                hcount--;
+                uint8_t Y = static_cast<uint8_t>(((yr_table[buf[2]] + yg_table[buf[1]] + yb_table[buf[0]]) >> 15) + 16);
+                *buf++ = Y;
+                *buf++ = Y;
+                *buf++ = Y;
+                count--;
             }
+        }
+        else
+        {
+            while (height)
+            {
+                uint8_t* pdst = buf;
+                int32_t hcount = width;
+                while (hcount)
+                {
+                    uint8_t Y = static_cast<uint8_t>(((yr_table[pdst[2]] + yg_table[pdst[1]] + yb_table[pdst[0]]) >> 15) + 16);
+                    *pdst++ = Y;
+                    *pdst++ = Y;
+                    *pdst++ = Y;
+                    hcount--;
+                }
 
-            buf += stride;
-            height--;
+                buf += stride;
+                height--;
+            }
         }
     }
 }

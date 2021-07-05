@@ -37,9 +37,6 @@ namespace blipvert
     void Fill_RGB565(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha, int32_t width, int32_t height, uint8_t* buf, int32_t stride = 0);
     void Fill_RGB555(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha, int32_t width, int32_t height, uint8_t* buf, int32_t stride = 0);
 
-    // Writes 32 bits at a time by overlapping the MSB. Must a have buffer that is at least 1 byte larger than a expected.
-    void Fill_RGB24_Faster(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha, int32_t width, int32_t height, uint8_t* buf, int32_t stride);
-
     // YUV colorspace fill functions
     void Fill_YUY2(uint8_t y_level, uint8_t u_level, uint8_t v_level, uint8_t alpha, int32_t width, int32_t height, uint8_t* buf, int32_t stride = 0);
     void Fill_UYVY(uint8_t y_level, uint8_t u_level, uint8_t v_level, uint8_t alpha, int32_t width, int32_t height, uint8_t* buf, int32_t stride = 0);

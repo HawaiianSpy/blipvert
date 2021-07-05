@@ -64,6 +64,10 @@ See the comments in the header files for details on parameters, etc.
 #### ```void InitializeLibrary(void);```
 *Always call this function first to initialize the library!* This sets up the lookup tables and maps that makes this code do it's thing.
 #
+#### ```bool get_UseFasterLooping();```
+#### ```void set_UseFasterLooping(bool value);```
+If set to true, the library uses faster loops with RGB24 bitmaps. The overwriting can go outside of the expected buffer size. See header file.
+#
 #### ```t_transformfunc FindVideoTransform(const MediaFormatID& inFormat, const MediaFormatID& outFormat);```
 Returns a function pointer that will convert the requested input format to the requested output format.
 #

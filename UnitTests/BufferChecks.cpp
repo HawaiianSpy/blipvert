@@ -466,7 +466,8 @@ bool BlipvertUnitTests::Check_RGBA(uint8_t ry_level, uint8_t gu_level, uint8_t b
 		int32_t hcount = width;
 		do
 		{
-			if (*pdst++ != fill) return false;
+			if (*pdst++ != fill)
+				return false;
 		} while (--hcount);
 
 		pBuffer += stride;

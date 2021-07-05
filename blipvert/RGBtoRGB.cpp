@@ -910,7 +910,6 @@ void blipvert::RGB4_to_RGB24(int32_t width, int32_t height,
             {
                 *reinterpret_cast<uint32_t*>(pdst) = *reinterpret_cast<uint32_t*>(&in_palette[*psrc & 0x0F]);
                 pdst += 3;
-                psrc++;
 
                 *reinterpret_cast<uint32_t*>(pdst) = *reinterpret_cast<uint32_t*>(&in_palette[(*psrc & 0xF0) >> 4]);
                 pdst += 3;
@@ -940,7 +939,6 @@ void blipvert::RGB4_to_RGB24(int32_t width, int32_t height,
                 *pdst++ = in_palette[index].rgbBlue;    // Blue
                 *pdst++ = in_palette[index].rgbGreen;   // Green
                 *pdst++ = in_palette[index].rgbRed;     // Red
-                psrc++;
 
                 index = (*psrc & 0xF0) >> 4;
                 *pdst++ = in_palette[index].rgbBlue;    // Blue
@@ -1077,7 +1075,7 @@ void blipvert::RGB1_to_RGB32(int32_t width, int32_t height,
     bool flipped, xRGBQUAD* in_palette)
 {
     if (!out_stride)
-        out_stride = width * 3;
+        out_stride = width * 4;
 
     uint16_t remainder = width % 8;
     if (!in_stride)
@@ -1119,7 +1117,7 @@ void blipvert::RGB1_to_RGB32(int32_t width, int32_t height,
             uint8_t mask = 1;
             do
             {
-                *pdst++ = (*reinterpret_cast<uint32_t*>(&in_palette[*psrc & mask ? 1 : 0]) | 0xFF000000);
+                *pdst = (*reinterpret_cast<uint32_t*>(&in_palette[*psrc & mask ? 1 : 0]) | 0xFF000000);
                 mask <<= 1;
             } while (--bcount);
         }
@@ -1135,7 +1133,7 @@ void blipvert::RGB1_to_RGB24(int32_t width, int32_t height,
     bool flipped, xRGBQUAD* in_palette)
 {
     if (!out_stride)
-        out_stride = width * 4;
+        out_stride = width * 3;
 
     uint16_t remainder = width % 8;
     if (!in_stride)
@@ -1168,7 +1166,8 @@ void blipvert::RGB1_to_RGB24(int32_t width, int32_t height,
                 uint8_t mask = 1;
                 do
                 {
-                    *reinterpret_cast<uint32_t*>(pdst++) = (*reinterpret_cast<uint32_t*>(&in_palette[*psrc & mask ? 1 : 0]));
+                    *reinterpret_cast<uint32_t*>(pdst) = (*reinterpret_cast<uint32_t*>(&in_palette[*psrc & mask ? 1 : 0]));
+                    pdst += 3;
                 } while (mask <<= 1);
                 psrc++;
             } while (--hcount);

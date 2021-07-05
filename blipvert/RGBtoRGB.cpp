@@ -526,7 +526,7 @@ void blipvert::RGB555_to_RGB565(int32_t width, int32_t height,
         int32_t hcount = width;
         do
         {
-            *pdst++ = ((*psrc & (RGB555_RED_MASK | RGB555_GREEN_MASK)) << 1) | (*psrc & RGB555_BLUE_MASK);
+            *pdst++ = ((*psrc & (RGB555_RED_MASK | RGB555_GREEN_MASK)) << 1) | (*psrc & RGB565_BLUE_MASK);
             psrc++;
         } while (--hcount);
 
@@ -636,7 +636,8 @@ void blipvert::RGB565_to_RGB555(int32_t width, int32_t height,
         int32_t hcount = width;
         do
         {
-            *pdst++ = 0x8000 | ((*psrc & (RGB565_RED_MASK | RGB565_GREEN_MASK)) >> 1) | (*psrc & RGB565_BLUE_MASK);
+            *pdst++ = 0x8000 | (((*psrc & (RGB565_RED_MASK | RGB565_GREEN_MASK)) >> 1) & (RGB555_RED_MASK | RGB555_GREEN_MASK)) | (*psrc & RGB555_BLUE_MASK);
+            //PackRGB555Word(*pdst++, UnpackRGB565Red(*psrc), UnpackRGB565Green(*psrc), UnpackRGB565Blue(*psrc))
             psrc++;
         } while (--hcount);
 

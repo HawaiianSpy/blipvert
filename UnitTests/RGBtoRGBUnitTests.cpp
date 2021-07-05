@@ -199,6 +199,29 @@ namespace BlipvertUnitTests
 			Run8bitPalletizedTestSeries(MVFMT_RGB8, MVFMT_RGB555);
 		}
 
+		//TEST_METHOD(RGB8_to_RGB24_Torture_UnitTest)
+		//{
+		//	uint16_t index = 100;
+		//	while (index--)
+		//	{
+		//		Run8bitPalletizedTestSeries(MVFMT_RGB8, MVFMT_RGB24);
+		//	}
+		//}
+
+		//TEST_METHOD(RGB8_to_RGB24_Fast_Torture_UnitTest)
+		//{
+		//	bool save = get_UseFasterLooping();
+		//	set_UseFasterLooping(true);
+
+		//	uint16_t index = 100;
+		//	while (index--)
+		//	{
+		//		Run8bitPalletizedTestSeries(MVFMT_RGB8, MVFMT_RGB24);
+		//	}
+
+		//	set_UseFasterLooping(save);
+		//}
+
 		//
 		// RGB4 to RGBx
 		//

@@ -33,8 +33,8 @@
 using namespace blipvert;
 using namespace BlipvertUnitTests;
 
-const uint32_t BlipvertUnitTests::TestBufferWidth = 16;
-const uint32_t BlipvertUnitTests::TestBufferHeight = 16;
+const uint32_t BlipvertUnitTests::TestBufferWidth = 1024;
+const uint32_t BlipvertUnitTests::TestBufferHeight = 768;
 
 MediaFormatID BlipvertUnitTests::YUVFormatTestList[] = {
 	MVFMT_YUY2,

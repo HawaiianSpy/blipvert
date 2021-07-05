@@ -218,6 +218,7 @@ namespace blipvert
     extern const MediaFormatID MVFMT_dvsl;
 
     extern bool IsInitialized; // true / false that the library has been initialized.
+    extern bool UseFasterLooping;
 
     //
     // Function pointer type for all colorspace transforms.
@@ -237,6 +238,13 @@ namespace blipvert
 
     // IMPORTANT: This must be called before using any of the colorspace transforms since it initializes the lookup tables.
     void InitializeLibrary(void);
+
+    // If true, the library uses faster looping for RGB <--> RGB transforms when the RGB24 format is either a source/target.
+    // The functions will write outside of the expected buffer size, so this should only be used if you have control of the
+    // size of the I/O buffers. The CalculateBufferSize function will take this flag into account to return a result with the
+    // bumped buffer size.
+    bool get_UseFasterLooping();
+    void set_UseFasterLooping(bool value);
 
     // Finds a video transform for the given input / output media formats.
     // Returns a t_transformfunc pointer for the requested transform function. Retuns nullptr if a match couldn't be found.

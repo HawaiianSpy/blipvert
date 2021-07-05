@@ -28,6 +28,7 @@
 #include "pch.h"
 #include "RGBtoRGB.h"
 #include "CommonMacros.h"
+#include "blipvert.h"
 #include "LookupTables.h"
 #include <cstring>
 
@@ -55,23 +56,52 @@ void blipvert::RGB32_to_RGB24(int32_t width, int32_t height,
         out_stride = -out_stride;
     }
 
-    do
+    if (UseFasterLooping)
     {
-        uint8_t* psrc = in_buf;
-        uint8_t* pdst = out_buf;
-        int32_t hcount = width;
         do
         {
-            *pdst++ = *psrc++;
-            *pdst++ = *psrc++;
-            *pdst++ = *psrc++;
-            psrc++;
+            uint32_t* psrc = reinterpret_cast<uint32_t*>(in_buf);
+            uint8_t* pdst = out_buf;
+            int32_t hcount = width / 4;
+            do
+            {
+                *reinterpret_cast<uint32_t*>(pdst) = *psrc++;
+                pdst += 3;
 
-        } while (--hcount);
+                *reinterpret_cast<uint32_t*>(pdst) = *psrc++;
+                pdst += 3;
 
-        in_buf += in_stride;
-        out_buf += out_stride;
-    } while (--height);
+                *reinterpret_cast<uint32_t*>(pdst) = *psrc++;
+                pdst += 3;
+
+                *reinterpret_cast<uint32_t*>(pdst) = *psrc++;
+                pdst += 3;
+
+            } while (--hcount);
+
+            in_buf += in_stride;
+            out_buf += out_stride;
+        } while (--height);
+    }
+    else
+    {
+        do
+        {
+            uint8_t* psrc = in_buf;
+            uint8_t* pdst = out_buf;
+            int32_t hcount = width;
+            do
+            {
+                *pdst++ = *psrc++;
+                *pdst++ = *psrc++;
+                *pdst++ = *psrc++;
+                psrc++;
+            } while (--hcount);
+
+            in_buf += in_stride;
+            out_buf += out_stride;
+        } while (--height);
+    }
 }
 
 void blipvert::RGB32_to_RGB565(int32_t width, int32_t height,
@@ -257,22 +287,42 @@ void blipvert::RGB24_to_RGB32(int32_t width, int32_t height,
         out_stride = -out_stride;
     }
 
-    do
+    if (UseFasterLooping)
     {
-        uint8_t* psrc = in_buf;
-        uint8_t* pdst = out_buf;
-        int32_t hcount = width;
         do
         {
-            *pdst++ = *psrc++;
-            *pdst++ = *psrc++;
-            *pdst++ = *psrc++;
-            *pdst++ = 0xFF;
-        } while (--hcount);
+            uint8_t* psrc = in_buf;
+            uint32_t* pdst = reinterpret_cast<uint32_t*>(out_buf);
+            int32_t hcount = width;
+            do
+            {
+                *pdst++ = *reinterpret_cast<uint32_t*>(psrc) | 0xFF000000;
+                psrc += 3;
+            } while (--hcount);
 
-        in_buf += in_stride;
-        out_buf += out_stride;
-    } while (--height);
+            in_buf += in_stride;
+            out_buf += out_stride;
+        } while (--height);
+    }
+    else
+    {
+        do
+        {
+            uint8_t* psrc = in_buf;
+            uint8_t* pdst = out_buf;
+            int32_t hcount = width;
+            do
+            {
+                *pdst++ = *psrc++;
+                *pdst++ = *psrc++;
+                *pdst++ = *psrc++;
+                *pdst++ = 0xFF;
+            } while (--hcount);
+
+            in_buf += in_stride;
+            out_buf += out_stride;
+        } while (--height);
+    }
 }
 
 void blipvert::RGB24_to_RGB565(int32_t width, int32_t height,
@@ -654,22 +704,42 @@ void blipvert::RGB8_to_RGB24(int32_t width, int32_t height,
         out_stride = -out_stride;
     }
 
-    do
+    if (UseFasterLooping)
     {
-        uint8_t* psrc = in_buf;
-        uint8_t* pdst = out_buf;
-        int32_t hcount = width;
         do
         {
-            *pdst++ = in_palette[*psrc].rgbBlue; // Blue
-            *pdst++ = in_palette[*psrc].rgbGreen; // Green
-            *pdst++ = in_palette[*psrc].rgbRed; // Red
-            psrc++;
-        } while (--hcount);
+            uint8_t* psrc = in_buf;
+            uint8_t* pdst = out_buf;
+            int32_t hcount = width;
+            do
+            {
+                *reinterpret_cast<uint32_t*>(pdst) = *reinterpret_cast<uint32_t*>(&in_palette[*psrc++]);
+                pdst += 3;
+            } while (--hcount);
 
-        in_buf += in_stride;
-        out_buf += out_stride;
-    } while (--height);
+            in_buf += in_stride;
+            out_buf += out_stride;
+        } while (--height);
+    }
+    else
+    {
+        do
+        {
+            uint8_t* psrc = in_buf;
+            uint8_t* pdst = out_buf;
+            int32_t hcount = width;
+            do
+            {
+                *pdst++ = in_palette[*psrc].rgbBlue; // Blue
+                *pdst++ = in_palette[*psrc].rgbGreen; // Green
+                *pdst++ = in_palette[*psrc].rgbRed; // Red
+                psrc++;
+            } while (--hcount);
+
+            in_buf += in_stride;
+            out_buf += out_stride;
+        } while (--height);
+    }
 }
 
 void blipvert::RGB8_to_RGB565(int32_t width, int32_t height,
@@ -828,34 +898,68 @@ void blipvert::RGB4_to_RGB24(int32_t width, int32_t height,
         out_stride = -out_stride;
     }
 
-    do
+    if (UseFasterLooping)
     {
-        uint8_t* psrc = in_buf;
-        uint8_t* pdst = out_buf;
-        int32_t hcount = width / 2;
         do
         {
-            uint8_t index = *psrc & 0x0F;
-            *pdst++ = in_palette[index].rgbBlue;    // Blue
-            *pdst++ = in_palette[index].rgbGreen;   // Green
-            *pdst++ = in_palette[index].rgbRed;     // Red
-            psrc++;
+            uint8_t* psrc = in_buf;
+            uint8_t* pdst = out_buf;
+            int32_t hcount = width / 2;
+            do
+            {
+                *reinterpret_cast<uint32_t*>(pdst) = *reinterpret_cast<uint32_t*>(&in_palette[*psrc & 0x0F]);
+                pdst += 3;
+                psrc++;
 
-            index = (*psrc & 0xF0) >> 4;
-            *pdst++ = in_palette[index].rgbBlue;    // Blue
-            *pdst++ = in_palette[index].rgbGreen;   // Green
-            *pdst++ = in_palette[index].rgbRed;     // Red
-            psrc++;
-        } while (--hcount);
+                *reinterpret_cast<uint32_t*>(pdst) = *reinterpret_cast<uint32_t*>(&in_palette[(*psrc & 0xF0) >> 4]);
+                pdst += 3;
+                psrc++;
+            } while (--hcount);
 
-        if (has_odd)
+            if (has_odd)
+            {
+                *reinterpret_cast<uint32_t*>(pdst) = (*reinterpret_cast<uint32_t*>(&in_palette[*psrc & 0x0F]));
+            }
+
+            in_buf += in_stride;
+            out_buf += out_stride;
+        } while (--height);
+    }
+    else
+    {
+        do
         {
-            *reinterpret_cast<uint32_t*>(pdst) = (*reinterpret_cast<uint32_t*>(&in_palette[*psrc & 0x0F]));
-        }
+            uint8_t* psrc = in_buf;
+            uint8_t* pdst = out_buf;
+            int32_t hcount = width / 2;
+            uint8_t index = 0;
+            do
+            {
+                index = *psrc & 0x0F;
+                *pdst++ = in_palette[index].rgbBlue;    // Blue
+                *pdst++ = in_palette[index].rgbGreen;   // Green
+                *pdst++ = in_palette[index].rgbRed;     // Red
+                psrc++;
 
-        in_buf += in_stride;
-        out_buf += out_stride;
-    } while (--height);
+                index = (*psrc & 0xF0) >> 4;
+                *pdst++ = in_palette[index].rgbBlue;    // Blue
+                *pdst++ = in_palette[index].rgbGreen;   // Green
+                *pdst++ = in_palette[index].rgbRed;     // Red
+                psrc++;
+            } while (--hcount);
+
+            if (has_odd)
+            {
+                index = *psrc & 0x0F;
+                *pdst++ = in_palette[index].rgbBlue;    // Blue
+                *pdst++ = in_palette[index].rgbGreen;   // Green
+                *pdst = in_palette[index].rgbRed;     // Red
+            }
+
+            in_buf += in_stride;
+            out_buf += out_stride;
+        } while (--height);
+    }
 }
 
 void blipvert::RGB4_to_RGB565(int32_t width, int32_t height,
@@ -1051,38 +1155,76 @@ void blipvert::RGB1_to_RGB24(int32_t width, int32_t height,
         out_stride = -out_stride;
     }
 
-    do
+    if (UseFasterLooping)
     {
-        uint8_t* psrc = in_buf;
-        uint8_t* pdst = out_buf;
-        int32_t hcount = width / 8;
         do
         {
-            uint8_t mask = 1;
+            uint8_t* psrc = in_buf;
+            uint8_t* pdst = out_buf;
+            int32_t hcount = width / 8;
             do
             {
-                uint8_t index = *psrc & mask ? 1 : 0;
-                *pdst++ = in_palette[index].rgbBlue;    // Blue
-                *pdst++ = in_palette[index].rgbGreen;   // Green
-                *pdst++ = in_palette[index].rgbRed;     // Red
-            } while (mask <<= 1);
-            psrc++;
-        } while (--hcount);
+                uint8_t mask = 1;
+                do
+                {
+                    *reinterpret_cast<uint32_t*>(pdst++) = (*reinterpret_cast<uint32_t*>(&in_palette[*psrc & mask ? 1 : 0]));
+                } while (mask <<= 1);
+                psrc++;
+            } while (--hcount);
 
-        if (remainder)
+            if (remainder)
+            {
+                uint16_t bcount = remainder;
+                uint8_t mask = 1;
+                do
+                {
+                    *reinterpret_cast<uint32_t*>(pdst) = (*reinterpret_cast<uint32_t*>(&in_palette[*psrc & mask ? 1 : 0]));
+                    mask <<= 1;
+                } while (--bcount);
+            }
+
+            in_buf += in_stride;
+            out_buf += out_stride;
+        } while (--height);
+    }
+    else
+    {
+        do
         {
-            uint16_t bcount = remainder;
-            uint8_t mask = 1;
+            uint8_t* psrc = in_buf;
+            uint8_t* pdst = out_buf;
+            int32_t hcount = width / 8;
             do
             {
-                *reinterpret_cast<uint32_t*>(pdst) = (*reinterpret_cast<uint32_t*>(&in_palette[*psrc & mask ? 1 : 0]));
-                mask <<= 1;
-            } while (--bcount);
-        }
+                uint8_t mask = 1;
+                do
+                {
+                    uint8_t index = *psrc & mask ? 1 : 0;
+                    *pdst++ = in_palette[index].rgbBlue;    // Blue
+                    *pdst++ = in_palette[index].rgbGreen;   // Green
+                    *pdst++ = in_palette[index].rgbRed;     // Red
+                } while (mask <<= 1);
+                psrc++;
+            } while (--hcount);
 
-        in_buf += in_stride;
-        out_buf += out_stride;
-    } while (--height);
+            if (remainder)
+            {
+                uint16_t bcount = remainder;
+                uint8_t mask = 1;
+                do
+                {
+                    uint8_t index = *psrc & mask ? 1 : 0;
+                    *pdst++ = in_palette[index].rgbBlue;    // Blue
+                    *pdst++ = in_palette[index].rgbGreen;   // Green
+                    *pdst++ = in_palette[index].rgbRed;     // Red
+                    mask <<= 1;
+                } while (--bcount);
+            }
+
+            in_buf += in_stride;
+            out_buf += out_stride;
+        } while (--height);
+    }
 }
 
 void blipvert::RGB1_to_RGB565(int32_t width, int32_t height,

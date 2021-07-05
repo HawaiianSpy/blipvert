@@ -26,6 +26,7 @@
 
 #include "pch.h"
 #include "ToFillColor.h"
+#include "blipvert.h"
 #include "CommonMacros.h"
 #include "LookupTables.h"
 #include <cstring>
@@ -73,64 +74,66 @@ void blipvert::Fill_RGB32(uint8_t red, uint8_t green, uint8_t blue, uint8_t alph
 
 void blipvert::Fill_RGB24(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha, int32_t width, int32_t height, uint8_t* buf, int32_t stride)
 {
-    if (!stride)
+    if (UseFasterLooping)
     {
-        uint32_t count = width * height;
-        while (count)
+        uint32_t fill = static_cast<uint32_t>(((((alpha) & 0xFF) << 24) | (((red) & 0xFF) << 16) | (((green) & 0xFF) << 8) | ((blue) & 0xFF)));
+
+        if (!stride)
         {
-            *buf++ = blue;
-            *buf++ = green;
-            *buf++ = red;
-            count--;
+            uint32_t count = width * height;
+            while (count)
+            {
+                *reinterpret_cast<uint32_t*>(buf) = fill;
+                buf += 3;
+                count--;
+            }
+        }
+        else
+        {
+            do
+            {
+                uint8_t* pdst = buf;
+                int32_t hcount = width;
+                do
+                {
+                    *reinterpret_cast<uint32_t*>(pdst) = fill;
+                    pdst += 3;
+
+                } while (--hcount);
+
+                buf += stride;
+            } while (--height);
         }
     }
     else
     {
-        do
+        if (!stride)
         {
-            uint8_t* pdst = buf;
-            int32_t hcount = width;
-            do
+            uint32_t count = width * height;
+            while (count)
             {
-                *pdst++ = blue;
-                *pdst++ = green;
-                *pdst++ = red;
-            } while (--hcount);
-
-            buf += stride;
-        } while (--height);
-    }
-}
-
-void blipvert::Fill_RGB24_Faster(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha, int32_t width, int32_t height, uint8_t* buf, int32_t stride)
-{
-    uint32_t fill = static_cast<uint32_t>(((((alpha) & 0xFF) << 24) | (((red) & 0xFF) << 16) | (((green) & 0xFF) << 8) | ((blue) & 0xFF)));
-
-    if (!stride)
-    {
-        uint32_t count = width * height;
-        while (count)
-        {
-            *reinterpret_cast<uint32_t*>(buf) = fill;
-            buf += 3;
-            count--;
+                *buf++ = blue;
+                *buf++ = green;
+                *buf++ = red;
+                count--;
+            }
         }
-    }
-    else
-    {
-        do
+        else
         {
-            uint8_t* pdst = buf;
-            int32_t hcount = width;
             do
             {
-                *reinterpret_cast<uint32_t*>(pdst) = fill;
-                pdst += 3;
+                uint8_t* pdst = buf;
+                int32_t hcount = width;
+                do
+                {
+                    *pdst++ = blue;
+                    *pdst++ = green;
+                    *pdst++ = red;
+                } while (--hcount);
 
-            } while (--hcount);
-
-            buf += stride;
-        } while (--height);
+                buf += stride;
+            } while (--height);
+        }
     }
 }
 

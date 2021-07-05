@@ -169,7 +169,12 @@ uint32_t blipvert::CalculateBufferSize(const MediaFormatID& inFormat, uint32_t w
         bytesPerLine = in_stride;
     }
 
-    return bytesPerLine * height;
+    uint32_t result = bytesPerLine * height;
+    if (UseFasterLooping && inFormat == MVFMT_RGB24)
+    {
+        result++;
+    }
+    return result;
 }
 
 bool blipvert::IsRGBEncoding(const MediaFormatID& encoding)

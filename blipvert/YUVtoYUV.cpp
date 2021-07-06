@@ -2932,16 +2932,16 @@ void AYUV_to_PlanarYUV(int32_t width, int32_t height,
             uint8_t* yp = out_buf;
             for (int32_t x = 0; x < width; x += 2)
             {
-                v_average = psrc[1];
-                u_average = psrc[0];
+                v_average = psrc[0];
+                u_average = psrc[1];
                 yp[0] = psrc[2];
 
                 v_average += psrc[4];
                 u_average += psrc[5];
                 yp[1] = psrc[6];
 
-                v_average += psrc[1 + in_stride];
-                u_average += psrc[0 + in_stride];
+                v_average += psrc[0 + in_stride];
+                u_average += psrc[1 + in_stride];
                 yp[y_stride] = psrc[2 + in_stride];
 
                 v_average += psrc[4 + in_stride];
@@ -2980,8 +2980,8 @@ void AYUV_to_PlanarYUV(int32_t width, int32_t height,
 
                 for (int32_t dec = 0; dec < 4; dec++)
                 {
-                    v_average = psrc[1 + is];
-                    u_average = psrc[0 + is];
+                    v_average += psrc[0 + is];
+                    u_average += psrc[1 + is];
                     yp[ys] = psrc[2 + is];
 
                     v_average += psrc[4 + is];
@@ -3252,10 +3252,10 @@ void blipvert::AYUV_to_IYU1(int32_t width, int32_t height, uint8_t* out_buf, int
         int32_t hcount = width;
         while (hcount)
         {
-            pdst[0] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[0]) + static_cast<uint16_t>(psrc[4]) + \
-                static_cast<uint16_t>(psrc[8]) + static_cast<uint16_t>(psrc[12])) >> 2); // V
-            pdst[3] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[1]) + static_cast<uint16_t>(psrc[5]) + \
+            pdst[0] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[1]) + static_cast<uint16_t>(psrc[5]) + \
                 static_cast<uint16_t>(psrc[9]) + static_cast<uint16_t>(psrc[13])) >> 2); // U
+            pdst[3] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[0]) + static_cast<uint16_t>(psrc[4]) + \
+                static_cast<uint16_t>(psrc[8]) + static_cast<uint16_t>(psrc[12])) >> 2); // V
             pdst[1] = psrc[2];  // Y0
             pdst[2] = psrc[6];  // Y1
             pdst[4] = psrc[10]; // Y2

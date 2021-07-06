@@ -186,7 +186,7 @@ void PlanarYUV_to_PlanarYUV(int32_t width, int32_t height,
     }
     else if (out_decimation > in_decimation)
     {
-        // Scaling down from 2 to 4 decimation
+        // Scaling from 2 to 4 decimation
         int32_t in_uv_stride_x_2 = in_uv_stride * 2;
         uint8_t* in_u_line = in_uplane;
         uint8_t* out_u_line = out_uplane;
@@ -217,7 +217,7 @@ void PlanarYUV_to_PlanarYUV(int32_t width, int32_t height,
     }
     else
     {
-        // Scaling up from 4 to 2 decimation
+        // Scaling from 4 to 2 decimation
         int32_t out_uv_stride_x_2 = out_uv_stride * 2;
         uint8_t* in_up = in_uplane;
         uint8_t* in_vp = in_vplane;
@@ -228,15 +228,15 @@ void PlanarYUV_to_PlanarYUV(int32_t width, int32_t height,
             int32_t dst_index = 0;
             for (int32_t x = 0; x < in_uv_width; x++)
             {
-                out_up[dst_index] = out_up[dst_index + out_uv_stride] = in_up[x];
-                out_vp[dst_index] = out_vp[dst_index + out_uv_stride] = in_vp[x];
+                out_up[dst_index] = in_up[x];
+                out_up[dst_index + out_uv_stride] = in_up[x];
+                out_vp[dst_index] = in_vp[x];
+                out_vp[dst_index + out_uv_stride] = in_vp[x];
                 dst_index++;
-                out_up[dst_index] = out_up[dst_index + out_uv_stride] = \
-                    static_cast<uint8_t>((static_cast<uint16_t>(in_up[x]) + \
-                        static_cast<uint16_t>(in_up[x + 1])) >> 1);
-                out_vp[dst_index] = out_vp[dst_index + out_uv_stride] = \
-                    static_cast<uint8_t>((static_cast<uint16_t>(in_vp[x]) + \
-                        static_cast<uint16_t>(in_vp[x + 1])) >> 1);
+                out_up[dst_index] = in_up[x];
+                out_up[dst_index + out_uv_stride] = in_up[x];
+                out_vp[dst_index] = in_vp[x];
+                out_vp[dst_index + out_uv_stride] = in_vp[x];
                 dst_index++;
             }
 
@@ -245,25 +245,6 @@ void PlanarYUV_to_PlanarYUV(int32_t width, int32_t height,
 
             in_up += in_uv_stride;
             in_vp += in_uv_stride;
-        }
-
-        uint8_t* prev_up = out_uplane + out_uv_stride;
-        uint8_t* this_up = prev_up + out_uv_stride;
-        uint8_t* prev_vp = out_vplane + out_uv_stride;
-        uint8_t* this_vp = prev_vp + out_uv_stride;
-        for (int32_t y = 2; y < out_uv_height; y += 2)
-        {
-            for (int32_t x = 0; x < out_uv_width; x++)
-            {
-                prev_up[x] = static_cast<uint8_t>((static_cast<uint16_t>(this_up[x]) + static_cast<uint16_t>(prev_up[x])) >> 1);
-                prev_vp[x] = static_cast<uint8_t>((static_cast<uint16_t>(this_vp[x]) + static_cast<uint16_t>(prev_vp[x])) >> 1);
-            }
-
-            prev_up += out_uv_stride_x_2;
-            this_up += out_uv_stride_x_2;
-
-            prev_vp += out_uv_stride_x_2;
-            this_vp += out_uv_stride_x_2;
         }
     }
 }

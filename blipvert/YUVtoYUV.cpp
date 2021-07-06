@@ -475,15 +475,13 @@ void PlanarYUV_to_PackedY422(int32_t width, int32_t height,
 
             for (int32_t x = 0; x < width; x += 2)
             {
-                pdst[out_u] = up[0];
-                pdst[out_v] = vp[0];
+                pdst[out_u] = *up;
+                pdst[out_v] = *vp;
                 pdst[out_y0] = yp[0];
                 pdst[out_y1] = yp[1];
 
-                pdst[out_u + out_stride] = static_cast<uint8_t>((static_cast<uint16_t>(up[0]) + \
-                    static_cast<uint16_t>(up[uv_stride])) >> 1);
-                pdst[out_v + out_stride] = static_cast<uint8_t>((static_cast<uint16_t>(vp[0]) + \
-                    static_cast<uint16_t>(vp[uv_stride])) >> 1);
+                pdst[out_u + out_stride] = *up;
+                pdst[out_v + out_stride] = *vp;
                 pdst[out_y0 + out_stride] = yp[y_stride];
                 pdst[out_y1 + out_stride] = yp[1 + y_stride];
 
@@ -511,66 +509,50 @@ void PlanarYUV_to_PackedY422(int32_t width, int32_t height,
             for (int32_t x = 0; x < width; x += 4)
             {
                 // column 1 row 1
-                pdst[out_u] = up[0];
-                pdst[out_v] = vp[0];
+                pdst[out_u] = *up;
+                pdst[out_v] = *vp;
                 pdst[out_y0] = yp[0];
                 pdst[out_y1] = yp[1];
 
                 // column 1 row 2
-                pdst[out_u + out_stride] = static_cast<uint8_t>(((static_cast<int32_t>(up[0]) * 768) + \
-                    (static_cast<int32_t>(up[uv_stride]) * 256)) >> 10);
-                pdst[out_v + out_stride] = static_cast<uint8_t>(((static_cast<int32_t>(vp[0]) * 768) + \
-                    (static_cast<int32_t>(vp[uv_stride]) * 256)) >> 10);
+                pdst[out_u + out_stride] = *up;
+                pdst[out_v + out_stride] = *vp;
                 pdst[out_y0 + out_stride] = yp[y_stride];
                 pdst[out_y1 + out_stride] = yp[1 + y_stride];
 
                 // column 1 row 3
-                pdst[out_u + out_stride_x_2] = static_cast<uint8_t>((static_cast<uint16_t>(up[0]) + \
-                    static_cast<uint16_t>(up[uv_stride])) >> 1);
-                pdst[out_v + out_stride_x_2] = static_cast<uint8_t>((static_cast<uint16_t>(vp[0]) + \
-                    static_cast<uint16_t>(vp[uv_stride])) >> 1);
+                pdst[out_u + out_stride_x_2] = *up;
+                pdst[out_v + out_stride_x_2] = *vp;
                 pdst[out_y0 + out_stride_x_2] = yp[y_stride_x_2];
                 pdst[out_y1 + out_stride_x_2] = yp[1 + y_stride_x_2];
 
                 // column 1 row 4
-                pdst[out_u + out_stride_x_3] = static_cast<uint8_t>(((static_cast<int32_t>(up[0]) * 256) + \
-                    (static_cast<int32_t>(up[uv_stride]) * 768)) >> 10);
-                pdst[out_v + out_stride_x_3] = static_cast<uint8_t>(((static_cast<int32_t>(vp[0]) * 256) + \
-                    (static_cast<int32_t>(vp[uv_stride]) * 768)) >> 10);
+                pdst[out_u + out_stride_x_3] = *up;
+                pdst[out_v + out_stride_x_3] = *vp;
                 pdst[out_y0 + out_stride_x_3] = yp[y_stride_x_3];
                 pdst[out_y1 + out_stride_x_3] = yp[1 + y_stride_x_3];
 
-                // prep for column 2
-                int32_t uval_top = (static_cast<int32_t>(up[0]) + static_cast<int32_t>(up[1])) >> 1;
-                int32_t vval_top = (static_cast<int32_t>(vp[0]) + static_cast<int32_t>(vp[1])) >> 1;
-                int32_t uval_bottom = (static_cast<int32_t>(up[uv_stride]) + static_cast<int32_t>(up[1 + uv_stride])) >> 1;
-                int32_t vval_bottom = (static_cast<int32_t>(vp[uv_stride]) + static_cast<int32_t>(vp[1 + uv_stride])) >> 1;
-
                 // column 2 row 1
-                pdst[out_u + 4] = static_cast<uint8_t>(uval_top);
-                pdst[out_v + 4] = static_cast<uint8_t>(vval_top);
+                pdst[out_u + 4] = *up;
+                pdst[out_v + 4] = *vp;
                 pdst[out_y0 + 4] = yp[2];
                 pdst[out_y1 + 4] = yp[3];
 
                 // column 2 row 2
-                pdst[out_u + out_stride + 4] = static_cast<uint8_t>(((uval_top * 768) + \
-                    (uval_bottom * 256)) >> 10);
-                pdst[out_v + out_stride + 4] = static_cast<uint8_t>(((vval_top * 768) + \
-                    (vval_bottom * 256)) >> 10);
+                pdst[out_u + out_stride + 4] = *up;
+                pdst[out_v + out_stride + 4] = *vp;
                 pdst[out_y0 + out_stride + 4] = yp[2 + y_stride];
                 pdst[out_y1 + out_stride + 4] = yp[3 + y_stride];
 
                 // column 2 row 3
-                pdst[out_u + out_stride_x_2 + 4] = static_cast<uint8_t>((uval_top + uval_bottom) >> 1);
-                pdst[out_v + out_stride_x_2 + 4] = static_cast<uint8_t>((vval_top + vval_bottom) >> 1);
+                pdst[out_u + out_stride_x_2 + 4] = *up;
+                pdst[out_v + out_stride_x_2 + 4] = *vp;
                 pdst[out_y0 + out_stride_x_2 + 4] = yp[2 + y_stride_x_2];
                 pdst[out_y1 + out_stride_x_2 + 4] = yp[3 + y_stride_x_2];
 
                 // column 2 row 4
-                pdst[out_u + out_stride_x_3 + 4] = static_cast<uint8_t>(((uval_top * 256) + \
-                    (uval_bottom * 768)) >> 10);
-                pdst[out_v + out_stride_x_3 + 4] = static_cast<uint8_t>(((vval_top * 256) + \
-                    (vval_bottom * 768)) >> 10);
+                pdst[out_u + out_stride_x_3 + 4] = *up;
+                pdst[out_v + out_stride_x_3 + 4] = *vp;
                 pdst[out_y0 + out_stride_x_3 + 4] = yp[2 + y_stride_x_3];
                 pdst[out_y1 + out_stride_x_3 + 4] = yp[3 + y_stride_x_3];
 
@@ -1175,32 +1157,24 @@ void PlanarYUV_to_IYU2(int32_t width, int32_t height,
             for (int32_t x = 0; x < width; x += 2)
             {
                 // column 1 row 1
-                pdst[0] = up[0];
+                pdst[0] = *up;
                 pdst[1] = yp[0];
-                pdst[2] = vp[0];
+                pdst[2] = *vp;
 
                 // column 1 row 2
-                pdst[out_stride] = static_cast<uint8_t>((static_cast<uint16_t>(up[0]) + \
-                    static_cast<uint16_t>(up[uv_stride])) >> 1);
+                pdst[out_stride] = *up;
                 pdst[1 + out_stride] = yp[y_stride];
-                pdst[2 + out_stride] = static_cast<uint8_t>((static_cast<uint16_t>(vp[0]) + \
-                    static_cast<uint16_t>(vp[uv_stride])) >> 1);
+                pdst[2 + out_stride] = *vp;
 
                 // column 2 row 1
-                pdst[3] = static_cast<uint8_t>((static_cast<uint16_t>(up[0]) + static_cast<uint16_t>(up[1])) >> 1);
+                pdst[3] = *up;
                 pdst[4] = yp[1];
-                pdst[5] = static_cast<uint8_t>((static_cast<uint16_t>(vp[0]) + static_cast<uint16_t>(vp[1])) >> 1);
+                pdst[5] = *vp;
 
                 // column 2 row 2
-                pdst[3 + out_stride] = static_cast<uint8_t>((static_cast<uint16_t>(up[0]) + \
-                    static_cast<uint16_t>(up[1]) + \
-                    static_cast<uint16_t>(up[uv_stride]) + \
-                    static_cast<uint16_t>(up[1 + uv_stride])) >> 2);
+                pdst[3 + out_stride] = *up;
                 pdst[4 + out_stride] = yp[1 + y_stride];
-                pdst[5 + out_stride] = static_cast<uint8_t>((static_cast<uint16_t>(vp[0]) + \
-                    static_cast<uint16_t>(vp[1]) + \
-                    static_cast<uint16_t>(vp[uv_stride]) + \
-                    static_cast<uint16_t>(vp[1 + uv_stride])) >> 2);
+                pdst[5 + out_stride] = *vp;
                 pdst += 6;
                 yp += 2;
                 up += 1;
@@ -1224,45 +1198,13 @@ void PlanarYUV_to_IYU2(int32_t width, int32_t height,
 
             for (int32_t x = 0; x < width; x += 4)
             {
-                uint16_t u_avg_col[4];
-                u_avg_col[0] = up[0];
-                u_avg_col[1] = static_cast<uint16_t>(((static_cast<uint32_t>(up[0]) * 768) + \
-                    (static_cast<uint32_t>(up[1]) * 256)) >> 10);
-                u_avg_col[2] = (static_cast<uint16_t>(up[0]) + static_cast<uint16_t>(up[1])) >> 1;
-                u_avg_col[3] = static_cast<uint16_t>(((static_cast<uint32_t>(up[0]) * 256) + \
-                    (static_cast<uint32_t>(up[1]) * 768)) >> 10);
-
-                uint16_t u_avg_row[4];
-                u_avg_row[0] = up[0];
-                u_avg_row[1] = static_cast<uint16_t>(((static_cast<uint32_t>(up[0]) * 768) + \
-                    (static_cast<uint32_t>(up[uv_stride]) * 256)) >> 10);
-                u_avg_row[2] = (static_cast<uint16_t>(up[0]) + static_cast<uint16_t>(up[uv_stride])) >> 1;
-                u_avg_row[3] = static_cast<uint16_t>(((static_cast<uint32_t>(up[0]) * 256) + \
-                    (static_cast<uint32_t>(up[uv_stride]) * 768)) >> 10);
-
-                uint16_t v_avg_col[4];
-                v_avg_col[0] = vp[0];
-                v_avg_col[1] = static_cast<uint16_t>(((static_cast<uint32_t>(vp[0]) * 768) + \
-                    (static_cast<uint32_t>(vp[1]) * 256)) >> 10);
-                v_avg_col[2] = (static_cast<uint16_t>(vp[0]) + static_cast<uint16_t>(vp[1])) >> 1;
-                v_avg_col[3] = static_cast<uint16_t>(((static_cast<uint32_t>(vp[0]) * 256) + \
-                    (static_cast<uint32_t>(vp[1]) * 768)) >> 10);
-
-                uint16_t v_avg_row[4];
-                v_avg_row[0] = vp[0];
-                v_avg_row[1] = static_cast<uint16_t>(((static_cast<uint32_t>(vp[0]) * 768) + \
-                    (static_cast<uint32_t>(vp[uv_stride]) * 256)) >> 10);
-                v_avg_row[2] = (static_cast<uint16_t>(vp[0]) + static_cast<uint16_t>(vp[uv_stride])) >> 1;
-                v_avg_row[3] = static_cast<uint16_t>(((static_cast<uint32_t>(vp[0]) * 256) + \
-                    (static_cast<uint32_t>(vp[uv_stride]) * 768)) >> 10);
-
                 for (int32_t row = 0; row < 4; row++)
                 {
                     for (int32_t col = 0; col < 4; col++)
                     {
-                        pdst[col * 3 + out_stride * row] = (u_avg_col[col] + u_avg_row[row]) >> 1;
+                        pdst[col * 3 + out_stride * row] = *up;
                         pdst[1 + col * 3 + out_stride * row] = yp[col + y_stride * row];
-                        pdst[2 + col * 3 + out_stride * row] = (v_avg_col[col] + v_avg_row[row]) >> 1;
+                        pdst[2 + col * 3 + out_stride * row] = *vp;
                     }
                 }
 
@@ -1876,18 +1818,9 @@ void PlanarYUV_to_CLJR(int32_t width, int32_t height,
                 uint8_t u_val = static_cast<uint8_t>((static_cast<uint16_t>(up[0]) + static_cast<uint16_t>(up[1])) >> 1);
                 uint8_t v_val = static_cast<uint8_t>((static_cast<uint16_t>(vp[0]) + static_cast<uint16_t>(vp[1])) >> 1);
                 PackCLJRDword(*(reinterpret_cast<uint32_t*>(pdst)), u_val, v_val, yp[0], yp[1], yp[2], yp[3])
-
-                    u_val = static_cast<uint8_t>((static_cast<uint16_t>(up[0]) + \
-                        static_cast<uint16_t>(up[1]) + \
-                        static_cast<uint16_t>(up[uv_stride]) + \
-                        static_cast<uint16_t>(up[1 + uv_stride])) >> 2);
-                v_val = static_cast<uint8_t>((static_cast<uint16_t>(vp[0]) + \
-                    static_cast<uint16_t>(vp[1]) + \
-                    static_cast<uint16_t>(vp[uv_stride]) + \
-                    static_cast<uint16_t>(vp[1 + uv_stride])) >> 2);
                 PackCLJRDword(*(reinterpret_cast<uint32_t*>(pdst + out_stride)), u_val, v_val, yp[y_stride], yp[1 + y_stride], yp[2 + y_stride], yp[3 + y_stride])
 
-                    pdst += 4;
+                pdst += 4;
                 yp += 4;
                 up += 2;
                 vp += 2;
@@ -1910,30 +1843,11 @@ void PlanarYUV_to_CLJR(int32_t width, int32_t height,
 
             for (int32_t x = 0; x < width; x += 4)
             {
-                PackCLJRDword(*(reinterpret_cast<uint32_t*>(pdst)), up[0], vp[0], yp[0], yp[1], yp[2], yp[3])
-
-                    uint8_t u_val = static_cast<uint8_t>(((static_cast<int32_t>(up[0]) * 768) + \
-                        (static_cast<int32_t>(up[uv_stride]) * 256)) >> 10);
-                uint8_t v_val = static_cast<uint8_t>(((static_cast<int32_t>(vp[0]) * 768) + \
-                    (static_cast<int32_t>(vp[uv_stride]) * 256)) >> 10);
-                PackCLJRDword(*(reinterpret_cast<uint32_t*>(pdst + out_stride)), u_val, v_val, \
-                    yp[y_stride], yp[1 + y_stride], yp[2 + y_stride], yp[3 + y_stride])
-
-                    u_val = static_cast<uint8_t>((static_cast<uint16_t>(up[0]) + \
-                        static_cast<uint16_t>(up[uv_stride])) >> 1);
-                v_val = static_cast<uint8_t>((static_cast<uint16_t>(vp[0]) + \
-                    static_cast<uint16_t>(vp[uv_stride])) >> 1);
-                PackCLJRDword(*(reinterpret_cast<uint32_t*>(pdst + out_stride_x_2)), u_val, v_val, \
-                    yp[y_stride_x_2], yp[1 + y_stride_x_2], yp[2 + y_stride_x_2], yp[3 + y_stride_x_2])
-
-                    u_val = static_cast<uint8_t>(((static_cast<int32_t>(up[0]) * 256) + \
-                        (static_cast<int32_t>(up[uv_stride]) * 768)) >> 10);
-                v_val = static_cast<uint8_t>(((static_cast<int32_t>(vp[0]) * 256) + \
-                    (static_cast<int32_t>(vp[uv_stride]) * 768)) >> 10);
-                PackCLJRDword(*(reinterpret_cast<uint32_t*>(pdst + out_stride_x_3)), u_val, v_val, \
-                    yp[y_stride_x_3], yp[1 + y_stride_x_3], yp[2 + y_stride_x_3], yp[3 + y_stride_x_3])
-
-                    pdst += 4;
+                PackCLJRDword(*(reinterpret_cast<uint32_t*>(pdst)), *up, *vp, yp[0], yp[1], yp[2], yp[3])
+                PackCLJRDword(*(reinterpret_cast<uint32_t*>(pdst + out_stride)), *up, *vp, yp[y_stride], yp[1 + y_stride], yp[2 + y_stride], yp[3 + y_stride])
+                PackCLJRDword(*(reinterpret_cast<uint32_t*>(pdst + out_stride_x_2)), *up, *vp, yp[y_stride_x_2], yp[1 + y_stride_x_2], yp[2 + y_stride_x_2], yp[3 + y_stride_x_2])
+                PackCLJRDword(*(reinterpret_cast<uint32_t*>(pdst + out_stride_x_3)), *up, *vp, yp[y_stride_x_3], yp[1 + y_stride_x_3], yp[2 + y_stride_x_3], yp[3 + y_stride_x_3])
+                pdst += 4;
                 yp += 4;
                 up++;
                 vp++;
@@ -3077,32 +2991,26 @@ void PlanarYUV_to_AYUV(int32_t width, int32_t height,
             for (int16_t x = 0; x < width; x += 2)
             {
                 // column 1 row 1
-                pdst[0] = vp[0];
-                pdst[1] = up[0];
+                pdst[0] = *vp;
+                pdst[1] = *up;
                 pdst[2] = yp[0];
                 pdst[3] = 0xFF;
 
                 // column 1 row 2
-                uint16_t u_avg_bot = (static_cast<uint16_t>(up[0]) + static_cast<uint16_t>(up[uv_stride])) >> 1;
-                uint16_t v_avg_bot = (static_cast<uint16_t>(vp[0]) + static_cast<uint16_t>(vp[uv_stride])) >> 1;
-                pdst[out_stride] = static_cast<uint8_t>(v_avg_bot); 
-                pdst[1 + out_stride] = static_cast<uint8_t>(u_avg_bot);
+                pdst[out_stride] = *vp;
+                pdst[1 + out_stride] = *up;
                 pdst[2 + out_stride] = yp[y_stride];
                 pdst[3 + out_stride] = 0xFF;
 
                 // column 2 row 1
-                uint16_t u_avg_top = (static_cast<uint16_t>(up[0]) + static_cast<uint16_t>(up[1])) >> 1;
-                uint16_t v_avg_top = (static_cast<uint16_t>(vp[0]) + static_cast<uint16_t>(vp[1])) >> 1;
-                pdst[4] = static_cast<uint8_t>(v_avg_top);
-                pdst[5] = static_cast<uint8_t>(u_avg_top);
+                pdst[4] = *vp;
+                pdst[5] = up[0];
                 pdst[6] = yp[1];
                 pdst[7] = 0xFF;
 
                 // column 2 row 2
-                uint16_t u_avg_tb = (u_avg_bot + u_avg_top) >> 1;
-                uint16_t v_avg_tb = (v_avg_bot + v_avg_top) >> 1;
-                pdst[4 + out_stride] = static_cast<uint8_t>(v_avg_tb);
-                pdst[5 + out_stride] = static_cast<uint8_t>(u_avg_tb);
+                pdst[4 + out_stride] = *vp;
+                pdst[5 + out_stride] = *up;
                 pdst[6 + out_stride] = yp[1 + y_stride];
                 pdst[7 + out_stride] = 0xFF;
 
@@ -3129,44 +3037,12 @@ void PlanarYUV_to_AYUV(int32_t width, int32_t height,
 
             for (int16_t x = 0; x < width; x += 4)
             {
-                uint16_t u_avg_col[4];
-                u_avg_col[0] = up[0];
-                u_avg_col[1] = static_cast<uint16_t>(((static_cast<uint32_t>(up[0]) * 768) + \
-                    (static_cast<uint32_t>(up[1]) * 256)) >> 10);
-                u_avg_col[2] = (static_cast<uint16_t>(up[0]) + static_cast<uint16_t>(up[1])) >> 1;
-                u_avg_col[3] = static_cast<uint16_t>(((static_cast<uint32_t>(up[0]) * 256) + \
-                    (static_cast<uint32_t>(up[1]) * 768)) >> 10);
-
-                uint16_t u_avg_row[4];
-                u_avg_row[0] = up[0];
-                u_avg_row[1] = static_cast<uint16_t>(((static_cast<uint32_t>(up[0]) * 768) + \
-                    (static_cast<uint32_t>(up[uv_stride]) * 256)) >> 10);
-                u_avg_row[2] = (static_cast<uint16_t>(up[0]) + static_cast<uint16_t>(up[uv_stride])) >> 1;
-                u_avg_row[3] = static_cast<uint16_t>(((static_cast<uint32_t>(up[0]) * 256) + \
-                    (static_cast<uint32_t>(up[uv_stride]) * 768)) >> 10);
-
-                uint16_t v_avg_col[4];
-                v_avg_col[0] = vp[0];
-                v_avg_col[1] = static_cast<uint16_t>(((static_cast<uint32_t>(vp[0]) * 768) + \
-                    (static_cast<uint32_t>(vp[1]) * 256)) >> 10);
-                v_avg_col[2] = (static_cast<uint16_t>(vp[0]) + static_cast<uint16_t>(vp[1])) >> 1;
-                v_avg_col[3] = static_cast<uint16_t>(((static_cast<uint32_t>(vp[0]) * 256) + \
-                    (static_cast<uint32_t>(vp[1]) * 768)) >> 10);
-
-                uint16_t v_avg_row[4];
-                v_avg_row[0] = vp[0];
-                v_avg_row[1] = static_cast<uint16_t>(((static_cast<uint32_t>(vp[0]) * 768) + \
-                    (static_cast<uint32_t>(vp[uv_stride]) * 256)) >> 10);
-                v_avg_row[2] = (static_cast<uint16_t>(vp[0]) + static_cast<uint16_t>(vp[uv_stride])) >> 1;
-                v_avg_row[3] = static_cast<uint16_t>(((static_cast<uint32_t>(vp[0]) * 256) + \
-                    (static_cast<uint32_t>(vp[uv_stride]) * 768)) >> 10);
-
                 for (int16_t row = 0; row < 4; row++)
                 {
                     for (int16_t col = 0; col < 4; col++)
                     {
-                        pdst[col * 4 + out_stride * row] = static_cast<uint8_t>((v_avg_col[col] + v_avg_row[row]) >> 1);
-                        pdst[1 + col * 4 + out_stride * row] = static_cast<uint8_t>((u_avg_col[col] + u_avg_row[row]) >> 1);
+                        pdst[col * 4 + out_stride * row] = *vp;
+                        pdst[1 + col * 4 + out_stride * row] = *up;
                         pdst[2 + col * 4 + out_stride * row] = yp[col + y_stride * row];
                         pdst[3 + col * 4 + out_stride * row] = 0xFF;
                     }

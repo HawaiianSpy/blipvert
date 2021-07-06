@@ -3834,22 +3834,6 @@ void blipvert::UYVY_to_Y41P(int32_t width, int32_t height,
         flipped);
 }
 
-void blipvert::UYVY_to_IUYV(int32_t width, int32_t height,
-    uint8_t* out_buf, int32_t out_stride,
-    uint8_t* in_buf, int32_t in_stride,
-    bool flipped, xRGBQUAD* in_palette)
-{
-    if (!out_stride)
-        out_stride = width * 2;
-
-    if (!in_stride)
-        in_stride = width * 2;
-
-    Progressive_to_Interlaced(height, width * 2, flipped,
-        out_buf, out_stride,
-        in_buf, in_stride);
-}
-
 void blipvert::UYVY_to_AYUV(int32_t width, int32_t height,
     uint8_t* out_buf, int32_t out_stride,
     uint8_t* in_buf, int32_t in_stride,
@@ -7043,6 +7027,22 @@ void blipvert::Y41P_to_AYUV(int32_t width, int32_t height,
 //
 // Misc YUV format conversions
 //
+
+void blipvert::UYVY_to_IUYV(int32_t width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD* in_palette)
+{
+    if (!out_stride)
+        out_stride = width * 2;
+
+    if (!in_stride)
+        in_stride = width * 2;
+
+    Progressive_to_Interlaced(height, width * 2, flipped,
+        out_buf, out_stride,
+        in_buf, in_stride);
+}
 
 void blipvert::IUYV_to_UYVY(int32_t width, int32_t height,
     uint8_t* out_buf, int32_t out_stride,

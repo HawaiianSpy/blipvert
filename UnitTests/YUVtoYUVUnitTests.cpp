@@ -119,6 +119,376 @@ namespace BlipvertUnitTests
 			Run8bitTestSeries(MVFMT_AYUV, MVFMT_Y41P);
 		}
 
+		//
+		// YUY2 to YUVx
+		//
+
+		TEST_METHOD(YUY2_to_UYVY_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_YUY2, MVFMT_UYVY);
+		}
+
+		TEST_METHOD(YUY2_to_YVYU_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_YUY2, MVFMT_YVYU);
+		}
+
+		TEST_METHOD(YUY2_to_VYUY_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_YUY2, MVFMT_VYUY);
+		}
+
+		TEST_METHOD(YUY2_to_IYUV_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_YUY2, MVFMT_IYUV);
+		}
+
+		TEST_METHOD(YUY2_to_YV12_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_YUY2, MVFMT_YV12);
+		}
+
+		TEST_METHOD(YUY2_to_YVU9_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_YUY2, MVFMT_YVU9);
+		}
+
+		TEST_METHOD(YUY2_to_YUV9_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_YUY2, MVFMT_YUV9);
+		}
+
+		TEST_METHOD(YUY2_to_IYU1_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_YUY2, MVFMT_IYU1);
+		}
+
+		TEST_METHOD(YUY2_to_IYU2_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_YUY2, MVFMT_IYU2);
+		}
+
+		TEST_METHOD(YUY2_to_Y800_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_YUY2, MVFMT_Y800);
+		}
+
+		TEST_METHOD(YUY2_to_Y16_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_YUY2, MVFMT_Y16);
+		}
+
+		TEST_METHOD(YUY2_to_CLJR_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_YUY2, MVFMT_CLJR);
+		}
+
+		TEST_METHOD(YUY2_to_Y41P_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_YUY2, MVFMT_Y41P);
+		}
+
+		TEST_METHOD(YUY2_to_AYUV_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_YUY2, MVFMT_AYUV);
+		}
+
+		//
+		// UYVY to YUVx
+		//
+
+		TEST_METHOD(UYVY_to_YUY2_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_UYVY, MVFMT_YUY2);
+		}
+
+		TEST_METHOD(UYVY_to_YVYU_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_UYVY, MVFMT_YVYU);
+		}
+
+		TEST_METHOD(UYVY_to_VYUY_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_UYVY, MVFMT_VYUY);
+		}
+
+		TEST_METHOD(UYVY_to_IYUV_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_UYVY, MVFMT_IYUV);
+		}
+
+		TEST_METHOD(UYVY_to_YV12_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_UYVY, MVFMT_YV12);
+		}
+
+		TEST_METHOD(UYVY_to_YVU9_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_UYVY, MVFMT_YVU9);
+		}
+
+		TEST_METHOD(UYVY_to_YUV9_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_UYVY, MVFMT_YUV9);
+		}
+
+		TEST_METHOD(UYVY_to_IYU1_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_UYVY, MVFMT_IYU1);
+		}
+
+		TEST_METHOD(UYVY_to_IYU2_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_UYVY, MVFMT_IYU2);
+		}
+
+		TEST_METHOD(UYVY_to_Y800_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_UYVY, MVFMT_Y800);
+		}
+
+		TEST_METHOD(UYVY_to_Y16_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_UYVY, MVFMT_Y16);
+		}
+
+		TEST_METHOD(UYVY_to_CLJR_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_UYVY, MVFMT_CLJR);
+		}
+
+		TEST_METHOD(UYVY_to_Y41P_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_UYVY, MVFMT_Y41P);
+		}
+
+		TEST_METHOD(UYVY_to_AYUV_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_UYVY, MVFMT_AYUV);
+		}
+
+		//
+		// UYVY to YUVx
+		//
+
+		TEST_METHOD(YVYU_to_YUY2_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_YVYU, MVFMT_YUY2);
+		}
+
+		TEST_METHOD(YVYU_to_UYVY_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_YVYU, MVFMT_UYVY);
+		}
+
+		TEST_METHOD(YVYU_to_VYUY_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_YVYU, MVFMT_VYUY);
+		}
+
+		TEST_METHOD(YVYU_to_IYUV_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_YVYU, MVFMT_IYUV);
+		}
+
+		TEST_METHOD(YVYU_to_YV12_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_YVYU, MVFMT_YV12);
+		}
+
+		TEST_METHOD(YVYU_to_YVU9_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_YVYU, MVFMT_YVU9);
+		}
+
+		TEST_METHOD(YVYU_to_YUV9_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_YVYU, MVFMT_YUV9);
+		}
+
+		TEST_METHOD(YVYU_to_IYU1_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_YVYU, MVFMT_IYU1);
+		}
+
+		TEST_METHOD(YVYU_to_IYU2_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_YVYU, MVFMT_IYU2);
+		}
+
+		TEST_METHOD(YVYU_to_Y800_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_YVYU, MVFMT_Y800);
+		}
+
+		TEST_METHOD(YVYU_to_Y16_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_YVYU, MVFMT_Y16);
+		}
+
+		TEST_METHOD(YVYU_to_CLJR_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_YVYU, MVFMT_CLJR);
+		}
+
+		TEST_METHOD(YVYU_to_Y41P_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_YVYU, MVFMT_Y41P);
+		}
+
+		TEST_METHOD(YVYU_to_AYUV_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_YVYU, MVFMT_AYUV);
+		}
+
+		//
+		// VYUY to YUVx
+		//
+
+		TEST_METHOD(VYUY_to_YUY2_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_VYUY, MVFMT_YUY2);
+		}
+
+		TEST_METHOD(VYUY_to_UYVY_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_VYUY, MVFMT_UYVY);
+		}
+
+		TEST_METHOD(VYUY_to_YVYU_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_VYUY, MVFMT_YVYU);
+		}
+
+		TEST_METHOD(VYUY_to_IYUV_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_VYUY, MVFMT_IYUV);
+		}
+
+		TEST_METHOD(VYUY_to_YV12_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_VYUY, MVFMT_YV12);
+		}
+
+		TEST_METHOD(VYUY_to_YVU9_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_VYUY, MVFMT_YVU9);
+		}
+
+		TEST_METHOD(VYUY_to_YUV9_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_VYUY, MVFMT_YUV9);
+		}
+
+		TEST_METHOD(VYUY_to_IYU1_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_VYUY, MVFMT_IYU1);
+		}
+
+		TEST_METHOD(VYUY_to_IYU2_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_VYUY, MVFMT_IYU2);
+		}
+
+		TEST_METHOD(VYUY_to_Y800_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_VYUY, MVFMT_Y800);
+		}
+
+		TEST_METHOD(VYUY_to_Y16_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_VYUY, MVFMT_Y16);
+		}
+
+		TEST_METHOD(VYUY_to_CLJR_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_VYUY, MVFMT_CLJR);
+		}
+
+		TEST_METHOD(VYUY_to_Y41P_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_VYUY, MVFMT_Y41P);
+		}
+
+		TEST_METHOD(VYUY_to_AYUV_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_VYUY, MVFMT_AYUV);
+		}
+
+		//
+		// IYUV to YUVx
+		//
+
+		TEST_METHOD(IYUV_to_YVU9_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_IYUV, MVFMT_YVU9);
+		}
+
+		TEST_METHOD(IYUV_to_YUV9_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_IYUV, MVFMT_YUV9);
+		}
+
+		TEST_METHOD(IYUV_to_YV12_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_IYUV, MVFMT_YV12);
+		}
+
+		TEST_METHOD(IYUV_to_YUY2_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_IYUV, MVFMT_YUY2);
+		}
+
+		TEST_METHOD(IYUV_to_UYVY_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_IYUV, MVFMT_UYVY);
+		}
+
+		TEST_METHOD(IYUV_to_YVYU_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_IYUV, MVFMT_YVYU);
+		}
+
+		TEST_METHOD(IYUV_to_VYUY_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_IYUV, MVFMT_VYUY);
+		}
+
+		TEST_METHOD(IYUV_to_IYU1_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_IYUV, MVFMT_IYU1);
+		}
+
+		TEST_METHOD(IYUV_to_IYU2_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_IYUV, MVFMT_IYU2);
+		}
+
+		TEST_METHOD(IYUV_to_Y800_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_IYUV, MVFMT_Y800);
+		}
+
+		TEST_METHOD(IYUV_to_Y16_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_IYUV, MVFMT_Y16);
+		}
+
+		TEST_METHOD(IYUV_to_CLJR_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_IYUV, MVFMT_CLJR);
+		}
+
+		TEST_METHOD(IYUV_to_Y41P_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_IYUV, MVFMT_Y41P);
+		}
+
+		TEST_METHOD(IYUV_to_AYUV_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_IYUV, MVFMT_AYUV);
+		}
+
 	private:
 		void Run8bitTestSeries(const MediaFormatID& inFormat, const MediaFormatID& outFormat)
 		{

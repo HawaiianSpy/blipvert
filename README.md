@@ -7,7 +7,7 @@ I originally called the project "blipvert" because I was a fan of the Max Headro
 
 After looking at the code, you may be asking yourself, "Why the heck would I *ever* want to convert a Y41P bitmap to IYU2?" Probably never, nowadays. Yet, I would suggest you view this act of video programming obsessive-compulsive disorder like achieveing a gold badge on HackerRank before it was cool. Instead of whiling away the hours moving nonsensecal numbers around in random arrays, as one does on HackerRank, at least I had some, more or less, useful code to show for it afterwards. =:D
 
-Regarding testing: The transform functions were tested back in the day using this process:
+Regarding testing: The common transform functions were tested back in the day using this process:
 
 1. Run a webcam through a DirectShow filter graph.
 2. Insert one of the transform functions into the graph.

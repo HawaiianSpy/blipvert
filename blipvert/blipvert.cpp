@@ -467,6 +467,7 @@ TransformTableEntry TransformTable[] = {
 
     // YUV to YUV
 
+    { MVFMT_AYUV, MVFMT_YUY2, AYUV_to_YUY2 },
     { MVFMT_AYUV, MVFMT_UYVY, AYUV_to_UYVY },
     { MVFMT_AYUV, MVFMT_YVYU, AYUV_to_YVYU },
     { MVFMT_AYUV, MVFMT_VYUY, AYUV_to_VYUY },

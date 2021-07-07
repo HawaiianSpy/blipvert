@@ -199,6 +199,29 @@ namespace BlipvertUnitTests
 			Run8bitPalletizedTestSeries(MVFMT_RGB8, MVFMT_RGB555);
 		}
 
+		//TEST_METHOD(RGB8_to_RGB24_Torture_UnitTest)
+		//{
+		//	uint16_t index = 100;
+		//	while (index--)
+		//	{
+		//		Run8bitPalletizedTestSeries(MVFMT_RGB8, MVFMT_RGB24);
+		//	}
+		//}
+
+		//TEST_METHOD(RGB8_to_RGB24_Fast_Torture_UnitTest)
+		//{
+		//	bool save = get_UseFasterLooping();
+		//	set_UseFasterLooping(true);
+
+		//	uint16_t index = 100;
+		//	while (index--)
+		//	{
+		//		Run8bitPalletizedTestSeries(MVFMT_RGB8, MVFMT_RGB24);
+		//	}
+
+		//	set_UseFasterLooping(save);
+		//}
+
 		//
 		// RGB4 to RGBx
 		//
@@ -307,7 +330,7 @@ namespace BlipvertUnitTests
 			Assert::IsNotNull(reinterpret_cast<void*>(fullBufFunctPtr), L"fullBufFunctPtr returned a null function pointer.");
 
 			t_buffercheckfunc bufCheckFunctPtr = FindBufferCheckFunction(outFormat);
-			Assert::IsNotNull(reinterpret_cast<void*>(bufCheckFunctPtr), L"yuvCheckFunctPtr returned a null function pointer.");
+			Assert::IsNotNull(reinterpret_cast<void*>(bufCheckFunctPtr), L"bufCheckFunctPtr returned a null function pointer.");
 
 			uint32_t width = TestBufferWidth;
 			uint32_t height = TestBufferHeight;

@@ -86,9 +86,9 @@ void blipvert::InitLookupTables()
         vb_table[index] = static_cast<int32_t>((-0.071 * scalar) + 0.5);
 
         // Greyscale extensions
-        ayuv_greyscale[index] = (static_cast<uint32_t>(index) << 16) | 0xFF000000;
-        rgba_greyscale[index] = static_cast<uint32_t>(index) | (static_cast<uint32_t>(index) << 8) | (static_cast<uint32_t>(index) << 16);
-        rgb32_greyscale[index] = static_cast<uint32_t>(index) | (static_cast<uint32_t>(index) << 8) | (static_cast<uint32_t>(index) << 16) | 0xFF000000;
+        ayuv_greyscale[index] = (0xFF000000 | (static_cast<uint32_t>(index) << 16) | (static_cast<uint32_t>(index) << 8) | static_cast<uint32_t>(index));
+        rgba_greyscale[index] = ((static_cast<uint32_t>(index) << 16) | (static_cast<uint32_t>(index) << 8) | static_cast<uint32_t>(index));
+        rgb32_greyscale[index] = (0xFF000000 | (static_cast<uint32_t>(index) << 16) | (static_cast<uint32_t>(index) << 8) | static_cast<uint32_t>(index));
         PackRGB565Word(rgb565_greyscale[index], static_cast<uint16_t>(index), static_cast<uint16_t>(index), static_cast<uint16_t>(index));
         PackRGB555Word(rgb555_greyscale[index], static_cast<uint16_t>(index), static_cast<uint16_t>(index), static_cast<uint16_t>(index));
 

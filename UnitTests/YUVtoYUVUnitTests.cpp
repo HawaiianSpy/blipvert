@@ -1007,6 +1007,154 @@ namespace BlipvertUnitTests
 			RunGreyscaleTestSeries(MVFMT_Y16, MVFMT_Y800);
 		}
 
+		//
+		// CLJR to YUVx
+		//
+
+		TEST_METHOD(CLJR_to_YUY2)
+		{
+			RunCLJRTestSeries(MVFMT_CLJR, MVFMT_YUY2);
+		}
+
+		TEST_METHOD(CLJR_to_UYVY)
+		{
+			RunCLJRTestSeries(MVFMT_CLJR, MVFMT_UYVY);
+		}
+
+		TEST_METHOD(CLJR_to_YVYU)
+		{
+			RunCLJRTestSeries(MVFMT_CLJR, MVFMT_YVYU);
+		}
+
+		TEST_METHOD(CLJR_to_VYUY)
+		{
+			RunCLJRTestSeries(MVFMT_CLJR, MVFMT_VYUY);
+		}
+
+		TEST_METHOD(CLJR_to_IYUV)
+		{
+			RunCLJRTestSeries(MVFMT_CLJR, MVFMT_IYUV);
+		}
+
+		TEST_METHOD(CLJR_to_YV12)
+		{
+			RunCLJRTestSeries(MVFMT_CLJR, MVFMT_YV12);
+		}
+
+		TEST_METHOD(CLJR_to_YVU9)
+		{
+			RunCLJRTestSeries(MVFMT_CLJR, MVFMT_YVU9);
+		}
+
+		TEST_METHOD(CLJR_to_YUV9)
+		{
+			RunCLJRTestSeries(MVFMT_CLJR, MVFMT_YUV9);
+		}
+
+		TEST_METHOD(CLJR_to_IYU1)
+		{
+			RunCLJRTestSeries(MVFMT_CLJR, MVFMT_IYU1);
+		}
+
+		TEST_METHOD(CLJR_to_IYU2)
+		{
+			RunCLJRTestSeries(MVFMT_CLJR, MVFMT_IYU2);
+		}
+
+		TEST_METHOD(CLJR_to_Y800)
+		{
+			RunCLJRTestSeries(MVFMT_CLJR, MVFMT_Y800);
+		}
+
+		TEST_METHOD(CLJR_to_Y16)
+		{
+			RunCLJRTestSeries(MVFMT_CLJR, MVFMT_Y16);
+		}
+
+		TEST_METHOD(CLJR_to_Y41P)
+		{
+			RunCLJRTestSeries(MVFMT_CLJR, MVFMT_Y41P);
+		}
+
+		TEST_METHOD(CLJR_to_AYUV)
+		{
+			RunCLJRTestSeries(MVFMT_CLJR, MVFMT_AYUV);
+		}
+
+		//
+		// Y41P to YUVx
+		//
+
+		TEST_METHOD(Y41P_to_YUY2)
+		{
+			Run8bitTestSeries(MVFMT_Y41P, MVFMT_YUY2);
+		}
+
+		TEST_METHOD(Y41P_to_UYVY)
+		{
+			Run8bitTestSeries(MVFMT_Y41P, MVFMT_UYVY);
+		}
+
+		TEST_METHOD(Y41P_to_YVYU)
+		{
+			Run8bitTestSeries(MVFMT_Y41P, MVFMT_YVYU);
+		}
+
+		TEST_METHOD(Y41P_to_VYUY)
+		{
+			Run8bitTestSeries(MVFMT_Y41P, MVFMT_VYUY);
+		}
+
+		TEST_METHOD(Y41P_to_IYUV)
+		{
+			Run8bitTestSeries(MVFMT_Y41P, MVFMT_IYUV);
+		}
+
+		TEST_METHOD(Y41P_to_YV12)
+		{
+			Run8bitTestSeries(MVFMT_Y41P, MVFMT_YV12);
+		}
+
+		TEST_METHOD(Y41P_to_YVU9)
+		{
+			Run8bitTestSeries(MVFMT_Y41P, MVFMT_YVU9);
+		}
+
+		TEST_METHOD(Y41P_to_YUV9)
+		{
+			Run8bitTestSeries(MVFMT_Y41P, MVFMT_YUV9);
+		}
+
+		TEST_METHOD(Y41P_to_IYU1)
+		{
+			Run8bitTestSeries(MVFMT_Y41P, MVFMT_IYU1);
+		}
+
+		TEST_METHOD(Y41P_to_IYU2)
+		{
+			Run8bitTestSeries(MVFMT_Y41P, MVFMT_IYU2);
+		}
+
+		TEST_METHOD(Y41P_to_Y800)
+		{
+			Run8bitTestSeries(MVFMT_Y41P, MVFMT_Y800);
+		}
+
+		TEST_METHOD(Y41P_to_Y16)
+		{
+			Run8bitTestSeries(MVFMT_Y41P, MVFMT_Y16);
+		}
+
+		TEST_METHOD(Y41P_to_CLJR)
+		{
+			Run8bitTestSeries(MVFMT_Y41P, MVFMT_CLJR);
+		}
+
+		TEST_METHOD(Y41P_to_AYUV)
+		{
+			Run8bitTestSeries(MVFMT_Y41P, MVFMT_AYUV);
+		}
+
 	private:
 		void Run8bitTestSeries(const MediaFormatID& inFormat, const MediaFormatID& outFormat)
 		{
@@ -1055,6 +1203,7 @@ namespace BlipvertUnitTests
 
 			Assert::IsTrue(bufCheckFunctPtr(Y, U, V, alpha, width, height, outBufPtr, 0), L"YUV buffer did not contain expected values.");
 		}
+
 		void RunGreyscaleTestSeries(const MediaFormatID& inFormat, const MediaFormatID& outFormat)
 		{
 			RunSingleGreyscaleTest(inFormat, outFormat, 128, 128, 128, 255);
@@ -1101,6 +1250,54 @@ namespace BlipvertUnitTests
 			encodeTransPtr(width, height, outBufPtr, 0, inBufPtr, 0, false, nullptr);
 
 			Assert::IsTrue(bufCheckFunctPtr(Y, 0, 0, alpha, width, height, outBufPtr, 0), L"YUV buffer did not contain expected values.");
+		}
+
+		void RunCLJRTestSeries(const MediaFormatID& inFormat, const MediaFormatID& outFormat)
+		{
+			RunSingleCLJRTest(inFormat, outFormat, 128, 128, 128, 255);
+			RunSingleCLJRTest(inFormat, outFormat, 255, 255, 255, 255);
+			RunSingleCLJRTest(inFormat, outFormat, 0, 0, 0, 255);
+			RunSingleCLJRTest(inFormat, outFormat, 255, 0, 0, 255);
+			RunSingleCLJRTest(inFormat, outFormat, 0, 255, 0, 255);
+			RunSingleCLJRTest(inFormat, outFormat, 0, 0, 255, 255);
+		}
+
+		void RunSingleCLJRTest(const MediaFormatID& inFormat, const MediaFormatID& outFormat, uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha)
+		{
+			// YUV to YUV
+			t_transformfunc encodeTransPtr = FindVideoTransform(inFormat, outFormat);
+			Assert::IsNotNull(reinterpret_cast<void*>(encodeTransPtr), L"encodeTransPtr returned a null function pointer.");
+
+			t_fillcolorfunc fullBufFunctPtr = FindFillColorTransform(inFormat);
+			Assert::IsNotNull(reinterpret_cast<void*>(fullBufFunctPtr), L"fullBufFunctPtr returned a null function pointer.");
+
+			t_buffercheckfunc bufCheckFunctPtr = FindBufferCheckFunction(outFormat);
+			Assert::IsNotNull(reinterpret_cast<void*>(bufCheckFunctPtr), L"bufCheckFunctPtr returned a null function pointer.");
+
+			uint32_t width = TestBufferWidth;
+			uint32_t height = TestBufferHeight;
+
+			uint32_t inBufBize = CalculateBufferSize(inFormat, width, height);
+			uint32_t outBufBize = CalculateBufferSize(outFormat, width, height);
+
+			std::unique_ptr<uint8_t[]> inBuf(new uint8_t[inBufBize]);
+			uint8_t* inBufPtr = inBuf.get();
+			memset(inBufPtr, 0, inBufBize);
+
+			std::unique_ptr<uint8_t[]> outBuf(new uint8_t[outBufBize]);
+			uint8_t* outBufPtr = outBuf.get();
+			memset(outBufPtr, 0, outBufBize);
+
+			uint8_t Y;
+			uint8_t U;
+			uint8_t V;
+			FastRGBtoYUV(red, green, blue, &Y, &U, &V);
+
+			fullBufFunctPtr(Y, U, V, alpha, width, height, inBufPtr, 0);
+
+			encodeTransPtr(width, height, outBufPtr, 0, inBufPtr, 0, false, nullptr);
+
+			Assert::IsTrue(bufCheckFunctPtr(Y & 0xF8, U & 0xFC, V & 0xFC, alpha, width, height, outBufPtr, 0), L"YUV buffer did not contain expected values.");
 		}
 	};
 }

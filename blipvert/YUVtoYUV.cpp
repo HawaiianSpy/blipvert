@@ -6137,8 +6137,8 @@ void blipvert::CLJR_to_IYU1(int32_t width, int32_t height,
 
     for (int32_t y = 0; y < height; y++)
     {
-        uint32_t* psrc = reinterpret_cast<uint32_t*>(out_buf);
-        uint8_t* pdst = in_buf;
+        uint32_t* psrc = reinterpret_cast<uint32_t*>(in_buf);
+        uint8_t* pdst = out_buf;
         for (int32_t x = 0; x < width; x += 4)
         {
             uint32_t mpixel = *psrc++;
@@ -6327,8 +6327,8 @@ void blipvert::CLJR_to_Y41P(int32_t width, int32_t height,
 
     for (int32_t y = 0; y < height; y++)
     {
-        uint32_t* psrc = reinterpret_cast<uint32_t*>(out_buf);
-        uint8_t* pdst = in_buf;
+        uint32_t* psrc = reinterpret_cast<uint32_t*>(in_buf);
+        uint8_t* pdst = out_buf;
         for (int32_t x = 0; x < width; x += 8)
         {
             uint32_t mpixel = *psrc++;
@@ -6752,7 +6752,7 @@ void blipvert::Y41P_to_CLJR(int32_t width, int32_t height,
     bool flipped, xRGBQUAD* in_palette)
 {
     if (!out_stride)
-        out_stride = width * 12 / 8;
+        out_stride = width;
 
     if (!in_stride)
         in_stride = width * 12 / 8;
@@ -6770,8 +6770,8 @@ void blipvert::Y41P_to_CLJR(int32_t width, int32_t height,
         for (int32_t x = 0; x < width; x += 8)
         {
             PackCLJRDword(*pdst++, psrc[0], psrc[2], psrc[1], psrc[3], psrc[5], psrc[7])
-                PackCLJRDword(*pdst++, psrc[4], psrc[6], psrc[8], psrc[9], psrc[10], psrc[11])
-                psrc += 12;
+            PackCLJRDword(*pdst++, psrc[4], psrc[6], psrc[8], psrc[9], psrc[10], psrc[11])
+            psrc += 12;
         }
 
         in_buf += in_stride;

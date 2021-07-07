@@ -145,6 +145,151 @@ namespace BlipvertUnitTests
 		}
 
 		//
+		// CLJR to RGB
+		//
+
+		TEST_METHOD(CLJR_to_RGB32_UnitTest)
+		{
+			RunCLJRTestSeries(MVFMT_CLJR, MVFMT_RGB32);
+		}
+
+		TEST_METHOD(CLJR_to_RGB24_UnitTest)
+		{
+			RunCLJRTestSeries(MVFMT_CLJR, MVFMT_RGB24);
+		}
+
+		TEST_METHOD(CLJR_to_RGB565_UnitTest)
+		{
+			RunCLJRTestSeries(MVFMT_CLJR, MVFMT_RGB565);
+		}
+
+		TEST_METHOD(CLJR_to_RGB555_UnitTest)
+		{
+			RunCLJRTestSeries(MVFMT_CLJR, MVFMT_RGB555);
+		}
+
+		//
+		// Y41P to RGB
+		//
+
+		TEST_METHOD(Y41P_to_RGB32_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_Y41P, MVFMT_RGB32);
+		}
+
+		TEST_METHOD(Y41P_to_RGB24_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_Y41P, MVFMT_RGB24);
+		}
+
+		TEST_METHOD(Y41P_to_RGB565_UnitTest)
+		{
+			Run565bitTestSeries(MVFMT_Y41P, MVFMT_RGB565);
+		}
+
+		TEST_METHOD(Y41P_to_RGB555_UnitTest)
+		{
+			Run555bitTestSeries(MVFMT_Y41P, MVFMT_RGB555);
+		}
+
+		//
+		// IYU1 to RGB
+		//
+
+		TEST_METHOD(IYU1_to_RGB32_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_IYU1, MVFMT_RGB32);
+		}
+
+		TEST_METHOD(IYU1_to_RGB24_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_IYU1, MVFMT_RGB24);
+		}
+
+		TEST_METHOD(IYU1_to_RGB565_UnitTest)
+		{
+			Run565bitTestSeries(MVFMT_IYU1, MVFMT_RGB565);
+		}
+
+		TEST_METHOD(IYU1_to_RGB555_UnitTest)
+		{
+			Run555bitTestSeries(MVFMT_IYU1, MVFMT_RGB555);
+		}
+
+
+		//
+		// IYU2 to RGB
+		//
+
+		TEST_METHOD(IYU2_to_RGB32_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_IYU2, MVFMT_RGB32);
+		}
+
+		TEST_METHOD(IYU2_to_RGB24_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_IYU2, MVFMT_RGB24);
+		}
+
+		TEST_METHOD(IYU2_to_RGB565_UnitTest)
+		{
+			Run565bitTestSeries(MVFMT_IYU2, MVFMT_RGB565);
+		}
+
+		TEST_METHOD(IYU2_to_RGB555_UnitTest)
+		{
+			Run555bitTestSeries(MVFMT_IYU2, MVFMT_RGB555);
+		}
+
+		//
+		// YVU9 to RGB
+		//
+
+		TEST_METHOD(YVU9_to_RGB32_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_YVU9, MVFMT_RGB32);
+		}
+
+		TEST_METHOD(YVU9_to_RGB24_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_YVU9, MVFMT_RGB24);
+		}
+
+		TEST_METHOD(YVU9_to_RGB565_UnitTest)
+		{
+			Run565bitTestSeries(MVFMT_YVU9, MVFMT_RGB565);
+		}
+
+		TEST_METHOD(YVU9_to_RGB555_UnitTest)
+		{
+			Run555bitTestSeries(MVFMT_YVU9, MVFMT_RGB555);
+		}
+
+		//
+		// YUV9 to RGB
+		//
+
+		TEST_METHOD(YUV9_to_RGB32_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_YUV9, MVFMT_RGB32);
+		}
+
+		TEST_METHOD(YUV9_to_RGB24_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_YUV9, MVFMT_RGB24);
+		}
+
+		TEST_METHOD(YUV9_to_RGB565_UnitTest)
+		{
+			Run565bitTestSeries(MVFMT_YUV9, MVFMT_RGB565);
+		}
+
+		TEST_METHOD(YUV9_to_RGB555_UnitTest)
+		{
+			Run555bitTestSeries(MVFMT_YUV9, MVFMT_RGB555);
+		}
+
+		//
 		// IYUV to RGB
 		//
 
@@ -193,123 +338,27 @@ namespace BlipvertUnitTests
 		}
 
 		//
-		// YUV9 to RGB
+		// Y800 to RGB
 		//
 
-		TEST_METHOD(YUV9_to_RGB32_UnitTest)
+		TEST_METHOD(Y800_to_RGB32_UnitTest)
 		{
-			Run8bitTestSeries(MVFMT_YUV9, MVFMT_RGB32);
+			RunGreyscaleTestSeries(MVFMT_Y800, MVFMT_RGB32);
 		}
 
-		TEST_METHOD(YUV9_to_RGB24_UnitTest)
+		TEST_METHOD(Y800_to_RGB24_UnitTest)
 		{
-			Run8bitTestSeries(MVFMT_YUV9, MVFMT_RGB24);
+			RunGreyscaleTestSeries(MVFMT_Y800, MVFMT_RGB24);
 		}
 
-		TEST_METHOD(YUV9_to_RGB565_UnitTest)
+		TEST_METHOD(Y800_to_RGB565_UnitTest)
 		{
-			Run565bitTestSeries(MVFMT_YUV9, MVFMT_RGB565);
+			RunGreyscaleTestSeries(MVFMT_Y800, MVFMT_RGB565);
 		}
 
-		TEST_METHOD(YUV9_to_RGB555_UnitTest)
+		TEST_METHOD(Y800_to_RGB555_UnitTest)
 		{
-			Run555bitTestSeries(MVFMT_YUV9, MVFMT_RGB555);
-		}
-
-		//
-		// YVU9 to RGB
-		//
-
-		TEST_METHOD(YVU9_to_RGB32_UnitTest)
-		{
-			Run8bitTestSeries(MVFMT_YVU9, MVFMT_RGB32);
-		}
-
-		TEST_METHOD(YVU9_to_RGB24_UnitTest)
-		{
-			Run8bitTestSeries(MVFMT_YVU9, MVFMT_RGB24);
-		}
-
-		TEST_METHOD(YVU9_to_RGB565_UnitTest)
-		{
-			Run565bitTestSeries(MVFMT_YVU9, MVFMT_RGB565);
-		}
-
-		TEST_METHOD(YVU9_to_RGB555_UnitTest)
-		{
-			Run555bitTestSeries(MVFMT_YVU9, MVFMT_RGB555);
-		}
-
-		//
-		// IYU2 to RGB
-		//
-
-		TEST_METHOD(IYU2_to_RGB32_UnitTest)
-		{
-			Run8bitTestSeries(MVFMT_IYU2, MVFMT_RGB32);
-		}
-
-		TEST_METHOD(IYU2_to_RGB24_UnitTest)
-		{
-			Run8bitTestSeries(MVFMT_IYU2, MVFMT_RGB24);
-		}
-
-		TEST_METHOD(IYU2_to_RGB565_UnitTest)
-		{
-			Run565bitTestSeries(MVFMT_IYU2, MVFMT_RGB565);
-		}
-
-		TEST_METHOD(IYU2_to_RGB555_UnitTest)
-		{
-			Run555bitTestSeries(MVFMT_IYU2, MVFMT_RGB555);
-		}
-
-		//
-		// Y41P to RGB
-		//
-
-		TEST_METHOD(Y41P_to_RGB32_UnitTest)
-		{
-			Run8bitTestSeries(MVFMT_Y41P, MVFMT_RGB32);
-		}
-
-		TEST_METHOD(Y41P_to_RGB24_UnitTest)
-		{
-			Run8bitTestSeries(MVFMT_Y41P, MVFMT_RGB24);
-		}
-
-		TEST_METHOD(Y41P_to_RGB565_UnitTest)
-		{
-			Run565bitTestSeries(MVFMT_Y41P, MVFMT_RGB565);
-		}
-
-		TEST_METHOD(Y41P_to_RGB555_UnitTest)
-		{
-			Run555bitTestSeries(MVFMT_Y41P, MVFMT_RGB555);
-		}
-
-		//
-		// CLJR to RGB
-		//
-
-		TEST_METHOD(CLJR_to_RGB32_UnitTest)
-		{
-			RunCLJRTestSeries(MVFMT_CLJR, MVFMT_RGB32);
-		}
-
-		TEST_METHOD(CLJR_to_RGB24_UnitTest)
-		{
-			RunCLJRTestSeries(MVFMT_CLJR, MVFMT_RGB24);
-		}
-
-		TEST_METHOD(CLJR_to_RGB565_UnitTest)
-		{
-			RunCLJRTestSeries(MVFMT_CLJR, MVFMT_RGB565);
-		}
-
-		TEST_METHOD(CLJR_to_RGB555_UnitTest)
-		{
-			RunCLJRTestSeries(MVFMT_CLJR, MVFMT_RGB555);
+			RunGreyscaleTestSeries(MVFMT_Y800, MVFMT_RGB555);
 		}
 
 		//
@@ -337,27 +386,32 @@ namespace BlipvertUnitTests
 		}
 
 		//
-		// Y800 to RGB
+		// AYUV to RGB
 		//
 
-		TEST_METHOD(Y800_to_RGB32_UnitTest)
+		TEST_METHOD(AYUV_to_RGBA_UnitTest)
 		{
-			RunGreyscaleTestSeries(MVFMT_Y800, MVFMT_RGB32);
+			Run8bitTestSeries(MVFMT_AYUV, MVFMT_RGBA);
 		}
 
-		TEST_METHOD(Y800_to_RGB24_UnitTest)
+		TEST_METHOD(AYUV_to_RGB32_UnitTest)
 		{
-			RunGreyscaleTestSeries(MVFMT_Y800, MVFMT_RGB24);
+			Run8bitTestSeries(MVFMT_AYUV, MVFMT_RGB32);
 		}
 
-		TEST_METHOD(Y800_to_RGB565_UnitTest)
+		TEST_METHOD(AYUV_to_RGB24_UnitTest)
 		{
-			RunGreyscaleTestSeries(MVFMT_Y800, MVFMT_RGB565);
+			Run8bitTestSeries(MVFMT_AYUV, MVFMT_RGB24);
 		}
 
-		TEST_METHOD(Y800_to_RGB555_UnitTest)
+		TEST_METHOD(AYUV_to_RGB565_UnitTest)
 		{
-			RunGreyscaleTestSeries(MVFMT_Y800, MVFMT_RGB555);
+			Run565bitTestSeries(MVFMT_AYUV, MVFMT_RGB565);
+		}
+
+		TEST_METHOD(AYUV_to_RGB555_UnitTest)
+		{
+			Run555bitTestSeries(MVFMT_AYUV, MVFMT_RGB555);
 		}
 
 	private:

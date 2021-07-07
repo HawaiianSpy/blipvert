@@ -2181,13 +2181,13 @@ void Y16_to_PlanarYUV(int32_t width, int32_t height,
 
     for (int32_t y = 0; y < height; y++)
     {
-        uint8_t* psrc = in_buf;
+        uint8_t* psrc = in_buf + 1;
         uint8_t* pdst = out_buf;
 
         for (int32_t x = 0; x < width; x++)
         {
-            *pdst++ = 0x00;
-            *pdst++ = *psrc++;
+            *pdst++ = *psrc;
+            psrc += 2;
         }
 
         in_buf += in_stride;
@@ -5654,8 +5654,10 @@ void blipvert::Y800_to_AYUV(int32_t width, int32_t height,
         uint8_t* pdst = out_buf;
         for (uint16_t index = 0; index < width; index++)
         {
-            *reinterpret_cast<uint32_t*>(pdst) = ayuv_greyscale[psrc[index]];
-            pdst += 4;
+            *pdst++ = 0x00;
+            *pdst++ = 0x00;
+            *pdst++ = *psrc++;
+            *pdst++ = 0xFF;
         }
 
         in_buf += in_stride;
@@ -5974,9 +5976,11 @@ void blipvert::Y16_to_AYUV(int32_t width, int32_t height,
         uint8_t* pdst = out_buf;
         for (uint16_t index = 0; index < width; index++)
         {
-            *reinterpret_cast<uint32_t*>(pdst) = ayuv_greyscale[*psrc];
+            *pdst++ = 0x00;
+            *pdst++ = 0x00;
+            *pdst++ = *psrc;
+            *pdst++ = 0xFF;
             psrc += 2;
-            pdst += 4;
         }
 
         in_buf += in_stride;

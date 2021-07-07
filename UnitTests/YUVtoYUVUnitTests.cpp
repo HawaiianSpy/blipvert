@@ -933,6 +933,80 @@ namespace BlipvertUnitTests
 			RunGreyscaleTestSeries(MVFMT_Y800, MVFMT_Y16);
 		}
 
+		//
+		// Y16 to YUVx
+		//
+
+		TEST_METHOD(Y16_to_YUY2)
+		{
+			RunGreyscaleTestSeries(MVFMT_Y16, MVFMT_YUY2);
+		}
+
+		TEST_METHOD(Y16_to_UYVY)
+		{
+			RunGreyscaleTestSeries(MVFMT_Y16, MVFMT_UYVY);
+		}
+
+		TEST_METHOD(Y16_to_YVYU)
+		{
+			RunGreyscaleTestSeries(MVFMT_Y16, MVFMT_YVYU);
+		}
+
+		TEST_METHOD(Y16_to_VYUY)
+		{
+			RunGreyscaleTestSeries(MVFMT_Y16, MVFMT_VYUY);
+		}
+
+		TEST_METHOD(Y16_to_IYUV)
+		{
+			RunGreyscaleTestSeries(MVFMT_Y16, MVFMT_IYUV);
+		}
+
+		TEST_METHOD(Y16_to_YV12)
+		{
+			RunGreyscaleTestSeries(MVFMT_Y16, MVFMT_YV12);
+		}
+
+		TEST_METHOD(Y16_to_YVU9)
+		{
+			RunGreyscaleTestSeries(MVFMT_Y16, MVFMT_YVU9);
+		}
+
+		TEST_METHOD(Y16_to_YUV9)
+		{
+			RunGreyscaleTestSeries(MVFMT_Y16, MVFMT_YUV9);
+		}
+
+		TEST_METHOD(Y16_to_IYU1)
+		{
+			RunGreyscaleTestSeries(MVFMT_Y16, MVFMT_IYU1);
+		}
+
+		TEST_METHOD(Y16_to_IYU2)
+		{
+			RunGreyscaleTestSeries(MVFMT_Y16, MVFMT_IYU2);
+		}
+
+		TEST_METHOD(Y16_to_CLJR)
+		{
+			RunGreyscaleTestSeries(MVFMT_Y16, MVFMT_CLJR);
+		}
+
+		TEST_METHOD(Y16_to_Y41P)
+		{
+			RunGreyscaleTestSeries(MVFMT_Y16, MVFMT_Y41P);
+		}
+
+		TEST_METHOD(Y16_to_AYUV)
+		{
+			RunGreyscaleTestSeries(MVFMT_Y16, MVFMT_AYUV);
+		}
+
+		TEST_METHOD(Y16_to_YUY2_Y800)
+		{
+			RunGreyscaleTestSeries(MVFMT_Y16, MVFMT_Y800);
+		}
+
 	private:
 		void Run8bitTestSeries(const MediaFormatID& inFormat, const MediaFormatID& outFormat)
 		{
@@ -1026,7 +1100,7 @@ namespace BlipvertUnitTests
 
 			encodeTransPtr(width, height, outBufPtr, 0, inBufPtr, 0, false, nullptr);
 
-			Assert::IsTrue(bufCheckFunctPtr(Y, Y, Y, alpha, width, height, outBufPtr, 0), L"YUV buffer did not contain expected values.");
+			Assert::IsTrue(bufCheckFunctPtr(Y, 0, 0, alpha, width, height, outBufPtr, 0), L"YUV buffer did not contain expected values.");
 		}
 	};
 }

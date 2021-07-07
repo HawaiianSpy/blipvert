@@ -32,7 +32,7 @@
 using namespace blipvert;
 
 //
-// RGBX to PackedY422 conversions
+// RGBX to PackedY422 transforms
 //
 
 void RGB32_to_PackedY422(int32_t width, int32_t height,
@@ -1119,13 +1119,13 @@ void RGB8_to_PlanarYUV(int32_t width, int32_t height,
 }
 
 //
-// Public RGBA to YUV conversions
+// Public RGBA to YUV transforms
 //
 
 void blipvert::RGBA_to_AYUV(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette)
 {
     if (!out_stride)
-        out_stride = width;
+        out_stride = width * 4;
 
     if (!in_stride)
         in_stride = width * 4;
@@ -1146,7 +1146,7 @@ void blipvert::RGBA_to_AYUV(int32_t width, int32_t height, uint8_t* out_buf, int
             *pdst++ = static_cast<uint32_t>(((vr_table[psrc[2]] + vg_table[psrc[1]] + vb_table[psrc[0]]) >> 15) + 128);
             *pdst++ = static_cast<uint32_t>(((ur_table[psrc[2]] + ug_table[psrc[1]] + ub_table[psrc[0]]) >> 15) + 128);
             *pdst++ = static_cast<uint8_t>(((yr_table[psrc[2]] + yg_table[psrc[1]] + yb_table[psrc[0]]) >> 15) + 16);
-            *pdst++ = 0xFF;
+            *pdst++ = psrc[3];
             psrc += 4;
             hcount--;
         }
@@ -1159,7 +1159,7 @@ void blipvert::RGBA_to_AYUV(int32_t width, int32_t height, uint8_t* out_buf, int
 
 
 //
-// Public RGB32 to YUV conversions
+// Public RGB32 to YUV transforms
 //
 
 void blipvert::RGB32_to_YUY2(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette)
@@ -1539,7 +1539,7 @@ void blipvert::RGB32_to_AYUV(int32_t width, int32_t height, uint8_t* out_buf, in
 }
 
 //
-// RGB24 to YUV conversions
+// RGB24 to YUV transforms
 //
 
 void blipvert::RGB24_to_YUY2(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette)
@@ -1920,7 +1920,7 @@ void blipvert::RGB24_to_AYUV(int32_t width, int32_t height, uint8_t* out_buf, in
 }
 
 //
-// RGB565 to YUV conversions
+// RGB565 to YUV transforms
 //
 
 void blipvert::RGB565_to_YUY2(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette)
@@ -2332,7 +2332,7 @@ void blipvert::RGB565_to_AYUV(int32_t width, int32_t height, uint8_t* out_buf, i
 }
 
 //
-// RGB555 to YUV conversions
+// RGB555 to YUV transforms
 //
 
 void blipvert::RGB555_to_YUY2(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette)
@@ -2744,7 +2744,7 @@ void blipvert::RGB555_to_AYUV(int32_t width, int32_t height, uint8_t* out_buf, i
 }
 
 //
-// RGB8 to YUV conversions
+// RGB8 to YUV transforms
 //
 
 void blipvert::RGB8_to_YUY2(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette)

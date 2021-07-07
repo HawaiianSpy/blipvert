@@ -48,11 +48,11 @@ int32_t blipvert::v_table[256];
 int32_t blipvert::uv_table[256][256];
 uint8_t blipvert::saturation_table[900];
 
-uint32_t blipvert::ayuv_greyscale[256];
 uint32_t blipvert::rgba_greyscale[256];
 uint32_t blipvert::rgb32_greyscale[256];
 uint16_t blipvert::rgb565_greyscale[256];
 uint16_t blipvert::rgb555_greyscale[256];
+uint16_t blipvert::rgba555_greyscale[256];
 
 xRGBQUAD blipvert::rgb1_greyscale_palette[2] { { 0, 0, 0, 255} , {255, 255, 255, 255} };
 xRGBQUAD blipvert::rgb4_greyscale_palette[16];
@@ -60,9 +60,9 @@ xRGBQUAD blipvert::rgb8_greyscale_palette[256];
 
 void blipvert::InitLookupTables()
 {
-    //    Build the RGB to YUV conversion lookup tables.
+    //    Build the RGB to YUV transform lookup tables.
      //
-     //    RGB to YUV conversion formula used:
+     //    RGB to YUV transform formula used:
      //
      //    Y =  0.257R + 0.504G + 0.098B + 16
      //    U = -0.148R - 0.291G + 0.439B + 128
@@ -86,11 +86,11 @@ void blipvert::InitLookupTables()
         vb_table[index] = static_cast<int32_t>((-0.071 * scalar) + 0.5);
 
         // Greyscale extensions
-        ayuv_greyscale[index] = (0xFF000000 | (static_cast<uint32_t>(index) << 16) | (static_cast<uint32_t>(index) << 8) | static_cast<uint32_t>(index));
         rgba_greyscale[index] = ((static_cast<uint32_t>(index) << 16) | (static_cast<uint32_t>(index) << 8) | static_cast<uint32_t>(index));
         rgb32_greyscale[index] = (0xFF000000 | (static_cast<uint32_t>(index) << 16) | (static_cast<uint32_t>(index) << 8) | static_cast<uint32_t>(index));
         PackRGB565Word(rgb565_greyscale[index], static_cast<uint16_t>(index), static_cast<uint16_t>(index), static_cast<uint16_t>(index));
         PackRGB555Word(rgb555_greyscale[index], static_cast<uint16_t>(index), static_cast<uint16_t>(index), static_cast<uint16_t>(index));
+        PackARGB555Word(rgba555_greyscale[index], 0, static_cast<uint16_t>(index), static_cast<uint16_t>(index), static_cast<uint16_t>(index));
 
         quad.rgbBlue = static_cast<uint8_t>(index);
         quad.rgbGreen = static_cast<uint8_t>(index);
@@ -108,9 +108,9 @@ void blipvert::InitLookupTables()
         rgb8_greyscale_palette[index] = quad;
     }
 
-    //    Build the YUV to RGB conversion lookup tables.
+    //    Build the YUV to RGB transform lookup tables.
     //
-    //    YUV to RGB conversion formula used:
+    //    YUV to RGB transform formula used:
     //
     //    B = 1.164(Y - 16) + 2.018(U - 128)
     //    G = 1.164(Y - 16) - 0.813(V - 128) - 0.391(U - 128)

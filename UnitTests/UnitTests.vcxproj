@@ -171,6 +171,7 @@
     <ClCompile Include="FindVideoTransformUnitTests.cpp" />
     <ClCompile Include="RGBtoRGBUnitTests.cpp" />
     <ClCompile Include="RGBtoYUVUnitTests.cpp" />
+    <ClCompile Include="ToGreyscaleUnitTests.cpp" />
     <ClCompile Include="UtilityFunctionUnitTests.cpp" />
     <ClCompile Include="YUVtoRGBUnitTests.cpp" />
     <ClCompile Include="YUVtoYUVUnitTests.cpp" />

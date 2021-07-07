@@ -97,68 +97,35 @@ void blipvert::RGB32_to_Greyscale(int32_t  width, int32_t height, uint8_t* buf, 
 
 void blipvert::RGB24_to_Greyscale(int32_t  width, int32_t height, uint8_t* buf, int32_t stride, xRGBQUAD* in_palette)
 {
-    if (UseFasterLooping)
+    if (!stride)
     {
-        if (!stride)
+        uint32_t count = width * height;
+        while (count)
         {
-            uint32_t count = width * height;
-            while (count)
-            {
-                *reinterpret_cast<uint32_t*>(buf) = rgb32_greyscale[static_cast<uint8_t>(((yr_table[buf[2]] + yg_table[buf[1]] + yb_table[buf[0]]) >> 15) + 16)];
-                buf += 3;
-                count--;
-            }
-        }
-        else
-        {
-            while (height)
-            {
-                uint8_t* pdst = buf;
-                int32_t hcount = width;
-                while (hcount)
-                {
-                    *reinterpret_cast<uint32_t*>(pdst) = rgb32_greyscale[static_cast<uint8_t>(((yr_table[pdst[2]] + yg_table[pdst[1]] + yb_table[pdst[0]]) >> 15) + 16)];
-                    pdst += 3;
-                    hcount--;
-                }
-
-                buf += stride;
-                height--;
-            }
+            uint8_t Y = static_cast<uint8_t>(((yr_table[buf[2]] + yg_table[buf[1]] + yb_table[buf[0]]) >> 15) + 16);
+            *buf++ = Y;
+            *buf++ = Y;
+            *buf++ = Y;
+            count--;
         }
     }
     else
     {
-        if (!stride)
+        while (height)
         {
-            uint32_t count = width * height;
-            while (count)
+            uint8_t* pdst = buf;
+            int32_t hcount = width;
+            while (hcount)
             {
-                uint8_t Y = static_cast<uint8_t>(((yr_table[buf[2]] + yg_table[buf[1]] + yb_table[buf[0]]) >> 15) + 16);
-                *buf++ = Y;
-                *buf++ = Y;
-                *buf++ = Y;
-                count--;
+                uint8_t Y = static_cast<uint8_t>(((yr_table[pdst[2]] + yg_table[pdst[1]] + yb_table[pdst[0]]) >> 15) + 16);
+                *pdst++ = Y;
+                *pdst++ = Y;
+                *pdst++ = Y;
+                hcount--;
             }
-        }
-        else
-        {
-            while (height)
-            {
-                uint8_t* pdst = buf;
-                int32_t hcount = width;
-                while (hcount)
-                {
-                    uint8_t Y = static_cast<uint8_t>(((yr_table[pdst[2]] + yg_table[pdst[1]] + yb_table[pdst[0]]) >> 15) + 16);
-                    *pdst++ = Y;
-                    *pdst++ = Y;
-                    *pdst++ = Y;
-                    hcount--;
-                }
 
-                buf += stride;
-                height--;
-            }
+            buf += stride;
+            height--;
         }
     }
 }
@@ -171,9 +138,7 @@ void blipvert::RGB565_to_Greyscale(int32_t  width, int32_t height, uint8_t* buf,
         uint32_t count = width * height;
         while (count)
         {
-            *pdst = rgb565_greyscale[((yr_table[UnpackRGB565Red(*pdst)] + \
-                yg_table[UnpackRGB565Green(*pdst)] + \
-                yb_table[UnpackRGB565Blue(*pdst)]) >> 15) + 16];
+            *pdst = rgb565_greyscale[((yr_table[UnpackRGB565Red(*pdst)] +  yg_table[UnpackRGB565Green(*pdst)] +  yb_table[UnpackRGB565Blue(*pdst)]) >> 15) + 16];
             pdst++;
             count--;
         }
@@ -186,9 +151,7 @@ void blipvert::RGB565_to_Greyscale(int32_t  width, int32_t height, uint8_t* buf,
             int32_t hcount = width;
             while (hcount)
             {
-                *pdst = rgb565_greyscale[((yr_table[UnpackRGB565Red(*pdst)] + \
-                    yg_table[UnpackRGB565Green(*pdst)] + \
-                    yb_table[UnpackRGB565Blue(*pdst)]) >> 15) + 16];
+                *pdst = rgb565_greyscale[((yr_table[UnpackRGB565Red(*pdst)] +  yg_table[UnpackRGB565Green(*pdst)] +  yb_table[UnpackRGB565Blue(*pdst)]) >> 15) + 16];
                 pdst++;
                 hcount--;
             }
@@ -207,9 +170,7 @@ void blipvert::RGB555_to_Greyscale(int32_t  width, int32_t height, uint8_t* buf,
         uint32_t count = width * height;
         while (count)
         {
-            *pdst = rgb555_greyscale[((yr_table[UnpackRGB555Red(*pdst)] + \
-                yg_table[UnpackRGB555Green(*pdst)] + \
-                yb_table[UnpackRGB555Blue(*pdst)]) >> 15) + 16];
+            *pdst = (*reinterpret_cast<uint16_t*>(buf) & 0x8000) | rgba555_greyscale[((yr_table[UnpackRGB555Red(*pdst)] +  yg_table[UnpackRGB555Green(*pdst)] +  yb_table[UnpackRGB555Blue(*pdst)]) >> 15) + 16];
             pdst++;
             count--;
         }
@@ -222,9 +183,7 @@ void blipvert::RGB555_to_Greyscale(int32_t  width, int32_t height, uint8_t* buf,
             int32_t hcount = width;
             while (hcount)
             {
-                *pdst = rgb565_greyscale[((yr_table[UnpackRGB555Red(*pdst)] + \
-                    yg_table[UnpackRGB555Green(*pdst)] + \
-                    yb_table[UnpackRGB555Blue(*pdst)]) >> 15) + 16];
+                *pdst = (*reinterpret_cast<uint16_t*>(buf) & 0x8000) | rgba555_greyscale[((yr_table[UnpackRGB555Red(*pdst)] +  yg_table[UnpackRGB555Green(*pdst)] + yb_table[UnpackRGB555Blue(*pdst)]) >> 15) + 16];
                 pdst++;
                 hcount--;
             }

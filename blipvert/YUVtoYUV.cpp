@@ -35,7 +35,7 @@
 using namespace blipvert;
 
 //
-// Local generic YUV to YUV conversion functions
+// Local generic YUV to YUV transform functions
 //
 
 void PackedY422_to_PackedY422(int32_t width, int32_t height,
@@ -3044,7 +3044,7 @@ void PlanarYUV_to_AYUV(int32_t width, int32_t height,
 }
 
 //
-// Public Yuv to Yuv conversion functions
+// Public Yuv to Yuv transform functions
 //
 
 
@@ -6886,7 +6886,7 @@ void blipvert::Y41P_to_AYUV(int32_t width, int32_t height,
 }
 
 //
-// Misc YUV format conversions
+// Misc YUV format transforms
 //
 
 void blipvert::UYVY_to_IUYV(int32_t width, int32_t height,

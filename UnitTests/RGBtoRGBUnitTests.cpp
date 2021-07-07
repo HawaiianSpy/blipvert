@@ -341,6 +341,7 @@ namespace BlipvertUnitTests
 			std::unique_ptr<uint8_t[]> inBuf(new uint8_t[inBufBize]);
 			uint8_t* inBufPtr = inBuf.get();
 			memset(inBufPtr, 0, inBufBize);
+
 			std::unique_ptr<uint8_t[]> outBuf(new uint8_t[outBufBize]);
 			uint8_t* outBufPtr = outBuf.get();
 			memset(outBufPtr, 0, outBufBize);
@@ -383,6 +384,7 @@ namespace BlipvertUnitTests
 			std::unique_ptr<uint8_t[]> inBuf(new uint8_t[inBufBize]);
 			uint8_t* inBufPtr = inBuf.get();
 			memset(inBufPtr, 0, inBufBize);
+
 			std::unique_ptr<uint8_t[]> outBuf(new uint8_t[outBufBize]);
 			uint8_t* outBufPtr = outBuf.get();
 			memset(outBufPtr, 0, outBufBize);
@@ -432,6 +434,7 @@ namespace BlipvertUnitTests
 			std::unique_ptr<uint8_t[]> inBuf(new uint8_t[inBufBize]);
 			uint8_t* inBufPtr = inBuf.get();
 			memset(inBufPtr, 0, inBufBize);
+
 			std::unique_ptr<uint8_t[]> outBuf(new uint8_t[outBufBize]);
 			uint8_t* outBufPtr = outBuf.get();
 			memset(outBufPtr, 0, outBufBize);
@@ -482,6 +485,7 @@ namespace BlipvertUnitTests
 			std::unique_ptr<uint8_t[]> inBuf(new uint8_t[inBufBize]);
 			uint8_t* inBufPtr = inBuf.get();
 			memset(inBufPtr, index, inBufBize);
+
 			std::unique_ptr<uint8_t[]> outBuf(new uint8_t[outBufBize]);
 			uint8_t* outBufPtr = outBuf.get();
 			memset(outBufPtr, 0, outBufBize);
@@ -530,6 +534,7 @@ namespace BlipvertUnitTests
 			std::unique_ptr<uint8_t[]> inBuf(new uint8_t[inBufBize]);
 			uint8_t* inBufPtr = inBuf.get();
 			memset(inBufPtr, index << 4 | index, inBufBize);
+
 			std::unique_ptr<uint8_t[]> outBuf(new uint8_t[outBufBize]);
 			uint8_t* outBufPtr = outBuf.get();
 			memset(outBufPtr, 0, outBufBize);
@@ -570,6 +575,7 @@ namespace BlipvertUnitTests
 			std::unique_ptr<uint8_t[]> inBuf(new uint8_t[inBufBize]);
 			uint8_t* inBufPtr = inBuf.get();
 			memset(inBufPtr, index ? 0xFF : 0x00, inBufBize);
+
 			std::unique_ptr<uint8_t[]> outBuf(new uint8_t[outBufBize]);
 			uint8_t* outBufPtr = outBuf.get();
 			memset(outBufPtr, 0, outBufBize);

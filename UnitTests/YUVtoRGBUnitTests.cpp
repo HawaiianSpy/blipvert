@@ -573,6 +573,7 @@ namespace BlipvertUnitTests
 
 			Assert::IsTrue(bufCheckFunctPtr(R, G, B, alpha, width, height, rgbBufPtr, 0), L"RGB buffer did not contain expected values.");
 		}
+
 		void RunGreyscaleTestSeries(const MediaFormatID& yuvFormat, const MediaFormatID& rgbFormat)
 		{
 			RunSingleGreyscaleTest(yuvFormat, rgbFormat, 128, 128, 128, 255);
@@ -620,6 +621,7 @@ namespace BlipvertUnitTests
 
 			Assert::IsTrue(bufCheckFunctPtr(Y, Y, Y, alpha, width, height, rgbBufPtr, 0), L"RGB buffer did not contain expected values.");
 		}
+
 		void RunCLJRTestSeries(const MediaFormatID& yuvFormat, const MediaFormatID& rgbFormat)
 		{
 			RunSingleCLJRTest(yuvFormat, rgbFormat, 128, 128, 128, 255);

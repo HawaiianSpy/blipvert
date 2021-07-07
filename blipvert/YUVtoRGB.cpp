@@ -2337,7 +2337,8 @@ void blipvert::Y16_to_RGB565(int32_t width, int32_t height,
     uint8_t* in_buf, int32_t in_stride,
     bool flipped, xRGBQUAD* in_palette)
 {
-    out_stride = width * 2;
+    if (!out_stride)
+        out_stride = width * 2;
 
     if (!in_stride)
         in_stride = width * 2;
@@ -2372,7 +2373,8 @@ void blipvert::Y16_to_RGB555(int32_t width, int32_t height,
     uint8_t* in_buf, int32_t in_stride,
     bool flipped, xRGBQUAD* in_palette)
 {
-    out_stride = width * 2;
+    if(!out_stride)
+        out_stride = width * 2;
 
     if (!in_stride)
         in_stride = width * 2;

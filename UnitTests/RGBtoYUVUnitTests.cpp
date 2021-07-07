@@ -49,6 +49,15 @@ namespace BlipvertUnitTests
 	public:
 
 		//
+		// RGBA to YUV
+		//
+
+		TEST_METHOD(RGBA_to_AYUV_UnitTest)
+		{
+			Run8bitAlphaTestSeries(MVFMT_RGBA, MVFMT_AYUV);
+		}
+
+		//
 		// RGB32 to YUV
 		//
 
@@ -374,6 +383,23 @@ namespace BlipvertUnitTests
 			RunSingle8bitTest(rgbFormat, yuvFormat, 255, 0, 0, 255);
 			RunSingle8bitTest(rgbFormat, yuvFormat, 0, 255, 0, 255);
 			RunSingle8bitTest(rgbFormat, yuvFormat, 0, 0, 255, 255);
+		}
+
+		void Run8bitAlphaTestSeries(const MediaFormatID& rgbFormat, const MediaFormatID& yuvFormat)
+		{
+			RunSingle8bitTest(rgbFormat, yuvFormat, 128, 128, 128, 255);
+			RunSingle8bitTest(rgbFormat, yuvFormat, 255, 255, 255, 255);
+			RunSingle8bitTest(rgbFormat, yuvFormat, 0, 0, 0, 255);
+			RunSingle8bitTest(rgbFormat, yuvFormat, 255, 0, 0, 255);
+			RunSingle8bitTest(rgbFormat, yuvFormat, 0, 255, 0, 255);
+			RunSingle8bitTest(rgbFormat, yuvFormat, 0, 0, 255, 255);
+
+			RunSingle8bitTest(rgbFormat, yuvFormat, 128, 128, 128, 0);
+			RunSingle8bitTest(rgbFormat, yuvFormat, 255, 255, 255, 0);
+			RunSingle8bitTest(rgbFormat, yuvFormat, 0, 0, 0, 0);
+			RunSingle8bitTest(rgbFormat, yuvFormat, 255, 0, 0, 0);
+			RunSingle8bitTest(rgbFormat, yuvFormat, 0, 255, 0, 0);
+			RunSingle8bitTest(rgbFormat, yuvFormat, 0, 0, 255, 0);
 		}
 
 		void RunSingle8bitTest(const MediaFormatID& rgbFormat, const MediaFormatID& yuvFormat, uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha)

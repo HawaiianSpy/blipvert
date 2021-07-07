@@ -30,7 +30,7 @@
 
 namespace blipvert
 {
-    // RGB to YUV (YCbCr) conversions
+    // RGB to YUV (YCbCr) transforms
 
     void RGBA_to_AYUV(int32_t  width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
 

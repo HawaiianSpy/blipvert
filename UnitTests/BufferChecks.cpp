@@ -505,6 +505,9 @@ bool BlipvertUnitTests::Check_RGB24(uint8_t ry_level, uint8_t gu_level, uint8_t 
 }
 bool BlipvertUnitTests::Check_RGB565(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha, int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride)
 {
+	if (!stride)
+		stride = width * 2;
+
 	uint16_t fill;
 	PackRGB565Word(fill, ry_level, gu_level, bv_level);
 
@@ -525,6 +528,9 @@ bool BlipvertUnitTests::Check_RGB565(uint8_t ry_level, uint8_t gu_level, uint8_t
 
 bool BlipvertUnitTests::Check_RGB555(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha, int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride)
 {
+	if (!stride)
+		stride = width * 2;
+
 	uint16_t fill;
 	PackARGB555Word(fill, alpha, ry_level, gu_level, bv_level);
 

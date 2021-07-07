@@ -30,7 +30,7 @@
 
 namespace blipvert
 {
-    // In-place conversion of bitmaps to greyscale.
+    // In-place transform of bitmaps to greyscale.
     typedef void(__cdecl* t_greyscalefunc) (int32_t width, int32_t height, uint8_t* buf, int32_t stride, xRGBQUAD* in_palette);
 
     void RGBA_to_Greyscale(int32_t  width, int32_t height, uint8_t* buf, int32_t stride = 0, xRGBQUAD* in_palette = 0);

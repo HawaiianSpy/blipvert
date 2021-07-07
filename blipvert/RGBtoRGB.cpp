@@ -36,7 +36,7 @@ using namespace blipvert;
 
 
 //
-// RGB32 to RGBX conversions
+// RGB32 to RGBX transforms
 //
 
 void blipvert::RGB32_to_RGB24(int32_t width, int32_t height,
@@ -267,7 +267,7 @@ void blipvert::RGB32_to_RGBA(int32_t width, int32_t height,
 }
 
 //
-// RGB24 to RGBX conversions
+// RGB24 to RGBX transforms
 //
 
 void blipvert::RGB24_to_RGB32(int32_t width, int32_t height,
@@ -392,7 +392,7 @@ void blipvert::RGB24_to_RGB555(int32_t width, int32_t height,
 }
 
 //
-// RGB555 to RGBX conversions
+// RGB555 to RGBX transforms
 //
 
 void blipvert::RGB555_to_RGB32(int32_t width, int32_t height,
@@ -536,7 +536,7 @@ void blipvert::RGB555_to_RGB565(int32_t width, int32_t height,
 }
 
 //
-// RGB565 to RGBX conversions
+// RGB565 to RGBX transforms
 //
 
 void blipvert::RGB565_to_RGB32(int32_t width, int32_t height,
@@ -647,7 +647,7 @@ void blipvert::RGB565_to_RGB555(int32_t width, int32_t height,
 }
 
 //
-// RGB8 to RGBX conversions
+// RGB8 to RGBX transforms
 //
 
 void blipvert::RGB8_to_RGB32(int32_t width, int32_t height,
@@ -820,7 +820,7 @@ void blipvert::RGB8_to_RGB555(int32_t width, int32_t height,
 }
 
 //
-// RGB4 to RGBX conversions
+// RGB4 to RGBX transforms
 //
 
 void blipvert::RGB4_to_RGB32(int32_t width, int32_t height,
@@ -1066,7 +1066,7 @@ void blipvert::RGB4_to_RGB555(int32_t width, int32_t height,
 }
 
 //
-// RGB1 to RGBX conversions
+// RGB1 to RGBX transforms
 //
 
 void blipvert::RGB1_to_RGB32(int32_t width, int32_t height,

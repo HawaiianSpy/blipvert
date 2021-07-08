@@ -70,6 +70,71 @@ namespace BlipvertUnitTests
 			RunRGB555TestSeries(MVFMT_RGB555);
 		}
 
+		TEST_METHOD(UYVY_UnitTest)
+		{
+			RunYUV8bitTestSeries(MVFMT_UYVY);
+		}
+
+		TEST_METHOD(YVYU_UnitTest)
+		{
+			RunYUV8bitTestSeries(MVFMT_YVYU);
+		}
+
+		TEST_METHOD(VYUY_UnitTest)
+		{
+			RunYUV8bitTestSeries(MVFMT_VYUY);
+		}
+
+		TEST_METHOD(YUY2_UnitTest)
+		{
+			RunYUV8bitTestSeries(MVFMT_YUY2);
+		}
+
+		TEST_METHOD(IYUV_UnitTest)
+		{
+			RunYUV8bitTestSeries(MVFMT_IYUV);
+		}
+
+		TEST_METHOD(YV12_UnitTest)
+		{
+			RunYUV8bitTestSeries(MVFMT_YV12);
+		}
+
+		TEST_METHOD(YVU9_UnitTest)
+		{
+			RunYUV8bitTestSeries(MVFMT_YVU9);
+		}
+
+		TEST_METHOD(YUV9_UnitTest)
+		{
+			RunYUV8bitTestSeries(MVFMT_YUV9);
+		}
+
+		TEST_METHOD(IYU1_UnitTest)
+		{
+			RunYUV8bitTestSeries(MVFMT_IYU1);
+		}
+
+		TEST_METHOD(IYU2_UnitTest)
+		{
+			RunYUV8bitTestSeries(MVFMT_IYU2);
+		}
+
+		TEST_METHOD(Y41P_UnitTest)
+		{
+			RunYUV8bitTestSeries(MVFMT_Y41P);
+		}
+
+		TEST_METHOD(CLJR_UnitTest)
+		{
+			RunYUV8bitTestSeries(MVFMT_CLJR);
+		}
+
+		TEST_METHOD(AYUV_UnitTest)
+		{
+			RunYUV8bitAlphaTestSeries(MVFMT_AYUV);
+		}
+
 	private:
 
 		void RunRGB8bitTestSeries(const MediaFormatID& format)
@@ -223,6 +288,66 @@ namespace BlipvertUnitTests
 			encodeTransPtr(width, height, bufPtr, 0, nullptr);
 
 			Assert::IsTrue(bufCheckFunctPtr(Y, Y, Y, alpha, width, height, bufPtr, 0), L"Greyscale buffer did not contain expected values.");
+		}
+
+		void RunYUV8bitAlphaTestSeries(const MediaFormatID& format)
+		{
+			RunYUVSingle8bitTest(format, 128, 128, 128, 255);
+			RunYUVSingle8bitTest(format, 255, 255, 255, 255);
+			RunYUVSingle8bitTest(format, 0, 0, 0, 255);
+			RunYUVSingle8bitTest(format, 255, 0, 0, 255);
+			RunYUVSingle8bitTest(format, 0, 255, 0, 255);
+			RunYUVSingle8bitTest(format, 0, 0, 255, 255);
+
+			RunYUVSingle8bitTest(format, 128, 128, 128, 0);
+			RunYUVSingle8bitTest(format, 255, 255, 255, 0);
+			RunYUVSingle8bitTest(format, 0, 0, 0, 0);
+			RunYUVSingle8bitTest(format, 255, 0, 0, 0);
+			RunYUVSingle8bitTest(format, 0, 255, 0, 0);
+			RunYUVSingle8bitTest(format, 0, 0, 255, 0);
+		}
+
+		void RunYUV8bitTestSeries(const MediaFormatID& format)
+		{
+			RunYUVSingle8bitTest(format, 128, 128, 128, 255);
+			RunYUVSingle8bitTest(format, 255, 255, 255, 255);
+			RunYUVSingle8bitTest(format, 0, 0, 0, 255);
+			RunYUVSingle8bitTest(format, 255, 0, 0, 255);
+			RunYUVSingle8bitTest(format, 0, 255, 0, 255);
+			RunYUVSingle8bitTest(format, 0, 0, 255, 255);
+		}
+
+		void RunYUVSingle8bitTest(const MediaFormatID& format, uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha)
+		{
+			t_greyscalefunc encodeTransPtr = FindGreyscaleTransform(format);
+			Assert::IsNotNull(reinterpret_cast<void*>(encodeTransPtr), L"encodeTransPtr returned a null function pointer.");
+
+			t_fillcolorfunc fullBufFunctPtr = FindFillColorTransform(format);
+			Assert::IsNotNull(reinterpret_cast<void*>(fullBufFunctPtr), L"fullBufFunctPtr returned a null function pointer.");
+
+			t_buffercheckfunc bufCheckFunctPtr = FindBufferCheckFunction(format);
+			Assert::IsNotNull(reinterpret_cast<void*>(bufCheckFunctPtr), L"bufCheckFunctPtr returned a null function pointer.");
+
+			uint32_t width = TestBufferWidth;
+			uint32_t height = TestBufferHeight;
+
+			uint32_t bufBize = CalculateBufferSize(format, width, height);
+
+			std::unique_ptr<uint8_t[]> buf(new uint8_t[bufBize]);
+			uint8_t* bufPtr = buf.get();
+			memset(bufPtr, 0, bufBize);
+
+			uint8_t Y;
+			uint8_t U;
+			uint8_t V;
+
+			FastRGBtoYUV(red, green, blue, &Y, &U, &V);
+
+			fullBufFunctPtr(Y, U, V, alpha, width, height, bufPtr, 0);
+
+			encodeTransPtr(width, height, bufPtr, 0, nullptr);
+
+			Assert::IsTrue(bufCheckFunctPtr(Y, 0, 0, alpha, width, height, bufPtr, 0), L"Greyscale buffer did not contain expected values.");
 		}
 	};
 }

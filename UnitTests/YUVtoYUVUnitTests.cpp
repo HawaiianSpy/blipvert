@@ -937,72 +937,72 @@ namespace BlipvertUnitTests
 		// Y16 to YUVx
 		//
 
-		TEST_METHOD(Y16_to_YUY2)
+		TEST_METHOD(Y16_to_YUY2_UnitTest)
 		{
 			RunGreyscaleTestSeries(MVFMT_Y16, MVFMT_YUY2);
 		}
 
-		TEST_METHOD(Y16_to_UYVY)
+		TEST_METHOD(Y16_to_UYVY_UnitTest)
 		{
 			RunGreyscaleTestSeries(MVFMT_Y16, MVFMT_UYVY);
 		}
 
-		TEST_METHOD(Y16_to_YVYU)
+		TEST_METHOD(Y16_to_YVYU_UnitTest)
 		{
 			RunGreyscaleTestSeries(MVFMT_Y16, MVFMT_YVYU);
 		}
 
-		TEST_METHOD(Y16_to_VYUY)
+		TEST_METHOD(Y16_to_VYUY_UnitTest)
 		{
 			RunGreyscaleTestSeries(MVFMT_Y16, MVFMT_VYUY);
 		}
 
-		TEST_METHOD(Y16_to_IYUV)
+		TEST_METHOD(Y16_to_IYUV_UnitTest)
 		{
 			RunGreyscaleTestSeries(MVFMT_Y16, MVFMT_IYUV);
 		}
 
-		TEST_METHOD(Y16_to_YV12)
+		TEST_METHOD(Y16_to_YV12_UnitTest)
 		{
 			RunGreyscaleTestSeries(MVFMT_Y16, MVFMT_YV12);
 		}
 
-		TEST_METHOD(Y16_to_YVU9)
+		TEST_METHOD(Y16_to_YVU9_UnitTest)
 		{
 			RunGreyscaleTestSeries(MVFMT_Y16, MVFMT_YVU9);
 		}
 
-		TEST_METHOD(Y16_to_YUV9)
+		TEST_METHOD(Y16_to_YUV9_UnitTest)
 		{
 			RunGreyscaleTestSeries(MVFMT_Y16, MVFMT_YUV9);
 		}
 
-		TEST_METHOD(Y16_to_IYU1)
+		TEST_METHOD(Y16_to_IYU1_UnitTest)
 		{
 			RunGreyscaleTestSeries(MVFMT_Y16, MVFMT_IYU1);
 		}
 
-		TEST_METHOD(Y16_to_IYU2)
+		TEST_METHOD(Y16_to_IYU2_UnitTest)
 		{
 			RunGreyscaleTestSeries(MVFMT_Y16, MVFMT_IYU2);
 		}
 
-		TEST_METHOD(Y16_to_CLJR)
+		TEST_METHOD(Y16_to_CLJR_UnitTest)
 		{
 			RunGreyscaleTestSeries(MVFMT_Y16, MVFMT_CLJR);
 		}
 
-		TEST_METHOD(Y16_to_Y41P)
+		TEST_METHOD(Y16_to_Y41P_UnitTest)
 		{
 			RunGreyscaleTestSeries(MVFMT_Y16, MVFMT_Y41P);
 		}
 
-		TEST_METHOD(Y16_to_AYUV)
+		TEST_METHOD(Y16_to_AYUV_UnitTest)
 		{
 			RunGreyscaleTestSeries(MVFMT_Y16, MVFMT_AYUV);
 		}
 
-		TEST_METHOD(Y16_to_YUY2_Y800)
+		TEST_METHOD(Y16_to_Y800_UnitTest)
 		{
 			RunGreyscaleTestSeries(MVFMT_Y16, MVFMT_Y800);
 		}
@@ -1011,72 +1011,72 @@ namespace BlipvertUnitTests
 		// CLJR to YUVx
 		//
 
-		TEST_METHOD(CLJR_to_YUY2)
+		TEST_METHOD(CLJR_to_YUY2_UnitTest)
 		{
 			RunCLJRTestSeries(MVFMT_CLJR, MVFMT_YUY2);
 		}
 
-		TEST_METHOD(CLJR_to_UYVY)
+		TEST_METHOD(CLJR_to_UYVY_UnitTest)
 		{
 			RunCLJRTestSeries(MVFMT_CLJR, MVFMT_UYVY);
 		}
 
-		TEST_METHOD(CLJR_to_YVYU)
+		TEST_METHOD(CLJR_to_YVYU_UnitTest)
 		{
 			RunCLJRTestSeries(MVFMT_CLJR, MVFMT_YVYU);
 		}
 
-		TEST_METHOD(CLJR_to_VYUY)
+		TEST_METHOD(CLJR_to_VYUY_UnitTest)
 		{
 			RunCLJRTestSeries(MVFMT_CLJR, MVFMT_VYUY);
 		}
 
-		TEST_METHOD(CLJR_to_IYUV)
+		TEST_METHOD(CLJR_to_IYUV_UnitTest)
 		{
 			RunCLJRTestSeries(MVFMT_CLJR, MVFMT_IYUV);
 		}
 
-		TEST_METHOD(CLJR_to_YV12)
+		TEST_METHOD(CLJR_to_YV12_UnitTest)
 		{
 			RunCLJRTestSeries(MVFMT_CLJR, MVFMT_YV12);
 		}
 
-		TEST_METHOD(CLJR_to_YVU9)
+		TEST_METHOD(CLJR_to_YVU9_UnitTest)
 		{
 			RunCLJRTestSeries(MVFMT_CLJR, MVFMT_YVU9);
 		}
 
-		TEST_METHOD(CLJR_to_YUV9)
+		TEST_METHOD(CLJR_to_YUV9_UnitTest)
 		{
 			RunCLJRTestSeries(MVFMT_CLJR, MVFMT_YUV9);
 		}
 
-		TEST_METHOD(CLJR_to_IYU1)
+		TEST_METHOD(CLJR_to_IYU1_UnitTest)
 		{
 			RunCLJRTestSeries(MVFMT_CLJR, MVFMT_IYU1);
 		}
 
-		TEST_METHOD(CLJR_to_IYU2)
+		TEST_METHOD(CLJR_to_IYU2_UnitTest)
 		{
 			RunCLJRTestSeries(MVFMT_CLJR, MVFMT_IYU2);
 		}
 
-		TEST_METHOD(CLJR_to_Y800)
+		TEST_METHOD(CLJR_to_Y800_UnitTest)
 		{
 			RunCLJRTestSeries(MVFMT_CLJR, MVFMT_Y800);
 		}
 
-		TEST_METHOD(CLJR_to_Y16)
+		TEST_METHOD(CLJR_to_Y16_UnitTest)
 		{
 			RunCLJRTestSeries(MVFMT_CLJR, MVFMT_Y16);
 		}
 
-		TEST_METHOD(CLJR_to_Y41P)
+		TEST_METHOD(CLJR_to_Y41P_UnitTest)
 		{
 			RunCLJRTestSeries(MVFMT_CLJR, MVFMT_Y41P);
 		}
 
-		TEST_METHOD(CLJR_to_AYUV)
+		TEST_METHOD(CLJR_to_AYUV_UnitTest)
 		{
 			RunCLJRTestSeries(MVFMT_CLJR, MVFMT_AYUV);
 		}
@@ -1085,72 +1085,72 @@ namespace BlipvertUnitTests
 		// Y41P to YUVx
 		//
 
-		TEST_METHOD(Y41P_to_YUY2)
+		TEST_METHOD(Y41P_to_YUY2_UnitTest)
 		{
 			Run8bitTestSeries(MVFMT_Y41P, MVFMT_YUY2);
 		}
 
-		TEST_METHOD(Y41P_to_UYVY)
+		TEST_METHOD(Y41P_to_UYVY_UnitTest)
 		{
 			Run8bitTestSeries(MVFMT_Y41P, MVFMT_UYVY);
 		}
 
-		TEST_METHOD(Y41P_to_YVYU)
+		TEST_METHOD(Y41P_to_YVYU_UnitTest)
 		{
 			Run8bitTestSeries(MVFMT_Y41P, MVFMT_YVYU);
 		}
 
-		TEST_METHOD(Y41P_to_VYUY)
+		TEST_METHOD(Y41P_to_VYUY_UnitTest)
 		{
 			Run8bitTestSeries(MVFMT_Y41P, MVFMT_VYUY);
 		}
 
-		TEST_METHOD(Y41P_to_IYUV)
+		TEST_METHOD(Y41P_to_IYUV_UnitTest)
 		{
 			Run8bitTestSeries(MVFMT_Y41P, MVFMT_IYUV);
 		}
 
-		TEST_METHOD(Y41P_to_YV12)
+		TEST_METHOD(Y41P_to_YV12_UnitTest)
 		{
 			Run8bitTestSeries(MVFMT_Y41P, MVFMT_YV12);
 		}
 
-		TEST_METHOD(Y41P_to_YVU9)
+		TEST_METHOD(Y41P_to_YVU9_UnitTest)
 		{
 			Run8bitTestSeries(MVFMT_Y41P, MVFMT_YVU9);
 		}
 
-		TEST_METHOD(Y41P_to_YUV9)
+		TEST_METHOD(Y41P_to_YUV9_UnitTest)
 		{
 			Run8bitTestSeries(MVFMT_Y41P, MVFMT_YUV9);
 		}
 
-		TEST_METHOD(Y41P_to_IYU1)
+		TEST_METHOD(Y41P_to_IYU1_UnitTest)
 		{
 			Run8bitTestSeries(MVFMT_Y41P, MVFMT_IYU1);
 		}
 
-		TEST_METHOD(Y41P_to_IYU2)
+		TEST_METHOD(Y41P_to_IYU2_UnitTest)
 		{
 			Run8bitTestSeries(MVFMT_Y41P, MVFMT_IYU2);
 		}
 
-		TEST_METHOD(Y41P_to_Y800)
+		TEST_METHOD(Y41P_to_Y800_UnitTest)
 		{
 			Run8bitTestSeries(MVFMT_Y41P, MVFMT_Y800);
 		}
 
-		TEST_METHOD(Y41P_to_Y16)
+		TEST_METHOD(Y41P_to_Y16_UnitTest)
 		{
 			Run8bitTestSeries(MVFMT_Y41P, MVFMT_Y16);
 		}
 
-		TEST_METHOD(Y41P_to_CLJR)
+		TEST_METHOD(Y41P_to_CLJR_UnitTest)
 		{
 			Run8bitTestSeries(MVFMT_Y41P, MVFMT_CLJR);
 		}
 
-		TEST_METHOD(Y41P_to_AYUV)
+		TEST_METHOD(Y41P_to_AYUV_UnitTest)
 		{
 			Run8bitTestSeries(MVFMT_Y41P, MVFMT_AYUV);
 		}

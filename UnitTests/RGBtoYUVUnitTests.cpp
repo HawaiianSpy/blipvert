@@ -373,6 +373,11 @@ namespace BlipvertUnitTests
 			Run555bitTestSeries(MVFMT_RGB555, MVFMT_AYUV);
 		}
 
+		TEST_METHOD(ARGB1555_to_AYUV_UnitTest)
+		{
+			Run555AlphabitTestSeries(MVFMT_ARGB1555, MVFMT_AYUV);
+		}
+
 	private:
 
 		void Run8bitTestSeries(const MediaFormatID& rgbFormat, const MediaFormatID& yuvFormat)
@@ -487,6 +492,16 @@ namespace BlipvertUnitTests
 		}
 
 		void Run555bitTestSeries(const MediaFormatID& rgbFormat, const MediaFormatID& yuvFormat)
+		{
+			RunSingle555bitTest(rgbFormat, yuvFormat, 128, 128, 128, 255);
+			RunSingle555bitTest(rgbFormat, yuvFormat, 255, 255, 255, 255);
+			RunSingle555bitTest(rgbFormat, yuvFormat, 0, 0, 0, 255);
+			RunSingle555bitTest(rgbFormat, yuvFormat, 255, 0, 0, 255);
+			RunSingle555bitTest(rgbFormat, yuvFormat, 0, 255, 0, 255);
+			RunSingle555bitTest(rgbFormat, yuvFormat, 0, 0, 255, 255);
+		}
+
+		void Run555AlphabitTestSeries(const MediaFormatID& rgbFormat, const MediaFormatID& yuvFormat)
 		{
 			// Alpha/transparency bit set
 			RunSingle555bitTest(rgbFormat, yuvFormat, 128, 128, 128, 255);

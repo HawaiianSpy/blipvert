@@ -2704,7 +2704,7 @@ void blipvert::RGB555_to_Y16(int32_t width, int32_t height, uint8_t* out_buf, in
     }
 }
 
-void blipvert::RGB555_to_AYUV(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette)
+void blipvert::ARGB1555_to_AYUV(int32_t  width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette)
 {
     if (!out_stride)
         out_stride = width * 4;
@@ -2732,6 +2732,45 @@ void blipvert::RGB555_to_AYUV(int32_t width, int32_t height, uint8_t* out_buf, i
             *pdst++ = static_cast<uint8_t>(((ur_table[red] + ug_table[green] + ub_table[blue]) >> 15) + 128);
             *pdst++ = static_cast<uint8_t>(((yr_table[red] + yg_table[green] + yb_table[blue]) >> 15) + 16);
             *pdst++ = static_cast<uint8_t>(UnpackRGB555Alpha(*psrc));
+
+            psrc++;
+            hcount--;
+        }
+
+        in_buf += in_stride;
+        out_buf += out_stride;
+        height--;
+    }
+}
+
+void blipvert::RGB555_to_AYUV(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette)
+{
+    if (!out_stride)
+        out_stride = width * 4;
+
+    if (!in_stride)
+        in_stride = width * 2;
+
+    if (flipped)
+    {
+        out_buf += (out_stride * (height - 1));
+        out_stride = -out_stride;
+    }
+
+    while (height)
+    {
+        uint16_t* psrc = reinterpret_cast<uint16_t*>(in_buf);
+        uint8_t* pdst = out_buf;
+        int32_t hcount = width;
+        while (hcount)
+        {
+            uint8_t red = static_cast<uint8_t>(UnpackRGB555Red(*psrc));
+            uint8_t green = static_cast<uint8_t>(UnpackRGB555Green(*psrc));
+            uint8_t blue = static_cast<uint8_t>(UnpackRGB555Blue(*psrc));
+            *pdst++ = static_cast<uint8_t>(((vr_table[red] + vg_table[green] + vb_table[blue]) >> 15) + 128);
+            *pdst++ = static_cast<uint8_t>(((ur_table[red] + ug_table[green] + ub_table[blue]) >> 15) + 128);
+            *pdst++ = static_cast<uint8_t>(((yr_table[red] + yg_table[green] + yb_table[blue]) >> 15) + 16);
+            *pdst++ = 0xFF;
 
             psrc++;
             hcount--;

@@ -81,6 +81,7 @@ BufferCheckEntry BufferCheckFuncTable[] = {
 	{MVFMT_RGB24, Check_RGB24},
 	{MVFMT_RGB565, Check_RGB565},
 	{MVFMT_RGB555, Check_RGB555},
+	{MVFMT_ARGB1555, Check_ARGB1555},
 	{MVFMT_UNDEFINED, nullptr}
 };
 
@@ -526,7 +527,7 @@ bool BlipvertUnitTests::Check_RGB565(uint8_t ry_level, uint8_t gu_level, uint8_t
 	return true;
 }
 
-bool BlipvertUnitTests::Check_RGB555(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha, int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride)
+bool BlipvertUnitTests::Check_ARGB1555(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha, int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride)
 {
 	if (!stride)
 		stride = width * 2;
@@ -547,4 +548,9 @@ bool BlipvertUnitTests::Check_RGB555(uint8_t ry_level, uint8_t gu_level, uint8_t
 	} while (--height);
 
 	return true;
+}
+
+bool BlipvertUnitTests::Check_RGB555(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha, int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride)
+{
+	return Check_ARGB1555(ry_level, gu_level, bv_level, 255, width, height, pBuffer, stride);
 }

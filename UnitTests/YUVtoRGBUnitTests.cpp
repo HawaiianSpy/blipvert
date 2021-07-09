@@ -414,6 +414,11 @@ namespace BlipvertUnitTests
 			Run555bitTestSeries(MVFMT_AYUV, MVFMT_RGB555);
 		}
 
+		TEST_METHOD(AYUV_to_ARGB1555_UnitTest)
+		{
+			Run555AlphabitTestSeries(MVFMT_AYUV, MVFMT_ARGB1555);
+		}
+
 	private:
 		void Run8bitTestSeries(const MediaFormatID& yuvFormat, const MediaFormatID& rgbFormat)
 		{
@@ -529,6 +534,23 @@ namespace BlipvertUnitTests
 			RunSingle555bitTest(yuvFormat, rgbFormat, 255, 0, 0, 255);
 			RunSingle555bitTest(yuvFormat, rgbFormat, 0, 255, 0, 255);
 			RunSingle555bitTest(yuvFormat, rgbFormat, 0, 0, 255, 255);
+		}
+
+		void Run555AlphabitTestSeries(const MediaFormatID& yuvFormat, const MediaFormatID& rgbFormat)
+		{
+			RunSingle555bitTest(yuvFormat, rgbFormat, 128, 128, 128, 255);
+			RunSingle555bitTest(yuvFormat, rgbFormat, 255, 255, 255, 255);
+			RunSingle555bitTest(yuvFormat, rgbFormat, 0, 0, 0, 255);
+			RunSingle555bitTest(yuvFormat, rgbFormat, 255, 0, 0, 255);
+			RunSingle555bitTest(yuvFormat, rgbFormat, 0, 255, 0, 255);
+			RunSingle555bitTest(yuvFormat, rgbFormat, 0, 0, 255, 255);
+
+			RunSingle555bitTest(yuvFormat, rgbFormat, 128, 128, 128, 0);
+			RunSingle555bitTest(yuvFormat, rgbFormat, 255, 255, 255, 0);
+			RunSingle555bitTest(yuvFormat, rgbFormat, 0, 0, 0, 0);
+			RunSingle555bitTest(yuvFormat, rgbFormat, 255, 0, 0, 0);
+			RunSingle555bitTest(yuvFormat, rgbFormat, 0, 255, 0, 0);
+			RunSingle555bitTest(yuvFormat, rgbFormat, 0, 0, 255, 0);
 		}
 
 		void RunSingle555bitTest(const MediaFormatID& yuvFormat, const MediaFormatID& rgbFormat, uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha)

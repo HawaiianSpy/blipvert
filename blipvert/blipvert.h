@@ -40,18 +40,14 @@ namespace blipvert
     {
         Unknown = 0,        // I dunno, beats me.
         YUV = 1,            // YUV
-        AYUV = 2,           // YUV with alpha channel or transparency bit
-        RGB = 3,            // RGB
-        ARGB = 4,           // RGB with alpha channel or transparency bit
-        BGR = 5,            // BGR
-        ABGR = 6,           // BGR with alpha channel or transparency bit
-        Codec = 7           // Codec of some kind
+        RGB = 2,            // RGB
+        Codec = 3           // Codec of some kind
     } ColorspaceType;
 
     typedef struct {
         const MediaFormatID formatId;       // The string format ID
         Fourcc fourcc;                      // Fourcc code
-        Fourcc xRefFourcc;                  // cross-referenced fourcc or what this fourcc is a duplicate of format-wise.
+        Fourcc xRefFourcc;                  // Cross-referenced fourcc or what this fourcc is a duplicate of format-wise.
         int16_t effectiveBitsPerPixel;      // Effective bits per pixel of this format.
         ColorspaceType type;                // YUV, RGB, etc.
         bool hasAlpha;                      // The format has an alpha / transparency value.
@@ -124,21 +120,6 @@ namespace blipvert
     extern const Fourcc FOURCC_RGBT;
 
     extern const Fourcc FOURCC_BGRA;
-
-    extern const Fourcc FOURCC_CPLA;
-    extern const Fourcc FOURCC_IJPG;
-    extern const Fourcc FOURCC_MJPG;
-    extern const Fourcc FOURCC_TVMJ;
-    extern const Fourcc FOURCC_WAKE;
-    extern const Fourcc FOURCC_CFCC;
-    extern const Fourcc FOURCC_Plum;
-    extern const Fourcc FOURCC_DVCS;
-    extern const Fourcc FOURCC_DVSD;
-    extern const Fourcc FOURCC_MDVF;
-    extern const Fourcc FOURCC_dvhd;
-    extern const Fourcc FOURCC_dvsd;
-    extern const Fourcc FOURCC_dvsl;
-
     //
     // Media type constants
     //
@@ -197,25 +178,12 @@ namespace blipvert
     extern const MediaFormatID MVFMT_RGB8;
     extern const MediaFormatID MVFMT_RGB565;
     extern const MediaFormatID MVFMT_RGB555;
+    extern const MediaFormatID MVFMT_ARGB1555;
     extern const MediaFormatID MVFMT_RGB24;
     extern const MediaFormatID MVFMT_RGB32;
     extern const MediaFormatID MVFMT_RGBA; 
     extern const MediaFormatID MVFMT_RGBT;
     extern const MediaFormatID MVFMT_RGB_BITFIELDS;
-
-    extern const MediaFormatID MVFMT_CPLA;
-    extern const MediaFormatID MVFMT_IJPG;
-    extern const MediaFormatID MVFMT_MJPG;
-    extern const MediaFormatID MVFMT_TVMJ;
-    extern const MediaFormatID MVFMT_WAKE;
-    extern const MediaFormatID MVFMT_CFCC;
-    extern const MediaFormatID MVFMT_Plum;
-    extern const MediaFormatID MVFMT_DVCS;
-    extern const MediaFormatID MVFMT_DVSD;
-    extern const MediaFormatID MVFMT_MDVF;
-    extern const MediaFormatID MVFMT_dvhd;
-    extern const MediaFormatID MVFMT_dvsd;
-    extern const MediaFormatID MVFMT_dvsl;
 
     extern bool IsInitialized; // true / false that the library has been initialized.
     extern bool UseFasterLooping;

@@ -54,9 +54,18 @@ namespace BlipvertUnitTests
 			Run8bitAlphaTestSeries(MVFMT_RGBA, MVFMT_RGB32);
 		}
 
-		TEST_METHOD(RGBA_to_RGB555_UnitTest)
+		TEST_METHOD(RGBA_to_ARGB1555_UnitTest)
 		{
-			Run8bitAlphaTestSeries(MVFMT_RGBA, MVFMT_RGB555);
+			Run8bitAlphaTestSeries(MVFMT_RGBA, MVFMT_ARGB1555);
+		}
+
+		//
+		// RGBA to RGBx
+		//
+
+		TEST_METHOD(ARGB1555_to_RGBA_UnitTest)
+		{
+			Run555AlphabitTestSeries(MVFMT_ARGB1555, MVFMT_RGBA);
 		}
 
 		//
@@ -396,7 +405,7 @@ namespace BlipvertUnitTests
 			Assert::IsTrue(bufCheckFunctPtr(red & 0xF8, green & 0xFC, blue & 0xF8, alpha, width, height, outBufPtr, 0), L"RGB buffer did not contain expected values.");
 		}
 
-		void Run555bitTestSeries(const MediaFormatID& inFormat, const MediaFormatID& outFormat)
+		void Run555AlphabitTestSeries(const MediaFormatID& inFormat, const MediaFormatID& outFormat)
 		{
 			RunSingle555bitTest(inFormat, outFormat, 128, 128, 128, 255);
 			RunSingle555bitTest(inFormat, outFormat, 255, 255, 255, 255);
@@ -411,6 +420,17 @@ namespace BlipvertUnitTests
 			RunSingle555bitTest(inFormat, outFormat, 255, 0, 0, 0);
 			RunSingle555bitTest(inFormat, outFormat, 0, 255, 0, 0);
 			RunSingle555bitTest(inFormat, outFormat, 0, 0, 255, 0);
+		}
+
+
+		void Run555bitTestSeries(const MediaFormatID& inFormat, const MediaFormatID& outFormat)
+		{
+			RunSingle555bitTest(inFormat, outFormat, 128, 128, 128, 255);
+			RunSingle555bitTest(inFormat, outFormat, 255, 255, 255, 255);
+			RunSingle555bitTest(inFormat, outFormat, 0, 0, 0, 255);
+			RunSingle555bitTest(inFormat, outFormat, 255, 0, 0, 255);
+			RunSingle555bitTest(inFormat, outFormat, 0, 255, 0, 255);
+			RunSingle555bitTest(inFormat, outFormat, 0, 0, 255, 255);
 		}
 
 		void RunSingle555bitTest(const MediaFormatID& inFormat, const MediaFormatID& outFormat, uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha)

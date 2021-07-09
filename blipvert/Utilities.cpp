@@ -169,11 +169,22 @@ uint32_t blipvert::CalculateBufferSize(const MediaFormatID& inFormat, uint32_t w
         bytesPerLine = in_stride;
     }
 
-    uint32_t result = bytesPerLine * height;
+    uint32_t result = 0;
     if (UseFasterLooping && inFormat == MVFMT_RGB24)
     {
-        result++;
+        result = (bytesPerLine * height) + 1;
     }
+    else if (inFormat == MVFMT_IMC1 || inFormat == MVFMT_IMC3)
+    {
+        // Use the line # of the last UV plane on 16 line boundry + the height of the UV plane
+        // for the actual number of vertical lines in the bitmap.
+        result = (((((height * 3) / 2) + 15) & (~15)) + height / 2) * bytesPerLine;
+    }
+    else
+    {
+        result = bytesPerLine * height;
+    }
+
     return result;
 }
 

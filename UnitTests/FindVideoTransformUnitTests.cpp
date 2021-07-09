@@ -69,7 +69,7 @@ namespace BlipvertUnitTests
 
 		TEST_METHOD(FindInvalidTransform_UnitTest)
 		{
-			t_transformfunc func = FindVideoTransform(MVFMT_UYVY, MVFMT_Plum);
+			t_transformfunc func = FindVideoTransform(MVFMT_UYVY, MediaFormatID("wowzo"));
 			Assert::IsNull(reinterpret_cast<void*>(func), L"FindVideoTransform returned a non-null function pointer.");
 		}
 
@@ -86,7 +86,7 @@ namespace BlipvertUnitTests
 
 		TEST_METHOD(FindInvalidGreyscaleTransform_UnitTest)
 		{
-			t_greyscalefunc func = FindGreyscaleTransform(MVFMT_Plum);
+			t_greyscalefunc func = FindGreyscaleTransform(MediaFormatID("wowzo"));
 			Assert::IsNull(reinterpret_cast<void*>(func), L"FindGreyscaleTransform returned a non-null function pointer.");
 		}
 
@@ -107,7 +107,7 @@ namespace BlipvertUnitTests
 
 		TEST_METHOD(FindInvalidFillColorTransform_UnitTest)
 		{
-			t_fillcolorfunc func = FindFillColorTransform(MVFMT_Plum);
+			t_fillcolorfunc func = FindFillColorTransform(MediaFormatID("wowzo"));
 			Assert::IsNull(reinterpret_cast<void*>(func), L"FindFillColorTransform returned a non-null function pointer.");
 		}
 	};

@@ -419,21 +419,66 @@ void blipvert::Fill_IYU1(uint8_t y_level, uint8_t u_level, uint8_t v_level, uint
 void blipvert::Fill_IYU2(uint8_t y_level, uint8_t u_level, uint8_t v_level, uint8_t alpha,
     int32_t width, int32_t height, uint8_t* buf, int32_t stride)
 {
-    if (!stride)
-        stride = width * 3;
-
-    for (int32_t h = 0; h < height; h++)
+    if (UseFasterLooping)
     {
-        uint8_t* pdst = buf;
-        for (int32_t w = 0; w < width; w++)
-        {
-            pdst[0] = u_level;
-            pdst[1] = y_level;
-            pdst[2] = v_level;
-            pdst += 3;
-        }
+        uint32_t fill = static_cast<uint32_t>(0xFF000000 | (v_level << 16) | (y_level  << 8) | u_level);
 
-        buf += stride;
+        if (!stride)
+        {
+            uint32_t count = width * height;
+            while (count)
+            {
+                *reinterpret_cast<uint32_t*>(buf) = fill;
+                buf += 3;
+                count--;
+            }
+        }
+        else
+        {
+            do
+            {
+                uint8_t* pdst = buf;
+                int32_t hcount = width;
+                do
+                {
+                    *reinterpret_cast<uint32_t*>(pdst) = fill;
+                    pdst += 3;
+
+                } while (--hcount);
+
+                buf += stride;
+            } while (--height);
+        }
+    }
+    else
+    {
+        if (!stride)
+        {
+            uint32_t count = width * height;
+            while (count)
+            {
+                *buf++ = u_level;
+                *buf++ = y_level;
+                *buf++ = v_level;
+                count--;
+            }
+        }
+        else
+        {
+            do
+            {
+                uint8_t* pdst = buf;
+                int32_t hcount = width;
+                do
+                {
+                    *pdst++ = u_level;
+                    *pdst++ = y_level;
+                    *pdst++ = v_level;
+                } while (--hcount);
+
+                buf += stride;
+            } while (--height);
+        }
     }
 }
 

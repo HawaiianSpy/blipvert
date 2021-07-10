@@ -170,7 +170,7 @@ uint32_t blipvert::CalculateBufferSize(const MediaFormatID& inFormat, uint32_t w
     }
 
     uint32_t result = 0;
-    if (UseFasterLooping && inFormat == MVFMT_RGB24)
+    if (UseFasterLooping && inFormat == MVFMT_RGB24 || inFormat == MVFMT_IYU2)
     {
         result = (bytesPerLine * height) + 1;
     }

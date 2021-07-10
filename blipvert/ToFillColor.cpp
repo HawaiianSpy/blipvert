@@ -76,7 +76,7 @@ void blipvert::Fill_RGB24(uint8_t red, uint8_t green, uint8_t blue, uint8_t alph
 {
     if (UseFasterLooping)
     {
-        uint32_t fill = static_cast<uint32_t>(((((alpha) & 0xFF) << 24) | (((red) & 0xFF) << 16) | (((green) & 0xFF) << 8) | ((blue) & 0xFF)));
+        uint32_t fill = static_cast<uint32_t>(0xFF000000 | (red << 16) | (green << 8) | blue);
 
         if (!stride)
         {
@@ -235,7 +235,7 @@ void Fill_PackedY422(uint8_t y_level, uint8_t u_level, uint8_t v_level,
 void Fill_PlanarYUV(uint8_t y_level, uint8_t u_level, uint8_t v_level,
     int32_t width, int32_t height,
     uint8_t* out_buf, int32_t out_stride,
-    bool uFirst, int32_t decimation, bool flipped)
+    bool uFirst, int32_t decimation)
 {
     int32_t uv_width = width / decimation;
     int32_t uv_height = height / decimation;
@@ -265,17 +265,151 @@ void Fill_PlanarYUV(uint8_t y_level, uint8_t u_level, uint8_t v_level,
         uplane = vplane + (uv_stride * uv_height);
     }
 
-    if (flipped)
+    if (y_stride == width)
     {
-        out_buf += (y_stride * (height - 1));
-        uplane += (uv_stride * (uv_height - 1));
-        vplane += (uv_stride * (uv_height - 1));
-        y_stride = -y_stride;
-        uv_stride = -uv_stride;
+        memset(out_buf, y_level, y_stride * height);
+        memset(uplane, u_level, uv_stride * uv_height);
+        memset(vplane, v_level, uv_stride * uv_height);
+    }
+    else
+    {
+#if 1
+        for (int32_t y = 0; y < height; y++)
+        {
+            memset(out_buf, y_level, width);
+            out_buf += y_stride;
+        }
+        for (int32_t y = 0; y < uv_height; y++)
+        {
+            memset(uplane, u_level, uv_width);
+            memset(vplane, v_level, uv_width);
+            uplane += uv_stride;
+            vplane += uv_stride;
+        }
+#else
+        if (decimation == 2)
+        {
+            for (int32_t y = 0; y < height; y += 2)
+            {
+                uint8_t* yp = out_buf;
+                for (int32_t x = 0; x < width; x += 2)
+                {
+                    yp[0] = y_level;
+                    yp[1] = y_level;
+                    yp[y_stride] = y_level;
+                    yp[y_stride + 1] = y_level;
+                    uplane[x >> 1] = u_level;
+                    vplane[x >> 1] = v_level;
+                    yp += 2;
+                }
+                out_buf += (y_stride * 2);
+
+                uplane += uv_stride;
+                vplane += uv_stride;
+            }
+        }
+        else if (decimation == 4)
+        {
+            for (int32_t y = 0; y < height; y += 4)
+            {
+                uint8_t* yp = out_buf;
+                for (int32_t x = 0; x < width; x += 4)
+                {
+                    int32_t is = 0;
+                    int32_t ys = 0;
+
+                    for (int32_t dec = 0; dec < 4; dec++)
+                    {
+                        yp[ys] = y_level;
+                        yp[ys + 1] = y_level;
+                        yp[ys + 2] = y_level;
+                        yp[ys + 3] = y_level;
+                        ys += y_stride;
+                    }
+
+                    uplane[x >> 2] = u_level;
+                    vplane[x >> 2] = v_level;
+
+                    yp += 4;
+                }
+                out_buf += (y_stride * 4);
+
+                uplane += uv_stride;
+                vplane += uv_stride;
+            }
+        }
+#endif
+    }
+}
+
+void Fill_IMCx(uint8_t y_level, uint8_t u_level, uint8_t v_level,
+    int32_t width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    bool uFirst, bool interlaced)
+{
+    int32_t uv_width = width / 2;
+    int32_t uv_height = height / 2;
+
+    if (!out_stride)
+        out_stride = width;
+
+
+    uint8_t* vplane;
+    uint8_t* uplane;
+    if (uFirst)
+    {
+        if (interlaced)
+        {
+            uplane = out_buf + (out_stride * height);
+            vplane = uplane + uv_width;
+        }
+        else
+        {
+            uplane = out_buf + (((height + 15) & ~15) * out_stride);
+            vplane = out_buf + (((((height * 3) / 2) + 15) & ~15) * out_stride);
+        }
+    }
+    else
+    {
+        if (interlaced)
+        {
+            vplane = out_buf + (out_stride * height);
+            uplane = vplane + uv_width;
+        }
+        else
+        {
+            vplane = out_buf + (((height + 15) & ~15) * out_stride);
+            uplane = out_buf + (((((height * 3) / 2) + 15) & ~15) * out_stride);
+        }
     }
 
-    if (decimation == 2)
+    if (out_stride = width)
     {
+        memset(out_buf, y_level, width * height);
+        for (int32_t y = 0; y < uv_height; y++)
+        {
+            memset(uplane, u_level, uv_width);
+            memset(vplane, v_level, uv_width);
+            uplane += out_stride;
+            vplane += out_stride;
+        }
+    }
+    else
+    {
+#if 1
+        for (int32_t y = 0; y < height; y++)
+        {
+            memset(out_buf, y_level, width);
+            out_buf += out_stride;
+        }
+        for (int32_t y = 0; y < uv_height; y++)
+        {
+            memset(uplane, u_level, uv_width);
+            memset(vplane, v_level, uv_width);
+            uplane += out_stride;
+            vplane += out_stride;
+        }
+#else
         for (int32_t y = 0; y < height; y += 2)
         {
             uint8_t* yp = out_buf;
@@ -294,36 +428,7 @@ void Fill_PlanarYUV(uint8_t y_level, uint8_t u_level, uint8_t v_level,
             uplane += uv_stride;
             vplane += uv_stride;
         }
-    }
-    else if (decimation == 4)
-    {
-        for (int32_t y = 0; y < height; y += 4)
-        {
-            uint8_t* yp = out_buf;
-            for (int32_t x = 0; x < width; x += 4)
-            {
-                int32_t is = 0;
-                int32_t ys = 0;
-
-                for (int32_t dec = 0; dec < 4; dec++)
-                {
-                    yp[ys] = y_level;
-                    yp[ys + 1] = y_level;
-                    yp[ys + 2] = y_level;
-                    yp[ys + 3] = y_level;
-                    ys += y_stride;
-                }
-
-                uplane[x >> 2] = u_level;
-                vplane[x >> 2] = v_level;
-
-                yp += 4;
-            }
-            out_buf += (y_stride * 4);
-
-            uplane += uv_stride;
-            vplane += uv_stride;
-        }
+#endif
     }
 }
 
@@ -371,25 +476,49 @@ void blipvert::Fill_VYUY(uint8_t y_level, uint8_t u_level, uint8_t v_level, uint
 void blipvert::Fill_IYUV(uint8_t y_level, uint8_t u_level, uint8_t v_level, uint8_t alpha,
     int32_t width, int32_t height, uint8_t* buf, int32_t stride)
 {
-    Fill_PlanarYUV(y_level, u_level, v_level, width, height, buf, stride, true, 2, true);
+    Fill_PlanarYUV(y_level, u_level, v_level, width, height, buf, stride, true, 2);
 }
 
 void blipvert::Fill_YV12(uint8_t y_level, uint8_t u_level, uint8_t v_level, uint8_t alpha,
     int32_t width, int32_t height, uint8_t* buf, int32_t stride)
 {
-    Fill_PlanarYUV(y_level, u_level, v_level, width, height, buf, stride, false, 2, false);
+    Fill_PlanarYUV(y_level, u_level, v_level, width, height, buf, stride, false, 2);
 }
 
 void blipvert::Fill_YVU9(uint8_t y_level, uint8_t u_level, uint8_t v_level, uint8_t alpha,
     int32_t width, int32_t height, uint8_t* buf, int32_t stride)
 {
-    Fill_PlanarYUV(y_level, u_level, v_level, width, height, buf, stride, false, 4, false);
+    Fill_PlanarYUV(y_level, u_level, v_level, width, height, buf, stride, false, 4);
 }
 
 void blipvert::Fill_YUV9(uint8_t y_level, uint8_t u_level, uint8_t v_level, uint8_t alpha,
     int32_t width, int32_t height, uint8_t* buf, int32_t stride)
 {
-    Fill_PlanarYUV(y_level, u_level, v_level, width, height, buf, stride, true, 4, true);
+    Fill_PlanarYUV(y_level, u_level, v_level, width, height, buf, stride, true, 4);
+}
+
+void blipvert::Fill_IMC1(uint8_t y_level, uint8_t u_level, uint8_t v_level, uint8_t alpha,
+    int32_t width, int32_t height, uint8_t* buf, int32_t stride)
+{
+    Fill_IMCx(y_level, u_level, v_level, width, height, buf, stride, false, false);
+}
+
+void blipvert::Fill_IMC2(uint8_t y_level, uint8_t u_level, uint8_t v_level, uint8_t alpha,
+    int32_t width, int32_t height, uint8_t* buf, int32_t stride)
+{
+    Fill_IMCx(y_level, u_level, v_level, width, height, buf, stride, false, true);
+}
+
+void blipvert::Fill_IMC3(uint8_t y_level, uint8_t u_level, uint8_t v_level, uint8_t alpha,
+    int32_t width, int32_t height, uint8_t* buf, int32_t stride)
+{
+    Fill_IMCx(y_level, u_level, v_level, width, height, buf, stride, true, false);
+}
+
+void blipvert::Fill_IMC4(uint8_t y_level, uint8_t u_level, uint8_t v_level, uint8_t alpha,
+    int32_t width, int32_t height, uint8_t* buf, int32_t stride)
+{
+    Fill_IMCx(y_level, u_level, v_level, width, height, buf, stride, true, true);
 }
 
 void blipvert::Fill_IYU1(uint8_t y_level, uint8_t u_level, uint8_t v_level, uint8_t alpha,

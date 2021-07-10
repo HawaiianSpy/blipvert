@@ -301,7 +301,7 @@ void PlanarYUV_to_Greyscale(int32_t width, int32_t height, uint8_t* buf, int32_t
     int32_t out_uv_height = height / decimation;
 
     int32_t out_y_stride, out_uv_stride;
-    if (!stride)
+    if (stride < width)
     {
         out_y_stride = width;
         out_uv_stride = out_uv_width;
@@ -314,8 +314,74 @@ void PlanarYUV_to_Greyscale(int32_t width, int32_t height, uint8_t* buf, int32_t
 
     uint8_t* out_uplane = buf + (out_y_stride * height);
     uint8_t* out_vplane = out_uplane + (out_uv_stride * out_uv_height);
-    memset(out_uplane, 0, out_uv_stride * out_uv_height);
-    memset(out_vplane, 0, out_uv_stride * out_uv_height);
+    if (out_y_stride == width)
+    {
+        memset(out_uplane, 0, out_uv_stride * out_uv_height);
+        memset(out_vplane, 0, out_uv_stride * out_uv_height);
+    }
+    else
+    {
+        for (int32_t y = 0; y < out_uv_height; y++)
+        {
+            memset(out_uplane, 0, out_uv_width);
+            memset(out_vplane, 0, out_uv_width);
+            out_uplane += out_uv_stride;
+            out_vplane += out_uv_stride;
+        }
+    }
+}
+
+
+void IMCx_to_Greyscale(int32_t width, int32_t height,
+    uint8_t* buf, int32_t stride, bool interlaced)
+{
+    int32_t uv_width = width / 2;
+    int32_t uv_height = height / 2;
+
+    if (stride < width)
+        stride = width;
+
+    uint8_t* vplane;
+    uint8_t* uplane;
+
+    if (interlaced)
+    {
+        vplane = buf + (stride * height);
+        uplane = vplane + uv_width;
+    }
+    else
+    {
+        vplane = buf + (((height + 15) & ~15) * stride);
+        uplane = buf + (((((height * 3) / 2) + 15) & ~15) * stride);
+    }
+
+    for (int32_t y = 0; y < uv_height; y++)
+    {
+        memset(uplane, 0, uv_width);
+        memset(vplane, 0, uv_width);
+        uplane += stride;
+        vplane += stride;
+    }
+}
+
+void blipvert::IMC1_to_Greyscale(int32_t  width, int32_t height, uint8_t* buf, int32_t stride, xRGBQUAD* in_palette)
+{
+    IMCx_to_Greyscale(width, height, buf, stride, false);
+}
+
+void blipvert::IMC2_to_Greyscale(int32_t  width, int32_t height, uint8_t* buf, int32_t stride, xRGBQUAD* in_palette)
+{
+    IMCx_to_Greyscale(width, height, buf, stride, true);
+}
+
+void blipvert::IMC3_to_Greyscale(int32_t  width, int32_t height, uint8_t* buf, int32_t stride, xRGBQUAD* in_palette)
+{
+    IMCx_to_Greyscale(width, height, buf, stride, false);
+}
+
+void blipvert::IMC4_to_Greyscale(int32_t  width, int32_t height, uint8_t* buf, int32_t stride, xRGBQUAD* in_palette)
+{
+    IMCx_to_Greyscale(width, height, buf, stride, true);
 }
 
 void blipvert::IYUV_to_Greyscale(int32_t  width, int32_t height, uint8_t* buf, int32_t stride, xRGBQUAD* in_palette)

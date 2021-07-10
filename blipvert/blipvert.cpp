@@ -760,6 +760,10 @@ GreyscaleTableEntry GreyscaleTable[] = {
     { MVFMT_IYU2, IYU2_to_Greyscale },
     { MVFMT_Y41P, Y41P_to_Greyscale },
     { MVFMT_CLJR, CLJR_to_Greyscale },
+    { MVFMT_IMC1, IMC1_to_Greyscale },
+    { MVFMT_IMC2, IMC2_to_Greyscale },
+    { MVFMT_IMC3, IMC3_to_Greyscale },
+    { MVFMT_IMC4, IMC4_to_Greyscale },
     { MVFMT_UNDEFINED, nullptr }
 };
 
@@ -785,6 +789,10 @@ FillcolorTableEntry FillColorTable[] = {
     { MVFMT_Y41P, Fill_Y41P },
     { MVFMT_CLJR, Fill_CLJR },
     { MVFMT_AYUV, Fill_AYUV },
+    { MVFMT_IMC1, Fill_IMC1 },
+    { MVFMT_IMC2, Fill_IMC2 },
+    { MVFMT_IMC3, Fill_IMC3 },
+    { MVFMT_IMC4, Fill_IMC4 },
     { MVFMT_UNDEFINED, nullptr }
 };
 
@@ -843,6 +851,10 @@ VideoFormatInfo VideoFmtTable[] = {
     {MVFMT_Y211, FOURCC_Y211, FOURCC_UNDEFINED, 8, ColorspaceType::YUV, false},
     {MVFMT_V655, FOURCC_V655, FOURCC_UNDEFINED, 16, ColorspaceType::YUV, false},
     {MVFMT_VYUY, FOURCC_VYUY, FOURCC_UNDEFINED, 16, ColorspaceType::YUV, false},
+    {MVFMT_IMC1, FOURCC_IMC1, FOURCC_UNDEFINED, 12, ColorspaceType::YUV, false},
+    {MVFMT_IMC2, FOURCC_IMC2, FOURCC_UNDEFINED, 12, ColorspaceType::YUV, false},
+    {MVFMT_IMC3, FOURCC_IMC3, FOURCC_UNDEFINED, 12, ColorspaceType::YUV, false},
+    {MVFMT_IMC4, FOURCC_IMC4, FOURCC_UNDEFINED, 12, ColorspaceType::YUV, false},
 
     // Planar YUV Formats:
     // IYUV master format

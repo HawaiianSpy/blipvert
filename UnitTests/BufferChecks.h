@@ -34,8 +34,6 @@ namespace BlipvertUnitTests
 	extern const uint32_t TestBufferWidth;
 	extern const uint32_t TestBufferHeight;
 
-	extern blipvert::MediaFormatID YUVFormatTestList[];
-
 	typedef bool(__cdecl* t_buffercheckfunc) (uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha,int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride);
 
 	t_buffercheckfunc FindBufferCheckFunction(const blipvert::MediaFormatID& target);
@@ -55,6 +53,10 @@ namespace BlipvertUnitTests
 	bool Check_Y800(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha,int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride);
 	bool Check_Y16(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha, int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride);
 	bool Check_AYUV(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha, int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride);
+	bool Check_IMC1(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha, int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride);
+	bool Check_IMC2(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha, int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride);
+	bool Check_IMC3(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha, int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride);
+	bool Check_IMC4(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha, int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride);
 
 	bool Check_RGBA(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha, int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride);
 	bool Check_RGB32(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha, int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride);

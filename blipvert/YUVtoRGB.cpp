@@ -821,7 +821,8 @@ void IMCx_to_RGB32(int32_t width, int32_t height,
     int16_t uv_width = width / 2;
     int16_t uv_height = height / 2;
 
-    if (!in_stride)
+
+    if (in_stride < width)
         in_stride = width;
 
     uint8_t* vplane;
@@ -835,8 +836,8 @@ void IMCx_to_RGB32(int32_t width, int32_t height,
         }
         else
         {
-            uplane = in_buf + (((height + 15) & ~15) * out_stride);
-            vplane = in_buf + (((((height * 3) / 2) + 15) & ~15) * out_stride);
+            uplane = in_buf + (((height + 15) & ~15) * in_stride);
+            vplane = in_buf + (((((height * 3) / 2) + 15) & ~15) * in_stride);
         }
     }
     else
@@ -848,8 +849,8 @@ void IMCx_to_RGB32(int32_t width, int32_t height,
         }
         else
         {
-            vplane = in_buf + (((height + 15) & ~15) * out_stride);
-            uplane = in_buf + (((((height * 3) / 2) + 15) & ~15) * out_stride);
+            vplane = in_buf + (((height + 15) & ~15) * in_stride);
+            uplane = in_buf + (((((height * 3) / 2) + 15) & ~15) * in_stride);
         }
     }
 
@@ -921,7 +922,7 @@ void IMCx_to_RGB24(int32_t width, int32_t height,
     int16_t uv_width = width / 2;
     int16_t uv_height = height / 2;
 
-    if (!in_stride)
+    if (in_stride < width)
         in_stride = width;
 
     uint8_t* vplane;
@@ -935,8 +936,8 @@ void IMCx_to_RGB24(int32_t width, int32_t height,
         }
         else
         {
-            uplane = in_buf + (((height + 15) & ~15) * out_stride);
-            vplane = in_buf + (((((height * 3) / 2) + 15) & ~15) * out_stride);
+            uplane = in_buf + (((height + 15) & ~15) * in_stride);
+            vplane = in_buf + (((((height * 3) / 2) + 15) & ~15) * in_stride);
         }
     }
     else
@@ -948,8 +949,8 @@ void IMCx_to_RGB24(int32_t width, int32_t height,
         }
         else
         {
-            vplane = in_buf + (((height + 15) & ~15) * out_stride);
-            uplane = in_buf + (((((height * 3) / 2) + 15) & ~15) * out_stride);
+            vplane = in_buf + (((height + 15) & ~15) * in_stride);
+            uplane = in_buf + (((((height * 3) / 2) + 15) & ~15) * in_stride);
         }
     }
 
@@ -1023,7 +1024,8 @@ void IMCx_to_RGB565(int32_t width, int32_t height,
     int16_t uv_width = width / 2;
     int16_t uv_height = height / 2;
 
-    if (!in_stride)
+
+    if (in_stride < width)
         in_stride = width;
 
     uint8_t* vplane;
@@ -1037,8 +1039,8 @@ void IMCx_to_RGB565(int32_t width, int32_t height,
         }
         else
         {
-            uplane = in_buf + (((height + 15) & ~15) * out_stride);
-            vplane = in_buf + (((((height * 3) / 2) + 15) & ~15) * out_stride);
+            uplane = in_buf + (((height + 15) & ~15) * in_stride);
+            vplane = in_buf + (((((height * 3) / 2) + 15) & ~15) * in_stride);
         }
     }
     else
@@ -1050,8 +1052,8 @@ void IMCx_to_RGB565(int32_t width, int32_t height,
         }
         else
         {
-            vplane = in_buf + (((height + 15) & ~15) * out_stride);
-            uplane = in_buf + (((((height * 3) / 2) + 15) & ~15) * out_stride);
+            vplane = in_buf + (((height + 15) & ~15) * in_stride);
+            uplane = in_buf + (((((height * 3) / 2) + 15) & ~15) * in_stride);
         }
     }
 
@@ -1129,7 +1131,7 @@ void IMCx_to_RGB555(int32_t width, int32_t height,
     int16_t uv_width = width / 2;
     int16_t uv_height = height / 2;
 
-    if (!in_stride)
+    if (in_stride < width)
         in_stride = width;
 
     uint8_t* vplane;
@@ -1143,8 +1145,8 @@ void IMCx_to_RGB555(int32_t width, int32_t height,
         }
         else
         {
-            uplane = in_buf + (((height + 15) & ~15) * out_stride);
-            vplane = in_buf + (((((height * 3) / 2) + 15) & ~15) * out_stride);
+            uplane = in_buf + (((height + 15) & ~15) * in_stride);
+            vplane = in_buf + (((((height * 3) / 2) + 15) & ~15) * in_stride);
         }
     }
     else
@@ -1156,8 +1158,8 @@ void IMCx_to_RGB555(int32_t width, int32_t height,
         }
         else
         {
-            vplane = in_buf + (((height + 15) & ~15) * out_stride);
-            uplane = in_buf + (((((height * 3) / 2) + 15) & ~15) * out_stride);
+            vplane = in_buf + (((height + 15) & ~15) * in_stride);
+            uplane = in_buf + (((((height * 3) / 2) + 15) & ~15) * in_stride);
         }
     }
 

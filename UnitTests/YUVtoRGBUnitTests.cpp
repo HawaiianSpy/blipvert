@@ -419,6 +419,102 @@ namespace BlipvertUnitTests
 			Run555AlphabitTestSeries(MVFMT_AYUV, MVFMT_ARGB1555);
 		}
 
+		//
+		// IMC1 to RGB
+		//
+
+		TEST_METHOD(IMC1_to_RGB32_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_IMC1, MVFMT_RGB32);
+		}
+
+		TEST_METHOD(IMC1_to_RGB24_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_IMC1, MVFMT_RGB24);
+		}
+
+		TEST_METHOD(IMC1_to_RGB565_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_IMC1, MVFMT_RGB565);
+		}
+
+		TEST_METHOD(IMC1_to_RGB555_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_IMC1, MVFMT_RGB555);
+		}
+
+		//
+		// IMC2 to RGB
+		//
+
+		TEST_METHOD(IMC2_to_RGB32_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_IMC2, MVFMT_RGB32);
+		}
+
+		TEST_METHOD(IMC2_to_RGB24_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_IMC2, MVFMT_RGB24);
+		}
+
+		TEST_METHOD(IMC2_to_RGB565_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_IMC2, MVFMT_RGB565);
+		}
+
+		TEST_METHOD(IMC2_to_RGB555_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_IMC2, MVFMT_RGB555);
+		}
+
+		//
+		// IMC3 to RGB
+		//
+
+		TEST_METHOD(IMC3_to_RGB32_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_IMC3, MVFMT_RGB32);
+		}
+
+		TEST_METHOD(IMC3_to_RGB24_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_IMC3, MVFMT_RGB24);
+		}
+
+		TEST_METHOD(IMC3_to_RGB565_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_IMC3, MVFMT_RGB565);
+		}
+
+		TEST_METHOD(IMC3_to_RGB555_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_IMC3, MVFMT_RGB555);
+		}
+
+		//
+		// IMC4 to RGB
+		//
+
+		TEST_METHOD(IMC4_to_RGB32_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_IMC4, MVFMT_RGB32);
+		}
+
+		TEST_METHOD(IMC4_to_RGB24_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_IMC4, MVFMT_RGB24);
+		}
+
+		TEST_METHOD(IMC4_to_RGB565_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_IMC4, MVFMT_RGB565);
+		}
+
+		TEST_METHOD(IMC4_to_RGB555_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_IMC4, MVFMT_RGB555);
+		}
+
 	private:
 		void Run8bitTestSeries(const MediaFormatID& yuvFormat, const MediaFormatID& rgbFormat)
 		{

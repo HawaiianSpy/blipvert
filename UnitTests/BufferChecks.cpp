@@ -36,25 +36,6 @@ using namespace BlipvertUnitTests;
 const uint32_t BlipvertUnitTests::TestBufferWidth = 16;
 const uint32_t BlipvertUnitTests::TestBufferHeight = 16;
 
-MediaFormatID BlipvertUnitTests::YUVFormatTestList[] = {
-	MVFMT_YUY2,
-	MVFMT_UYVY,
-	MVFMT_YVYU,
-	MVFMT_VYUY,
-	MVFMT_IYUV,
-	MVFMT_YV12,
-	MVFMT_YVU9,
-	MVFMT_YUV9,
-	MVFMT_IYU1,
-	MVFMT_IYU2,
-	MVFMT_CLJR,
-	MVFMT_Y41P,
-	MVFMT_AYUV,
-	MVFMT_Y800,
-	MVFMT_Y16,
-	MVFMT_UNDEFINED
-};
-
 typedef struct {
 	const MediaFormatID& target;
 	t_buffercheckfunc pProcAddr;
@@ -76,6 +57,10 @@ BufferCheckEntry BufferCheckFuncTable[] = {
 	{MVFMT_Y800, Check_Y800},
 	{MVFMT_Y16, Check_Y16},
 	{MVFMT_AYUV, Check_AYUV},
+	{MVFMT_IMC1, Check_IMC1},
+	{MVFMT_IMC2, Check_IMC2},
+	{MVFMT_IMC3, Check_IMC3},
+	{MVFMT_IMC4, Check_IMC4},
 	{MVFMT_RGBA, Check_RGBA},
 	{MVFMT_RGB32, Check_RGB32},
 	{MVFMT_RGB24, Check_RGB24},
@@ -227,6 +212,78 @@ bool Check_PlanarYUV(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level,
 	return true;
 }
 
+bool Check_IMCx(uint8_t y_level, uint8_t u_level, uint8_t v_level,
+	int32_t width, int32_t height,
+	uint8_t* out_buf, int32_t out_stride,
+	bool uFirst, bool interlaced)
+{
+	int32_t uv_width = width / 2;
+	int32_t uv_height = height / 2;
+
+	int16_t y_stride, uv_stride;
+	if (!out_stride)
+	{
+		y_stride = width;
+		uv_stride = uv_width;
+	}
+	else
+	{
+		y_stride = out_stride;
+		uv_stride = out_stride;
+	}
+
+
+	uint8_t* vplane;
+	uint8_t* uplane;
+	if (uFirst)
+	{
+		if (interlaced)
+		{
+			uplane = out_buf + (y_stride * height);
+			vplane = uplane + uv_width;
+		}
+		else
+		{
+			uplane = out_buf + (((height + 15) & ~15) * y_stride);
+			vplane = out_buf + (((((height * 3) / 2) + 15) & ~15) * y_stride);
+		}
+	}
+	else
+	{
+		if (interlaced)
+		{
+			vplane = out_buf + (y_stride * height);
+			uplane = vplane + uv_width;
+		}
+		else
+		{
+			vplane = out_buf + (((height + 15) & ~15) * y_stride);
+			uplane = out_buf + (((((height * 3) / 2) + 15) & ~15) * y_stride);
+		}
+	}
+
+	for (int32_t y = 0; y < height; y += 2)
+	{
+		uint8_t* yp = out_buf;
+		for (int32_t x = 0; x < width; x += 2)
+		{
+			if (yp[0] != y_level) return false;
+			if (yp[1] != y_level) return false;
+			if (yp[y_stride] != y_level) return false;
+			if (yp[y_stride + 1] != y_level) return false;
+			if (uplane[x >> 1] != u_level) return false;
+			if (vplane[x >> 1] != v_level) return false;
+			yp += 2;
+		}
+		out_buf += (y_stride * 2);
+
+		uplane += uv_stride;
+		vplane += uv_stride;
+	}
+
+	return true;
+}
+
 
 bool BlipvertUnitTests::Check_IYUV(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha, int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride)
 {
@@ -246,6 +303,26 @@ bool BlipvertUnitTests::Check_YVU9(uint8_t ry_level, uint8_t gu_level, uint8_t b
 bool BlipvertUnitTests::Check_YUV9(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha, int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride)
 {
 	return Check_PlanarYUV(ry_level, gu_level, bv_level, width, height, pBuffer, stride, true, 4);
+}
+
+bool BlipvertUnitTests::Check_IMC1(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha, int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride)
+{
+	return Check_IMCx(ry_level, gu_level, bv_level, width, height, pBuffer, stride, false, false);
+}
+
+bool BlipvertUnitTests::Check_IMC2(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha, int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride)
+{
+	return Check_IMCx(ry_level, gu_level, bv_level, width, height, pBuffer, stride, false, true);
+}
+
+bool BlipvertUnitTests::Check_IMC3(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha, int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride)
+{
+	return Check_IMCx(ry_level, gu_level, bv_level, width, height, pBuffer, stride, true, false);
+}
+
+bool BlipvertUnitTests::Check_IMC4(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha, int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride)
+{
+	return Check_IMCx(ry_level, gu_level, bv_level, width, height, pBuffer, stride, true, true);
 }
 
 bool BlipvertUnitTests::Check_YUY2(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha, int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride)

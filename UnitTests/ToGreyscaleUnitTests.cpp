@@ -179,6 +179,7 @@ namespace BlipvertUnitTests
 			uint32_t height = TestBufferHeight;
 
 			uint32_t bufBize = CalculateBufferSize(format, width, height);
+			Assert::IsTrue(bufBize != 0, L"bufBize size retuned zero.");
 
 			std::unique_ptr<uint8_t[]> buf(new uint8_t[bufBize]);
 			uint8_t* bufPtr = buf.get();
@@ -222,6 +223,7 @@ namespace BlipvertUnitTests
 			uint32_t height = TestBufferHeight;
 
 			uint32_t bufBize = CalculateBufferSize(format, width, height);
+			Assert::IsTrue(bufBize != 0, L"bufBize size retuned zero.");
 
 			std::unique_ptr<uint8_t[]> buf(new uint8_t[bufBize]);
 			uint8_t* bufPtr = buf.get();
@@ -272,6 +274,7 @@ namespace BlipvertUnitTests
 			uint32_t height = TestBufferHeight;
 
 			uint32_t bufBize = CalculateBufferSize(format, width, height);
+			Assert::IsTrue(bufBize != 0, L"bufBize size retuned zero.");
 
 			std::unique_ptr<uint8_t[]> buf(new uint8_t[bufBize]);
 			uint8_t* bufPtr = buf.get();
@@ -332,6 +335,7 @@ namespace BlipvertUnitTests
 			uint32_t height = TestBufferHeight;
 
 			uint32_t bufBize = CalculateBufferSize(format, width, height);
+			Assert::IsTrue(bufBize != 0, L"bufBize size retuned zero.");
 
 			std::unique_ptr<uint8_t[]> buf(new uint8_t[bufBize]);
 			uint8_t* bufPtr = buf.get();

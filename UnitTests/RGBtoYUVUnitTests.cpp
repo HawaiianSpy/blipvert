@@ -423,7 +423,9 @@ namespace BlipvertUnitTests
 			uint32_t height = TestBufferHeight;
 
 			uint32_t rgbBufBize = CalculateBufferSize(rgbFormat, width, height);
+			Assert::IsTrue(rgbBufBize != 0, L"RGB buffer size retuned zero.");
 			uint32_t yuvBufBize = CalculateBufferSize(yuvFormat, width, height);
+			Assert::IsTrue(yuvBufBize != 0, L"YUV buffer size retuned zero.");
 
 			std::unique_ptr<uint8_t[]> rgbBuf(new uint8_t[rgbBufBize]);
 			uint8_t* rgbBufPtr = rgbBuf.get();
@@ -470,7 +472,9 @@ namespace BlipvertUnitTests
 			uint32_t height = TestBufferHeight;
 
 			uint32_t rgbBufBize = CalculateBufferSize(rgbFormat, width, height);
+			Assert::IsTrue(rgbBufBize != 0, L"RGB buffer size retuned zero.");
 			uint32_t yuvBufBize = CalculateBufferSize(yuvFormat, width, height);
+			Assert::IsTrue(yuvBufBize != 0, L"YUV buffer size retuned zero.");
 
 			std::unique_ptr<uint8_t[]> rgbBuf(new uint8_t[rgbBufBize]);
 			uint8_t* rgbBufPtr = rgbBuf.get();
@@ -536,7 +540,9 @@ namespace BlipvertUnitTests
 			uint32_t height = TestBufferHeight;
 
 			uint32_t rgbBufBize = CalculateBufferSize(rgbFormat, width, height);
+			Assert::IsTrue(rgbBufBize != 0, L"RGB buffer size retuned zero.");
 			uint32_t yuvBufBize = CalculateBufferSize(yuvFormat, width, height);
+			Assert::IsTrue(yuvBufBize != 0, L"YUV buffer size retuned zero.");
 
 			std::unique_ptr<uint8_t[]> rgbBuf(new uint8_t[rgbBufBize]);
 			uint8_t* rgbBufPtr = rgbBuf.get();

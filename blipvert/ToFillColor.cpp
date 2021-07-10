@@ -383,7 +383,7 @@ void Fill_IMCx(uint8_t y_level, uint8_t u_level, uint8_t v_level,
         }
     }
 
-    if (out_stride = width)
+    if (out_stride == width)
     {
         memset(out_buf, y_level, width * height);
         for (int32_t y = 0; y < uv_height; y++)

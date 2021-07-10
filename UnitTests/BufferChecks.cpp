@@ -35,6 +35,33 @@ using namespace BlipvertUnitTests;
 
 const uint32_t BlipvertUnitTests::TestBufferWidth = 16;
 const uint32_t BlipvertUnitTests::TestBufferHeight = 16;
+const uint32_t BlipvertUnitTests::StrideBumpTestValue = 16;
+
+uint32_t BlipvertUnitTests::StrideBump = 0;
+
+uint32_t BlipvertUnitTests::CalculateStrideBump(const MediaFormatID& inFormat, uint32_t width)
+{
+	if (!StrideBump)
+	{
+		return 0;
+	}
+
+	VideoFormatInfo info;
+	if (!GetVideoFormatInfo(inFormat, info))
+	{
+		return 0;
+	}
+
+	if (info.effectiveBitsPerPixel <= 0)
+	{
+		return 0;
+	}
+
+	uint32_t bitsPerLine = width * static_cast<uint32_t>(info.effectiveBitsPerPixel);
+	uint32_t bytesPerLine = ((bitsPerLine + 31) & (~31)) / 8;
+
+	return bytesPerLine + StrideBump;
+}
 
 typedef struct {
 	const MediaFormatID& target;

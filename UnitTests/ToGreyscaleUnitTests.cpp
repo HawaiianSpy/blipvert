@@ -165,6 +165,18 @@ namespace BlipvertUnitTests
 			RunRGBSingle8bitTest(format, 255, 0, 0, 255);
 			RunRGBSingle8bitTest(format, 0, 255, 0, 255);
 			RunRGBSingle8bitTest(format, 0, 0, 255, 255);
+
+			uint32_t saveb = StrideBump;
+			StrideBump = StrideBumpTestValue;
+
+			RunRGBSingle8bitTest(format, 128, 128, 128, 255);
+			RunRGBSingle8bitTest(format, 255, 255, 255, 255);
+			RunRGBSingle8bitTest(format, 0, 0, 0, 255);
+			RunRGBSingle8bitTest(format, 255, 0, 0, 255);
+			RunRGBSingle8bitTest(format, 0, 255, 0, 255);
+			RunRGBSingle8bitTest(format, 0, 0, 255, 255);
+
+			StrideBump = saveb;
 		}
 
 		void RunRGB8bitAlphaTestSeries(const MediaFormatID& format)
@@ -182,6 +194,25 @@ namespace BlipvertUnitTests
 			RunRGBSingle8bitTest(format, 255, 0, 0, 0);
 			RunRGBSingle8bitTest(format, 0, 255, 0, 0);
 			RunRGBSingle8bitTest(format, 0, 0, 255, 0);
+
+			uint32_t saveb = StrideBump;
+			StrideBump = StrideBumpTestValue;
+
+			RunRGBSingle8bitTest(format, 128, 128, 128, 255);
+			RunRGBSingle8bitTest(format, 255, 255, 255, 255);
+			RunRGBSingle8bitTest(format, 0, 0, 0, 255);
+			RunRGBSingle8bitTest(format, 255, 0, 0, 255);
+			RunRGBSingle8bitTest(format, 0, 255, 0, 255);
+			RunRGBSingle8bitTest(format, 0, 0, 255, 255);
+
+			RunRGBSingle8bitTest(format, 128, 128, 128, 0);
+			RunRGBSingle8bitTest(format, 255, 255, 255, 0);
+			RunRGBSingle8bitTest(format, 0, 0, 0, 0);
+			RunRGBSingle8bitTest(format, 255, 0, 0, 0);
+			RunRGBSingle8bitTest(format, 0, 255, 0, 0);
+			RunRGBSingle8bitTest(format, 0, 0, 255, 0);
+
+			StrideBump = saveb;
 		}
 
 		void RunRGBSingle8bitTest(const MediaFormatID& format, uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha)
@@ -189,8 +220,8 @@ namespace BlipvertUnitTests
 			t_greyscalefunc encodeTransPtr = FindGreyscaleTransform(format);
 			Assert::IsNotNull(reinterpret_cast<void*>(encodeTransPtr), L"encodeTransPtr returned a null function pointer.");
 
-			t_fillcolorfunc fullBufFunctPtr = FindFillColorTransform(format);
-			Assert::IsNotNull(reinterpret_cast<void*>(fullBufFunctPtr), L"fullBufFunctPtr returned a null function pointer.");
+			t_fillcolorfunc fillBufFunctPtr = FindFillColorTransform(format);
+			Assert::IsNotNull(reinterpret_cast<void*>(fillBufFunctPtr), L"fillBufFunctPtr returned a null function pointer.");
 
 			t_buffercheckfunc bufCheckFunctPtr = FindBufferCheckFunction(format);
 			Assert::IsNotNull(reinterpret_cast<void*>(bufCheckFunctPtr), L"bufCheckFunctPtr returned a null function pointer.");
@@ -198,7 +229,8 @@ namespace BlipvertUnitTests
 			uint32_t width = TestBufferWidth;
 			uint32_t height = TestBufferHeight;
 
-			uint32_t bufBize = CalculateBufferSize(format, width, height);
+			uint32_t stride = CalculateStrideBump(format, width);
+			uint32_t bufBize = CalculateBufferSize(format, width, height, stride);
 			Assert::IsTrue(bufBize != 0, L"bufBize size retuned zero.");
 
 			std::unique_ptr<uint8_t[]> buf(new uint8_t[bufBize]);
@@ -211,11 +243,11 @@ namespace BlipvertUnitTests
 
 			FastRGBtoYUV(red, green, blue, &Y, &U, &V);
 
-			fullBufFunctPtr(red, green, blue, alpha, width, height, bufPtr, 0);
+			fillBufFunctPtr(red, green, blue, alpha, width, height, bufPtr, stride);
 
-			encodeTransPtr(width, height, bufPtr, 0, nullptr);
+			encodeTransPtr(width, height, bufPtr, stride, nullptr);
 
-			Assert::IsTrue(bufCheckFunctPtr(Y, Y, Y, alpha, width, height, bufPtr, 0), L"Greyscale buffer did not contain expected values.");
+			Assert::IsTrue(bufCheckFunctPtr(Y, Y, Y, alpha, width, height, bufPtr, stride), L"Greyscale buffer did not contain expected values.");
 		}
 
 		void RunRGB565TestSeries(const MediaFormatID& format)
@@ -226,6 +258,18 @@ namespace BlipvertUnitTests
 			RunRGB565Single8bitTest(format, 255, 0, 0, 255);
 			RunRGB565Single8bitTest(format, 0, 255, 0, 255);
 			RunRGB565Single8bitTest(format, 0, 0, 255, 255);
+
+			uint32_t saveb = StrideBump;
+			StrideBump = StrideBumpTestValue;
+
+			RunRGB565Single8bitTest(format, 128, 128, 128, 255);
+			RunRGB565Single8bitTest(format, 255, 255, 255, 255);
+			RunRGB565Single8bitTest(format, 0, 0, 0, 255);
+			RunRGB565Single8bitTest(format, 255, 0, 0, 255);
+			RunRGB565Single8bitTest(format, 0, 255, 0, 255);
+			RunRGB565Single8bitTest(format, 0, 0, 255, 255);
+
+			StrideBump = saveb;
 		}
 
 		void RunRGB565Single8bitTest(const MediaFormatID& format, uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha)
@@ -233,8 +277,8 @@ namespace BlipvertUnitTests
 			t_greyscalefunc encodeTransPtr = FindGreyscaleTransform(format);
 			Assert::IsNotNull(reinterpret_cast<void*>(encodeTransPtr), L"encodeTransPtr returned a null function pointer.");
 
-			t_fillcolorfunc fullBufFunctPtr = FindFillColorTransform(format);
-			Assert::IsNotNull(reinterpret_cast<void*>(fullBufFunctPtr), L"fullBufFunctPtr returned a null function pointer.");
+			t_fillcolorfunc fillBufFunctPtr = FindFillColorTransform(format);
+			Assert::IsNotNull(reinterpret_cast<void*>(fillBufFunctPtr), L"fillBufFunctPtr returned a null function pointer.");
 
 			t_buffercheckfunc bufCheckFunctPtr = FindBufferCheckFunction(format);
 			Assert::IsNotNull(reinterpret_cast<void*>(bufCheckFunctPtr), L"bufCheckFunctPtr returned a null function pointer.");
@@ -242,7 +286,8 @@ namespace BlipvertUnitTests
 			uint32_t width = TestBufferWidth;
 			uint32_t height = TestBufferHeight;
 
-			uint32_t bufBize = CalculateBufferSize(format, width, height);
+			uint32_t stride = CalculateStrideBump(format, width);
+			uint32_t bufBize = CalculateBufferSize(format, width, height, stride);
 			Assert::IsTrue(bufBize != 0, L"bufBize size retuned zero.");
 
 			std::unique_ptr<uint8_t[]> buf(new uint8_t[bufBize]);
@@ -255,11 +300,11 @@ namespace BlipvertUnitTests
 
 			FastRGBtoYUV(red & 0xF8, green & 0xFC, blue & 0xF8, &Y, &U, &V);
 
-			fullBufFunctPtr(red, green, blue, alpha, width, height, bufPtr, 0);
+			fillBufFunctPtr(red, green, blue, alpha, width, height, bufPtr, stride);
 
-			encodeTransPtr(width, height, bufPtr, 0, nullptr);
+			encodeTransPtr(width, height, bufPtr, stride, nullptr);
 
-			Assert::IsTrue(bufCheckFunctPtr(Y, Y , Y, alpha, width, height, bufPtr, 0), L"Greyscale buffer did not contain expected values.");
+			Assert::IsTrue(bufCheckFunctPtr(Y, Y , Y, alpha, width, height, bufPtr, stride), L"Greyscale buffer did not contain expected values.");
 		}
 
 		void RunRGB555TestSeries(const MediaFormatID& format)
@@ -277,6 +322,25 @@ namespace BlipvertUnitTests
 			RunRGB555Single8bitTest(format, 255, 0, 0, 0);
 			RunRGB555Single8bitTest(format, 0, 255, 0, 0);
 			RunRGB555Single8bitTest(format, 0, 0, 255, 0);
+
+			uint32_t saveb = StrideBump;
+			StrideBump = StrideBumpTestValue;
+
+			RunRGB555Single8bitTest(format, 128, 128, 128, 255);
+			RunRGB555Single8bitTest(format, 255, 255, 255, 255);
+			RunRGB555Single8bitTest(format, 0, 0, 0, 255);
+			RunRGB555Single8bitTest(format, 255, 0, 0, 255);
+			RunRGB555Single8bitTest(format, 0, 255, 0, 255);
+			RunRGB555Single8bitTest(format, 0, 0, 255, 255);
+
+			RunRGB555Single8bitTest(format, 128, 128, 128, 0);
+			RunRGB555Single8bitTest(format, 255, 255, 255, 0);
+			RunRGB555Single8bitTest(format, 0, 0, 0, 0);
+			RunRGB555Single8bitTest(format, 255, 0, 0, 0);
+			RunRGB555Single8bitTest(format, 0, 255, 0, 0);
+			RunRGB555Single8bitTest(format, 0, 0, 255, 0);
+
+			StrideBump = saveb;
 		}
 
 		void RunRGB555Single8bitTest(const MediaFormatID& format, uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha)
@@ -284,8 +348,8 @@ namespace BlipvertUnitTests
 			t_greyscalefunc encodeTransPtr = FindGreyscaleTransform(format);
 			Assert::IsNotNull(reinterpret_cast<void*>(encodeTransPtr), L"encodeTransPtr returned a null function pointer.");
 
-			t_fillcolorfunc fullBufFunctPtr = FindFillColorTransform(format);
-			Assert::IsNotNull(reinterpret_cast<void*>(fullBufFunctPtr), L"fullBufFunctPtr returned a null function pointer.");
+			t_fillcolorfunc fillBufFunctPtr = FindFillColorTransform(format);
+			Assert::IsNotNull(reinterpret_cast<void*>(fillBufFunctPtr), L"fillBufFunctPtr returned a null function pointer.");
 
 			t_buffercheckfunc bufCheckFunctPtr = FindBufferCheckFunction(format);
 			Assert::IsNotNull(reinterpret_cast<void*>(bufCheckFunctPtr), L"bufCheckFunctPtr returned a null function pointer.");
@@ -293,7 +357,8 @@ namespace BlipvertUnitTests
 			uint32_t width = TestBufferWidth;
 			uint32_t height = TestBufferHeight;
 
-			uint32_t bufBize = CalculateBufferSize(format, width, height);
+			uint32_t stride = CalculateStrideBump(format, width);
+			uint32_t bufBize = CalculateBufferSize(format, width, height, stride);
 			Assert::IsTrue(bufBize != 0, L"bufBize size retuned zero.");
 
 			std::unique_ptr<uint8_t[]> buf(new uint8_t[bufBize]);
@@ -306,11 +371,11 @@ namespace BlipvertUnitTests
 
 			FastRGBtoYUV(red & 0xF8, green & 0xFC, blue & 0xF8, &Y, &U, &V);
 
-			fullBufFunctPtr(red, green, blue, alpha, width, height, bufPtr, 0);
+			fillBufFunctPtr(red, green, blue, alpha, width, height, bufPtr, stride);
 
-			encodeTransPtr(width, height, bufPtr, 0, nullptr);
+			encodeTransPtr(width, height, bufPtr, stride, nullptr);
 
-			Assert::IsTrue(bufCheckFunctPtr(Y, Y, Y, alpha, width, height, bufPtr, 0), L"Greyscale buffer did not contain expected values.");
+			Assert::IsTrue(bufCheckFunctPtr(Y, Y, Y, alpha, width, height, bufPtr, stride), L"Greyscale buffer did not contain expected values.");
 		}
 
 		void RunYUV8bitAlphaTestSeries(const MediaFormatID& format)
@@ -328,6 +393,25 @@ namespace BlipvertUnitTests
 			RunYUVSingle8bitTest(format, 255, 0, 0, 0);
 			RunYUVSingle8bitTest(format, 0, 255, 0, 0);
 			RunYUVSingle8bitTest(format, 0, 0, 255, 0);
+
+			uint32_t saveb = StrideBump;
+			StrideBump = StrideBumpTestValue;
+
+			RunYUVSingle8bitTest(format, 128, 128, 128, 255);
+			RunYUVSingle8bitTest(format, 255, 255, 255, 255);
+			RunYUVSingle8bitTest(format, 0, 0, 0, 255);
+			RunYUVSingle8bitTest(format, 255, 0, 0, 255);
+			RunYUVSingle8bitTest(format, 0, 255, 0, 255);
+			RunYUVSingle8bitTest(format, 0, 0, 255, 255);
+
+			RunYUVSingle8bitTest(format, 128, 128, 128, 0);
+			RunYUVSingle8bitTest(format, 255, 255, 255, 0);
+			RunYUVSingle8bitTest(format, 0, 0, 0, 0);
+			RunYUVSingle8bitTest(format, 255, 0, 0, 0);
+			RunYUVSingle8bitTest(format, 0, 255, 0, 0);
+			RunYUVSingle8bitTest(format, 0, 0, 255, 0);
+
+			StrideBump = saveb;
 		}
 
 		void RunYUV8bitTestSeries(const MediaFormatID& format)
@@ -338,6 +422,18 @@ namespace BlipvertUnitTests
 			RunYUVSingle8bitTest(format, 255, 0, 0, 255);
 			RunYUVSingle8bitTest(format, 0, 255, 0, 255);
 			RunYUVSingle8bitTest(format, 0, 0, 255, 255);
+
+			uint32_t saveb = StrideBump;
+			StrideBump = StrideBumpTestValue;
+
+			RunYUVSingle8bitTest(format, 128, 128, 128, 255);
+			RunYUVSingle8bitTest(format, 255, 255, 255, 255);
+			RunYUVSingle8bitTest(format, 0, 0, 0, 255);
+			RunYUVSingle8bitTest(format, 255, 0, 0, 255);
+			RunYUVSingle8bitTest(format, 0, 255, 0, 255);
+			RunYUVSingle8bitTest(format, 0, 0, 255, 255);
+
+			StrideBump = saveb;
 		}
 
 		void RunYUVSingle8bitTest(const MediaFormatID& format, uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha)
@@ -345,8 +441,8 @@ namespace BlipvertUnitTests
 			t_greyscalefunc encodeTransPtr = FindGreyscaleTransform(format);
 			Assert::IsNotNull(reinterpret_cast<void*>(encodeTransPtr), L"encodeTransPtr returned a null function pointer.");
 
-			t_fillcolorfunc fullBufFunctPtr = FindFillColorTransform(format);
-			Assert::IsNotNull(reinterpret_cast<void*>(fullBufFunctPtr), L"fullBufFunctPtr returned a null function pointer.");
+			t_fillcolorfunc fillBufFunctPtr = FindFillColorTransform(format);
+			Assert::IsNotNull(reinterpret_cast<void*>(fillBufFunctPtr), L"fillBufFunctPtr returned a null function pointer.");
 
 			t_buffercheckfunc bufCheckFunctPtr = FindBufferCheckFunction(format);
 			Assert::IsNotNull(reinterpret_cast<void*>(bufCheckFunctPtr), L"bufCheckFunctPtr returned a null function pointer.");
@@ -354,7 +450,8 @@ namespace BlipvertUnitTests
 			uint32_t width = TestBufferWidth;
 			uint32_t height = TestBufferHeight;
 
-			uint32_t bufBize = CalculateBufferSize(format, width, height);
+			uint32_t stride = CalculateStrideBump(format, width);
+			uint32_t bufBize = CalculateBufferSize(format, width, height, stride);
 			Assert::IsTrue(bufBize != 0, L"bufBize size retuned zero.");
 
 			std::unique_ptr<uint8_t[]> buf(new uint8_t[bufBize]);
@@ -367,11 +464,11 @@ namespace BlipvertUnitTests
 
 			FastRGBtoYUV(red, green, blue, &Y, &U, &V);
 
-			fullBufFunctPtr(Y, U, V, alpha, width, height, bufPtr, 0);
+			fillBufFunctPtr(Y, U, V, alpha, width, height, bufPtr, stride);
 
-			encodeTransPtr(width, height, bufPtr, 0, nullptr);
+			encodeTransPtr(width, height, bufPtr, stride, nullptr);
 
-			Assert::IsTrue(bufCheckFunctPtr(Y, 0, 0, alpha, width, height, bufPtr, 0), L"Greyscale buffer did not contain expected values.");
+			Assert::IsTrue(bufCheckFunctPtr(Y, 0, 0, alpha, width, height, bufPtr, stride), L"Greyscale buffer did not contain expected values.");
 		}
 	};
 }

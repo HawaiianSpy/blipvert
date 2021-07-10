@@ -167,6 +167,23 @@ uint32_t blipvert::CalculateBufferSize(const MediaFormatID& inFormat, uint32_t w
     if (in_stride > bytesPerLine)
     {
         bytesPerLine = in_stride;
+
+        // Planar bitmap formats with consecutive planes need special treatment
+        if (inFormat == MVFMT_YVU9 || inFormat == MVFMT_YUV9)
+        {
+            // Decimation of 4x4 for u & v: YVU9, YUV9
+            height += (height / 2);
+        }
+        else if ((inFormat == MVFMT_IYUV || inFormat == MVFMT_P420 || inFormat == MVFMT_I420 || inFormat == MVFMT_CLPL) ||
+                inFormat == MVFMT_YV12)
+        {
+            // Decimation of 2x2 for u & v: IYUV, YV12
+            height += height;
+        }
+        else if (inFormat == MVFMT_IMC2 || inFormat == MVFMT_IMC4)
+        {
+            height += (height / 2);
+        }
     }
 
     uint32_t result = 0;

@@ -262,8 +262,8 @@ void PlanarYUV_to_RGB32(int32_t width, int32_t height,
     }
     else
     {
-        y_stride = out_stride;
-        uv_stride = out_stride;
+        y_stride = in_stride;
+        uv_stride = in_stride;
     }
 
     uint8_t* vplane;
@@ -405,8 +405,8 @@ void PlanarYUV_to_RGB24(int32_t width, int32_t height,
     }
     else
     {
-        y_stride = out_stride;
-        uv_stride = out_stride;
+        y_stride = in_stride;
+        uv_stride = in_stride;
     }
 
     uint8_t* vplane;
@@ -543,8 +543,8 @@ void PlanarYUV_to_RGB565(int32_t width, int32_t height,
     }
     else
     {
-        y_stride = out_stride;
-        uv_stride = out_stride;
+        y_stride = in_stride;
+        uv_stride = in_stride;
     }
 
     uint8_t* vplane;
@@ -686,8 +686,8 @@ void PlanarYUV_to_RGB555(int32_t width, int32_t height,
     }
     else
     {
-        y_stride = out_stride;
-        uv_stride = out_stride;
+        y_stride = in_stride;
+        uv_stride = in_stride;
     }
 
     uint8_t* vplane;

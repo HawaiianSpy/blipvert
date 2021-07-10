@@ -787,8 +787,8 @@ void IYU1_to_PlanarYUV(int32_t width, int32_t height,
     }
     else
     {
-        y_stride = in_stride;
-        uv_stride = in_stride;
+        y_stride = out_stride;
+        uv_stride = out_stride;
     }
 
     uint8_t* vplane;
@@ -1222,8 +1222,8 @@ void IYU2_to_PlanarYUV(int32_t width, int32_t height,
     }
     else
     {
-        y_stride = in_stride;
-        uv_stride = in_stride;
+        y_stride = out_stride;
+        uv_stride = out_stride;
     }
 
     uint8_t* vplane;
@@ -2293,8 +2293,8 @@ void Y41P_to_PlanarYUV(int32_t width, int32_t height,
     }
     else
     {
-        y_stride = in_stride;
-        uv_stride = in_stride;
+        y_stride = out_stride;
+        uv_stride = out_stride;
     }
 
     uint8_t* vplane;
@@ -2551,8 +2551,8 @@ void CLJR_to_PlanarYUV(int32_t width, int32_t height,
     }
     else
     {
-        y_stride = in_stride;
-        uv_stride = in_stride;
+        y_stride = out_stride;
+        uv_stride = out_stride;
     }
 
     uint8_t* vplane;
@@ -2932,8 +2932,8 @@ void PlanarYUV_to_AYUV(int32_t width, int32_t height,
     }
     else
     {
-        y_stride = out_stride;
-        uv_stride = out_stride;
+        y_stride = in_stride;
+        uv_stride = in_stride;
     }
 
     uint8_t* vplane;

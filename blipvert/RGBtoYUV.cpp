@@ -152,7 +152,7 @@ void RGB565_to_PackedY422(int32_t width, int32_t height,
             uint8_t blue2;
             UnpackRGB565Word(psrc[1], red2, green2, blue2)
 
-                pdst[Y0] = static_cast<uint8_t>(((yr_table[red1] + yg_table[green1] + yb_table[blue1]) >> 15) + 16);
+            pdst[Y0] = static_cast<uint8_t>(((yr_table[red1] + yg_table[green1] + yb_table[blue1]) >> 15) + 16);
             pdst[Y1] = static_cast<uint8_t>(((yr_table[red2] + yg_table[green2] + yb_table[blue2]) >> 15) + 16);
             pdst[U] = static_cast<uint8_t>(((((ur_table[red2] + ug_table[green2] + ub_table[blue2]) >> 15) + 128) + \
                 (((ur_table[red1] + ug_table[green1] + ub_table[blue1]) >> 15) + 128)) / 2);
@@ -643,30 +643,27 @@ void RGB565_to_PlanarYUV(int32_t width, int32_t height,
                 uint8_t redb;
                 uint8_t greenb;
                 uint8_t blueb;
-                uint16_t pixel = *(reinterpret_cast<uint16_t*>(psrc));
-                UnpackRGB565Word(pixel, redb, greenb, blueb)
-                    yp[0] = static_cast<uint8_t>(((yr_table[redb] + yg_table[greenb] + yb_table[blueb]) >> 15) + 16);
+
+                UnpackRGB565Word(*(reinterpret_cast<uint16_t*>(psrc)), redb, greenb, blueb)
+                yp[0] = static_cast<uint8_t>(((yr_table[redb] + yg_table[greenb] + yb_table[blueb]) >> 15) + 16);
                 red = redb;
                 green = greenb;
                 blue = blueb;
 
-                pixel = *(reinterpret_cast<uint16_t*>(psrc + 2));
-                UnpackRGB565Word(pixel, redb, greenb, blueb)
-                    yp[1] = static_cast<uint8_t>(((yr_table[redb] + yg_table[greenb] + yb_table[blueb]) >> 15) + 16);
+                UnpackRGB565Word(*(reinterpret_cast<uint16_t*>(psrc + 2)), redb, greenb, blueb)
+                yp[1] = static_cast<uint8_t>(((yr_table[redb] + yg_table[greenb] + yb_table[blueb]) >> 15) + 16);
                 red += redb;
                 green += greenb;
                 blue += blueb;
 
-                pixel = *(reinterpret_cast<uint16_t*>(psrc + in_stride));
-                UnpackRGB565Word(pixel, redb, greenb, blueb)
-                    yp[y_stride] = static_cast<uint8_t>(((yr_table[redb] + yg_table[greenb] + yb_table[blueb]) >> 15) + 16);
+                UnpackRGB565Word(*(reinterpret_cast<uint16_t*>(psrc + in_stride)), redb, greenb, blueb)
+                 yp[y_stride] = static_cast<uint8_t>(((yr_table[redb] + yg_table[greenb] + yb_table[blueb]) >> 15) + 16);
                 red += redb;
                 green += greenb;
                 blue += blueb;
 
-                pixel = *(reinterpret_cast<uint16_t*>(psrc + in_stride + 2));
-                UnpackRGB565Word(pixel, redb, greenb, blueb)
-                    yp[y_stride + 1] = static_cast<uint8_t>(((yr_table[redb] + yg_table[greenb] + yb_table[blueb]) >> 15) + 16);
+                UnpackRGB565Word(*(reinterpret_cast<uint16_t*>(psrc + in_stride + 2)), redb, greenb, blueb)
+                yp[y_stride + 1] = static_cast<uint8_t>(((yr_table[redb] + yg_table[greenb] + yb_table[blueb]) >> 15) + 16);
                 red += redb;
                 green += greenb;
                 blue += blueb;
@@ -1119,6 +1116,503 @@ void RGB8_to_PlanarYUV(int32_t width, int32_t height,
 }
 
 //
+// RGBx to PlanarYUV
+//
+
+void RGB32_to_IMCx(int32_t width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool uFirst, bool interlaced, bool flipped)
+{
+    if (!in_stride)
+        in_stride = width * 4;
+
+    int32_t uv_width = width / 2;
+
+    if (!out_stride)
+        out_stride = width;
+
+    uint8_t* vplane;
+    uint8_t* uplane;
+    if (uFirst)
+    {
+        if (interlaced)
+        {
+            uplane = out_buf + (out_stride * height);
+            vplane = uplane + uv_width;
+        }
+        else
+        {
+            uplane = out_buf + (((height + 15) & ~15) * out_stride);
+            vplane = out_buf + (((((height * 3) / 2) + 15) & ~15) * out_stride);
+        }
+    }
+    else
+    {
+        if (interlaced)
+        {
+            vplane = out_buf + (out_stride * height);
+            uplane = vplane + uv_width;
+        }
+        else
+        {
+            vplane = out_buf + (((height + 15) & ~15) * out_stride);
+            uplane = out_buf + (((((height * 3) / 2) + 15) & ~15) * out_stride);
+        }
+    }
+
+    uint16_t red;
+    uint16_t green;
+    uint16_t blue;
+
+    int32_t in_stride_x_2 = in_stride * 2;
+    int32_t out_stride_x_2 = out_stride * 2;
+
+    for (int32_t y = 0; y < height; y += 2)
+    {
+        uint8_t* psrc = in_buf;
+        uint8_t* yp = out_buf;
+        for (int32_t x = 0; x < width; x += 2)
+        {
+            yp[0] = static_cast<uint8_t>(((yr_table[psrc[2]] + yg_table[psrc[1]] + yb_table[psrc[0]]) >> 15) + 16);
+            red = psrc[2];
+            green = psrc[1];
+            blue = psrc[0];
+
+            yp[1] = static_cast<uint8_t>(((yr_table[psrc[6]] + yg_table[psrc[5]] + yb_table[psrc[4]]) >> 15) + 16);
+            red += psrc[6];
+            green += psrc[5];
+            blue += psrc[4];
+
+            yp[out_stride] = static_cast<uint8_t>(((yr_table[psrc[2 + in_stride]] + yg_table[psrc[1 + in_stride]] + yb_table[psrc[0 + in_stride]]) >> 15) + 16);
+            red += psrc[2 + in_stride];
+            green += psrc[1 + in_stride];
+            blue += psrc[0 + in_stride];
+
+            yp[out_stride + 1] = static_cast<uint8_t>(((yr_table[psrc[6 + in_stride]] + yg_table[psrc[5 + in_stride]] + yb_table[psrc[4 + in_stride]]) >> 15) + 16);
+            red += psrc[6 + in_stride];
+            green += psrc[5 + in_stride];
+            blue += psrc[4 + in_stride];
+
+            red >>= 2;
+            green >>= 2;
+            blue >>= 2;
+
+            uplane[x >> 1] = static_cast<uint8_t>(((ur_table[red] + ug_table[green] + ub_table[blue]) >> 15) + 128);
+            vplane[x >> 1] = static_cast<uint8_t>(((vr_table[red] + vg_table[green] + vb_table[blue]) >> 15) + 128);
+
+            psrc += 8;
+            yp += 2;
+        }
+        in_buf += in_stride_x_2;
+        out_buf += out_stride_x_2;
+
+        uplane += out_stride;
+        vplane += out_stride;
+    }
+}
+
+void RGB24_to_IMCx(int32_t width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool uFirst, bool interlaced, bool flipped)
+{
+    if (!in_stride)
+        in_stride = width * 3;
+
+    int32_t uv_width = width / 2;
+
+    if (!out_stride)
+        out_stride = width;
+
+    uint8_t* vplane;
+    uint8_t* uplane;
+    if (uFirst)
+    {
+        if (interlaced)
+        {
+            uplane = out_buf + (out_stride * height);
+            vplane = uplane + uv_width;
+        }
+        else
+        {
+            uplane = out_buf + (((height + 15) & ~15) * out_stride);
+            vplane = out_buf + (((((height * 3) / 2) + 15) & ~15) * out_stride);
+        }
+    }
+    else
+    {
+        if (interlaced)
+        {
+            vplane = out_buf + (out_stride * height);
+            uplane = vplane + uv_width;
+        }
+        else
+        {
+            vplane = out_buf + (((height + 15) & ~15) * out_stride);
+            uplane = out_buf + (((((height * 3) / 2) + 15) & ~15) * out_stride);
+        }
+    }
+
+    uint16_t red;
+    uint16_t green;
+    uint16_t blue;
+
+    int32_t in_stride_x_2 = in_stride * 2;
+    int32_t out_stride_x_2 = out_stride * 2;
+
+    for (int32_t y = 0; y < height; y += 2)
+    {
+        uint8_t* psrc = in_buf;
+        uint8_t* yp = out_buf;
+        for (int32_t x = 0; x < width; x += 2)
+        {
+            yp[0] = static_cast<uint8_t>(((yr_table[psrc[2]] + yg_table[psrc[1]] + yb_table[psrc[0]]) >> 15) + 16);
+            red = psrc[2];
+            green = psrc[1];
+            blue = psrc[0];
+
+            yp[1] = static_cast<uint8_t>(((yr_table[psrc[5]] + yg_table[psrc[4]] + yb_table[psrc[3]]) >> 15) + 16);
+            red += psrc[5];
+            green += psrc[4];
+            blue += psrc[3];
+
+            yp[out_stride] = static_cast<uint8_t>(((yr_table[psrc[2 + in_stride]] + yg_table[psrc[1 + in_stride]] + yb_table[psrc[0 + in_stride]]) >> 15) + 16);
+            red += psrc[2 + in_stride];
+            green += psrc[1 + in_stride];
+            blue += psrc[0 + in_stride];
+
+            yp[out_stride + 1] = static_cast<uint8_t>(((yr_table[psrc[5 + in_stride]] + yg_table[psrc[4 + in_stride]] + yb_table[psrc[3 + in_stride]]) >> 15) + 16);
+            red += psrc[5 + in_stride];
+            green += psrc[4 + in_stride];
+            blue += psrc[3 + in_stride];
+
+            red >>= 2;
+            green >>= 2;
+            blue >>= 2;
+
+            uplane[x >> 1] = static_cast<uint8_t>(((ur_table[red] + ug_table[green] + ub_table[blue]) >> 15) + 128);
+            vplane[x >> 1] = static_cast<uint8_t>(((vr_table[red] + vg_table[green] + vb_table[blue]) >> 15) + 128);
+
+            psrc += 6;
+            yp += 2;
+        }
+        in_buf += in_stride_x_2;
+        out_buf += out_stride_x_2;
+
+        uplane += out_stride;
+        vplane += out_stride;
+    }
+}
+
+void RGB565_to_IMCx(int32_t width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool uFirst, bool interlaced, bool flipped)
+{
+    if (!in_stride)
+        in_stride = width * 2;
+
+    int32_t uv_width = width / 2;
+
+    if (!out_stride)
+        out_stride = width;
+
+    uint8_t* vplane;
+    uint8_t* uplane;
+    if (uFirst)
+    {
+        if (interlaced)
+        {
+            uplane = out_buf + (out_stride * height);
+            vplane = uplane + uv_width;
+        }
+        else
+        {
+            uplane = out_buf + (((height + 15) & ~15) * out_stride);
+            vplane = out_buf + (((((height * 3) / 2) + 15) & ~15) * out_stride);
+        }
+    }
+    else
+    {
+        if (interlaced)
+        {
+            vplane = out_buf + (out_stride * height);
+            uplane = vplane + uv_width;
+        }
+        else
+        {
+            vplane = out_buf + (((height + 15) & ~15) * out_stride);
+            uplane = out_buf + (((((height * 3) / 2) + 15) & ~15) * out_stride);
+        }
+    }
+
+    uint16_t red;
+    uint16_t green;
+    uint16_t blue;
+
+    int32_t in_stride_x_2 = in_stride * 2;
+    int32_t out_stride_x_2 = out_stride * 2;
+
+    for (int32_t y = 0; y < height; y += 2)
+    {
+        uint8_t* psrc = in_buf;
+        uint8_t* yp = out_buf;
+        for (int32_t x = 0; x < width; x += 2)
+        {
+            uint8_t redb;
+            uint8_t greenb;
+            uint8_t blueb;
+
+            UnpackRGB565Word(*(reinterpret_cast<uint16_t*>(psrc)), redb, greenb, blueb);
+            yp[0] = static_cast<uint8_t>(((yr_table[redb] + yg_table[greenb] + yb_table[blueb]) >> 15) + 16);
+            red = redb;
+            green = greenb;
+            blue = blueb;
+
+            UnpackRGB565Word(*(reinterpret_cast<uint16_t*>(psrc + 2)), redb, greenb, blueb);
+            yp[1] = static_cast<uint8_t>(((yr_table[redb] + yg_table[greenb] + yb_table[blueb]) >> 15) + 16);
+            red += redb;
+            green += greenb;
+            blue += blueb;
+
+            UnpackRGB565Word(*(reinterpret_cast<uint16_t*>(psrc + in_stride)), redb, greenb, blueb);
+            yp[out_stride] = static_cast<uint8_t>(((yr_table[redb] + yg_table[greenb] + yb_table[blueb]) >> 15) + 16);
+            red += redb;
+            green += greenb;
+            blue += blueb;
+
+            UnpackRGB565Word(*(reinterpret_cast<uint16_t*>(psrc + in_stride + 2)), redb, greenb, blueb);
+            yp[out_stride + 1] = static_cast<uint8_t>(((yr_table[redb] + yg_table[greenb] + yb_table[blueb]) >> 15) + 16);
+            red += redb;
+            green += greenb;
+            blue += blueb;
+
+            red >>= 2;
+            green >>= 2;
+            blue >>= 2;
+
+            uplane[x >> 1] = static_cast<uint8_t>(((ur_table[red] + ug_table[green] + ub_table[blue]) >> 15) + 128);
+            vplane[x >> 1] = static_cast<uint8_t>(((vr_table[red] + vg_table[green] + vb_table[blue]) >> 15) + 128);
+
+            psrc += 4;
+            yp += 2;
+        }
+        in_buf += in_stride_x_2;
+        out_buf += out_stride_x_2;
+
+        uplane += out_stride;
+        vplane += out_stride;
+    }
+}
+
+void RGB555_to_IMCx(int32_t width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool uFirst, bool interlaced, bool flipped)
+{
+    if (!in_stride)
+        in_stride = width * 2;
+
+    int32_t uv_width = width / 2;
+
+    if (!out_stride)
+        out_stride = width;
+
+    uint8_t* vplane;
+    uint8_t* uplane;
+    if (uFirst)
+    {
+        if (interlaced)
+        {
+            uplane = out_buf + (out_stride * height);
+            vplane = uplane + uv_width;
+        }
+        else
+        {
+            uplane = out_buf + (((height + 15) & ~15) * out_stride);
+            vplane = out_buf + (((((height * 3) / 2) + 15) & ~15) * out_stride);
+        }
+    }
+    else
+    {
+        if (interlaced)
+        {
+            vplane = out_buf + (out_stride * height);
+            uplane = vplane + uv_width;
+        }
+        else
+        {
+            vplane = out_buf + (((height + 15) & ~15) * out_stride);
+            uplane = out_buf + (((((height * 3) / 2) + 15) & ~15) * out_stride);
+        }
+    }
+
+    uint16_t red;
+    uint16_t green;
+    uint16_t blue;
+
+    int32_t in_stride_x_2 = in_stride * 2;
+    int32_t out_stride_x_2 = out_stride * 2;
+
+    for (int32_t y = 0; y < height; y += 2)
+    {
+        uint8_t* psrc = in_buf;
+        uint8_t* yp = out_buf;
+        for (int32_t x = 0; x < width; x += 2)
+        {
+            uint8_t redb;
+            uint8_t greenb;
+            uint8_t blueb;
+
+            UnpackRGB555Word(*(reinterpret_cast<uint16_t*>(psrc)), redb, greenb, blueb);
+            yp[0] = static_cast<uint8_t>(((yr_table[redb] + yg_table[greenb] + yb_table[blueb]) >> 15) + 16);
+            red = redb;
+            green = greenb;
+            blue = blueb;
+
+            UnpackRGB555Word(*(reinterpret_cast<uint16_t*>(psrc + 2)), redb, greenb, blueb);
+            yp[1] = static_cast<uint8_t>(((yr_table[redb] + yg_table[greenb] + yb_table[blueb]) >> 15) + 16);
+            red += redb;
+            green += greenb;
+            blue += blueb;
+
+            UnpackRGB555Word(*(reinterpret_cast<uint16_t*>(psrc + in_stride)), redb, greenb, blueb);
+            yp[out_stride] = static_cast<uint8_t>(((yr_table[redb] + yg_table[greenb] + yb_table[blueb]) >> 15) + 16);
+            red += redb;
+            green += greenb;
+            blue += blueb;
+
+            UnpackRGB555Word(*(reinterpret_cast<uint16_t*>(psrc + in_stride + 2)), redb, greenb, blueb);
+            yp[out_stride + 1] = static_cast<uint8_t>(((yr_table[redb] + yg_table[greenb] + yb_table[blueb]) >> 15) + 16);
+            red += redb;
+            green += greenb;
+            blue += blueb;
+
+            red >>= 2;
+            green >>= 2;
+            blue >>= 2;
+
+            uplane[x >> 1] = static_cast<uint8_t>(((ur_table[red] + ug_table[green] + ub_table[blue]) >> 15) + 128);
+            vplane[x >> 1] = static_cast<uint8_t>(((vr_table[red] + vg_table[green] + vb_table[blue]) >> 15) + 128);
+
+            psrc += 4;
+            yp += 2;
+        }
+        in_buf += in_stride_x_2;
+        out_buf += out_stride_x_2;
+
+        uplane += out_stride;
+        vplane += out_stride;
+    }
+}
+
+void RGB8_to_IMCx(int32_t width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool uFirst, bool interlaced, bool flipped, xRGBQUAD* in_palette)
+{
+    if (!in_stride)
+        in_stride = width;
+
+    int32_t uv_width = width / 2;
+
+    if (!out_stride)
+        out_stride = width;
+
+    uint8_t* vplane;
+    uint8_t* uplane;
+    if (uFirst)
+    {
+        if (interlaced)
+        {
+            uplane = out_buf + (out_stride * height);
+            vplane = uplane + uv_width;
+        }
+        else
+        {
+            uplane = out_buf + (((height + 15) & ~15) * out_stride);
+            vplane = out_buf + (((((height * 3) / 2) + 15) & ~15) * out_stride);
+        }
+    }
+    else
+    {
+        if (interlaced)
+        {
+            vplane = out_buf + (out_stride * height);
+            uplane = vplane + uv_width;
+        }
+        else
+        {
+            vplane = out_buf + (((height + 15) & ~15) * out_stride);
+            uplane = out_buf + (((((height * 3) / 2) + 15) & ~15) * out_stride);
+        }
+    }
+
+    uint16_t red;
+    uint16_t green;
+    uint16_t blue;
+
+    int32_t in_stride_x_2 = in_stride * 2;
+    int32_t out_stride_x_2 = out_stride * 2;
+
+    for (int32_t y = 0; y < height; y += 2)
+    {
+        uint8_t* psrc = in_buf;
+        uint8_t* yp = out_buf;
+        for (int32_t x = 0; x < width; x += 2)
+        {
+            uint8_t redb = in_palette[psrc[0]].rgbRed;
+            uint8_t greenb = in_palette[psrc[0]].rgbGreen;
+            uint8_t blueb = in_palette[psrc[0]].rgbBlue;
+            yp[0] = static_cast<uint8_t>(((yr_table[redb] + yg_table[greenb] + yb_table[blueb]) >> 15) + 16);
+            red = redb;
+            green = greenb;
+            blue = blueb;
+
+            redb = in_palette[psrc[1]].rgbRed;
+            greenb = in_palette[psrc[1]].rgbGreen;
+            blueb = in_palette[psrc[1]].rgbBlue;
+            yp[1] = static_cast<uint8_t>(((yr_table[redb] + yg_table[greenb] + yb_table[blueb]) >> 15) + 16);
+            red += redb;
+            green += greenb;
+            blue += blueb;
+
+            redb = in_palette[psrc[in_stride]].rgbRed;
+            greenb = in_palette[psrc[in_stride]].rgbGreen;
+            blueb = in_palette[psrc[in_stride]].rgbBlue;
+            yp[out_stride] = static_cast<uint8_t>(((yr_table[redb] + yg_table[greenb] + yb_table[blueb]) >> 15) + 16);
+            red += redb;
+            green += greenb;
+            blue += blueb;
+
+            redb = in_palette[psrc[in_stride + 1]].rgbRed;
+            greenb = in_palette[psrc[in_stride + 1]].rgbGreen;
+            blueb = in_palette[psrc[in_stride + 1]].rgbBlue;
+            yp[out_stride + 1] = static_cast<uint8_t>(((yr_table[redb] + yg_table[greenb] + yb_table[blueb]) >> 15) + 16);
+            red += redb;
+            green += greenb;
+            blue += blueb;
+
+            red >>= 2;
+            green >>= 2;
+            blue >>= 2;
+
+            uplane[x >> 1] = static_cast<uint8_t>(((ur_table[red] + ug_table[green] + ub_table[blue]) >> 15) + 128);
+            vplane[x >> 1] = static_cast<uint8_t>(((vr_table[red] + vg_table[green] + vb_table[blue]) >> 15) + 128);
+
+            psrc += 2;
+            yp += 2;
+        }
+        in_buf += in_stride_x_2;
+        out_buf += out_stride_x_2;
+
+        uplane += out_stride;
+        vplane += out_stride;
+    }
+}
+
+//
 // Public RGBA to YUV transforms
 //
 
@@ -1503,7 +1997,10 @@ void blipvert::RGB32_to_Y16(int32_t width, int32_t height, uint8_t* out_buf, int
     }
 }
 
-void blipvert::RGB32_to_AYUV(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette)
+void blipvert::RGB32_to_AYUV(int32_t width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD* in_palette)
 {
     if (!out_stride)
         out_stride = width * 4;
@@ -1536,6 +2033,38 @@ void blipvert::RGB32_to_AYUV(int32_t width, int32_t height, uint8_t* out_buf, in
         out_buf += out_stride;
         height--;
     }
+}
+
+void blipvert::RGB32_to_IMC1(int32_t  width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD* in_palette)
+{
+    RGB32_to_IMCx(width, height, out_buf, out_stride, in_buf, in_stride, false, false, true);
+}
+
+void blipvert::RGB32_to_IMC2(int32_t  width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD* in_palette)
+{
+    RGB32_to_IMCx(width, height, out_buf, out_stride, in_buf, in_stride, false, true, true);
+}
+
+void blipvert::RGB32_to_IMC3(int32_t  width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD* in_palette)
+{
+    RGB32_to_IMCx(width, height, out_buf, out_stride, in_buf, in_stride, true, false, true);
+}
+
+void blipvert::RGB32_to_IMC4(int32_t  width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD* in_palette)
+{
+    RGB32_to_IMCx(width, height, out_buf, out_stride, in_buf, in_stride, true, true, true);
 }
 
 //
@@ -1917,6 +2446,38 @@ void blipvert::RGB24_to_AYUV(int32_t width, int32_t height, uint8_t* out_buf, in
         out_buf += out_stride;
         height--;
     }
+}
+
+void blipvert::RGB24_to_IMC1(int32_t  width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD* in_palette)
+{
+    RGB24_to_IMCx(width, height, out_buf, out_stride, in_buf, in_stride, false, false, true);
+}
+
+void blipvert::RGB24_to_IMC2(int32_t  width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD* in_palette)
+{
+    RGB24_to_IMCx(width, height, out_buf, out_stride, in_buf, in_stride, false, true, true);
+}
+
+void blipvert::RGB24_to_IMC3(int32_t  width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD* in_palette)
+{
+    RGB24_to_IMCx(width, height, out_buf, out_stride, in_buf, in_stride, true, false, true);
+}
+
+void blipvert::RGB24_to_IMC4(int32_t  width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD* in_palette)
+{
+    RGB24_to_IMCx(width, height, out_buf, out_stride, in_buf, in_stride, true, true, true);
 }
 
 //
@@ -2331,6 +2892,38 @@ void blipvert::RGB565_to_AYUV(int32_t width, int32_t height, uint8_t* out_buf, i
     }
 }
 
+void blipvert::RGB565_to_IMC1(int32_t  width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD* in_palette)
+{
+    RGB565_to_IMCx(width, height, out_buf, out_stride, in_buf, in_stride, false, false, true);
+}
+
+void blipvert::RGB565_to_IMC2(int32_t  width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD* in_palette)
+{
+    RGB565_to_IMCx(width, height, out_buf, out_stride, in_buf, in_stride, false, true, true);
+}
+
+void blipvert::RGB565_to_IMC3(int32_t  width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD* in_palette)
+{
+    RGB565_to_IMCx(width, height, out_buf, out_stride, in_buf, in_stride, true, false, true);
+}
+
+void blipvert::RGB565_to_IMC4(int32_t  width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD* in_palette)
+{
+    RGB565_to_IMCx(width, height, out_buf, out_stride, in_buf, in_stride, true, true, true);
+}
+
 //
 // RGB555 to YUV transforms
 //
@@ -2741,6 +3334,38 @@ void blipvert::ARGB1555_to_AYUV(int32_t  width, int32_t height, uint8_t* out_buf
         out_buf += out_stride;
         height--;
     }
+}
+
+void blipvert::RGB555_to_IMC1(int32_t  width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD* in_palette)
+{
+    RGB555_to_IMCx(width, height, out_buf, out_stride, in_buf, in_stride, false, false, true);
+}
+
+void blipvert::RGB555_to_IMC2(int32_t  width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD* in_palette)
+{
+    RGB555_to_IMCx(width, height, out_buf, out_stride, in_buf, in_stride, false, true, true);
+}
+
+void blipvert::RGB555_to_IMC3(int32_t  width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD* in_palette)
+{
+    RGB555_to_IMCx(width, height, out_buf, out_stride, in_buf, in_stride, true, false, true);
+}
+
+void blipvert::RGB555_to_IMC4(int32_t  width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD* in_palette)
+{
+    RGB555_to_IMCx(width, height, out_buf, out_stride, in_buf, in_stride, true, true, true);
 }
 
 void blipvert::RGB555_to_AYUV(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette)
@@ -3215,4 +3840,36 @@ void blipvert::RGB8_to_AYUV(int32_t width, int32_t height, uint8_t* out_buf, int
         out_buf += out_stride;
         height--;
     }
+}
+
+void blipvert::RGB8_to_IMC1(int32_t  width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD* in_palette)
+{
+    RGB8_to_IMCx(width, height, out_buf, out_stride, in_buf, in_stride, false, false, true, in_palette);
+}
+
+void blipvert::RGB8_to_IMC2(int32_t  width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD* in_palette)
+{
+    RGB8_to_IMCx(width, height, out_buf, out_stride, in_buf, in_stride, false, true, true, in_palette);
+}
+
+void blipvert::RGB8_to_IMC3(int32_t  width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD* in_palette)
+{
+    RGB8_to_IMCx(width, height, out_buf, out_stride, in_buf, in_stride, true, false, true, in_palette);
+}
+
+void blipvert::RGB8_to_IMC4(int32_t  width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD* in_palette)
+{
+    RGB8_to_IMCx(width, height, out_buf, out_stride, in_buf, in_stride, true, true, true, in_palette);
 }

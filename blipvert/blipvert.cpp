@@ -420,6 +420,10 @@ TransformTableEntry TransformTable[] = {
     { MVFMT_RGB32, MVFMT_Y800, RGB32_to_Y800 },
     { MVFMT_RGB32, MVFMT_Y16, RGB32_to_Y16 },
     { MVFMT_RGB32, MVFMT_AYUV, RGB32_to_AYUV },
+    { MVFMT_RGB32, MVFMT_IMC1, RGB32_to_IMC1 },
+    { MVFMT_RGB32, MVFMT_IMC2, RGB32_to_IMC2 },
+    { MVFMT_RGB32, MVFMT_IMC3, RGB32_to_IMC3 },
+    { MVFMT_RGB32, MVFMT_IMC4, RGB32_to_IMC4 },
 
     { MVFMT_RGB24, MVFMT_YUY2, RGB24_to_YUY2 },
     { MVFMT_RGB24, MVFMT_UYVY, RGB24_to_UYVY },
@@ -436,6 +440,10 @@ TransformTableEntry TransformTable[] = {
     { MVFMT_RGB24, MVFMT_Y800, RGB24_to_Y800 },
     { MVFMT_RGB24, MVFMT_Y16, RGB24_to_Y16 },
     { MVFMT_RGB24, MVFMT_AYUV, RGB24_to_AYUV },
+    { MVFMT_RGB24, MVFMT_IMC1, RGB24_to_IMC1 },
+    { MVFMT_RGB24, MVFMT_IMC2, RGB24_to_IMC2 },
+    { MVFMT_RGB24, MVFMT_IMC3, RGB24_to_IMC3 },
+    { MVFMT_RGB24, MVFMT_IMC4, RGB24_to_IMC4 },
 
     { MVFMT_RGB565, MVFMT_YUY2, RGB565_to_YUY2 },
     { MVFMT_RGB565, MVFMT_UYVY, RGB565_to_UYVY },
@@ -452,6 +460,10 @@ TransformTableEntry TransformTable[] = {
     { MVFMT_RGB565, MVFMT_Y800, RGB565_to_Y800 },
     { MVFMT_RGB565, MVFMT_Y16, RGB565_to_Y16 },
     { MVFMT_RGB565, MVFMT_AYUV, RGB565_to_AYUV },
+    { MVFMT_RGB565, MVFMT_IMC1, RGB565_to_IMC1 },
+    { MVFMT_RGB565, MVFMT_IMC2, RGB565_to_IMC2 },
+    { MVFMT_RGB565, MVFMT_IMC3, RGB565_to_IMC3 },
+    { MVFMT_RGB565, MVFMT_IMC4, RGB565_to_IMC4 },
 
     { MVFMT_RGB555, MVFMT_YUY2, RGB555_to_YUY2 },
     { MVFMT_RGB555, MVFMT_UYVY, RGB555_to_UYVY },
@@ -468,6 +480,10 @@ TransformTableEntry TransformTable[] = {
     { MVFMT_RGB555, MVFMT_Y800, RGB555_to_Y800 },
     { MVFMT_RGB555, MVFMT_Y16, RGB555_to_Y16 },
     { MVFMT_RGB555, MVFMT_AYUV, RGB555_to_AYUV },
+    { MVFMT_RGB555, MVFMT_IMC1, RGB555_to_IMC1 },
+    { MVFMT_RGB555, MVFMT_IMC2, RGB555_to_IMC2 },
+    { MVFMT_RGB555, MVFMT_IMC3, RGB555_to_IMC3 },
+    { MVFMT_RGB555, MVFMT_IMC4, RGB555_to_IMC4 },
 
     { MVFMT_ARGB1555, MVFMT_YUY2, RGB555_to_YUY2 },
     { MVFMT_ARGB1555, MVFMT_UYVY, RGB555_to_UYVY },
@@ -484,6 +500,10 @@ TransformTableEntry TransformTable[] = {
     { MVFMT_ARGB1555, MVFMT_Y800, RGB555_to_Y800 },
     { MVFMT_ARGB1555, MVFMT_Y16, RGB555_to_Y16 },
     { MVFMT_ARGB1555, MVFMT_AYUV, ARGB1555_to_AYUV },
+    { MVFMT_ARGB1555, MVFMT_IMC1, RGB555_to_IMC1 },
+    { MVFMT_ARGB1555, MVFMT_IMC2, RGB555_to_IMC2 },
+    { MVFMT_ARGB1555, MVFMT_IMC3, RGB555_to_IMC3 },
+    { MVFMT_ARGB1555, MVFMT_IMC4, RGB555_to_IMC4 },
 
     { MVFMT_RGB8, MVFMT_YUY2, RGB8_to_YUY2 },
     { MVFMT_RGB8, MVFMT_UYVY, RGB8_to_UYVY },
@@ -500,6 +520,10 @@ TransformTableEntry TransformTable[] = {
     { MVFMT_RGB8, MVFMT_Y800, RGB8_to_Y800 },
     { MVFMT_RGB8, MVFMT_Y16, RGB8_to_Y16 },
     { MVFMT_RGB8, MVFMT_AYUV, RGB8_to_AYUV },
+    { MVFMT_RGB8, MVFMT_IMC1, RGB8_to_IMC1 },
+    { MVFMT_RGB8, MVFMT_IMC2, RGB8_to_IMC2 },
+    { MVFMT_RGB8, MVFMT_IMC3, RGB8_to_IMC3 },
+    { MVFMT_RGB8, MVFMT_IMC4, RGB8_to_IMC4 },
 
     // YUV to YUV
 
@@ -844,17 +868,13 @@ VideoFormatInfo VideoFmtTable[] = {
     // IUYV is basically the same as UYVY with the exception that the data is interlaced. Lines are
     // ordered 0,2,4,....,1,3,5.... instead of 0,1,2,3,4,5,....
     {MVFMT_IUYV, FOURCC_IUYV, FOURCC_UNDEFINED, 16, ColorspaceType::YUV, false},
-    {MVFMT_CLJR, FOURCC_CLJR, FOURCC_UNDEFINED, 8, ColorspaceType::YUV, false},
+    {MVFMT_CLJR, FOURCC_CLJR, FOURCC_UNDEFINED,  8, ColorspaceType::YUV, false},
     {MVFMT_YUVP, FOURCC_YUVP, FOURCC_UNDEFINED, 24, ColorspaceType::YUV, false},
     {MVFMT_UYVP, FOURCC_UYVP, FOURCC_UNDEFINED, 24, ColorspaceType::YUV, false},
     {MVFMT_YVYU, FOURCC_YVYU, FOURCC_UNDEFINED, 16, ColorspaceType::YUV, false},
-    {MVFMT_Y211, FOURCC_Y211, FOURCC_UNDEFINED, 8, ColorspaceType::YUV, false},
+    {MVFMT_Y211, FOURCC_Y211, FOURCC_UNDEFINED,  8, ColorspaceType::YUV, false},
     {MVFMT_V655, FOURCC_V655, FOURCC_UNDEFINED, 16, ColorspaceType::YUV, false},
     {MVFMT_VYUY, FOURCC_VYUY, FOURCC_UNDEFINED, 16, ColorspaceType::YUV, false},
-    {MVFMT_IMC1, FOURCC_IMC1, FOURCC_UNDEFINED, 12, ColorspaceType::YUV, false},
-    {MVFMT_IMC2, FOURCC_IMC2, FOURCC_UNDEFINED, 12, ColorspaceType::YUV, false},
-    {MVFMT_IMC3, FOURCC_IMC3, FOURCC_UNDEFINED, 12, ColorspaceType::YUV, false},
-    {MVFMT_IMC4, FOURCC_IMC4, FOURCC_UNDEFINED, 12, ColorspaceType::YUV, false},
 
     // Planar YUV Formats:
     // IYUV master format
@@ -865,9 +885,13 @@ VideoFormatInfo VideoFmtTable[] = {
 
     // Planar YUV with no known duplicate definitions
     {MVFMT_YV12, FOURCC_YV12, FOURCC_UNDEFINED, 12, ColorspaceType::YUV, false},
-    {MVFMT_YVU9, FOURCC_YVU9, FOURCC_UNDEFINED, 9, ColorspaceType::YUV, false},
-    {MVFMT_YUV9, FOURCC_YUV9, FOURCC_UNDEFINED, 9, ColorspaceType::YUV, false},
+    {MVFMT_YVU9, FOURCC_YVU9, FOURCC_UNDEFINED,  9, ColorspaceType::YUV, false},
+    {MVFMT_YUV9, FOURCC_YUV9, FOURCC_UNDEFINED,  9, ColorspaceType::YUV, false},
     {MVFMT_IF09, FOURCC_IF09, FOURCC_UNDEFINED,  9, ColorspaceType::YUV, false},
+    {MVFMT_IMC1, FOURCC_IMC1, FOURCC_UNDEFINED, 12, ColorspaceType::YUV, false},
+    {MVFMT_IMC2, FOURCC_IMC2, FOURCC_UNDEFINED, 12, ColorspaceType::YUV, false},
+    {MVFMT_IMC3, FOURCC_IMC3, FOURCC_UNDEFINED, 12, ColorspaceType::YUV, false},
+    {MVFMT_IMC4, FOURCC_IMC4, FOURCC_UNDEFINED, 12, ColorspaceType::YUV, false},
 
     // RGB Formats:
     {MVFMT_RGB1, FOURCC_UNDEFINED, FOURCC_UNDEFINED, 1, ColorspaceType::RGB, false},

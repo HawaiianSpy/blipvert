@@ -245,20 +245,9 @@ bool Check_IMCx(uint8_t y_level, uint8_t u_level, uint8_t v_level,
 	bool uFirst, bool interlaced)
 {
 	int32_t uv_width = width / 2;
-	int32_t uv_height = height / 2;
 
-	int16_t y_stride, uv_stride;
 	if (!out_stride)
-	{
-		y_stride = width;
-		uv_stride = uv_width;
-	}
-	else
-	{
-		y_stride = out_stride;
-		uv_stride = out_stride;
-	}
-
+		out_stride = width;
 
 	uint8_t* vplane;
 	uint8_t* uplane;
@@ -266,28 +255,30 @@ bool Check_IMCx(uint8_t y_level, uint8_t u_level, uint8_t v_level,
 	{
 		if (interlaced)
 		{
-			uplane = out_buf + (y_stride * height);
+			uplane = out_buf + (out_stride * height);
 			vplane = uplane + uv_width;
 		}
 		else
 		{
-			uplane = out_buf + (((height + 15) & ~15) * y_stride);
-			vplane = out_buf + (((((height * 3) / 2) + 15) & ~15) * y_stride);
+			uplane = out_buf + (((height + 15) & ~15) * out_stride);
+			vplane = out_buf + (((((height * 3) / 2) + 15) & ~15) * out_stride);
 		}
 	}
 	else
 	{
 		if (interlaced)
 		{
-			vplane = out_buf + (y_stride * height);
+			vplane = out_buf + (out_stride * height);
 			uplane = vplane + uv_width;
 		}
 		else
 		{
-			vplane = out_buf + (((height + 15) & ~15) * y_stride);
-			uplane = out_buf + (((((height * 3) / 2) + 15) & ~15) * y_stride);
+			vplane = out_buf + (((height + 15) & ~15) * out_stride);
+			uplane = out_buf + (((((height * 3) / 2) + 15) & ~15) * out_stride);
 		}
 	}
+
+	int32_t out_stride_x_2 = out_stride * 2;
 
 	for (int32_t y = 0; y < height; y += 2)
 	{
@@ -296,16 +287,16 @@ bool Check_IMCx(uint8_t y_level, uint8_t u_level, uint8_t v_level,
 		{
 			if (yp[0] != y_level) return false;
 			if (yp[1] != y_level) return false;
-			if (yp[y_stride] != y_level) return false;
-			if (yp[y_stride + 1] != y_level) return false;
+			if (yp[out_stride] != y_level) return false;
+			if (yp[out_stride + 1] != y_level) return false;
 			if (uplane[x >> 1] != u_level) return false;
 			if (vplane[x >> 1] != v_level) return false;
 			yp += 2;
 		}
-		out_buf += (y_stride * 2);
+		out_buf += out_stride_x_2;
 
-		uplane += uv_stride;
-		vplane += uv_stride;
+		uplane += out_stride;
+		vplane += out_stride;
 	}
 
 	return true;

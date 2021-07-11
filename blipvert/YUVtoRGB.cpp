@@ -819,8 +819,6 @@ void IMCx_to_RGB32(int32_t width, int32_t height,
         out_stride = width * 4;
 
     int16_t uv_width = width / 2;
-    int16_t uv_height = height / 2;
-
 
     if (in_stride < width)
         in_stride = width;
@@ -855,7 +853,7 @@ void IMCx_to_RGB32(int32_t width, int32_t height,
     }
 
     int32_t out_stride_x_2 = out_stride * 2;
-    int32_t y_stride_x_2 = in_stride * 2;
+    int32_t in_stride_x_2 = in_stride * 2;
 
     for (int16_t y = 0; y < height; y += 2)
     {
@@ -904,7 +902,7 @@ void IMCx_to_RGB32(int32_t width, int32_t height,
             vp++;
         }
 
-        in_buf += y_stride_x_2;
+        in_buf += in_stride_x_2;
         uplane += in_stride;
         vplane += in_stride;
         out_buf += out_stride_x_2;
@@ -920,7 +918,6 @@ void IMCx_to_RGB24(int32_t width, int32_t height,
         out_stride = width * 3;
 
     int16_t uv_width = width / 2;
-    int16_t uv_height = height / 2;
 
     if (in_stride < width)
         in_stride = width;
@@ -961,7 +958,7 @@ void IMCx_to_RGB24(int32_t width, int32_t height,
     }
 
     int32_t out_stride_x_2 = out_stride * 2;
-    int32_t y_stride_x_2 = in_stride * 2;
+    int32_t in_stride_x_2 = in_stride * 2;
 
     for (int16_t y = 0; y < height; y += 2)
     {
@@ -1006,7 +1003,7 @@ void IMCx_to_RGB24(int32_t width, int32_t height,
             vp++;
         }
 
-        in_buf += y_stride_x_2;
+        in_buf += in_stride_x_2;
         uplane += in_stride;
         vplane += in_stride;
         out_buf += out_stride_x_2;
@@ -1022,8 +1019,6 @@ void IMCx_to_RGB565(int32_t width, int32_t height,
         out_stride = width * 2;
 
     int16_t uv_width = width / 2;
-    int16_t uv_height = height / 2;
-
 
     if (in_stride < width)
         in_stride = width;
@@ -1064,7 +1059,7 @@ void IMCx_to_RGB565(int32_t width, int32_t height,
     }
 
     int32_t out_stride_x_2 = out_stride * 2;
-    int32_t y_stride_x_2 = in_stride * 2;
+    int32_t in_stride_x_2 = in_stride * 2;
 
     for (int16_t y = 0; y < height; y += 2)
     {
@@ -1113,7 +1108,7 @@ void IMCx_to_RGB565(int32_t width, int32_t height,
             vp++;
         }
 
-        in_buf += y_stride_x_2;
+        in_buf += in_stride_x_2;
         uplane += in_stride;
         vplane += in_stride;
         out_buf += out_stride_x_2;
@@ -1129,7 +1124,6 @@ void IMCx_to_RGB555(int32_t width, int32_t height,
         out_stride = width * 2;
 
     int16_t uv_width = width / 2;
-    int16_t uv_height = height / 2;
 
     if (in_stride < width)
         in_stride = width;
@@ -1170,7 +1164,7 @@ void IMCx_to_RGB555(int32_t width, int32_t height,
     }
 
     int32_t out_stride_x_2 = out_stride * 2;
-    int32_t y_stride_x_2 = in_stride * 2;
+    int32_t in_stride_x_2 = in_stride * 2;
 
     for (int16_t y = 0; y < height; y += 2)
     {
@@ -1219,7 +1213,7 @@ void IMCx_to_RGB555(int32_t width, int32_t height,
             vp++;
         }
 
-        in_buf += y_stride_x_2;
+        in_buf += in_stride_x_2;
         uplane += in_stride;
         vplane += in_stride;
         out_buf += out_stride_x_2;

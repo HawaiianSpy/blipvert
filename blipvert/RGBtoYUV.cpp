@@ -1703,42 +1703,42 @@ void blipvert::RGBA_to_AYUV(int32_t width, int32_t height, uint8_t* out_buf, int
 
 void blipvert::RGB32_to_YUY2(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette)
 {
-    RGB32_to_PackedY422(width, height, out_buf, out_stride, in_buf, in_stride, 0, 2, 1, 3, true);
+    RGB32_to_PackedY422(width, height, out_buf, out_stride, in_buf, in_stride, 0, 2, 1, 3, flipped);
 }
 
 void blipvert::RGB32_to_UYVY(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette)
 {
-    RGB32_to_PackedY422(width, height, out_buf, out_stride, in_buf, in_stride, 1, 3, 0, 2, true);
+    RGB32_to_PackedY422(width, height, out_buf, out_stride, in_buf, in_stride, 1, 3, 0, 2, flipped);
 }
 
 void blipvert::RGB32_to_YVYU(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette)
 {
-    RGB32_to_PackedY422(width, height, out_buf, out_stride, in_buf, in_stride, 0, 2, 3, 1, true);
+    RGB32_to_PackedY422(width, height, out_buf, out_stride, in_buf, in_stride, 0, 2, 3, 1, flipped);
 }
 
 void blipvert::RGB32_to_VYUY(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette)
 {
-    RGB32_to_PackedY422(width, height, out_buf, out_stride, in_buf, in_stride, 1, 3, 2, 0, true);
+    RGB32_to_PackedY422(width, height, out_buf, out_stride, in_buf, in_stride, 1, 3, 2, 0, flipped);
 }
 
 void blipvert::RGB32_to_IYUV(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette)
 {
-    RGB32_to_PlanarYUV(width, height, out_buf, out_stride, in_buf, in_stride, true, 2, true);
+    RGB32_to_PlanarYUV(width, height, out_buf, out_stride, in_buf, in_stride, true, 2, flipped);
 }
 
 void blipvert::RGB32_to_YV12(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette)
 {
-    RGB32_to_PlanarYUV(width, height, out_buf, out_stride, in_buf, in_stride, false, 2, true);
+    RGB32_to_PlanarYUV(width, height, out_buf, out_stride, in_buf, in_stride, false, 2, flipped);
 }
 
 void blipvert::RGB32_to_YVU9(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette)
 {
-    RGB32_to_PlanarYUV(width, height, out_buf, out_stride, in_buf, in_stride, false, 4, true);
+    RGB32_to_PlanarYUV(width, height, out_buf, out_stride, in_buf, in_stride, false, 4, flipped);
 }
 
 void blipvert::RGB32_to_YUV9(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette)
 {
-    RGB32_to_PlanarYUV(width, height, out_buf, out_stride, in_buf, in_stride, true, 4, true);
+    RGB32_to_PlanarYUV(width, height, out_buf, out_stride, in_buf, in_stride, true, 4, flipped);
 }
 
 void blipvert::RGB32_to_IYU1(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette)
@@ -2085,7 +2085,7 @@ void blipvert::RGB32_to_IMC1(int32_t  width, int32_t height,
     uint8_t* in_buf, int32_t in_stride,
     bool flipped, xRGBQUAD* in_palette)
 {
-    RGB32_to_IMCx(width, height, out_buf, out_stride, in_buf, in_stride, false, false, true);
+    RGB32_to_IMCx(width, height, out_buf, out_stride, in_buf, in_stride, false, false, flipped);
 }
 
 void blipvert::RGB32_to_IMC2(int32_t  width, int32_t height,
@@ -2093,7 +2093,7 @@ void blipvert::RGB32_to_IMC2(int32_t  width, int32_t height,
     uint8_t* in_buf, int32_t in_stride,
     bool flipped, xRGBQUAD* in_palette)
 {
-    RGB32_to_IMCx(width, height, out_buf, out_stride, in_buf, in_stride, false, true, true);
+    RGB32_to_IMCx(width, height, out_buf, out_stride, in_buf, in_stride, false, true, flipped);
 }
 
 void blipvert::RGB32_to_IMC3(int32_t  width, int32_t height,
@@ -2101,7 +2101,7 @@ void blipvert::RGB32_to_IMC3(int32_t  width, int32_t height,
     uint8_t* in_buf, int32_t in_stride,
     bool flipped, xRGBQUAD* in_palette)
 {
-    RGB32_to_IMCx(width, height, out_buf, out_stride, in_buf, in_stride, true, false, true);
+    RGB32_to_IMCx(width, height, out_buf, out_stride, in_buf, in_stride, true, false, flipped);
 }
 
 void blipvert::RGB32_to_IMC4(int32_t  width, int32_t height,
@@ -2109,7 +2109,7 @@ void blipvert::RGB32_to_IMC4(int32_t  width, int32_t height,
     uint8_t* in_buf, int32_t in_stride,
     bool flipped, xRGBQUAD* in_palette)
 {
-    RGB32_to_IMCx(width, height, out_buf, out_stride, in_buf, in_stride, true, true, true);
+    RGB32_to_IMCx(width, height, out_buf, out_stride, in_buf, in_stride, true, true, flipped);
 }
 
 //
@@ -2118,42 +2118,42 @@ void blipvert::RGB32_to_IMC4(int32_t  width, int32_t height,
 
 void blipvert::RGB24_to_YUY2(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette)
 {
-    RGB24_to_PackedY422(width, height, out_buf, out_stride, in_buf, in_stride, 0, 2, 1, 3, true);
+    RGB24_to_PackedY422(width, height, out_buf, out_stride, in_buf, in_stride, 0, 2, 1, 3, flipped);
 }
 
 void blipvert::RGB24_to_UYVY(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette)
 {
-    RGB24_to_PackedY422(width, height, out_buf, out_stride, in_buf, in_stride, 1, 3, 0, 2, true);
+    RGB24_to_PackedY422(width, height, out_buf, out_stride, in_buf, in_stride, 1, 3, 0, 2, flipped);
 }
 
 void blipvert::RGB24_to_YVYU(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette)
 {
-    RGB24_to_PackedY422(width, height, out_buf, out_stride, in_buf, in_stride, 0, 2, 3, 1, true);
+    RGB24_to_PackedY422(width, height, out_buf, out_stride, in_buf, in_stride, 0, 2, 3, 1, flipped);
 }
 
 void blipvert::RGB24_to_VYUY(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette)
 {
-    RGB24_to_PackedY422(width, height, out_buf, out_stride, in_buf, in_stride, 1, 3, 2, 0, true);
+    RGB24_to_PackedY422(width, height, out_buf, out_stride, in_buf, in_stride, 1, 3, 2, 0, flipped);
 }
 
 void blipvert::RGB24_to_IYUV(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette)
 {
-    RGB24_to_PlanarYUV(width, height, out_buf, out_stride, in_buf, in_stride, true, 2, true);
+    RGB24_to_PlanarYUV(width, height, out_buf, out_stride, in_buf, in_stride, true, 2, flipped);
 }
 
 void blipvert::RGB24_to_YV12(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette)
 {
-    RGB24_to_PlanarYUV(width, height, out_buf, out_stride, in_buf, in_stride, false, 2, true);
+    RGB24_to_PlanarYUV(width, height, out_buf, out_stride, in_buf, in_stride, false, 2, flipped);
 }
 
 void blipvert::RGB24_to_YVU9(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette)
 {
-    RGB24_to_PlanarYUV(width, height, out_buf, out_stride, in_buf, in_stride, false, 4, true);
+    RGB24_to_PlanarYUV(width, height, out_buf, out_stride, in_buf, in_stride, false, 4, flipped);
 }
 
 void blipvert::RGB24_to_YUV9(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette)
 {
-    RGB24_to_PlanarYUV(width, height, out_buf, out_stride, in_buf, in_stride, true, 4, true);
+    RGB24_to_PlanarYUV(width, height, out_buf, out_stride, in_buf, in_stride, true, 4, flipped);
 }
 
 void blipvert::RGB24_to_IYU1(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette)
@@ -2498,7 +2498,7 @@ void blipvert::RGB24_to_IMC1(int32_t  width, int32_t height,
     uint8_t* in_buf, int32_t in_stride,
     bool flipped, xRGBQUAD* in_palette)
 {
-    RGB24_to_IMCx(width, height, out_buf, out_stride, in_buf, in_stride, false, false, true);
+    RGB24_to_IMCx(width, height, out_buf, out_stride, in_buf, in_stride, false, false, flipped);
 }
 
 void blipvert::RGB24_to_IMC2(int32_t  width, int32_t height,
@@ -2506,7 +2506,7 @@ void blipvert::RGB24_to_IMC2(int32_t  width, int32_t height,
     uint8_t* in_buf, int32_t in_stride,
     bool flipped, xRGBQUAD* in_palette)
 {
-    RGB24_to_IMCx(width, height, out_buf, out_stride, in_buf, in_stride, false, true, true);
+    RGB24_to_IMCx(width, height, out_buf, out_stride, in_buf, in_stride, false, true, flipped);
 }
 
 void blipvert::RGB24_to_IMC3(int32_t  width, int32_t height,
@@ -2514,7 +2514,7 @@ void blipvert::RGB24_to_IMC3(int32_t  width, int32_t height,
     uint8_t* in_buf, int32_t in_stride,
     bool flipped, xRGBQUAD* in_palette)
 {
-    RGB24_to_IMCx(width, height, out_buf, out_stride, in_buf, in_stride, true, false, true);
+    RGB24_to_IMCx(width, height, out_buf, out_stride, in_buf, in_stride, true, false, flipped);
 }
 
 void blipvert::RGB24_to_IMC4(int32_t  width, int32_t height,
@@ -2522,7 +2522,7 @@ void blipvert::RGB24_to_IMC4(int32_t  width, int32_t height,
     uint8_t* in_buf, int32_t in_stride,
     bool flipped, xRGBQUAD* in_palette)
 {
-    RGB24_to_IMCx(width, height, out_buf, out_stride, in_buf, in_stride, true, true, true);
+    RGB24_to_IMCx(width, height, out_buf, out_stride, in_buf, in_stride, true, true, flipped);
 }
 
 //
@@ -2531,42 +2531,42 @@ void blipvert::RGB24_to_IMC4(int32_t  width, int32_t height,
 
 void blipvert::RGB565_to_YUY2(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette)
 {
-    RGB565_to_PackedY422(width, height, out_buf, out_stride, in_buf, in_stride, 0, 2, 1, 3, true);
+    RGB565_to_PackedY422(width, height, out_buf, out_stride, in_buf, in_stride, 0, 2, 1, 3, flipped);
 }
 
 void blipvert::RGB565_to_UYVY(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette)
 {
-    RGB565_to_PackedY422(width, height, out_buf, out_stride, in_buf, in_stride, 1, 3, 0, 2, true);
+    RGB565_to_PackedY422(width, height, out_buf, out_stride, in_buf, in_stride, 1, 3, 0, 2, flipped);
 }
 
 void blipvert::RGB565_to_YVYU(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette)
 {
-    RGB565_to_PackedY422(width, height, out_buf, out_stride, in_buf, in_stride, 0, 2, 3, 1, true);
+    RGB565_to_PackedY422(width, height, out_buf, out_stride, in_buf, in_stride, 0, 2, 3, 1, flipped);
 }
 
 void blipvert::RGB565_to_VYUY(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette)
 {
-    RGB565_to_PackedY422(width, height, out_buf, out_stride, in_buf, in_stride, 1, 3, 2, 0, true);
+    RGB565_to_PackedY422(width, height, out_buf, out_stride, in_buf, in_stride, 1, 3, 2, 0, flipped);
 }
 
 void blipvert::RGB565_to_IYUV(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette)
 {
-    RGB565_to_PlanarYUV(width, height, out_buf, out_stride, in_buf, in_stride, true, 2, true);
+    RGB565_to_PlanarYUV(width, height, out_buf, out_stride, in_buf, in_stride, true, 2, flipped);
 }
 
 void blipvert::RGB565_to_YV12(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette)
 {
-    RGB565_to_PlanarYUV(width, height, out_buf, out_stride, in_buf, in_stride, false, 2, true);
+    RGB565_to_PlanarYUV(width, height, out_buf, out_stride, in_buf, in_stride, false, 2, flipped);
 }
 
 void blipvert::RGB565_to_YVU9(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette)
 {
-    RGB565_to_PlanarYUV(width, height, out_buf, out_stride, in_buf, in_stride, false, 4, true);
+    RGB565_to_PlanarYUV(width, height, out_buf, out_stride, in_buf, in_stride, false, 4, flipped);
 }
 
 void blipvert::RGB565_to_YUV9(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette)
 {
-    RGB565_to_PlanarYUV(width, height, out_buf, out_stride, in_buf, in_stride, true, 4, true);
+    RGB565_to_PlanarYUV(width, height, out_buf, out_stride, in_buf, in_stride, true, 4, flipped);
 }
 
 void blipvert::RGB565_to_IYU1(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette)
@@ -2942,7 +2942,7 @@ void blipvert::RGB565_to_IMC1(int32_t  width, int32_t height,
     uint8_t* in_buf, int32_t in_stride,
     bool flipped, xRGBQUAD* in_palette)
 {
-    RGB565_to_IMCx(width, height, out_buf, out_stride, in_buf, in_stride, false, false, true);
+    RGB565_to_IMCx(width, height, out_buf, out_stride, in_buf, in_stride, false, false, flipped);
 }
 
 void blipvert::RGB565_to_IMC2(int32_t  width, int32_t height,
@@ -2950,7 +2950,7 @@ void blipvert::RGB565_to_IMC2(int32_t  width, int32_t height,
     uint8_t* in_buf, int32_t in_stride,
     bool flipped, xRGBQUAD* in_palette)
 {
-    RGB565_to_IMCx(width, height, out_buf, out_stride, in_buf, in_stride, false, true, true);
+    RGB565_to_IMCx(width, height, out_buf, out_stride, in_buf, in_stride, false, true, flipped);
 }
 
 void blipvert::RGB565_to_IMC3(int32_t  width, int32_t height,
@@ -2958,7 +2958,7 @@ void blipvert::RGB565_to_IMC3(int32_t  width, int32_t height,
     uint8_t* in_buf, int32_t in_stride,
     bool flipped, xRGBQUAD* in_palette)
 {
-    RGB565_to_IMCx(width, height, out_buf, out_stride, in_buf, in_stride, true, false, true);
+    RGB565_to_IMCx(width, height, out_buf, out_stride, in_buf, in_stride, true, false, flipped);
 }
 
 void blipvert::RGB565_to_IMC4(int32_t  width, int32_t height,
@@ -2966,7 +2966,7 @@ void blipvert::RGB565_to_IMC4(int32_t  width, int32_t height,
     uint8_t* in_buf, int32_t in_stride,
     bool flipped, xRGBQUAD* in_palette)
 {
-    RGB565_to_IMCx(width, height, out_buf, out_stride, in_buf, in_stride, true, true, true);
+    RGB565_to_IMCx(width, height, out_buf, out_stride, in_buf, in_stride, true, true, flipped);
 }
 
 //
@@ -2975,42 +2975,42 @@ void blipvert::RGB565_to_IMC4(int32_t  width, int32_t height,
 
 void blipvert::RGB555_to_YUY2(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette)
 {
-    RGB555_to_PackedY422(width, height, out_buf, out_stride, in_buf, in_stride, 0, 2, 1, 3, true);
+    RGB555_to_PackedY422(width, height, out_buf, out_stride, in_buf, in_stride, 0, 2, 1, 3, flipped);
 }
 
 void blipvert::RGB555_to_UYVY(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette)
 {
-    RGB555_to_PackedY422(width, height, out_buf, out_stride, in_buf, in_stride, 1, 3, 0, 2, true);
+    RGB555_to_PackedY422(width, height, out_buf, out_stride, in_buf, in_stride, 1, 3, 0, 2, flipped);
 }
 
 void blipvert::RGB555_to_YVYU(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette)
 {
-    RGB555_to_PackedY422(width, height, out_buf, out_stride, in_buf, in_stride, 0, 2, 3, 1, true);
+    RGB555_to_PackedY422(width, height, out_buf, out_stride, in_buf, in_stride, 0, 2, 3, 1, flipped);
 }
 
 void blipvert::RGB555_to_VYUY(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette)
 {
-    RGB555_to_PackedY422(width, height, out_buf, out_stride, in_buf, in_stride, 1, 3, 2, 0, true);
+    RGB555_to_PackedY422(width, height, out_buf, out_stride, in_buf, in_stride, 1, 3, 2, 0, flipped);
 }
 
 void blipvert::RGB555_to_IYUV(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette)
 {
-    RGB555_to_PlanarYUV(width, height, out_buf, out_stride, in_buf, in_stride, true, 2, true);
+    RGB555_to_PlanarYUV(width, height, out_buf, out_stride, in_buf, in_stride, true, 2, flipped);
 }
 
 void blipvert::RGB555_to_YV12(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette)
 {
-    RGB555_to_PlanarYUV(width, height, out_buf, out_stride, in_buf, in_stride, false, 2, true);
+    RGB555_to_PlanarYUV(width, height, out_buf, out_stride, in_buf, in_stride, false, 2, flipped);
 }
 
 void blipvert::RGB555_to_YVU9(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette)
 {
-    RGB555_to_PlanarYUV(width, height, out_buf, out_stride, in_buf, in_stride, false, 4, true);
+    RGB555_to_PlanarYUV(width, height, out_buf, out_stride, in_buf, in_stride, false, 4, flipped);
 }
 
 void blipvert::RGB555_to_YUV9(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette)
 {
-    RGB555_to_PlanarYUV(width, height, out_buf, out_stride, in_buf, in_stride, true, 4, true);
+    RGB555_to_PlanarYUV(width, height, out_buf, out_stride, in_buf, in_stride, true, 4, flipped);
 }
 
 void blipvert::RGB555_to_IYU1(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette)
@@ -3386,7 +3386,7 @@ void blipvert::RGB555_to_IMC1(int32_t  width, int32_t height,
     uint8_t* in_buf, int32_t in_stride,
     bool flipped, xRGBQUAD* in_palette)
 {
-    RGB555_to_IMCx(width, height, out_buf, out_stride, in_buf, in_stride, false, false, true);
+    RGB555_to_IMCx(width, height, out_buf, out_stride, in_buf, in_stride, false, false, flipped);
 }
 
 void blipvert::RGB555_to_IMC2(int32_t  width, int32_t height,
@@ -3394,7 +3394,7 @@ void blipvert::RGB555_to_IMC2(int32_t  width, int32_t height,
     uint8_t* in_buf, int32_t in_stride,
     bool flipped, xRGBQUAD* in_palette)
 {
-    RGB555_to_IMCx(width, height, out_buf, out_stride, in_buf, in_stride, false, true, true);
+    RGB555_to_IMCx(width, height, out_buf, out_stride, in_buf, in_stride, false, true, flipped);
 }
 
 void blipvert::RGB555_to_IMC3(int32_t  width, int32_t height,
@@ -3402,7 +3402,7 @@ void blipvert::RGB555_to_IMC3(int32_t  width, int32_t height,
     uint8_t* in_buf, int32_t in_stride,
     bool flipped, xRGBQUAD* in_palette)
 {
-    RGB555_to_IMCx(width, height, out_buf, out_stride, in_buf, in_stride, true, false, true);
+    RGB555_to_IMCx(width, height, out_buf, out_stride, in_buf, in_stride, true, false, flipped);
 }
 
 void blipvert::RGB555_to_IMC4(int32_t  width, int32_t height,
@@ -3410,7 +3410,7 @@ void blipvert::RGB555_to_IMC4(int32_t  width, int32_t height,
     uint8_t* in_buf, int32_t in_stride,
     bool flipped, xRGBQUAD* in_palette)
 {
-    RGB555_to_IMCx(width, height, out_buf, out_stride, in_buf, in_stride, true, true, true);
+    RGB555_to_IMCx(width, height, out_buf, out_stride, in_buf, in_stride, true, true, flipped);
 }
 
 void blipvert::RGB555_to_AYUV(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette)
@@ -3458,42 +3458,42 @@ void blipvert::RGB555_to_AYUV(int32_t width, int32_t height, uint8_t* out_buf, i
 
 void blipvert::RGB8_to_YUY2(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette)
 {
-    RGB8_to_PackedY422(width, height, out_buf, out_stride, in_buf, in_stride, in_palette, 0, 2, 1, 3, true);
+    RGB8_to_PackedY422(width, height, out_buf, out_stride, in_buf, in_stride, in_palette, 0, 2, 1, 3, flipped);
 }
 
 void blipvert::RGB8_to_UYVY(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette)
 {
-    RGB8_to_PackedY422(width, height, out_buf, out_stride, in_buf, in_stride, in_palette, 1, 3, 0, 2, true);
+    RGB8_to_PackedY422(width, height, out_buf, out_stride, in_buf, in_stride, in_palette, 1, 3, 0, 2, flipped);
 }
 
 void blipvert::RGB8_to_YVYU(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette)
 {
-    RGB8_to_PackedY422(width, height, out_buf, out_stride, in_buf, in_stride, in_palette, 0, 2, 3, 1, true);
+    RGB8_to_PackedY422(width, height, out_buf, out_stride, in_buf, in_stride, in_palette, 0, 2, 3, 1, flipped);
 }
 
 void blipvert::RGB8_to_VYUY(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette)
 {
-    RGB8_to_PackedY422(width, height, out_buf, out_stride, in_buf, in_stride, in_palette, 1, 3, 2, 0, true);
+    RGB8_to_PackedY422(width, height, out_buf, out_stride, in_buf, in_stride, in_palette, 1, 3, 2, 0, flipped);
 }
 
 void blipvert::RGB8_to_IYUV(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette)
 {
-    RGB8_to_PlanarYUV(width, height, out_buf, out_stride, in_buf, in_stride, in_palette, true, 2, true);
+    RGB8_to_PlanarYUV(width, height, out_buf, out_stride, in_buf, in_stride, in_palette, true, 2, flipped);
 }
 
 void blipvert::RGB8_to_YV12(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette)
 {
-    RGB8_to_PlanarYUV(width, height, out_buf, out_stride, in_buf, in_stride, in_palette, false, 2, true);
+    RGB8_to_PlanarYUV(width, height, out_buf, out_stride, in_buf, in_stride, in_palette, false, 2, flipped);
 }
 
 void blipvert::RGB8_to_YVU9(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette)
 {
-    RGB8_to_PlanarYUV(width, height, out_buf, out_stride, in_buf, in_stride, in_palette, false, 4, true);
+    RGB8_to_PlanarYUV(width, height, out_buf, out_stride, in_buf, in_stride, in_palette, false, 4, flipped);
 }
 
 void blipvert::RGB8_to_YUV9(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette)
 {
-    RGB8_to_PlanarYUV(width, height, out_buf, out_stride, in_buf, in_stride, in_palette, true, 4, true);
+    RGB8_to_PlanarYUV(width, height, out_buf, out_stride, in_buf, in_stride, in_palette, true, 4, flipped);
 }
 
 void blipvert::RGB8_to_IYU1(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette)
@@ -3892,7 +3892,7 @@ void blipvert::RGB8_to_IMC1(int32_t  width, int32_t height,
     uint8_t* in_buf, int32_t in_stride,
     bool flipped, xRGBQUAD* in_palette)
 {
-    RGB8_to_IMCx(width, height, out_buf, out_stride, in_buf, in_stride, false, false, true, in_palette);
+    RGB8_to_IMCx(width, height, out_buf, out_stride, in_buf, in_stride, false, false, flipped, in_palette);
 }
 
 void blipvert::RGB8_to_IMC2(int32_t  width, int32_t height,
@@ -3900,7 +3900,7 @@ void blipvert::RGB8_to_IMC2(int32_t  width, int32_t height,
     uint8_t* in_buf, int32_t in_stride,
     bool flipped, xRGBQUAD* in_palette)
 {
-    RGB8_to_IMCx(width, height, out_buf, out_stride, in_buf, in_stride, false, true, true, in_palette);
+    RGB8_to_IMCx(width, height, out_buf, out_stride, in_buf, in_stride, false, true, flipped, in_palette);
 }
 
 void blipvert::RGB8_to_IMC3(int32_t  width, int32_t height,
@@ -3908,7 +3908,7 @@ void blipvert::RGB8_to_IMC3(int32_t  width, int32_t height,
     uint8_t* in_buf, int32_t in_stride,
     bool flipped, xRGBQUAD* in_palette)
 {
-    RGB8_to_IMCx(width, height, out_buf, out_stride, in_buf, in_stride, true, false, true, in_palette);
+    RGB8_to_IMCx(width, height, out_buf, out_stride, in_buf, in_stride, true, false, flipped, in_palette);
 }
 
 void blipvert::RGB8_to_IMC4(int32_t  width, int32_t height,
@@ -3916,5 +3916,5 @@ void blipvert::RGB8_to_IMC4(int32_t  width, int32_t height,
     uint8_t* in_buf, int32_t in_stride,
     bool flipped, xRGBQUAD* in_palette)
 {
-    RGB8_to_IMCx(width, height, out_buf, out_stride, in_buf, in_stride, true, true, true, in_palette);
+    RGB8_to_IMCx(width, height, out_buf, out_stride, in_buf, in_stride, true, true, flipped, in_palette);
 }

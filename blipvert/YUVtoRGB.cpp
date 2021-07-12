@@ -246,7 +246,7 @@ void PackedY422_to_RGB555(int32_t width, int32_t height,
 void PlanarYUV_to_RGB32(int32_t width, int32_t height,
     uint8_t* out_buf, int32_t out_stride,
     uint8_t* in_buf, int32_t in_stride,
-    bool uFirst, int32_t decimation, bool flipped)
+    bool ufirst, int32_t decimation, bool flipped)
 {
     if (!out_stride)
         out_stride = width * 4;
@@ -268,7 +268,7 @@ void PlanarYUV_to_RGB32(int32_t width, int32_t height,
 
     uint8_t* vplane;
     uint8_t* uplane;
-    if (uFirst)
+    if (ufirst)
     {
         uplane = in_buf + (y_stride * height);
         vplane = uplane + (uv_stride * uv_height);
@@ -389,7 +389,7 @@ void PlanarYUV_to_RGB32(int32_t width, int32_t height,
 void PlanarYUV_to_RGB24(int32_t width, int32_t height,
     uint8_t* out_buf, int32_t out_stride,
     uint8_t* in_buf, int32_t in_stride,
-    bool uFirst, int32_t decimation, bool flipped)
+    bool ufirst, int32_t decimation, bool flipped)
 {
     if (!out_stride)
         out_stride = width * 3;
@@ -411,7 +411,7 @@ void PlanarYUV_to_RGB24(int32_t width, int32_t height,
 
     uint8_t* vplane;
     uint8_t* uplane;
-    if (uFirst)
+    if (ufirst)
     {
         uplane = in_buf + (y_stride * height);
         vplane = uplane + (uv_stride * uv_height);
@@ -527,7 +527,7 @@ void PlanarYUV_to_RGB24(int32_t width, int32_t height,
 void PlanarYUV_to_RGB565(int32_t width, int32_t height,
     uint8_t* out_buf, int32_t out_stride,
     uint8_t* in_buf, int32_t in_stride,
-    bool uFirst, int32_t decimation, bool flipped)
+    bool ufirst, int32_t decimation, bool flipped)
 {
     if (!out_stride)
         out_stride = width * 2;
@@ -549,7 +549,7 @@ void PlanarYUV_to_RGB565(int32_t width, int32_t height,
 
     uint8_t* vplane;
     uint8_t* uplane;
-    if (uFirst)
+    if (ufirst)
     {
         uplane = in_buf + (y_stride * height);
         vplane = uplane + (uv_stride * uv_height);
@@ -670,7 +670,7 @@ void PlanarYUV_to_RGB565(int32_t width, int32_t height,
 void PlanarYUV_to_RGB555(int32_t width, int32_t height,
     uint8_t* out_buf, int32_t out_stride,
     uint8_t* in_buf, int32_t in_stride,
-    bool uFirst, int32_t decimation, bool flipped)
+    bool ufirst, int32_t decimation, bool flipped)
 {
     if (!out_stride)
         out_stride = width * 2;
@@ -692,7 +692,7 @@ void PlanarYUV_to_RGB555(int32_t width, int32_t height,
 
     uint8_t* vplane;
     uint8_t* uplane;
-    if (uFirst)
+    if (ufirst)
     {
         uplane = in_buf + (y_stride * height);
         vplane = uplane + (uv_stride * uv_height);
@@ -813,7 +813,7 @@ void PlanarYUV_to_RGB555(int32_t width, int32_t height,
 void IMCx_to_RGB32(int32_t width, int32_t height,
     uint8_t* out_buf, int32_t out_stride,
     uint8_t* in_buf, int32_t in_stride,
-    bool uFirst, bool interlaced, bool flipped)
+    bool ufirst, bool interlaced, bool flipped)
 {
     if (!out_stride)
         out_stride = width * 4;
@@ -825,7 +825,7 @@ void IMCx_to_RGB32(int32_t width, int32_t height,
 
     uint8_t* vplane;
     uint8_t* uplane;
-    if (uFirst)
+    if (ufirst)
     {
         if (interlaced)
         {
@@ -912,7 +912,7 @@ void IMCx_to_RGB32(int32_t width, int32_t height,
 void IMCx_to_RGB24(int32_t width, int32_t height,
     uint8_t* out_buf, int32_t out_stride,
     uint8_t* in_buf, int32_t in_stride,
-    bool uFirst, bool interlaced, bool flipped)
+    bool ufirst, bool interlaced, bool flipped)
 {
     if (!out_stride)
         out_stride = width * 3;
@@ -924,7 +924,7 @@ void IMCx_to_RGB24(int32_t width, int32_t height,
 
     uint8_t* vplane;
     uint8_t* uplane;
-    if (uFirst)
+    if (ufirst)
     {
         if (interlaced)
         {
@@ -1013,7 +1013,7 @@ void IMCx_to_RGB24(int32_t width, int32_t height,
 void IMCx_to_RGB565(int32_t width, int32_t height,
     uint8_t* out_buf, int32_t out_stride,
     uint8_t* in_buf, int32_t in_stride,
-    bool uFirst, bool interlaced, bool flipped)
+    bool ufirst, bool interlaced, bool flipped)
 {
     if (!out_stride)
         out_stride = width * 2;
@@ -1025,7 +1025,7 @@ void IMCx_to_RGB565(int32_t width, int32_t height,
 
     uint8_t* vplane;
     uint8_t* uplane;
-    if (uFirst)
+    if (ufirst)
     {
         if (interlaced)
         {
@@ -1118,7 +1118,7 @@ void IMCx_to_RGB565(int32_t width, int32_t height,
 void IMCx_to_RGB555(int32_t width, int32_t height,
     uint8_t* out_buf, int32_t out_stride,
     uint8_t* in_buf, int32_t in_stride,
-    bool uFirst, bool interlaced, bool flipped)
+    bool ufirst, bool interlaced, bool flipped)
 {
     if (!out_stride)
         out_stride = width * 2;
@@ -1130,7 +1130,7 @@ void IMCx_to_RGB555(int32_t width, int32_t height,
 
     uint8_t* vplane;
     uint8_t* uplane;
-    if (uFirst)
+    if (ufirst)
     {
         if (interlaced)
         {

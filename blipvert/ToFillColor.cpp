@@ -235,7 +235,7 @@ void Fill_PackedY422(uint8_t y_level, uint8_t u_level, uint8_t v_level,
 void Fill_PlanarYUV(uint8_t y_level, uint8_t u_level, uint8_t v_level,
     int32_t width, int32_t height,
     uint8_t* out_buf, int32_t out_stride,
-    bool uFirst, int32_t decimation)
+    bool ufirst, int32_t decimation)
 {
     int32_t uv_width = width / decimation;
     int32_t uv_height = height / decimation;
@@ -254,7 +254,7 @@ void Fill_PlanarYUV(uint8_t y_level, uint8_t u_level, uint8_t v_level,
 
     uint8_t* vplane;
     uint8_t* uplane;
-    if (uFirst)
+    if (ufirst)
     {
         uplane = out_buf + (y_stride * height);
         vplane = uplane + (uv_stride * uv_height);
@@ -345,7 +345,7 @@ void Fill_PlanarYUV(uint8_t y_level, uint8_t u_level, uint8_t v_level,
 void Fill_IMCx(uint8_t y_level, uint8_t u_level, uint8_t v_level,
     int32_t width, int32_t height,
     uint8_t* out_buf, int32_t out_stride,
-    bool uFirst, bool interlaced)
+    bool ufirst, bool interlaced)
 {
     int32_t uv_width = width / 2;
     int32_t uv_height = height / 2;
@@ -356,7 +356,7 @@ void Fill_IMCx(uint8_t y_level, uint8_t u_level, uint8_t v_level,
 
     uint8_t* vplane;
     uint8_t* uplane;
-    if (uFirst)
+    if (ufirst)
     {
         if (interlaced)
         {

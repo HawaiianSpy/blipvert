@@ -141,7 +141,7 @@ bool Check_PackedY422(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level,
 bool Check_PlanarYUV(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level,
 	int32_t width, int32_t height,
 	uint8_t* pBuffer, int32_t stride,
-	bool uFirst, int32_t decimation)
+	bool ufirst, int32_t decimation)
 {
 	int32_t uv_width = width / decimation;
 	int32_t uv_height = height / decimation;
@@ -160,7 +160,7 @@ bool Check_PlanarYUV(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level,
 
 	uint8_t* vplane;
 	uint8_t* uplane;
-	if (uFirst)
+	if (ufirst)
 	{
 		uplane = pBuffer + (y_stride * height);
 		vplane = uplane + (uv_stride * uv_height);
@@ -242,7 +242,7 @@ bool Check_PlanarYUV(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level,
 bool Check_IMCx(uint8_t y_level, uint8_t u_level, uint8_t v_level,
 	int32_t width, int32_t height,
 	uint8_t* out_buf, int32_t out_stride,
-	bool uFirst, bool interlaced)
+	bool ufirst, bool interlaced)
 {
 	int32_t uv_width = width / 2;
 
@@ -251,7 +251,7 @@ bool Check_IMCx(uint8_t y_level, uint8_t u_level, uint8_t v_level,
 
 	uint8_t* vplane;
 	uint8_t* uplane;
-	if (uFirst)
+	if (ufirst)
 	{
 		if (interlaced)
 		{

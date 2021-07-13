@@ -116,8 +116,6 @@ const Fourcc blipvert::FOURCC_IMC1 = MAKEFOURCC('I', 'M', 'C', '1');
 const Fourcc blipvert::FOURCC_IMC2 = MAKEFOURCC('I', 'M', 'C', '2');
 const Fourcc blipvert::FOURCC_IMC3 = MAKEFOURCC('I', 'M', 'C', '3');
 const Fourcc blipvert::FOURCC_IMC4 = MAKEFOURCC('I', 'M', 'C', '4');
-const Fourcc blipvert::FOURCC_S340 = MAKEFOURCC('S', '3', '4', '0');
-const Fourcc blipvert::FOURCC_S342 = MAKEFOURCC('S', '3', '4', '2');
 
 
 const Fourcc blipvert::FOURCC_BI_RGB = BI_RGB;
@@ -181,8 +179,6 @@ const MediaFormatID blipvert::MVFMT_IMC1("IMC1");
 const MediaFormatID blipvert::MVFMT_IMC2("IMC2");
 const MediaFormatID blipvert::MVFMT_IMC3("IMC3");
 const MediaFormatID blipvert::MVFMT_IMC4("IMC4");
-const MediaFormatID blipvert::MVFMT_S340("S340");
-const MediaFormatID blipvert::MVFMT_S342("S342");
 
 const MediaFormatID blipvert::MVFMT_RGB1("RGB1");
 const MediaFormatID blipvert::MVFMT_RGB4("RGB4");
@@ -205,7 +201,6 @@ TransformTableEntry TransformTable[] = {
     { MVFMT_RGBA, MVFMT_RGB565, RGB32_to_RGB565 },
     { MVFMT_RGBA, MVFMT_RGB555, RGB32_to_RGB555 },
     { MVFMT_RGBA, MVFMT_ARGB1555, RGBA_to_ARGB1555 },
-
 
     { MVFMT_RGB32, MVFMT_RGBA, RGB32_to_RGBA },
     { MVFMT_RGB32, MVFMT_RGB24, RGB32_to_RGB24 },

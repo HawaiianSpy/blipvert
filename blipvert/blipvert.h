@@ -102,8 +102,6 @@ namespace blipvert
     extern const Fourcc FOURCC_IMC2;            // https://www.fourcc.org/pixel-format/yuv-imc2/
     extern const Fourcc FOURCC_IMC3;            // As IMC1 except that U and V are swapped
     extern const Fourcc FOURCC_IMC4;            // As IMC2 except that U and V are swapped
-    extern const Fourcc FOURCC_S340;
-    extern const Fourcc FOURCC_S342;
 
     extern const Fourcc FOURCC_BI_RGB;          // https://www.fourcc.org/pixel-format/rgb-bi_rgb/
     extern const Fourcc FOURCC_RGB;             // Alias for BI_RGB
@@ -112,14 +110,15 @@ namespace blipvert
     extern const Fourcc FOURCC_BI_RLE4;         // https://www.fourcc.org/pixel-format/rgb-bi_rle4/
     extern const Fourcc FOURCC_RLE4;            // Alias for BI_RLE4
     extern const Fourcc FOURCC_BI_BITFIELDS;    // https://www.fourcc.org/pixel-format/rgb-bi_bitfields/
-    extern const Fourcc FOURCC_BI_JPEG;
-    extern const Fourcc FOURCC_BI_PNG;
+    extern const Fourcc FOURCC_BI_JPEG;         // Noteed here for completeness.
+    extern const Fourcc FOURCC_BI_PNG;          // ...
 
     extern const Fourcc FOURCC_RGBA;            // https://www.fourcc.org/pixel-format/rgb-rgba/
                                                 // I've never encountered an RGBA that wasn't 32 bits, therfore 32-bits is assumed here.
     extern const Fourcc FOURCC_RGBT;
 
     extern const Fourcc FOURCC_BGRA;
+
     //
     // Media type constants
     //
@@ -170,8 +169,6 @@ namespace blipvert
     extern const MediaFormatID MVFMT_IMC2;
     extern const MediaFormatID MVFMT_IMC3;
     extern const MediaFormatID MVFMT_IMC4;
-    extern const MediaFormatID MVFMT_S340;
-    extern const MediaFormatID MVFMT_S342;
 
     extern const MediaFormatID MVFMT_RGB1;
     extern const MediaFormatID MVFMT_RGB4;
@@ -185,8 +182,8 @@ namespace blipvert
     extern const MediaFormatID MVFMT_RGBT;
     extern const MediaFormatID MVFMT_RGB_BITFIELDS;
 
-    extern bool IsInitialized; // true / false that the library has been initialized.
-    extern bool UseFasterLooping;
+    extern bool IsInitialized;      // true / false that the library has been initialized.
+    extern bool UseFasterLooping;   // true = faster looping will be used that may read/write outside of a tightly allocated buffer (mostly RGB24 for now).
 
     //
     // Function pointer type for all colorspace transforms.

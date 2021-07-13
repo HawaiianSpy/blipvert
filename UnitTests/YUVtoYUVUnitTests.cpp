@@ -590,6 +590,26 @@ namespace BlipvertUnitTests
 			Run8bitTestSeries(MVFMT_IYUV, MVFMT_AYUV);
 		}
 
+		TEST_METHOD(IYUV_to_IMC1_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_IYUV, MVFMT_IMC1);
+		}
+
+		TEST_METHOD(IYUV_to_IMC2_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_IYUV, MVFMT_IMC2);
+		}
+
+		TEST_METHOD(IYUV_to_IMC3_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_IYUV, MVFMT_IMC3);
+		}
+
+		TEST_METHOD(IYUV_to_IMC41_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_IYUV, MVFMT_IMC4);
+		}
+
 		//
 		// YV12 to YUVx
 		//
@@ -662,6 +682,26 @@ namespace BlipvertUnitTests
 		TEST_METHOD(YV12_to_AYUV_UnitTest)
 		{
 			Run8bitTestSeries(MVFMT_YV12, MVFMT_AYUV);
+		}
+
+		TEST_METHOD(YV12_to_IMC1_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_YV12, MVFMT_IMC1);
+		}
+
+		TEST_METHOD(YV12_to_IMC2_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_YV12, MVFMT_IMC2);
+		}
+
+		TEST_METHOD(YV12_to_IMC3_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_YV12, MVFMT_IMC3);
+		}
+
+		TEST_METHOD(YV12_to_IMC4_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_YV12, MVFMT_IMC4);
 		}
 
 		//
@@ -738,6 +778,26 @@ namespace BlipvertUnitTests
 			Run8bitTestSeries(MVFMT_YVU9, MVFMT_AYUV);
 		}
 
+		TEST_METHOD(YVU9_to_IMC1_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_YVU9, MVFMT_IMC1);
+		}
+
+		TEST_METHOD(YVU9_to_IMC2_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_YVU9, MVFMT_IMC2);
+		}
+
+		TEST_METHOD(YVU9_to_IMC3_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_YVU9, MVFMT_IMC3);
+		}
+
+		TEST_METHOD(YVU9_to_IMC4_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_YVU9, MVFMT_IMC4);
+		}
+
 		//
 		// YUV9 to YUVx
 		//
@@ -810,6 +870,26 @@ namespace BlipvertUnitTests
 		TEST_METHOD(YUV9_to_AYUV_UnitTest)
 		{
 			Run8bitTestSeries(MVFMT_YUV9, MVFMT_AYUV);
+		}
+
+		TEST_METHOD(YUV9_to_IMC1_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_YUV9, MVFMT_IMC1);
+		}
+
+		TEST_METHOD(YUV9_to_IMC2_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_YUV9, MVFMT_IMC2);
+		}
+
+		TEST_METHOD(YUV9_to_IMC3_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_YUV9, MVFMT_IMC3);
+		}
+
+		TEST_METHOD(YUV9_to_IMC4_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_YUV9, MVFMT_IMC4);
 		}
 
 		//
@@ -1285,6 +1365,26 @@ namespace BlipvertUnitTests
 			Run8bitTestSeries(MVFMT_IMC1, MVFMT_VYUY);
 		}
 
+		TEST_METHOD(IMC1_to_IYUV_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_IMC1, MVFMT_IYUV);
+		}
+
+		TEST_METHOD(IMC1_to_YV12_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_IMC1, MVFMT_YV12);
+		}
+
+		TEST_METHOD(IMC1_to_YUV9_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_IMC1, MVFMT_YUV9);
+		}
+
+		TEST_METHOD(IMC1_to_YVU9_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_IMC1, MVFMT_YVU9);
+		}
+
 		//
 		// IMC2 to YUVx
 		//
@@ -1312,6 +1412,26 @@ namespace BlipvertUnitTests
 		TEST_METHOD(IMC2_to_VYUY_UnitTest)
 		{
 			Run8bitTestSeries(MVFMT_IMC2, MVFMT_VYUY);
+		}
+
+		TEST_METHOD(IMC2_to_IYUV_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_IMC2, MVFMT_IYUV);
+		}
+
+		TEST_METHOD(IMC2_to_YV12_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_IMC2, MVFMT_YV12);
+		}
+
+		TEST_METHOD(IMC2_to_YUV9_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_IMC2, MVFMT_YUV9);
+		}
+
+		TEST_METHOD(IMC2_to_YVU9_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_IMC2, MVFMT_YVU9);
 		}
 
 		//
@@ -1343,6 +1463,26 @@ namespace BlipvertUnitTests
 			Run8bitTestSeries(MVFMT_IMC3, MVFMT_VYUY);
 		}
 
+		TEST_METHOD(IMC3_to_IYUV_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_IMC3, MVFMT_IYUV);
+		}
+
+		TEST_METHOD(IMC3_to_YV12_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_IMC3, MVFMT_YV12);
+		}
+
+		TEST_METHOD(IMC3_to_YUV9_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_IMC3, MVFMT_YUV9);
+		}
+
+		TEST_METHOD(IMC3_to_YVU9_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_IMC3, MVFMT_YVU9);
+		}
+
 		//
 		// IMC4 to YUVx
 		//
@@ -1370,6 +1510,26 @@ namespace BlipvertUnitTests
 		TEST_METHOD(IMC4_to_VYUY_UnitTest)
 		{
 			Run8bitTestSeries(MVFMT_IMC4, MVFMT_VYUY);
+		}
+
+		TEST_METHOD(IMC4_to_IYUV_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_IMC4, MVFMT_IYUV);
+		}
+
+		TEST_METHOD(IMC4_to_YV12_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_IMC4, MVFMT_YV12);
+		}
+
+		TEST_METHOD(IMC4_to_YUV9_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_IMC4, MVFMT_YUV9);
+		}
+
+		TEST_METHOD(IMC4_to_YVU9_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_IMC4, MVFMT_YVU9);
 		}
 
 	private:

@@ -966,6 +966,26 @@ namespace BlipvertUnitTests
 			Run8bitTestSeries(MVFMT_IYU1, MVFMT_AYUV);
 		}
 
+		TEST_METHOD(IYU1_to_IMC1_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_IYU1, MVFMT_IMC1);
+		}
+
+		TEST_METHOD(IYU1_to_IMC2_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_IYU1, MVFMT_IMC2);
+		}
+
+		TEST_METHOD(IYU1_to_IMC3_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_IYU1, MVFMT_IMC3);
+		}
+
+		TEST_METHOD(IYU1_to_IMC4_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_IYU1, MVFMT_IMC4);
+		}
+
 		//
 		// IYU2 to YUVx
 		//

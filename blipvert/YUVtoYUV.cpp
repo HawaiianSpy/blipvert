@@ -1120,10 +1120,8 @@ void PlanarYUV_to_IYU2(int32_t width, int32_t height,
     }
 
     int32_t out_stride_x_2 = out_stride * 2;
-    int32_t out_stride_x_3 = out_stride * 3;
     int32_t out_stride_x_4 = out_stride * 4;
     int32_t y_stride_x_2 = y_stride * 2;
-    int32_t y_stride_x_3 = y_stride * 3;
     int32_t y_stride_x_4 = y_stride * 4;
 
     if (in_decimation == 2)

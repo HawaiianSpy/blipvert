@@ -1344,6 +1344,190 @@ void IYU2_to_PlanarYUV(int32_t width, int32_t height,
     }
 }
 
+void IYU2_to_IMCx(int32_t width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride, bool ufirst, bool interlaced,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped)
+{
+    if (!in_stride)
+        in_stride = width * 3;
+
+    int32_t uv_width = width / 2;
+    int32_t uv_height = height / 2;
+
+    if (!out_stride)
+        out_stride = width;
+
+    uint8_t* vplane;
+    uint8_t* uplane;
+    if (ufirst)
+    {
+        if (interlaced)
+        {
+            uplane = out_buf + (out_stride * height);
+            vplane = uplane + uv_width;
+        }
+        else
+        {
+            uplane = out_buf + (((height + 15) & ~15) * out_stride);
+            vplane = out_buf + (((((height * 3) / 2) + 15) & ~15) * out_stride);
+        }
+    }
+    else
+    {
+        if (interlaced)
+        {
+            vplane = out_buf + (out_stride * height);
+            uplane = vplane + uv_width;
+        }
+        else
+        {
+            vplane = out_buf + (((height + 15) & ~15) * out_stride);
+            uplane = out_buf + (((((height * 3) / 2) + 15) & ~15) * out_stride);
+        }
+    }
+
+
+    if (flipped)
+    {
+        out_buf += (out_stride * (height - 1));
+        uplane += (out_stride * (uv_height - 1));
+        vplane += (out_stride * (uv_height - 1));
+        out_stride = -out_stride;
+    }
+
+    int32_t in_stride_x_2 = in_stride * 2;
+    int32_t out_stride_x_2 = out_stride * 2;
+
+    for (int32_t y = 0; y < uv_height; y++)
+    {
+        uint8_t* psrc = in_buf;
+        uint8_t* yp = out_buf;
+        uint8_t* up = uplane;
+        uint8_t* vp = vplane;
+
+        for (int32_t x = 0; x < uv_width; x++)
+        {
+            yp[0] = psrc[1];
+            yp[out_stride] = psrc[1 + in_stride];
+            yp[1] = psrc[4];
+            yp[1 + out_stride] = psrc[4 + in_stride];
+
+            up[x] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[0]) + \
+                static_cast<uint16_t>(psrc[in_stride]) + \
+                static_cast<uint16_t>(psrc[3]) + \
+                static_cast<uint16_t>(psrc[3 + in_stride])) >> 2);
+
+            vp[x] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[2]) + \
+                static_cast<uint16_t>(psrc[2 + in_stride]) + \
+                static_cast<uint16_t>(psrc[5]) + \
+                static_cast<uint16_t>(psrc[5 + in_stride])) >> 2);
+
+            psrc += 6;
+            yp += 2;
+        }
+
+        in_buf += in_stride_x_2;
+        out_buf += out_stride_x_2;
+
+        uplane += out_stride;
+        vplane += out_stride;
+    }
+}
+
+void IMCx_to_IYU2(int32_t width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride, bool ufirst, bool interlaced,
+    bool flipped)
+{
+    if (!out_stride)
+        out_stride = width * 3;
+
+    int16_t uv_width = width / 2;
+    int16_t uv_height = height / 2;
+
+    if (in_stride < width)
+        in_stride = width;
+
+    uint8_t* vplane;
+    uint8_t* uplane;
+    if (ufirst)
+    {
+        if (interlaced)
+        {
+            uplane = in_buf + (in_stride * height);
+            vplane = uplane + uv_width;
+        }
+        else
+        {
+            uplane = in_buf + (((height + 15) & ~15) * in_stride);
+            vplane = in_buf + (((((height * 3) / 2) + 15) & ~15) * in_stride);
+        }
+    }
+    else
+    {
+        if (interlaced)
+        {
+            vplane = in_buf + (in_stride * height);
+            uplane = vplane + uv_width;
+        }
+        else
+        {
+            vplane = in_buf + (((height + 15) & ~15) * in_stride);
+            uplane = in_buf + (((((height * 3) / 2) + 15) & ~15) * in_stride);
+        }
+    }
+
+    if (flipped)
+    {
+        out_buf += (out_stride * (height - 1));
+        out_stride = -out_stride;
+    }
+
+    int32_t out_stride_x_2 = out_stride * 2;
+    int32_t in_stride_x_2 = in_stride * 2;
+
+    for (int32_t y = 0; y < height; y += 2)
+    {
+        uint8_t* yp = in_buf;
+        uint8_t* up = uplane;
+        uint8_t* vp = vplane;
+        uint8_t* pdst = out_buf;
+
+        for (int32_t x = 0; x < width; x += 2)
+        {
+            // column 1 row 1
+            pdst[0] = *up;
+            pdst[1] = yp[0];
+            pdst[2] = *vp;
+
+            // column 1 row 2
+            pdst[out_stride] = *up;
+            pdst[1 + out_stride] = yp[in_stride];
+            pdst[2 + out_stride] = *vp;
+
+            // column 2 row 1
+            pdst[3] = *up;
+            pdst[4] = yp[1];
+            pdst[5] = *vp;
+
+            // column 2 row 2
+            pdst[3 + out_stride] = *up;
+            pdst[4 + out_stride] = yp[1 + in_stride];
+            pdst[5 + out_stride] = *vp;
+            pdst += 6;
+            yp += 2;
+            up += 1;
+            vp += 1;
+        }
+
+        in_buf += in_stride_x_2;
+        uplane += in_stride;
+        vplane += in_stride;
+        out_buf += out_stride_x_2;
+    }
+}
+
 void PackedY422_to_Y41P(int32_t width, int32_t height,
     uint8_t* out_buf, int32_t out_stride,
     uint8_t* in_buf, int32_t in_stride,
@@ -3688,7 +3872,6 @@ void IYU1_to_IMCx(int32_t width, int32_t height,
 {
     if (!in_stride)
         in_stride = width * 12 / 8;
-
 
     int32_t uv_width = width / 2;
     int32_t uv_height = height / 2;
@@ -6589,6 +6772,38 @@ void blipvert::IYU2_to_AYUV(int32_t width, int32_t height,
     }
 }
 
+void  blipvert::IYU2_to_IMC1(int32_t width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD* in_palett)
+{
+    IYU2_to_IMCx(width, height, out_buf, out_stride, false, false, in_buf, in_stride, flipped);
+}
+
+void  blipvert::IYU2_to_IMC2(int32_t width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD* in_palett)
+{
+    IYU2_to_IMCx(width, height, out_buf, out_stride, false, true, in_buf, in_stride, flipped);
+}
+
+void  blipvert::IYU2_to_IMC3(int32_t width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD* in_palett)
+{
+    IYU2_to_IMCx(width, height, out_buf, out_stride, true, false, in_buf, in_stride, flipped);
+}
+
+void  blipvert::IYU2_to_IMC4(int32_t width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD* in_palett)
+{
+    IYU2_to_IMCx(width, height, out_buf, out_stride, true, true, in_buf, in_stride, flipped);
+}
+
 void blipvert::Y800_to_YUY2(int32_t width, int32_t height,
     uint8_t* out_buf, int32_t out_stride,
     uint8_t* in_buf, int32_t in_stride,
@@ -8188,6 +8403,14 @@ void blipvert::IMC1_to_IYU1(int32_t width, int32_t height,
     IMCx_to_IYU1(width, height, out_buf, out_stride, in_buf, in_stride, false, false, flipped);
 }
 
+void blipvert::IMC1_to_IYU2(int32_t width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD* in_palette)
+{
+    IMCx_to_IYU2(width, height, out_buf, out_stride, in_buf, in_stride, false, false, flipped);
+}
+
 //
 //  IMC2 to YUV
 //
@@ -8282,6 +8505,14 @@ void blipvert::IMC2_to_IYU1(int32_t width, int32_t height,
     bool flipped, xRGBQUAD* in_palette)
 {
     IMCx_to_IYU1(width, height, out_buf, out_stride, in_buf, in_stride, false, true, flipped);
+}
+
+void blipvert::IMC2_to_IYU2(int32_t width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD* in_palette)
+{
+    IMCx_to_IYU2(width, height, out_buf, out_stride, in_buf, in_stride, false, true, flipped);
 }
 
 //
@@ -8380,6 +8611,14 @@ void blipvert::IMC3_to_IYU1(int32_t width, int32_t height,
     IMCx_to_IYU1(width, height, out_buf, out_stride, in_buf, in_stride, true, false, flipped);
 }
 
+void blipvert::IMC3_to_IYU2(int32_t width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD* in_palette)
+{
+    IMCx_to_IYU2(width, height, out_buf, out_stride, in_buf, in_stride, true, false, flipped);
+}
+
 //
 //  IMC4 to YUV
 //
@@ -8474,6 +8713,14 @@ void blipvert::IMC4_to_IYU1(int32_t width, int32_t height,
     bool flipped, xRGBQUAD* in_palette)
 {
     IMCx_to_IYU1(width, height, out_buf, out_stride, in_buf, in_stride, true, true, flipped);
+}
+
+void blipvert::IMC4_to_IYU2(int32_t width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD* in_palette)
+{
+    IMCx_to_IYU2(width, height, out_buf, out_stride, in_buf, in_stride, true, true, flipped);
 }
 
 //

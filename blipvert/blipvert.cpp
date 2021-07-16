@@ -384,6 +384,8 @@ TransformTableEntry TransformTable[] = {
     { MVFMT_AYUV, MVFMT_RGB555, AYUV_to_RGB555 },
     { MVFMT_AYUV, MVFMT_ARGB1555, AYUV_to_ARGB1555 },
 
+    { MVFMT_NV12, MVFMT_RGB32, NV12_to_RGB32 },
+
     // RGB to YUV
 
     { MVFMT_RGBA, MVFMT_AYUV, RGBA_to_AYUV },
@@ -421,6 +423,7 @@ TransformTableEntry TransformTable[] = {
     { MVFMT_RGB32, MVFMT_IMC2, RGB32_to_IMC2 },
     { MVFMT_RGB32, MVFMT_IMC3, RGB32_to_IMC3 },
     { MVFMT_RGB32, MVFMT_IMC4, RGB32_to_IMC4 },
+    { MVFMT_RGB32, MVFMT_NV12, RGB32_to_NV12 },
 
     { MVFMT_RGB24, MVFMT_YUY2, RGB24_to_YUY2 },
     { MVFMT_RGB24, MVFMT_UYVY, RGB24_to_UYVY },
@@ -921,6 +924,7 @@ GreyscaleTableEntry GreyscaleTable[] = {
     { MVFMT_IMC2, IMC2_to_Greyscale },
     { MVFMT_IMC3, IMC3_to_Greyscale },
     { MVFMT_IMC4, IMC4_to_Greyscale },
+    { MVFMT_NV12, NV12_to_Greyscale },
     { MVFMT_UNDEFINED, nullptr }
 };
 
@@ -950,6 +954,7 @@ FillcolorTableEntry FillColorTable[] = {
     { MVFMT_IMC2, Fill_IMC2 },
     { MVFMT_IMC3, Fill_IMC3 },
     { MVFMT_IMC4, Fill_IMC4 },
+    { MVFMT_NV12, Fill_NV12 },
     { MVFMT_UNDEFINED, nullptr }
 };
 
@@ -1026,6 +1031,7 @@ VideoFormatInfo VideoFmtTable[] = {
     {MVFMT_IMC2, FOURCC_IMC2, FOURCC_UNDEFINED, 12, ColorspaceType::YUV, false},
     {MVFMT_IMC3, FOURCC_IMC3, FOURCC_UNDEFINED, 12, ColorspaceType::YUV, false},
     {MVFMT_IMC4, FOURCC_IMC4, FOURCC_UNDEFINED, 12, ColorspaceType::YUV, false},
+    {MVFMT_NV12, FOURCC_NV12, FOURCC_UNDEFINED, 12, ColorspaceType::YUV, false},
 
     // RGB Formats:
     {MVFMT_RGB1, FOURCC_UNDEFINED, FOURCC_UNDEFINED, 1, ColorspaceType::RGB, false},

@@ -156,6 +156,11 @@ namespace BlipvertUnitTests
 			Run8bitTestSeries(MVFMT_RGB32, MVFMT_IMC4);
 		}
 
+		TEST_METHOD(RGB32_to_NV12_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_RGB32, MVFMT_NV12);
+		}
+
 		//
 		// RGB24 to YUV
 		//

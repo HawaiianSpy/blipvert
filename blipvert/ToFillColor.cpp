@@ -707,3 +707,40 @@ void blipvert::Fill_AYUV(uint8_t y_level, uint8_t u_level, uint8_t v_level, uint
 {
     Fill_RGBA(y_level, u_level, v_level, alpha, width, height, buf, stride);
 }
+
+void blipvert::Fill_NV12(uint8_t y_level, uint8_t u_level, uint8_t v_level, uint8_t alpha,
+    int32_t width, int32_t height, uint8_t* buf, int32_t stride)
+{
+    int32_t uv_width = width / 2;
+    int32_t uv_height = height / 2;
+
+    if (stride < width)
+        stride = width;
+
+    uint8_t* uvplane = buf + (stride * height);
+
+    if (stride == width)
+    {
+        memset(buf, y_level, width * height);
+    }
+    else
+    {
+        for (int32_t y = 0; y < height; y++)
+        {
+            memset(buf, y_level, width);
+            buf += stride;
+        }
+    }
+
+
+    for (int32_t y = 0; y < uv_height; y++)
+    {
+        uint8_t* uvp = uvplane;
+        for (int32_t x = 0; x < uv_width; x++)
+        {
+            *uvp++ = u_level;
+            *uvp++ = v_level;
+        }
+        uvplane += stride;
+    }
+}

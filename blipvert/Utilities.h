@@ -62,13 +62,16 @@ namespace blipvert
     // Returns the size of the buffer in bytes. Returns 0 if the format is not found, a parameter is invalid, or the internalformat info in incomplete.
     uint32_t CalculateBufferSize(const MediaFormatID& inFormat, uint32_t width, uint32_t height, uint32_t in_stride = 0);
 
-    // Returns TRUE if the encoding is RGB
-    bool IsRGBEncoding(const MediaFormatID& encoding);
+    // Returns TRUE if the colorspace is RGB
+    bool IsRGBColorspace(const MediaFormatID& encoding);
+    bool IsRGBColorspace(const Fourcc fourcc);
+
+    // Returns TRUE if the colorspace is YUV
+    bool IsYUVColorspace(const MediaFormatID& encoding);
+    bool IsYUVColorspace(const Fourcc fourcc);
 
     // Returns TRUE if the encoding is RGB with a palette
     bool IsPalletizedEncoding(const MediaFormatID& encoding);
-
-    // Returns TRUE if the fourcc is RGB
-    bool IsRGBFourcc(Fourcc fourcc);
+    bool IsPalletizedEncoding(const Fourcc fourcc);
 }
 

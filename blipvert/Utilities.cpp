@@ -205,22 +205,45 @@ uint32_t blipvert::CalculateBufferSize(const MediaFormatID& inFormat, uint32_t w
     return result;
 }
 
-bool blipvert::IsRGBEncoding(const MediaFormatID& encoding)
+bool blipvert::IsRGBColorspace(const MediaFormatID& encoding)
 {
-    if (encoding == MVFMT_RGB1 ||
-        encoding == MVFMT_RGB4 ||
-        encoding == MVFMT_RGB8 ||
-        encoding == MVFMT_RGB555 ||
-        encoding == MVFMT_RGB565 ||
-        encoding == MVFMT_RGB24 ||
-        encoding == MVFMT_RGB32 ||
-        encoding == MVFMT_RGBA ||
-        encoding == MVFMT_RGBT ||
-        encoding == MVFMT_RGB_BITFIELDS)
+    VideoFormatInfo info;
+    if (GetVideoFormatInfo(encoding, info))
     {
-        return true;
+        return info.type == ColorspaceType::RGB;
     }
 
+    return false;
+}
+
+bool blipvert::IsRGBColorspace(const Fourcc fourcc)
+{
+    MediaFormatID mid;
+    if (GetVideoFormatID(fourcc, mid))
+    {
+        return IsRGBColorspace(mid);
+    }
+    return false;
+}
+
+bool blipvert::IsYUVColorspace(const MediaFormatID& encoding)
+{
+    VideoFormatInfo info;
+    if (GetVideoFormatInfo(encoding, info))
+    {
+        return info.type == ColorspaceType::YUV;
+    }
+
+    return false;
+}
+
+bool blipvert::IsYUVColorspace(const Fourcc fourcc)
+{
+    MediaFormatID mid;
+    if (GetVideoFormatID(fourcc, mid))
+    {
+        return IsYUVColorspace(mid);
+    }
     return false;
 }
 
@@ -236,14 +259,12 @@ bool blipvert::IsPalletizedEncoding(const MediaFormatID& encoding)
     return false;
 }
 
-bool blipvert::IsRGBFourcc(Fourcc fourcc)
+bool blipvert::IsPalletizedEncoding(const Fourcc fourcc)
 {
-    if (fourcc == FOURCC_BI_RGB ||
-        fourcc == FOURCC_RGB ||
-        fourcc == FOURCC_BI_BITFIELDS)
+    MediaFormatID mid;
+    if (GetVideoFormatID(fourcc, mid))
     {
-        return true;
+        return IsPalletizedEncoding(mid);
     }
-
     return false;
 }

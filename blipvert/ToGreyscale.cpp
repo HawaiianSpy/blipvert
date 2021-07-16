@@ -503,9 +503,17 @@ void blipvert::NV12_to_Greyscale(int32_t  width, int32_t height, uint8_t* buf, i
         stride = width;
 
     uint8_t* uvplane = buf + (stride * height);
-    for (int32_t y = 0; y < uv_height; y++)
+
+    if (stride == width)
     {
-        memset(uvplane, 0, width);
-        uvplane += stride;
+        memset(uvplane, 0, width * uv_height);
+    }
+    else
+    {
+        for (int32_t y = 0; y < uv_height; y++)
+        {
+            memset(uvplane, 0, width);
+            uvplane += stride;
+        }
     }
 }

@@ -100,7 +100,10 @@ Fast colospace conversion using lookup tables. Good enough for 99.5% of the appl
 #### ```uint32_t CalculateBufferSize(const MediaFormatID& inFormat, uint32_t width, uint32_t height, uint32_t in_stride = 0);```
  Calculates size of the buffer given the video format and dimensions.
 #
-#### ```bool IsRGBEncoding(const MediaFormatID& encoding);```
+#### ```bool IsRGBColorspace(const MediaFormatID& encoding);```
+#### ```bool IsRGBColorspace(const Fourcc fourcc);```
+#### ```bool IsYUVColorspace(const MediaFormatID& encoding);```
+#### ```bool IsYUVColorspace(const Fourcc fourcc));```
 #### ```bool IsPalletizedEncoding(const MediaFormatID& encoding);```
-#### ```bool IsRGBFourcc(Fourcc fourcc);```
+#### ```bool IsPalletizedEncoding(const Fourcc fourcc);```
 Returns *true* if the input is what the function name states, and returns *false* otherwise.

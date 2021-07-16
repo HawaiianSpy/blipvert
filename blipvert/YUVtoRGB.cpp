@@ -3201,4 +3201,78 @@ void blipvert::AYUV_to_ARGB1555(int32_t width, int32_t height,
     }
 }
 
+void blipvert::NV12_to_RGB32(int32_t width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD*)
+{
+    if (!out_stride)
+        out_stride = width * 4;
 
+    int16_t uv_width = width / 2;
+    int16_t uv_height = height / 2;
+
+    if (!in_stride)
+        in_stride = width;
+
+    uint8_t* uvplane = in_buf + (in_stride * height);
+
+    if (flipped)
+    {
+        out_buf += (out_stride * (height - 1));
+        out_stride = -out_stride;
+    }
+
+    int32_t out_stride_x_2 = out_stride * 2;
+    int32_t in_stride_x_2 = in_stride * 2;
+
+    for (int16_t y = 0; y < height; y += 2)
+    {
+        uint8_t* yp = in_buf;
+        uint8_t* uvp = uvplane;
+        uint8_t* pdst = out_buf;
+
+        for (int16_t x = 0; x < width; x += 2)
+        {
+            int32_t bprime = u_table[*uvp];
+            int32_t gprime = uv_table[*uvp][*(uvp + 1)];
+            int32_t rprime = v_table[*(uvp + 1)];
+
+            // column 1 row 1
+            int32_t Y = luminance_table[yp[0]];
+            pdst[0] = saturation_table[Y + bprime];                     // blue
+            pdst[1] = saturation_table[Y + gprime];                     // green
+            pdst[2] = saturation_table[Y + rprime];                     // red
+            pdst[3] = 0xFF;
+
+            // column 1 row 2
+            Y = luminance_table[yp[in_stride]];
+            pdst[out_stride] = saturation_table[Y + bprime];            // blue
+            pdst[1 + out_stride] = saturation_table[Y + gprime];        // green
+            pdst[2 + out_stride] = saturation_table[Y + rprime];        // red
+            pdst[3 + out_stride] = 0xFF;
+
+            // column 2 row 1
+            Y = luminance_table[yp[1]];
+            pdst[4] = saturation_table[Y + bprime];                     // blue
+            pdst[5] = saturation_table[Y + gprime];                     // green
+            pdst[6] = saturation_table[Y + rprime];                     // red
+            pdst[7] = 0xFF;
+
+            // column 2 row 2
+            Y = luminance_table[yp[1 + in_stride]];
+            pdst[4 + out_stride] = saturation_table[Y + bprime];        // blue
+            pdst[5 + out_stride] = saturation_table[Y + gprime];        // green
+            pdst[6 + out_stride] = saturation_table[Y + rprime];        // red
+            pdst[7 + out_stride] = 0xFF;
+
+            pdst += 8;
+            yp += 2;
+            uvp += 2;
+        }
+
+        in_buf += in_stride_x_2;
+        uvplane += in_stride;
+        out_buf += out_stride_x_2;
+    }
+}

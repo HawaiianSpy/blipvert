@@ -474,6 +474,7 @@ void blipvert::Y41P_to_Greyscale(int32_t  width, int32_t height, uint8_t* buf, i
         height--;
     }
 }
+
 void blipvert::CLJR_to_Greyscale(int32_t  width, int32_t height, uint8_t* buf, int32_t stride, xRGBQUAD* in_palette)
 {
     if (!stride)
@@ -491,5 +492,20 @@ void blipvert::CLJR_to_Greyscale(int32_t  width, int32_t height, uint8_t* buf, i
 
         buf += stride;
         height--;
+    }
+}
+
+void blipvert::NV12_to_Greyscale(int32_t  width, int32_t height, uint8_t* buf, int32_t stride, xRGBQUAD* in_palette)
+{
+    int32_t uv_height = height / 2;
+
+    if (stride < width)
+        stride = width;
+
+    uint8_t* uvplane = buf + (stride * height);
+    for (int32_t y = 0; y < uv_height; y++)
+    {
+        memset(uvplane, 0, width);
+        uvplane += stride;
     }
 }

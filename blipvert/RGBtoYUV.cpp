@@ -2112,6 +2112,77 @@ void blipvert::RGB32_to_IMC4(int32_t  width, int32_t height,
     RGB32_to_IMCx(width, height, out_buf, out_stride, in_buf, in_stride, true, true, flipped);
 }
 
+void blipvert::RGB32_to_NV12(int32_t  width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD* in_palette)
+{
+    if (!in_stride)
+        in_stride = width * 4;
+
+    int32_t uv_width = width / 2;
+    int32_t uv_height = height / 2;
+
+    if (!out_stride)
+        out_stride = width;
+
+    uint8_t* uvplane = out_buf + (out_stride * height);;
+
+    if (flipped)
+    {
+        out_buf += (out_stride * (height - 1));
+        uvplane += (out_stride * (uv_height - 1));
+    }
+
+    uint16_t red;
+    uint16_t green;
+    uint16_t blue;
+
+    for (int32_t y = 0; y < height; y += 2)
+    {
+        uint8_t* psrc = in_buf;
+        uint8_t* yp = out_buf;
+        uint8_t* uvp = uvplane;
+        for (int32_t x = 0; x < width; x += 2)
+        {
+            yp[0] = static_cast<uint8_t>(((yr_table[psrc[2]] + yg_table[psrc[1]] + yb_table[psrc[0]]) >> 15) + 16);
+            red = psrc[2];
+            green = psrc[1];
+            blue = psrc[0];
+
+            yp[1] = static_cast<uint8_t>(((yr_table[psrc[6]] + yg_table[psrc[5]] + yb_table[psrc[4]]) >> 15) + 16);
+            red += psrc[6];
+            green += psrc[5];
+            blue += psrc[4];
+
+            yp[out_stride] = static_cast<uint8_t>(((yr_table[psrc[2 + in_stride]] + yg_table[psrc[1 + in_stride]] + yb_table[psrc[0 + in_stride]]) >> 15) + 16);
+            red += psrc[2 + in_stride];
+            green += psrc[1 + in_stride];
+            blue += psrc[0 + in_stride];
+
+            yp[out_stride + 1] = static_cast<uint8_t>(((yr_table[psrc[6 + in_stride]] + yg_table[psrc[5 + in_stride]] + yb_table[psrc[4 + in_stride]]) >> 15) + 16);
+            red += psrc[6 + in_stride];
+            green += psrc[5 + in_stride];
+            blue += psrc[4 + in_stride];
+
+            red >>= 2;
+            green >>= 2;
+            blue >>= 2;
+
+            *uvp++ = static_cast<uint8_t>(((ur_table[red] + ug_table[green] + ub_table[blue]) >> 15) + 128);
+            *uvp++ = static_cast<uint8_t>(((vr_table[red] + vg_table[green] + vb_table[blue]) >> 15) + 128);
+
+            psrc += 8;
+            yp += 2;
+        }
+
+        in_buf += (in_stride * 2);
+        out_buf += (out_stride * 2);
+        uvplane += out_stride;
+    }
+}
+
+
 //
 // RGB24 to YUV transforms
 //

@@ -180,7 +180,7 @@ uint32_t blipvert::CalculateBufferSize(const MediaFormatID& inFormat, uint32_t w
             // Decimation of 2x2 for u & v: IYUV, YV12
             height += height;
         }
-        else if (inFormat == MVFMT_IMC2 || inFormat == MVFMT_IMC4)
+        else if (inFormat == MVFMT_IMC2 || inFormat == MVFMT_IMC4 || inFormat == MVFMT_NV12)
         {
             height += (height / 2);
         }

@@ -88,6 +88,7 @@ BufferCheckEntry BufferCheckFuncTable[] = {
 	{MVFMT_IMC2, Check_IMC2},
 	{MVFMT_IMC3, Check_IMC3},
 	{MVFMT_IMC4, Check_IMC4},
+	{MVFMT_NV12, Check_NV12},
 	{MVFMT_RGBA, Check_RGBA},
 	{MVFMT_RGB32, Check_RGB32},
 	{MVFMT_RGB24, Check_RGB24},
@@ -549,6 +550,38 @@ bool BlipvertUnitTests::Check_IYU2(uint8_t ry_level, uint8_t gu_level, uint8_t b
 
 	return true;
 }
+
+
+bool BlipvertUnitTests::Check_NV12(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha, int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride)
+{
+	int32_t uv_width = width / 2;
+	int32_t uv_height = height / 2;
+
+	if (!stride)
+		stride = width;
+
+	uint8_t* uvplane = pBuffer + (stride * height);;
+
+	for (int32_t y = 0; y < height; y += 2)
+	{
+		uint8_t* yp = pBuffer;
+		uint8_t* uvp = uvplane;
+		for (int32_t x = 0; x < width; x += 2)
+		{
+			if (yp[0] != ry_level) return false;
+			if (yp[1] != ry_level) return false;
+			if (yp[stride] != ry_level) return false;
+			if (yp[stride + 1] != ry_level) return false;
+			if (*uvp++ != gu_level) return false;
+			if (*uvp++ != bv_level) return false;
+			yp += 2;
+		}
+
+		pBuffer += (stride * 2);
+		uvplane += stride;
+	}
+}
+
 
 bool BlipvertUnitTests::Check_RGBA(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha, int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride)
 {

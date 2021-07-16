@@ -1631,7 +1631,6 @@ void blipvert::Y41P_to_RGB32(int32_t width, int32_t height,
     if (!in_stride)
         in_stride = width / 8 * 12;
 
-    flipped ^= true;
     if (flipped)
     {
         out_buf += (out_stride * (height - 1));
@@ -1723,7 +1722,6 @@ void blipvert::Y41P_to_RGB24(int32_t width, int32_t height,
     if (!in_stride)
         in_stride = width / 8 * 12;
 
-    flipped ^= true;
     if (flipped)
     {
         out_buf += (out_stride * (height - 1));
@@ -1807,7 +1805,6 @@ void blipvert::Y41P_to_RGB565(int32_t width, int32_t height,
     if (!in_stride)
         in_stride = width / 8 * 12;
 
-    flipped ^= true;
     if (flipped)
     {
         out_buf += (out_stride * (height - 1));
@@ -1891,7 +1888,6 @@ void blipvert::Y41P_to_RGB555(int32_t width, int32_t height,
     if (!in_stride)
         in_stride = width / 8 * 12;
 
-    flipped ^= true;
     if (flipped)
     {
         out_buf += (out_stride * (height - 1));
@@ -1979,7 +1975,6 @@ void blipvert::IYU1_to_RGB32(int32_t width, int32_t height,
     if (!in_stride)
         in_stride = width * 12 / 8;
 
-    flipped ^= true;
     if (flipped)
     {
         out_buf += (out_stride * (height - 1));
@@ -2043,7 +2038,6 @@ void blipvert::IYU1_to_RGB24(int32_t width, int32_t height,
     if (!in_stride)
         in_stride = width * 12 / 8;
 
-    flipped ^= true;
     if (flipped)
     {
         out_buf += (out_stride * (height - 1));
@@ -2103,7 +2097,6 @@ void blipvert::IYU1_to_RGB565(int32_t width, int32_t height,
     if (!in_stride)
         in_stride = width * 12 / 8;
 
-    flipped ^= true;
     if (flipped)
     {
         out_buf += (out_stride * (height - 1));
@@ -2163,7 +2156,6 @@ void blipvert::IYU1_to_RGB555(int32_t width, int32_t height,
     if (!in_stride)
         in_stride = width * 12 / 8;
 
-    flipped ^= true;
     if (flipped)
     {
         out_buf += (out_stride * (height - 1));
@@ -2227,7 +2219,6 @@ void blipvert::IYU2_to_RGB32(int32_t width, int32_t height,
     if (!in_stride)
         in_stride = width * 3;
 
-    flipped ^= true;
     if (flipped)
     {
         out_buf += (out_stride * (height - 1));
@@ -2271,7 +2262,6 @@ void blipvert::IYU2_to_RGB24(int32_t width, int32_t height,
     if (!in_stride)
         in_stride = width * 3;
 
-    flipped ^= true;
     if (flipped)
     {
         out_buf += (out_stride * (height - 1));
@@ -2314,7 +2304,6 @@ void blipvert::IYU2_to_RGB565(int32_t width, int32_t height,
     if (!in_stride)
         in_stride = width * 3;
 
-    flipped ^= true;
     if (flipped)
     {
         out_buf += (out_stride * (height - 1));
@@ -2356,7 +2345,6 @@ void blipvert::IYU2_to_RGB555(int32_t width, int32_t height,
     if (!in_stride)
         in_stride = width * 3;
 
-    flipped ^= true;
     if (flipped)
     {
         out_buf += (out_stride * (height - 1));

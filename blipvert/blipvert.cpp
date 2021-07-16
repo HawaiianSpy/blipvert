@@ -77,6 +77,7 @@ const Fourcc blipvert::FOURCC_UYNV = MAKEFOURCC('U', 'Y', 'N', 'V');
 const Fourcc blipvert::FOURCC_cyuv = MAKEFOURCC('c', 'y', 'u', 'v');
 const Fourcc blipvert::FOURCC_Y42T = MAKEFOURCC('Y', '4', '2', 'T');
 const Fourcc blipvert::FOURCC_Y422 = MAKEFOURCC('Y', '4', '2', '2');
+const Fourcc blipvert::FOURCC_HDYC = MAKEFOURCC('H', 'Y', 'D', 'C');
 const Fourcc blipvert::FOURCC_IUYV = MAKEFOURCC('I', 'U', 'Y', 'V');
 const Fourcc blipvert::FOURCC_YUY2 = MAKEFOURCC('Y', 'U', 'Y', '2');
 const Fourcc blipvert::FOURCC_YUYV = MAKEFOURCC('Y', 'U', 'Y', 'V');
@@ -139,6 +140,7 @@ const MediaFormatID blipvert::MVFMT_UYNV("UYNV");
 const MediaFormatID blipvert::MVFMT_cyuv("cyuv");
 const MediaFormatID blipvert::MVFMT_Y42T("Y42T");
 const MediaFormatID blipvert::MVFMT_Y422("Y422");
+const MediaFormatID blipvert::MVFMT_HDYC("HDYC");
 const MediaFormatID blipvert::MVFMT_IUYV("IUYV");
 const MediaFormatID blipvert::MVFMT_YUY2("YUY2");
 const MediaFormatID blipvert::MVFMT_YUYV("YUYV");
@@ -963,6 +965,7 @@ VideoFormatInfo VideoFmtTable[] = {
     {MVFMT_UYNV, FOURCC_UYNV, FOURCC_UYVY, 16, ColorspaceType::YUV, false},
     {MVFMT_cyuv, FOURCC_cyuv, FOURCC_UYVY, 16, ColorspaceType::YUV, false},
     {MVFMT_V422, FOURCC_V422, FOURCC_UYVY, 16, ColorspaceType::YUV, false},
+    {MVFMT_HDYC, FOURCC_HDYC, FOURCC_UYVY, 16, ColorspaceType::YUV, false},
 
     // YUY2 master format
     {MVFMT_YUY2, FOURCC_YUY2, FOURCC_YUY2, 16, ColorspaceType::YUV, false},

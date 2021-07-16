@@ -63,6 +63,7 @@ namespace blipvert
     extern const Fourcc FOURCC_cyuv;            // https://www.fourcc.org/pixel-format/yuv-cyuv/
     extern const Fourcc FOURCC_Y42T;            // https://www.fourcc.org/pixel-format/yuv-y42t/
     extern const Fourcc FOURCC_Y422;            // Direct copy of UYVY
+    extern const Fourcc FOURCC_HDYC;            // Direct copy of UYVY
     extern const Fourcc FOURCC_IUYV;            // Interlaced version of UYVY
     extern const Fourcc FOURCC_YUY2;            // https://www.fourcc.org/pixel-format/yuv-yuy2/
     extern const Fourcc FOURCC_YUYV;            // Duplicate of YUY2
@@ -129,6 +130,7 @@ namespace blipvert
     extern const MediaFormatID MVFMT_cyuv;
     extern const MediaFormatID MVFMT_Y42T;
     extern const MediaFormatID MVFMT_Y422;
+    extern const MediaFormatID MVFMT_HDYC;
     extern const MediaFormatID MVFMT_IUYV;
     extern const MediaFormatID MVFMT_YUY2;
     extern const MediaFormatID MVFMT_YUYV;

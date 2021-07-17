@@ -259,6 +259,12 @@ namespace BlipvertUnitTests
 		{
 			Run8bitTestSeries(MVFMT_RGB24, MVFMT_IMC4);
 		}
+
+		TEST_METHOD(RGB24_to_NV12_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_RGB24, MVFMT_NV12);
+		}
+
 		//
 		// RGB565 to YUV
 		//
@@ -356,6 +362,11 @@ namespace BlipvertUnitTests
 		TEST_METHOD(RGB565_to_IMC4_UnitTest)
 		{
 			Run565bitTestSeries(MVFMT_RGB565, MVFMT_IMC4);
+		}
+
+		TEST_METHOD(RGB565_to_NV12_UnitTest)
+		{
+			Run565bitTestSeries(MVFMT_RGB565, MVFMT_NV12);
 		}
 
 		//
@@ -460,6 +471,11 @@ namespace BlipvertUnitTests
 		TEST_METHOD(RGB555_to_IMC4_UnitTest)
 		{
 			Run555bitTestSeries(MVFMT_RGB555, MVFMT_IMC4);
+		}
+
+		TEST_METHOD(RGB555_to_NV12_UnitTest)
+		{
+			Run555bitTestSeries(MVFMT_RGB555, MVFMT_NV12);
 		}
 
 		//

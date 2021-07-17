@@ -524,6 +524,21 @@ namespace BlipvertUnitTests
 			Run8bitTestSeries(MVFMT_NV12, MVFMT_RGB32);
 		}
 
+		TEST_METHOD(NV12_to_RGB24_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_NV12, MVFMT_RGB24);
+		}
+
+		TEST_METHOD(NV12_to_RGB565_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_NV12, MVFMT_RGB565);
+		}
+
+		TEST_METHOD(NV12_to_RGB555_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_NV12, MVFMT_RGB555);
+		}
+
 	private:
 		void Run8bitTestSeries(const MediaFormatID& yuvFormat, const MediaFormatID& rgbFormat)
 		{

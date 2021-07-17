@@ -580,6 +580,8 @@ bool BlipvertUnitTests::Check_NV12(uint8_t ry_level, uint8_t gu_level, uint8_t b
 		pBuffer += (stride * 2);
 		uvplane += stride;
 	}
+
+	return true;
 }
 
 

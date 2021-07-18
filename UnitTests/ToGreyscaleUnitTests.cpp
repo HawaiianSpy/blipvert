@@ -90,9 +90,9 @@ namespace BlipvertUnitTests
 			RunYUV8bitTestSeries(MVFMT_YUY2);
 		}
 
-		TEST_METHOD(IYUV_UnitTest)
+		TEST_METHOD(I420_UnitTest)
 		{
-			RunYUV8bitTestSeries(MVFMT_IYUV);
+			RunYUV8bitTestSeries(MVFMT_I420);
 		}
 
 		TEST_METHOD(YV12_UnitTest)

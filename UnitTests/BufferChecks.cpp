@@ -73,7 +73,7 @@ BufferCheckEntry BufferCheckFuncTable[] = {
 	{MVFMT_UYVY, Check_UYVY},
 	{MVFMT_YVYU, Check_YVYU},
 	{MVFMT_VYUY, Check_VYUY},
-	{MVFMT_IYUV, Check_IYUV},
+	{MVFMT_I420, Check_I420},
 	{MVFMT_YV12, Check_YV12},
 	{MVFMT_YVU9, Check_YVU9},
 	{MVFMT_YUV9, Check_YUV9},
@@ -304,7 +304,7 @@ bool Check_IMCx(uint8_t y_level, uint8_t u_level, uint8_t v_level,
 }
 
 
-bool BlipvertUnitTests::Check_IYUV(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha, int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride)
+bool BlipvertUnitTests::Check_I420(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha, int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride)
 {
 	return Check_PlanarYUV(ry_level, gu_level, bv_level, width, height, pBuffer, stride, true, 2);
 }

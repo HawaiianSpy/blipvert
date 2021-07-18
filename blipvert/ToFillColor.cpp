@@ -473,7 +473,7 @@ void blipvert::Fill_VYUY(uint8_t y_level, uint8_t u_level, uint8_t v_level, uint
         1, 3, 2, 0);
 }
 
-void blipvert::Fill_IYUV(uint8_t y_level, uint8_t u_level, uint8_t v_level, uint8_t alpha,
+void blipvert::Fill_I420(uint8_t y_level, uint8_t u_level, uint8_t v_level, uint8_t alpha,
     int32_t width, int32_t height, uint8_t* buf, int32_t stride)
 {
     Fill_PlanarYUV(y_level, u_level, v_level, width, height, buf, stride, true, 2);

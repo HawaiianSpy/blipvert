@@ -35,7 +35,13 @@ Read the header files for the details. Fairly self-explainatory.
 
 ### Header file: blipvert.h (Start Here)
 
-#### IMPORTANT: All pixel bitmap dimensions (width & height) should be multiples of 4 to accomodate the packed YUV formats and general algorithmic speed improvements. You can get away with non-modulo-four values for many of the transforms, but following that rule will insure maximum compatibilty across the library. The consequences for living on the edge? Some of the transforms may try coloring outside the lines. Of course you can experiment with the buffer sizes to work around that.
+#### IMPORTANT: or reasons related to the bitmap format definitions, all input parameters must follow these rules:
+```
+1. Both the width and height values must be even multiples of 4.
+2. The width values must be >= 8;
+3. The height value must be >= 16.
+4. The stride value must be >= the minimum number of bytes-per-line needed for the width of the bitmap format.
+```
 
 #### Data Types:
 

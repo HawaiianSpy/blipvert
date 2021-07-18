@@ -35,7 +35,7 @@ Read the header files for the details. Fairly self-explainatory.
 
 ### Header file: blipvert.h (Start Here)
 
-#### IMPORTANT: or reasons related to the bitmap format definitions, all input parameters must follow these rules:
+#### IMPORTANT: For reasons related to the bitmap format definitions, all input parameters must follow these rules:
 ```
 1. Both the width and height values must be even multiples of 4.
 2. The width values must be >= 8;

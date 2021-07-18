@@ -162,7 +162,7 @@ uint32_t blipvert::CalculateBufferSize(const MediaFormatID& inFormat, uint32_t w
     }
 
     uint32_t bitsPerLine = width * static_cast<uint32_t>(info.effectiveBitsPerPixel);
-    uint32_t bytesPerLine = ((bitsPerLine + 31) & (~31)) / 8;
+    uint32_t bytesPerLine = bitsPerLine / 8;//((bitsPerLine + 31) & (~31)) / 8;
 
     if (in_stride > bytesPerLine)
     {

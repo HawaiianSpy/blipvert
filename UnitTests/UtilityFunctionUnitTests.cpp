@@ -152,7 +152,7 @@ namespace BlipvertUnitTests
 			set_UseFasterLooping(savelooping);
 
 			size = CalculateBufferSize(MVFMT_IYU1, 12, 12);
-			Assert::AreEqual(static_cast<uint32_t>(240), size, L"Unexpected size returned for buffer calculation.");
+			Assert::AreEqual(static_cast<uint32_t>(216), size, L"Unexpected size returned for buffer calculation.");
 		}
 
 	private:

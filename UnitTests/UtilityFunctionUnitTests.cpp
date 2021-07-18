@@ -28,6 +28,7 @@
 #include "CppUnitTest.h"
 
 #include "blipvert.h"
+#include "BufferChecks.h"
 #include "Utilities.h"
 #include "YUVtoRGB.h"
 #include "RGBtoYUV.h"
@@ -42,6 +43,14 @@ namespace BlipvertUnitTests
 	TEST_CLASS(Utilities_UnitTests)
 	{
 	public:
+		TEST_METHOD(BitmapDimensions_UnitTest)
+		{
+			Assert::IsTrue( TestBufferWidth >= 8, L"The test buffer width dimension must be >= 8.");
+			Assert::AreEqual(static_cast<uint32_t>(0), TestBufferWidth % 4, L"The test buffer width dimension must be an multiple of 4.");
+
+			Assert::IsTrue(TestBufferHeight >= 8, L"The test buffer height dimension must be >= 8.");
+			Assert::AreEqual(static_cast<uint32_t>(0), TestBufferHeight % 4, L"The test buffer height dimension must be an multiple of 4.");
+		}
 
 		TEST_METHOD(RGBtoVUVPixel_UnitTest)
 		{

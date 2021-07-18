@@ -1032,6 +1032,11 @@ namespace BlipvertUnitTests
 			Run8bitTestSeries(MVFMT_IYU1, MVFMT_IMC4);
 		}
 
+		TEST_METHOD(IYU1_to_NV12_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_IYU1, MVFMT_NV12);
+		}
+
 		//
 		// IYU2 to YUVx
 		//
@@ -1124,6 +1129,11 @@ namespace BlipvertUnitTests
 		TEST_METHOD(IYU2_to_IMC4_UnitTest)
 		{
 			Run8bitTestSeries(MVFMT_IYU2, MVFMT_IMC4);
+		}
+
+		TEST_METHOD(IYU2_to_NV12_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_IYU2, MVFMT_NV12);
 		}
 
 		//
@@ -1925,6 +1935,11 @@ namespace BlipvertUnitTests
 		TEST_METHOD(NV12_to_YVU9_UnitTest)
 		{
 			Run8bitTestSeries(MVFMT_NV12, MVFMT_YVU9);
+		}
+
+		TEST_METHOD(NV12_to_IYU1_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_NV12, MVFMT_IYU1);
 		}
 
 	private:

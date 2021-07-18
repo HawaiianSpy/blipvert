@@ -139,6 +139,11 @@ namespace BlipvertUnitTests
 			Run8bitTestSeries(MVFMT_AYUV, MVFMT_IMC4);
 		}
 
+		TEST_METHOD(AYUV_to_NV12_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_AYUV, MVFMT_NV12);
+		}
+
 		//
 		// YUY2 to YUVx
 		//
@@ -233,6 +238,11 @@ namespace BlipvertUnitTests
 			Run8bitTestSeries(MVFMT_YUY2, MVFMT_IMC4);
 		}
 
+		TEST_METHOD(YUY2_to_NV12_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_YUY2, MVFMT_NV12);
+		}
+
 		//
 		// UYVY to YUVx
 		//
@@ -325,6 +335,11 @@ namespace BlipvertUnitTests
 		TEST_METHOD(UYVY_to_IMC4_UnitTest)
 		{
 			Run8bitTestSeries(MVFMT_UYVY, MVFMT_IMC4);
+		}
+
+		TEST_METHOD(UYVY_to_NV12_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_UYVY, MVFMT_NV12);
 		}
 
 
@@ -422,6 +437,12 @@ namespace BlipvertUnitTests
 			Run8bitTestSeries(MVFMT_YVYU, MVFMT_IMC4);
 		}
 
+		TEST_METHOD(YVYU_to_NV12_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_YVYU, MVFMT_NV12);
+		}
+
+
 		//
 		// VYUY to YUVx
 		//
@@ -514,6 +535,11 @@ namespace BlipvertUnitTests
 		TEST_METHOD(VYUY_to_IMC4_UnitTest)
 		{
 			Run8bitTestSeries(MVFMT_VYUY, MVFMT_IMC4);
+		}
+
+		TEST_METHOD(VYUY_to_NV12_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_VYUY, MVFMT_NV12);
 		}
 
 		//
@@ -610,6 +636,11 @@ namespace BlipvertUnitTests
 			Run8bitTestSeries(MVFMT_IYUV, MVFMT_IMC4);
 		}
 
+		TEST_METHOD(IYUV_to_NV12_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_IYUV, MVFMT_NV12);
+		}
+
 		//
 		// YV12 to YUVx
 		//
@@ -702,6 +733,11 @@ namespace BlipvertUnitTests
 		TEST_METHOD(YV12_to_IMC4_UnitTest)
 		{
 			Run8bitTestSeries(MVFMT_YV12, MVFMT_IMC4);
+		}
+
+		TEST_METHOD(YV12_to_NV12_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_YV12, MVFMT_NV12);
 		}
 
 		//
@@ -798,6 +834,11 @@ namespace BlipvertUnitTests
 			Run8bitTestSeries(MVFMT_YVU9, MVFMT_IMC4);
 		}
 
+		TEST_METHOD(YVU9_to_NV12_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_YVU9, MVFMT_NV12);
+		}
+
 		//
 		// YUV9 to YUVx
 		//
@@ -890,6 +931,11 @@ namespace BlipvertUnitTests
 		TEST_METHOD(YUV9_to_IMC4_UnitTest)
 		{
 			Run8bitTestSeries(MVFMT_YUV9, MVFMT_IMC4);
+		}
+
+		TEST_METHOD(YUV9_to_NV12_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_YUV9, MVFMT_NV12);
 		}
 
 		//
@@ -1830,6 +1876,55 @@ namespace BlipvertUnitTests
 		TEST_METHOD(IMC4_to_IMC3_UnitTest)
 		{
 			Run8bitTestSeries(MVFMT_IMC4, MVFMT_IMC3);
+		}
+
+		//
+		// NV12 to YUVx
+		//
+
+		TEST_METHOD(NV12_to_AYUV_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_NV12, MVFMT_AYUV);
+		}
+
+		TEST_METHOD(NV12_to_YUY2_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_NV12, MVFMT_YUY2);
+		}
+
+		TEST_METHOD(NV12_to_UYVY_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_NV12, MVFMT_UYVY);
+		}
+
+		TEST_METHOD(NV12_to_YVYU_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_NV12, MVFMT_YVYU);
+		}
+
+		TEST_METHOD(NV12_to_VYUY_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_NV12, MVFMT_VYUY);
+		}
+
+		TEST_METHOD(NV12_to_IYUV_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_NV12, MVFMT_IYUV);
+		}
+
+		TEST_METHOD(NV12_to_YV12_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_NV12, MVFMT_YV12);
+		}
+
+		TEST_METHOD(NV12_to_YUV9_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_NV12, MVFMT_YUV9);
+		}
+
+		TEST_METHOD(NV12_to_YVU9_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_NV12, MVFMT_YVU9);
 		}
 
 	private:

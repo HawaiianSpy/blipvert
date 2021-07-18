@@ -290,27 +290,27 @@ namespace BlipvertUnitTests
 		}
 
 		//
-		// IYUV to RGB
+		// I420 to RGB
 		//
 
-		TEST_METHOD(IYUV_to_RGB32_UnitTest)
+		TEST_METHOD(I420_to_RGB32_UnitTest)
 		{
-			Run8bitTestSeries(MVFMT_IYUV, MVFMT_RGB32);
+			Run8bitTestSeries(MVFMT_I420, MVFMT_RGB32);
 		}
 
-		TEST_METHOD(IYUV_to_RGB24_UnitTest)
+		TEST_METHOD(I420_to_RGB24_UnitTest)
 		{
-			Run8bitTestSeries(MVFMT_IYUV, MVFMT_RGB24);
+			Run8bitTestSeries(MVFMT_I420, MVFMT_RGB24);
 		}
 
-		TEST_METHOD(IYUV_to_RGB565_UnitTest)
+		TEST_METHOD(I420_to_RGB565_UnitTest)
 		{
-			Run565bitTestSeries(MVFMT_IYUV, MVFMT_RGB565);
+			Run565bitTestSeries(MVFMT_I420, MVFMT_RGB565);
 		}
 
-		TEST_METHOD(IYUV_to_RGB555_UnitTest)
+		TEST_METHOD(I420_to_RGB555_UnitTest)
 		{
-			Run555bitTestSeries(MVFMT_IYUV, MVFMT_RGB555);
+			Run555bitTestSeries(MVFMT_I420, MVFMT_RGB555);
 		}
 
 		//

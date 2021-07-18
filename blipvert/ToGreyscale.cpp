@@ -384,7 +384,7 @@ void blipvert::IMC4_to_Greyscale(int32_t  width, int32_t height, uint8_t* buf, i
     IMCx_to_Greyscale(width, height, buf, stride, true);
 }
 
-void blipvert::IYUV_to_Greyscale(int32_t  width, int32_t height, uint8_t* buf, int32_t stride, xRGBQUAD* in_palette)
+void blipvert::I420_to_Greyscale(int32_t  width, int32_t height, uint8_t* buf, int32_t stride, xRGBQUAD* in_palette)
 {
     PlanarYUV_to_Greyscale(width, height, buf, stride, 2);
 }

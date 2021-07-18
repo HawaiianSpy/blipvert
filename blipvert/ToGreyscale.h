@@ -49,7 +49,7 @@ namespace blipvert
     void VYUY_to_Greyscale(int32_t width, int32_t height, uint8_t* buf, int32_t stride = 0, xRGBQUAD* in_palette = nullptr);
     void YUY2_to_Greyscale(int32_t width, int32_t height, uint8_t* buf, int32_t stride = 0, xRGBQUAD* in_palette = nullptr);
 
-    void IYUV_to_Greyscale(int32_t width, int32_t height, uint8_t* buf, int32_t stride = 0, xRGBQUAD* in_palette = nullptr);
+    void I420_to_Greyscale(int32_t width, int32_t height, uint8_t* buf, int32_t stride = 0, xRGBQUAD* in_palette = nullptr);
     void YV12_to_Greyscale(int32_t width, int32_t height, uint8_t* buf, int32_t stride = 0, xRGBQUAD* in_palette = nullptr);
     void YVU9_to_Greyscale(int32_t width, int32_t height, uint8_t* buf, int32_t stride = 0, xRGBQUAD* in_palette = nullptr);
     void YUV9_to_Greyscale(int32_t width, int32_t height, uint8_t* buf, int32_t stride = 0, xRGBQUAD* in_palette = nullptr);

@@ -143,9 +143,9 @@ void blipvert::Interlaced_to_Progressive(int32_t height, int32_t line_bytes, boo
 }
 
 
-uint32_t blipvert::CalculateBufferSize(const MediaFormatID& inFormat, uint32_t width, uint32_t height, uint32_t in_stride)
+uint32_t blipvert::CalculateBufferSize(const MediaFormatID& inFormat, uint32_t width, uint32_t height, uint32_t stride)
 {
-    if (width == 0 || height == 0)
+    if (width < 8 || (width % 4 != 0) || height< 16 || (height % 4 != 0))
     {
         return 0;
     }
@@ -162,11 +162,16 @@ uint32_t blipvert::CalculateBufferSize(const MediaFormatID& inFormat, uint32_t w
     }
 
     uint32_t bitsPerLine = width * static_cast<uint32_t>(info.effectiveBitsPerPixel);
-    uint32_t bytesPerLine = ((bitsPerLine + 31) & (~31)) / 8;
+    uint32_t bytesPerLine = bitsPerLine / 8;//((bitsPerLine + 31) & (~31)) / 8;
 
-    if (in_stride > bytesPerLine)
+    if (stride != 0 && stride < bytesPerLine)
     {
-        bytesPerLine = in_stride;
+        return 0;
+    }
+
+    if (stride > bytesPerLine)
+    {
+        bytesPerLine = stride;
 
         // Planar bitmap formats with consecutive planes need special treatment
         if (inFormat == MVFMT_YVU9 || inFormat == MVFMT_YUV9)

@@ -2447,10 +2447,10 @@ void blipvert::YUV9_to_RGB555(int32_t width, int32_t height,
 }
 
 //
-// IYUV format to RGB
+// I420 format to RGB
 //
 
-void blipvert::IYUV_to_RGB32(int32_t width, int32_t height,
+void blipvert::I420_to_RGB32(int32_t width, int32_t height,
     uint8_t* out_buf, int32_t out_stride,
     uint8_t* in_buf, int32_t in_stride,
     bool flipped, xRGBQUAD* in_palette)
@@ -2458,7 +2458,7 @@ void blipvert::IYUV_to_RGB32(int32_t width, int32_t height,
     PlanarYUV_to_RGB32(width, height, out_buf, out_stride, in_buf, in_stride, true, 2, flipped);
 }
 
-void blipvert::IYUV_to_RGB24(int32_t width, int32_t height,
+void blipvert::I420_to_RGB24(int32_t width, int32_t height,
     uint8_t* out_buf, int32_t out_stride,
     uint8_t* in_buf, int32_t in_stride,
     bool flipped, xRGBQUAD* in_palette)
@@ -2466,7 +2466,7 @@ void blipvert::IYUV_to_RGB24(int32_t width, int32_t height,
     PlanarYUV_to_RGB24(width, height, out_buf, out_stride, in_buf, in_stride, true, 2, flipped);
 }
 
-void blipvert::IYUV_to_RGB565(int32_t width, int32_t height,
+void blipvert::I420_to_RGB565(int32_t width, int32_t height,
     uint8_t* out_buf, int32_t out_stride,
     uint8_t* in_buf, int32_t in_stride,
     bool flipped, xRGBQUAD* in_palette)
@@ -2474,7 +2474,7 @@ void blipvert::IYUV_to_RGB565(int32_t width, int32_t height,
     PlanarYUV_to_RGB565(width, height, out_buf, out_stride, in_buf, in_stride, true, 2, flipped);
 }
 
-void blipvert::IYUV_to_RGB555(int32_t width, int32_t height,
+void blipvert::I420_to_RGB555(int32_t width, int32_t height,
     uint8_t* out_buf, int32_t out_stride,
     uint8_t* in_buf, int32_t in_stride,
     bool flipped, xRGBQUAD* in_palette)
@@ -3209,7 +3209,7 @@ void blipvert::NV12_to_RGB32(int32_t width, int32_t height,
     if (!out_stride)
         out_stride = width * 4;
 
-    int16_t uv_width = width / 2;
+    int16_t uv_width = width;
     int16_t uv_height = height / 2;
 
     if (!in_stride)
@@ -3229,14 +3229,15 @@ void blipvert::NV12_to_RGB32(int32_t width, int32_t height,
     for (int16_t y = 0; y < height; y += 2)
     {
         uint8_t* yp = in_buf;
-        uint8_t* uvp = uvplane;
+        uint8_t* up = uvplane;
+        uint8_t* vp = uvplane + 1;
         uint8_t* pdst = out_buf;
 
         for (int16_t x = 0; x < width; x += 2)
         {
-            int32_t bprime = u_table[*uvp];
-            int32_t gprime = uv_table[*uvp][*(uvp + 1)];
-            int32_t rprime = v_table[*(uvp + 1)];
+            int32_t bprime = u_table[*up];
+            int32_t gprime = uv_table[*up][*vp];
+            int32_t rprime = v_table[*vp];
 
             // column 1 row 1
             int32_t Y = luminance_table[yp[0]];
@@ -3268,7 +3269,8 @@ void blipvert::NV12_to_RGB32(int32_t width, int32_t height,
 
             pdst += 8;
             yp += 2;
-            uvp += 2;
+            up += 2;
+            vp += 2;
         }
 
         in_buf += in_stride_x_2;
@@ -3285,7 +3287,7 @@ void blipvert::NV12_to_RGB24(int32_t width, int32_t height,
     if (!out_stride)
         out_stride = width * 3;
 
-    int16_t uv_width = width / 2;
+    int16_t uv_width = width;
     int16_t uv_height = height / 2;
 
     if (!in_stride)
@@ -3305,14 +3307,15 @@ void blipvert::NV12_to_RGB24(int32_t width, int32_t height,
     for (int16_t y = 0; y < height; y += 2)
     {
         uint8_t* yp = in_buf;
-        uint8_t* uvp = uvplane;
+        uint8_t* up = uvplane;
+        uint8_t* vp = uvplane + 1;
         uint8_t* pdst = out_buf;
 
         for (int16_t x = 0; x < width; x += 2)
         {
-            int32_t bprime = u_table[*uvp];
-            int32_t gprime = uv_table[*uvp][*(uvp + 1)];
-            int32_t rprime = v_table[*(uvp + 1)];
+            int32_t bprime = u_table[*up];
+            int32_t gprime = uv_table[*up][*vp];
+            int32_t rprime = v_table[*vp];
 
             // column 1 row 1
             int32_t Y = luminance_table[yp[0]];
@@ -3340,7 +3343,8 @@ void blipvert::NV12_to_RGB24(int32_t width, int32_t height,
 
             pdst += 6;
             yp += 2;
-            uvp += 2;
+            up += 2;
+            vp += 2;
         }
 
         in_buf += in_stride_x_2;
@@ -3357,7 +3361,7 @@ void blipvert::NV12_to_RGB565(int32_t width, int32_t height,
     if (!out_stride)
         out_stride = width * 2;
 
-    int16_t uv_width = width / 2;
+    int16_t uv_width = width;
     int16_t uv_height = height / 2;
 
     if (!in_stride)
@@ -3377,14 +3381,15 @@ void blipvert::NV12_to_RGB565(int32_t width, int32_t height,
     for (int16_t y = 0; y < height; y += 2)
     {
         uint8_t* yp = in_buf;
-        uint8_t* uvp = uvplane;
+        uint8_t* up = uvplane;
+        uint8_t* vp = uvplane + 1;
         uint8_t* pdst = out_buf;
 
         for (int16_t x = 0; x < width; x += 2)
         {
-            int32_t bprime = u_table[*uvp];
-            int32_t gprime = uv_table[*uvp][*(uvp + 1)];
-            int32_t rprime = v_table[*(uvp + 1)];
+            int32_t bprime = u_table[*up];
+            int32_t gprime = uv_table[*up][*vp];
+            int32_t rprime = v_table[*vp];
 
             // column 1 row 1
             int32_t Y = luminance_table[yp[0]];
@@ -3416,7 +3421,8 @@ void blipvert::NV12_to_RGB565(int32_t width, int32_t height,
 
             pdst += 4;
             yp += 2;
-            uvp += 2;
+            up += 2;
+            vp += 2;
         }
 
         in_buf += in_stride_x_2;
@@ -3433,7 +3439,7 @@ void blipvert::NV12_to_RGB555(int32_t width, int32_t height,
     if (!out_stride)
         out_stride = width * 2;
 
-    int16_t uv_width = width / 2;
+    int16_t uv_width = width;
     int16_t uv_height = height / 2;
 
     if (!in_stride)
@@ -3453,14 +3459,15 @@ void blipvert::NV12_to_RGB555(int32_t width, int32_t height,
     for (int16_t y = 0; y < height; y += 2)
     {
         uint8_t* yp = in_buf;
-        uint8_t* uvp = uvplane;
+        uint8_t* up = uvplane;
+        uint8_t* vp = uvplane + 1;
         uint8_t* pdst = out_buf;
 
         for (int16_t x = 0; x < width; x += 2)
         {
-            int32_t bprime = u_table[*uvp];
-            int32_t gprime = uv_table[*uvp][*(uvp + 1)];
-            int32_t rprime = v_table[*(uvp + 1)];
+            int32_t bprime = u_table[*up];
+            int32_t gprime = uv_table[*up][*vp];
+            int32_t rprime = v_table[*vp];
 
             // column 1 row 1
             int32_t Y = luminance_table[yp[0]];
@@ -3492,7 +3499,8 @@ void blipvert::NV12_to_RGB555(int32_t width, int32_t height,
 
             pdst += 4;
             yp += 2;
-            uvp += 2;
+            up += 2;
+            vp += 2;
         }
 
         in_buf += in_stride_x_2;

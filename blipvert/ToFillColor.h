@@ -43,7 +43,7 @@ namespace blipvert
     void Fill_UYVY(uint8_t y_level, uint8_t u_level, uint8_t v_level, uint8_t alpha, int32_t width, int32_t height, uint8_t* buf, int32_t stride = 0);
     void Fill_YVYU(uint8_t y_level, uint8_t u_level, uint8_t v_level, uint8_t alpha, int32_t width, int32_t height, uint8_t* buf, int32_t stride = 0);
     void Fill_VYUY(uint8_t y_level, uint8_t u_level, uint8_t v_level, uint8_t alpha, int32_t width, int32_t height, uint8_t* buf, int32_t stride = 0);
-    void Fill_IYUV(uint8_t y_level, uint8_t u_level, uint8_t v_level, uint8_t alpha, int32_t width, int32_t height, uint8_t* buf, int32_t stride = 0);
+    void Fill_I420(uint8_t y_level, uint8_t u_level, uint8_t v_level, uint8_t alpha, int32_t width, int32_t height, uint8_t* buf, int32_t stride = 0);
     void Fill_YV12(uint8_t y_level, uint8_t u_level, uint8_t v_level, uint8_t alpha, int32_t width, int32_t height, uint8_t* buf, int32_t stride = 0);
     void Fill_YVU9(uint8_t y_level, uint8_t u_level, uint8_t v_level, uint8_t alpha, int32_t width, int32_t height, uint8_t* buf, int32_t stride = 0);
     void Fill_YUV9(uint8_t y_level, uint8_t u_level, uint8_t v_level, uint8_t alpha, int32_t width, int32_t height, uint8_t* buf, int32_t stride = 0);

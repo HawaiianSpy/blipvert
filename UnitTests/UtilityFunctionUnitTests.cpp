@@ -28,6 +28,7 @@
 #include "CppUnitTest.h"
 
 #include "blipvert.h"
+#include "BufferChecks.h"
 #include "Utilities.h"
 #include "YUVtoRGB.h"
 #include "RGBtoYUV.h"
@@ -42,6 +43,14 @@ namespace BlipvertUnitTests
 	TEST_CLASS(Utilities_UnitTests)
 	{
 	public:
+		TEST_METHOD(BitmapDimensions_UnitTest)
+		{
+			Assert::IsTrue(TestBufferWidth >= 8, L"The test buffer width dimension must be >= 8.");
+			Assert::AreEqual(static_cast<uint32_t>(0), TestBufferWidth % 4, L"The test buffer width dimension must be a multiple of 4.");
+
+			Assert::IsTrue(TestBufferHeight >= 16, L"The test buffer height dimension must be >= 16.");
+			Assert::AreEqual(static_cast<uint32_t>(0), TestBufferHeight % 4, L"The test buffer height dimension must be a multiple of 4.");
+		}
 
 		TEST_METHOD(RGBtoVUVPixel_UnitTest)
 		{
@@ -142,17 +151,17 @@ namespace BlipvertUnitTests
 			bool savelooping = get_UseFasterLooping();
 
 			set_UseFasterLooping(false);
-			size = CalculateBufferSize(MVFMT_RGB24, 12, 12);
-			Assert::AreEqual(static_cast<uint32_t>(432), size, L"Unexpected size returned for buffer calculation.");
+			size = CalculateBufferSize(MVFMT_RGB24, 16, 16);
+			Assert::AreEqual(static_cast<uint32_t>(768), size, L"Unexpected size returned for buffer calculation.");
 
 			set_UseFasterLooping(true);
-			size = CalculateBufferSize(MVFMT_RGB24, 12, 12);
-			Assert::AreEqual(static_cast<uint32_t>(433), size, L"Unexpected size returned for buffer calculation.");
+			size = CalculateBufferSize(MVFMT_RGB24, 16, 16);
+			Assert::AreEqual(static_cast<uint32_t>(769), size, L"Unexpected size returned for buffer calculation.");
 
 			set_UseFasterLooping(savelooping);
 
-			size = CalculateBufferSize(MVFMT_IYU1, 12, 12);
-			Assert::AreEqual(static_cast<uint32_t>(240), size, L"Unexpected size returned for buffer calculation.");
+			size = CalculateBufferSize(MVFMT_IYU1, 16, 16);
+			Assert::AreEqual(static_cast<uint32_t>(384), size, L"Unexpected size returned for buffer calculation.");
 		}
 
 	private:

@@ -663,7 +663,7 @@ bool BlipvertUnitTests::Check_ARGB1555(uint8_t ry_level, uint8_t gu_level, uint8
 		stride = width * 2;
 
 	uint16_t fill;
-	PackARGB555Word(fill, alpha, ry_level, gu_level, bv_level);
+	PackARGB555Word(fill, (alpha > 127 ? 0x8000 : 0x0000), ry_level, gu_level, bv_level);
 
 	do
 	{

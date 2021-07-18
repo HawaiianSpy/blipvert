@@ -62,7 +62,7 @@ namespace blipvert
                                                                 (((g) & 0xF8) << 2) | \
                                                                 (((r) & 0xF8) << 7)));
 
-#define PackARGB555Word(dest, a, r, g, b) (dest = static_cast<uint16_t>((a > 127 ? 0x8000 : 0x0000) | \
+#define PackARGB555Word(dest, a, r, g, b) (dest = static_cast<uint16_t>(a | \
                                                                 (((b) & 0xF8) >> 3) | \
                                                                 (((g) & 0xF8) << 2) | \
                                                                 (((r) & 0xF8) << 7)));

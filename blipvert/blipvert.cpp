@@ -391,6 +391,13 @@ TransformTableEntry TransformTable[] = {
     { MVFMT_NV12, MVFMT_RGB555, NV12_to_RGB555 },
     { MVFMT_NV12, MVFMT_ARGB1555, NV12_to_RGB555 },
 
+    { MVFMT_Y42T, MVFMT_RGBA, Y42T_to_RGBA },
+    { MVFMT_Y42T, MVFMT_RGB32, Y42T_to_RGB32 },
+    { MVFMT_Y42T, MVFMT_RGB24, Y42T_to_RGB24 },
+    { MVFMT_Y42T, MVFMT_RGB565, Y42T_to_RGB565 },
+    { MVFMT_Y42T, MVFMT_RGB555, Y42T_to_RGB555 },
+    { MVFMT_Y42T, MVFMT_ARGB1555, Y42T_to_ARGB1555 },
+
     // RGB to YUV
 
     { MVFMT_RGBA, MVFMT_AYUV, RGBA_to_AYUV },
@@ -1041,10 +1048,10 @@ VideoFormatInfo VideoFmtTable[] = {
     {MVFMT_Y41P, FOURCC_Y41P, FOURCC_UNDEFINED, 12, ColorspaceType::YUV, false},
     // Y41T is identical to Y41P except for the fact that the least significant bit of
     // each Y component forms a chromakey channel.
-    {MVFMT_Y41T, FOURCC_Y41T, FOURCC_UNDEFINED, 12, ColorspaceType::YUV, false},
+    {MVFMT_Y41T, FOURCC_Y41T, FOURCC_UNDEFINED, 12, ColorspaceType::YUV, true},
     // Y42T is identical to UYVY except for the fact that the least significant bit of
     // each Y component forms a chromakey channel. 
-    {MVFMT_Y42T, FOURCC_Y42T, FOURCC_UNDEFINED, 16, ColorspaceType::YUV, false},
+    {MVFMT_Y42T, FOURCC_Y42T, FOURCC_UNDEFINED, 16, ColorspaceType::YUV, true},
     // IY41 is basically the same as Y41P with the exception that the data is interlaced. Lines are
     // ordered 0,2,4,....,1,3,5.... instead of 0,1,2,3,4,5,....
     {MVFMT_IY41, FOURCC_IY41, FOURCC_UNDEFINED, 12, ColorspaceType::YUV, false},

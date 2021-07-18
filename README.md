@@ -39,8 +39,8 @@ Read the header files for the details. Fairly self-explainatory.
 ```
 1. Both the width and height values must be even multiples of 4.
 2. The width values must be >= 8;
-3. The height value must be >= 16.
-4. The stride value must be >= the minimum number of bytes-per-line needed for the width of the bitmap format.
+3. The height values must be >= 16.
+4. The stride values must be >= the minimum number of bytes-per-line needed for the width of the bitmap format.
 ```
 
 #### Data Types:

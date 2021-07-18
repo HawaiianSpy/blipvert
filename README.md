@@ -1,5 +1,5 @@
 # blipvert
-C++ library for converting between [fourcc video format bitmaps](https://www.fourcc.org/).
+A C++ library for converting between [fourcc video format bitmaps](https://www.fourcc.org/).
 
 I created this library as part of an old Windows C++ video project (circa 2005). One objective of that project was the support of every possible webcam and video capture card. The biggest hurdle at that time was handling all the weird bitmap formats output from these devices. So, using the information at fourcc.org, I set out to write conversion functions so that even the one-of-a-kind bitmaps generated from obscure webcams could be supported by the project.
 

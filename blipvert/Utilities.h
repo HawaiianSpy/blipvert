@@ -44,23 +44,20 @@ namespace blipvert
     void Progressive_to_Interlaced(int32_t height, int32_t line_bytes, bool flipped, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride);
     void Interlaced_to_Progressive(int32_t height, int32_t line_bytes, bool flipped, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride);
 
-    /***************************************************************************************
-    * IMPORTANT: All pixel bitmap dimensions (width & height) should be multiples of 4
-    * to accomodate the packed YUV formats and general algorithmic speed improvements.
-    * You can get away with non-modulo-four values for many of the transforms, but
-    * following that rule will insure maximum compatibilty across the library. The
-    * consequences for living on the edge? Some of the transforms may try coloring outside
-    * the lines. Of course, you can experiment with the buffer sizes to work around that. 
-    *****************************************************************************************/
-
     // Calculates size of the buffer given the video format and dimensions.
     //
     // Parameters:
     //      inFormat:           The media ID to calculate.
     //      width & height:     The dimensions of the bitmap in pixels.
     //      in_stride:          The number of bytes per row in the bitmap. 0 (zero) tells the function to use the default size for the given the format.
-    // Returns the size of the buffer in bytes. Returns 0 if the format is not found, a parameter is invalid, or the internalformat info in incomplete.
-    uint32_t CalculateBufferSize(const MediaFormatID& inFormat, uint32_t width, uint32_t height, uint32_t in_stride = 0);
+    // Returns the size of the buffer in bytes. Returns 0 if the format is not found, a parameter is invalid, or the internal format info in incomplete.
+    //
+    // IMPORTANT:   For reasons related to the bitmap format definitions, all input parameters must follow these rules:
+    //              1. Both the width and height values must be even multiples of 4.
+    //              2. The width values must be >= 8;
+    //              3. The height value must be >= 16.
+    //              4. The stride value must be >= the minimum number of bytes-per-line needed for the width of the bitmap format.
+    uint32_t CalculateBufferSize(const MediaFormatID& inFormat, uint32_t width, uint32_t height, uint32_t stride = 0);
 
     // Returns TRUE if the colorspace is RGB
     bool IsRGBColorspace(const MediaFormatID& encoding);

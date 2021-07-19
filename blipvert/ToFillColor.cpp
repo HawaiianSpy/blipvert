@@ -744,3 +744,12 @@ void blipvert::Fill_NV12(uint8_t y_level, uint8_t u_level, uint8_t v_level, uint
         uvplane += stride;
     }
 }
+
+void blipvert::Fill_Y42T(uint8_t y_level, uint8_t u_level, uint8_t v_level, uint8_t alpha,
+    int32_t width, int32_t height, uint8_t* buf, int32_t stride)
+{
+    Fill_PackedY422(alpha > 127 ? y_level | 0x01 : y_level & 0xFE, u_level, v_level,
+        width, height,
+        buf, stride,
+        1, 3, 0, 2);
+}

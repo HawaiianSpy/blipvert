@@ -154,9 +154,15 @@ namespace BlipvertUnitTests
 		{
 			RunYUV8bitTestSeries(MVFMT_IMC4);
 		}
+
 		TEST_METHOD(NV12_UnitTest)
 		{
 			RunYUV8bitTestSeries(MVFMT_NV12);
+		}
+
+		TEST_METHOD(Y42T_UnitTest)
+		{
+			RunYUV8bitAlphaTestSeries(MVFMT_Y42T);
 		}
 
 	private:

@@ -3537,19 +3537,17 @@ void blipvert::Y42T_to_RGBA(int32_t width, int32_t height,
             int32_t green = uv_table[psrc[0]][psrc[2]];
             int32_t red = v_table[psrc[2]];
 
-            int32_t Y = luminance_table[psrc[1]];
-            int32_t Yp = Y & 0xFE;
-            pdst[0] = saturation_table[Yp + blue];
-            pdst[1] = saturation_table[Yp + green];
-            pdst[2] = saturation_table[Yp + red];
-            pdst[3] = Y & 0x01 ? 0xFF : 0x00;
+            int32_t Y = luminance_table[psrc[1] & 0xFE];
+            pdst[0] = saturation_table[Y + blue];
+            pdst[1] = saturation_table[Y + green];
+            pdst[2] = saturation_table[Y + red];
+            pdst[3] = psrc[1] & 0x01 ? 0xFF : 0x00;
 
-            Y = luminance_table[psrc[3]];
-            Yp = Y & 0xFE;
-            pdst[4] = saturation_table[Yp + blue];
-            pdst[5] = saturation_table[Yp + green];
-            pdst[6] = saturation_table[Yp + red];
-            pdst[7] = Y & 0x01 ? 0xFF : 0x00;
+            Y = luminance_table[psrc[3] & 0xFE];
+            pdst[4] = saturation_table[Y + blue];
+            pdst[5] = saturation_table[Y + green];
+            pdst[6] = saturation_table[Y + red];
+            pdst[7] = psrc[3] & 0x01 ? 0xFF : 0x00;
 
             psrc += 4;
             pdst += 8;
@@ -3591,13 +3589,13 @@ void blipvert::Y42T_to_RGB32(int32_t width, int32_t height,
             int32_t green = uv_table[psrc[0]][psrc[2]];
             int32_t red = v_table[psrc[2]];
 
-            int32_t Y = luminance_table[psrc[1]] & 0xFE;
+            int32_t Y = luminance_table[psrc[1] & 0xFE];
             pdst[0] = saturation_table[Y + blue];
             pdst[1] = saturation_table[Y + green];
             pdst[2] = saturation_table[Y + red];
             pdst[3] = 0xFF;
 
-            Y = Y = luminance_table[psrc[1]] & 0xFE;
+            Y = luminance_table[psrc[3] & 0xFE];
             pdst[4] = saturation_table[Y + blue];
             pdst[5] = saturation_table[Y + green];
             pdst[6] = saturation_table[Y + red];
@@ -3643,12 +3641,12 @@ void blipvert::Y42T_to_RGB24(int32_t width, int32_t height,
             int32_t green = uv_table[psrc[0]][psrc[2]];
             int32_t red = v_table[psrc[2]];
 
-            int32_t Y = luminance_table[psrc[1]] & 0xFE;
+            int32_t Y = luminance_table[psrc[1] & 0xFE];
             pdst[0] = saturation_table[Y + blue];
             pdst[1] = saturation_table[Y + green];
             pdst[2] = saturation_table[Y + red];
 
-            Y = luminance_table[psrc[3]] & 0xFE;
+            Y = luminance_table[psrc[3] & 0xFE];
             pdst[3] = saturation_table[Y + blue];
             pdst[4] = saturation_table[Y + green];
             pdst[5] = saturation_table[Y + red];
@@ -3692,13 +3690,13 @@ void blipvert::Y42T_to_RGB565(int32_t width, int32_t height,
             int32_t green = uv_table[psrc[0]][psrc[2]];
             int32_t red = v_table[psrc[2]];
 
-            int32_t Y = luminance_table[psrc[1]] & 0xFE;
+            int32_t Y = luminance_table[psrc[1] & 0xFE];
             PackRGB565Word(pdst[0],
                 saturation_table[Y + red],
                 saturation_table[Y + green],
                 saturation_table[Y + blue]);
 
-            Y = luminance_table[psrc[3]] & 0xFE;
+            Y = luminance_table[psrc[3] & 0xFE];
             PackRGB565Word(pdst[1],
                 saturation_table[Y + red],
                 saturation_table[Y + green],
@@ -3743,12 +3741,12 @@ void blipvert::Y42T_to_RGB555(int32_t width, int32_t height,
             int32_t green = uv_table[psrc[0]][psrc[2]];
             int32_t red = v_table[psrc[2]];
 
-            int32_t Y = luminance_table[psrc[1]] & 0xFE;
+            int32_t Y = luminance_table[psrc[1] & 0xFE];
             PackRGB555Word(pdst[0], saturation_table[Y + red],
                 saturation_table[Y + green],
                 saturation_table[Y + blue]);
 
-            Y = luminance_table[psrc[3]] & 0xFE;
+            Y = luminance_table[psrc[3] & 0xFE];
             PackRGB555Word(pdst[1], saturation_table[Y + red],
                 saturation_table[Y + green],
                 saturation_table[Y + blue]);
@@ -3792,19 +3790,17 @@ void blipvert::Y42T_to_ARGB1555(int32_t width, int32_t height,
             int32_t green = uv_table[psrc[0]][psrc[2]];
             int32_t red = v_table[psrc[2]];
 
-            int32_t Y = luminance_table[psrc[1]];
-            int32_t Yp = Y & 0xFE;
-            PackARGB555Word(pdst[0], (Y & 0x01 ? 0x8000 : 0x0000),
-                saturation_table[Yp + red],
-                saturation_table[Yp + green],
-                saturation_table[Yp + blue]);
+            int32_t Y = luminance_table[psrc[1] & 0xFE];
+            PackARGB555Word(pdst[0], (psrc[1] & 0x01 ? 0x8000 : 0x0000),
+                saturation_table[Y + red],
+                saturation_table[Y + green],
+                saturation_table[Y + blue]);
 
-            Y = luminance_table[psrc[3]];
-            Yp = Y & 0xFE;
-            PackARGB555Word(pdst[1], (Y & 0x01 ? 0x8000 : 0x0000),
-                saturation_table[Yp + red],
-                saturation_table[Yp + green],
-                saturation_table[Yp + blue]);
+            Y = luminance_table[psrc[3] & 0xFE];
+            PackARGB555Word(pdst[1], (psrc[3] & 0x01 ? 0x8000 : 0x0000),
+                saturation_table[Y + red],
+                saturation_table[Y + green],
+                saturation_table[Y + blue]);
 
             psrc += 4;
             pdst += 2;

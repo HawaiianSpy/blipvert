@@ -171,7 +171,7 @@ void blipvert::Fill_RGB565(uint8_t red, uint8_t green, uint8_t blue, uint8_t alp
 void blipvert::Fill_ARGB1555(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha, int32_t width, int32_t height, uint8_t* buf, int32_t stride)
 {
     uint16_t fill;
-    PackARGB555Word(fill, alpha, red, green, blue);
+    PackARGB555Word(fill, (alpha > 127 ? 0x8000 : 0x0000), red, green, blue);
 
     if (!stride)
     {
@@ -743,4 +743,13 @@ void blipvert::Fill_NV12(uint8_t y_level, uint8_t u_level, uint8_t v_level, uint
         }
         uvplane += stride;
     }
+}
+
+void blipvert::Fill_Y42T(uint8_t y_level, uint8_t u_level, uint8_t v_level, uint8_t alpha,
+    int32_t width, int32_t height, uint8_t* buf, int32_t stride)
+{
+    Fill_PackedY422(alpha > 127 ? y_level | 0x01 : y_level & 0xFE, u_level, v_level,
+        width, height,
+        buf, stride,
+        1, 3, 0, 2);
 }

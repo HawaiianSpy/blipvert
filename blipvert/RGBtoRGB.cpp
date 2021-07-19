@@ -194,7 +194,7 @@ void blipvert::RGBA_to_ARGB1555(int32_t width, int32_t height,
         int32_t hcount = width;
         do
         {
-            PackARGB555Word(*pdst++, psrc[3], psrc[2], psrc[1], psrc[0]);
+            PackARGB555Word(*pdst++, (psrc[3] > 127 ? 0x8000 : 0x0000), psrc[2], psrc[1], psrc[0]);
             psrc += 4;
         } while (--hcount);
 

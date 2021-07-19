@@ -391,6 +391,13 @@ TransformTableEntry TransformTable[] = {
     { MVFMT_NV12, MVFMT_RGB555, NV12_to_RGB555 },
     { MVFMT_NV12, MVFMT_ARGB1555, NV12_to_RGB555 },
 
+    { MVFMT_Y42T, MVFMT_RGBA, Y42T_to_RGBA },
+    { MVFMT_Y42T, MVFMT_RGB32, Y42T_to_RGB32 },
+    { MVFMT_Y42T, MVFMT_RGB24, Y42T_to_RGB24 },
+    { MVFMT_Y42T, MVFMT_RGB565, Y42T_to_RGB565 },
+    { MVFMT_Y42T, MVFMT_RGB555, Y42T_to_RGB555 },
+    { MVFMT_Y42T, MVFMT_ARGB1555, Y42T_to_ARGB1555 },
+
     // RGB to YUV
 
     { MVFMT_RGBA, MVFMT_AYUV, RGBA_to_AYUV },
@@ -408,6 +415,7 @@ TransformTableEntry TransformTable[] = {
     { MVFMT_RGBA, MVFMT_CLJR, RGB32_to_CLJR },
     { MVFMT_RGBA, MVFMT_Y800, RGB32_to_Y800 },
     { MVFMT_RGBA, MVFMT_Y16, RGB32_to_Y16 },
+    { MVFMT_RGBA, MVFMT_Y42T, RGBA_to_Y42T },
 
     { MVFMT_RGB32, MVFMT_YUY2, RGB32_to_YUY2 },
     { MVFMT_RGB32, MVFMT_UYVY, RGB32_to_UYVY },
@@ -429,6 +437,7 @@ TransformTableEntry TransformTable[] = {
     { MVFMT_RGB32, MVFMT_IMC3, RGB32_to_IMC3 },
     { MVFMT_RGB32, MVFMT_IMC4, RGB32_to_IMC4 },
     { MVFMT_RGB32, MVFMT_NV12, RGB32_to_NV12 },
+    { MVFMT_RGB32, MVFMT_Y42T, RGB32_to_Y42T },
 
     { MVFMT_RGB24, MVFMT_YUY2, RGB24_to_YUY2 },
     { MVFMT_RGB24, MVFMT_UYVY, RGB24_to_UYVY },
@@ -450,6 +459,7 @@ TransformTableEntry TransformTable[] = {
     { MVFMT_RGB24, MVFMT_IMC3, RGB24_to_IMC3 },
     { MVFMT_RGB24, MVFMT_IMC4, RGB24_to_IMC4 },
     { MVFMT_RGB24, MVFMT_NV12, RGB24_to_NV12 },
+    { MVFMT_RGB24, MVFMT_Y42T, RGB24_to_Y42T },
 
     { MVFMT_RGB565, MVFMT_YUY2, RGB565_to_YUY2 },
     { MVFMT_RGB565, MVFMT_UYVY, RGB565_to_UYVY },
@@ -471,6 +481,7 @@ TransformTableEntry TransformTable[] = {
     { MVFMT_RGB565, MVFMT_IMC3, RGB565_to_IMC3 },
     { MVFMT_RGB565, MVFMT_IMC4, RGB565_to_IMC4 },
     { MVFMT_RGB565, MVFMT_NV12, RGB565_to_NV12 },
+    { MVFMT_RGB565, MVFMT_Y42T, RGB565_to_Y42T },
 
     { MVFMT_RGB555, MVFMT_YUY2, RGB555_to_YUY2 },
     { MVFMT_RGB555, MVFMT_UYVY, RGB555_to_UYVY },
@@ -492,6 +503,7 @@ TransformTableEntry TransformTable[] = {
     { MVFMT_RGB555, MVFMT_IMC3, RGB555_to_IMC3 },
     { MVFMT_RGB555, MVFMT_IMC4, RGB555_to_IMC4 },
     { MVFMT_RGB555, MVFMT_NV12, RGB555_to_NV12 },
+    { MVFMT_RGB555, MVFMT_Y42T, RGB555_to_Y42T },
 
     { MVFMT_ARGB1555, MVFMT_YUY2, RGB555_to_YUY2 },
     { MVFMT_ARGB1555, MVFMT_UYVY, RGB555_to_UYVY },
@@ -512,6 +524,7 @@ TransformTableEntry TransformTable[] = {
     { MVFMT_ARGB1555, MVFMT_IMC2, RGB555_to_IMC2 },
     { MVFMT_ARGB1555, MVFMT_IMC3, RGB555_to_IMC3 },
     { MVFMT_ARGB1555, MVFMT_IMC4, RGB555_to_IMC4 },
+    { MVFMT_ARGB1555, MVFMT_Y42T, ARGB1555_to_Y42T },
 
     { MVFMT_RGB8, MVFMT_YUY2, RGB8_to_YUY2 },
     { MVFMT_RGB8, MVFMT_UYVY, RGB8_to_UYVY },
@@ -532,6 +545,7 @@ TransformTableEntry TransformTable[] = {
     { MVFMT_RGB8, MVFMT_IMC2, RGB8_to_IMC2 },
     { MVFMT_RGB8, MVFMT_IMC3, RGB8_to_IMC3 },
     { MVFMT_RGB8, MVFMT_IMC4, RGB8_to_IMC4 },
+    { MVFMT_RGB8, MVFMT_Y42T, RGB8_to_Y42T },
 
     // YUV to YUV
 
@@ -969,6 +983,7 @@ GreyscaleTableEntry GreyscaleTable[] = {
     { MVFMT_IMC3, IMC3_to_Greyscale },
     { MVFMT_IMC4, IMC4_to_Greyscale },
     { MVFMT_NV12, NV12_to_Greyscale },
+    { MVFMT_Y42T, Y42T_to_Greyscale },
     { MVFMT_UNDEFINED, nullptr }
 };
 
@@ -999,6 +1014,7 @@ FillcolorTableEntry FillColorTable[] = {
     { MVFMT_IMC3, Fill_IMC3 },
     { MVFMT_IMC4, Fill_IMC4 },
     { MVFMT_NV12, Fill_NV12 },
+    { MVFMT_Y42T, Fill_Y42T },
     { MVFMT_UNDEFINED, nullptr }
 };
 
@@ -1041,10 +1057,10 @@ VideoFormatInfo VideoFmtTable[] = {
     {MVFMT_Y41P, FOURCC_Y41P, FOURCC_UNDEFINED, 12, ColorspaceType::YUV, false},
     // Y41T is identical to Y41P except for the fact that the least significant bit of
     // each Y component forms a chromakey channel.
-    {MVFMT_Y41T, FOURCC_Y41T, FOURCC_UNDEFINED, 12, ColorspaceType::YUV, false},
+    {MVFMT_Y41T, FOURCC_Y41T, FOURCC_UNDEFINED, 12, ColorspaceType::YUV, true},
     // Y42T is identical to UYVY except for the fact that the least significant bit of
     // each Y component forms a chromakey channel. 
-    {MVFMT_Y42T, FOURCC_Y42T, FOURCC_UNDEFINED, 16, ColorspaceType::YUV, false},
+    {MVFMT_Y42T, FOURCC_Y42T, FOURCC_UNDEFINED, 16, ColorspaceType::YUV, true},
     // IY41 is basically the same as Y41P with the exception that the data is interlaced. Lines are
     // ordered 0,2,4,....,1,3,5.... instead of 0,1,2,3,4,5,....
     {MVFMT_IY41, FOURCC_IY41, FOURCC_UNDEFINED, 12, ColorspaceType::YUV, false},

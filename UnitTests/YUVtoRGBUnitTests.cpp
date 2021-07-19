@@ -539,7 +539,113 @@ namespace BlipvertUnitTests
 			Run8bitTestSeries(MVFMT_NV12, MVFMT_RGB555);
 		}
 
+		//
+		// Y42T to RGB
+		//
+
+		TEST_METHOD(Y42T_to_RGBA_UnitTest)
+		{
+			Run8bitYAlphaTestSeries(MVFMT_Y42T, MVFMT_RGBA);
+		}
+
+		TEST_METHOD(Y42T_to_RGB32_UnitTest)
+		{
+			Run8bitYAlphaTestSeries(MVFMT_Y42T, MVFMT_RGB32);
+		}
+
+		TEST_METHOD(Y42T_to_RGB24_UnitTest)
+		{
+			Run8bitYAlphaTestSeries(MVFMT_Y42T, MVFMT_RGB24);
+		}
+
+		TEST_METHOD(Y42T_to_RGB565_UnitTest)
+		{
+			Run8bitYAlphaTestSeries(MVFMT_Y42T, MVFMT_RGB565);
+		}
+
+		TEST_METHOD(Y42T_to_RGB555_UnitTest)
+		{
+			Run8bitYAlphaTestSeries(MVFMT_Y42T, MVFMT_RGB555);
+		}
+
+		TEST_METHOD(Y42T_to_ARGB1555_UnitTest)
+		{
+			Run8bitYAlphaTestSeries(MVFMT_Y42T, MVFMT_ARGB1555);
+		}
+
 	private:
+		void Run8bitYAlphaTestSeries(const MediaFormatID& yuvFormat, const MediaFormatID& rgbFormat)
+		{
+			RunSingleYAlphaTest(yuvFormat, rgbFormat, 128, 128, 128, 255);
+			RunSingleYAlphaTest(yuvFormat, rgbFormat, 255, 255, 255, 255);
+			RunSingleYAlphaTest(yuvFormat, rgbFormat, 0, 0, 0, 255);
+			RunSingleYAlphaTest(yuvFormat, rgbFormat, 255, 0, 0, 255);
+			RunSingleYAlphaTest(yuvFormat, rgbFormat, 0, 255, 0, 255);
+			RunSingleYAlphaTest(yuvFormat, rgbFormat, 0, 0, 255, 255);
+
+			RunSingleYAlphaTest(yuvFormat, rgbFormat, 128, 128, 128, 0);
+			RunSingleYAlphaTest(yuvFormat, rgbFormat, 255, 255, 255, 0);
+			RunSingleYAlphaTest(yuvFormat, rgbFormat, 0, 0, 0, 0);
+			RunSingleYAlphaTest(yuvFormat, rgbFormat, 255, 0, 0, 0);
+			RunSingleYAlphaTest(yuvFormat, rgbFormat, 0, 255, 0, 0);
+			RunSingleYAlphaTest(yuvFormat, rgbFormat, 0, 0, 255, 0);
+
+			uint32_t saveb = StrideBump;
+			StrideBump = StrideBumpTestValue;
+
+			RunSingleYAlphaTest(yuvFormat, rgbFormat, 128, 128, 128, 255);
+			RunSingleYAlphaTest(yuvFormat, rgbFormat, 255, 255, 255, 255);
+			RunSingleYAlphaTest(yuvFormat, rgbFormat, 0, 0, 0, 255);
+			RunSingleYAlphaTest(yuvFormat, rgbFormat, 255, 0, 0, 255);
+			RunSingleYAlphaTest(yuvFormat, rgbFormat, 0, 255, 0, 255);
+			RunSingleYAlphaTest(yuvFormat, rgbFormat, 0, 0, 255, 255);
+
+			RunSingleYAlphaTest(yuvFormat, rgbFormat, 128, 128, 128, 0);
+			RunSingleYAlphaTest(yuvFormat, rgbFormat, 255, 255, 255, 0);
+			RunSingleYAlphaTest(yuvFormat, rgbFormat, 0, 0, 0, 0);
+			RunSingleYAlphaTest(yuvFormat, rgbFormat, 255, 0, 0, 0);
+			RunSingleYAlphaTest(yuvFormat, rgbFormat, 0, 255, 0, 0);
+			RunSingleYAlphaTest(yuvFormat, rgbFormat, 0, 0, 255, 0);
+
+			StrideBump = saveb;
+		}
+
+		void Run8bitAlphaTestSeries(const MediaFormatID& yuvFormat, const MediaFormatID& rgbFormat)
+		{
+			RunSingle8bitTest(yuvFormat, rgbFormat, 128, 128, 128, 255);
+			RunSingle8bitTest(yuvFormat, rgbFormat, 255, 255, 255, 255);
+			RunSingle8bitTest(yuvFormat, rgbFormat, 0, 0, 0, 255);
+			RunSingle8bitTest(yuvFormat, rgbFormat, 255, 0, 0, 255);
+			RunSingle8bitTest(yuvFormat, rgbFormat, 0, 255, 0, 255);
+			RunSingle8bitTest(yuvFormat, rgbFormat, 0, 0, 255, 255);
+
+			RunSingle8bitTest(yuvFormat, rgbFormat, 128, 128, 128, 0);
+			RunSingle8bitTest(yuvFormat, rgbFormat, 255, 255, 255, 0);
+			RunSingle8bitTest(yuvFormat, rgbFormat, 0, 0, 0, 0);
+			RunSingle8bitTest(yuvFormat, rgbFormat, 255, 0, 0, 0);
+			RunSingle8bitTest(yuvFormat, rgbFormat, 0, 255, 0, 0);
+			RunSingle8bitTest(yuvFormat, rgbFormat, 0, 0, 255, 0);
+
+			uint32_t saveb = StrideBump;
+			StrideBump = StrideBumpTestValue;
+
+			RunSingle8bitTest(yuvFormat, rgbFormat, 128, 128, 128, 255);
+			RunSingle8bitTest(yuvFormat, rgbFormat, 255, 255, 255, 255);
+			RunSingle8bitTest(yuvFormat, rgbFormat, 0, 0, 0, 255);
+			RunSingle8bitTest(yuvFormat, rgbFormat, 255, 0, 0, 255);
+			RunSingle8bitTest(yuvFormat, rgbFormat, 0, 255, 0, 255);
+			RunSingle8bitTest(yuvFormat, rgbFormat, 0, 0, 255, 255);
+
+			RunSingle8bitTest(yuvFormat, rgbFormat, 128, 128, 128, 0);
+			RunSingle8bitTest(yuvFormat, rgbFormat, 255, 255, 255, 0);
+			RunSingle8bitTest(yuvFormat, rgbFormat, 0, 0, 0, 0);
+			RunSingle8bitTest(yuvFormat, rgbFormat, 255, 0, 0, 0);
+			RunSingle8bitTest(yuvFormat, rgbFormat, 0, 255, 0, 0);
+			RunSingle8bitTest(yuvFormat, rgbFormat, 0, 0, 255, 0);
+
+			StrideBump = saveb;
+		}
+
 		void Run8bitTestSeries(const MediaFormatID& yuvFormat, const MediaFormatID& rgbFormat)
 		{
 			RunSingle8bitTest(yuvFormat, rgbFormat, 128, 128, 128, 255);
@@ -606,6 +712,54 @@ namespace BlipvertUnitTests
 			uint8_t G;
 			uint8_t B;
 			FastYUVtoRGB(Y, U, V, &R, &G, &B);
+
+			Assert::IsTrue(bufCheckFunctPtr(R, G, B, alpha, width, height, rgbBufPtr, out_stride), L"RGB buffer did not contain expected values.");
+		}
+
+		void RunSingleYAlphaTest(const MediaFormatID& yuvFormat, const MediaFormatID& rgbFormat, uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha)
+		{
+			// YUV to RGB
+			t_transformfunc encodeTransPtr = FindVideoTransform(yuvFormat, rgbFormat);
+			Assert::IsNotNull(reinterpret_cast<void*>(encodeTransPtr), L"encodeTransPtr returned a null function pointer.");
+
+			t_fillcolorfunc fillBufFunctPtr = FindFillColorTransform(yuvFormat);
+			Assert::IsNotNull(reinterpret_cast<void*>(fillBufFunctPtr), L"fillBufFunctPtr returned a null function pointer.");
+
+			t_buffercheckfunc bufCheckFunctPtr = FindBufferCheckFunction(rgbFormat);
+			Assert::IsNotNull(reinterpret_cast<void*>(bufCheckFunctPtr), L"yuvCheckFunctPtr returned a null function pointer.");
+
+			uint32_t width = TestBufferWidth;
+			uint32_t height = TestBufferHeight;
+
+			uint32_t in_stride = CalculateStrideBump(yuvFormat, width);
+			uint32_t yuvBufBize = CalculateBufferSize(yuvFormat, width, height, in_stride);
+			Assert::IsTrue(yuvBufBize != 0, L"YUV buffer size retuned zero.");
+
+			uint32_t out_stride = CalculateStrideBump(rgbFormat, width);
+			uint32_t rgbBufBize = CalculateBufferSize(rgbFormat, width, height, out_stride);
+			Assert::IsTrue(rgbBufBize != 0, L"RGB buffer size retuned zero.");
+
+			std::unique_ptr<uint8_t[]> yuvBuf(new uint8_t[yuvBufBize]);
+			uint8_t* yuvBufPtr = yuvBuf.get();
+			memset(yuvBufPtr, 0, yuvBufBize);
+
+			std::unique_ptr<uint8_t[]> rgbBuf(new uint8_t[rgbBufBize]);
+			uint8_t* rgbBufPtr = rgbBuf.get();
+			memset(rgbBufPtr, 0, rgbBufBize);
+
+			uint8_t Y;
+			uint8_t U;
+			uint8_t V;
+			FastRGBtoYUV(red, green, blue, &Y, &U, &V);
+
+			fillBufFunctPtr(Y, U, V, alpha, width, height, yuvBufPtr, in_stride);
+
+			encodeTransPtr(width, height, rgbBufPtr, out_stride, yuvBufPtr, in_stride, false, nullptr);
+
+			uint8_t R;
+			uint8_t G;
+			uint8_t B;
+			FastYUVtoRGB(Y & 0xFE, U, V, &R, &G, &B);
 
 			Assert::IsTrue(bufCheckFunctPtr(R, G, B, alpha, width, height, rgbBufPtr, out_stride), L"RGB buffer did not contain expected values.");
 		}

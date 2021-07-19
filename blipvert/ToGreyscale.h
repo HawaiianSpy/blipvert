@@ -43,27 +43,23 @@ namespace blipvert
     void RGB1_to_Greyscale(int32_t width, int32_t height, uint8_t* buf, int32_t stride = 0, xRGBQUAD* in_palette = nullptr);
 
     void AYUV_to_Greyscale(int32_t width, int32_t height, uint8_t* buf, int32_t stride = 0, xRGBQUAD* in_palette = nullptr);
-
     void UYVY_to_Greyscale(int32_t width, int32_t height, uint8_t* buf, int32_t stride = 0, xRGBQUAD* in_palette = nullptr);
     void YVYU_to_Greyscale(int32_t width, int32_t height, uint8_t* buf, int32_t stride = 0, xRGBQUAD* in_palette = nullptr);
     void VYUY_to_Greyscale(int32_t width, int32_t height, uint8_t* buf, int32_t stride = 0, xRGBQUAD* in_palette = nullptr);
     void YUY2_to_Greyscale(int32_t width, int32_t height, uint8_t* buf, int32_t stride = 0, xRGBQUAD* in_palette = nullptr);
-
     void I420_to_Greyscale(int32_t width, int32_t height, uint8_t* buf, int32_t stride = 0, xRGBQUAD* in_palette = nullptr);
     void YV12_to_Greyscale(int32_t width, int32_t height, uint8_t* buf, int32_t stride = 0, xRGBQUAD* in_palette = nullptr);
     void YVU9_to_Greyscale(int32_t width, int32_t height, uint8_t* buf, int32_t stride = 0, xRGBQUAD* in_palette = nullptr);
     void YUV9_to_Greyscale(int32_t width, int32_t height, uint8_t* buf, int32_t stride = 0, xRGBQUAD* in_palette = nullptr);
-
     void IYU1_to_Greyscale(int32_t width, int32_t height, uint8_t* buf, int32_t stride = 0, xRGBQUAD* in_palette = nullptr);
     void IYU2_to_Greyscale(int32_t width, int32_t height, uint8_t* buf, int32_t stride = 0, xRGBQUAD* in_palette = nullptr);
     void Y41P_to_Greyscale(int32_t width, int32_t height, uint8_t* buf, int32_t stride = 0, xRGBQUAD* in_palette = nullptr);
     void CLJR_to_Greyscale(int32_t width, int32_t height, uint8_t* buf, int32_t stride = 0, xRGBQUAD* in_palette = nullptr);
-
     void IMC1_to_Greyscale(int32_t width, int32_t height, uint8_t* buf, int32_t stride = 0, xRGBQUAD* in_palette = nullptr);
     void IMC2_to_Greyscale(int32_t width, int32_t height, uint8_t* buf, int32_t stride = 0, xRGBQUAD* in_palette = nullptr);
     void IMC3_to_Greyscale(int32_t width, int32_t height, uint8_t* buf, int32_t stride = 0, xRGBQUAD* in_palette = nullptr);
     void IMC4_to_Greyscale(int32_t width, int32_t height, uint8_t* buf, int32_t stride = 0, xRGBQUAD* in_palette = nullptr);
-
     void NV12_to_Greyscale(int32_t width, int32_t height, uint8_t* buf, int32_t stride = 0, xRGBQUAD* in_palette = nullptr);
+    void Y42T_to_Greyscale(int32_t width, int32_t height, uint8_t* buf, int32_t stride = 0, xRGBQUAD* in_palette = nullptr);
 };
 

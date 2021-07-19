@@ -2225,6 +2225,46 @@ void blipvert::RGB32_to_NV12(int32_t  width, int32_t height,
     }
 }
 
+void blipvert::RGB32_to_Y42T(int32_t  width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD* in_palette)
+{
+    if (!out_stride)
+        out_stride = width * 2;
+
+    if (!in_stride)
+        in_stride = width * 4;
+
+    if (flipped)
+    {
+        out_buf += (out_stride * (height - 1));
+        out_stride = -out_stride;
+    }
+
+    while (height)
+    {
+        uint8_t* psrc = in_buf;
+        uint8_t* pdst = out_buf;
+        int32_t hcount = width;
+        while (hcount)
+        {
+            pdst[1] = static_cast<uint8_t>(((yr_table[psrc[2]] + yg_table[psrc[1]] + yb_table[psrc[0]]) >> 15) + 16) | 0x01;
+            pdst[3] = static_cast<uint8_t>(((yr_table[psrc[6]] + yg_table[psrc[5]] + yb_table[psrc[4]]) >> 15) + 16) | 0x01;
+            pdst[0] = static_cast<uint8_t>(((((ur_table[psrc[2]] + ug_table[psrc[1]] + ub_table[psrc[0]]) >> 15) + 128) + \
+                (((ur_table[psrc[6]] + ug_table[psrc[5]] + ub_table[psrc[4]]) >> 15) + 128)) / 2);
+            pdst[2] = static_cast<uint8_t>(((((vr_table[psrc[2]] + vg_table[psrc[1]] + vb_table[psrc[0]]) >> 15) + 128) + \
+                (((vr_table[psrc[6]] + vg_table[psrc[5]] + vb_table[psrc[4]]) >> 15) + 128)) / 2);
+            psrc += 8;
+            pdst += 4;
+            hcount -= 2;
+        }
+
+        in_buf += in_stride;
+        out_buf += out_stride;
+        height--;
+    }
+}
 
 //
 // RGB24 to YUV transforms
@@ -2709,6 +2749,48 @@ void blipvert::RGB24_to_NV12(int32_t  width, int32_t height,
         in_buf += in_stride_x_2;
         out_buf += out_stride_x_2;
         uvplane += out_stride;
+    }
+}
+
+void blipvert::RGB24_to_Y42T(int32_t  width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD* in_palette)
+{
+    if (!out_stride)
+        out_stride = width * 2;
+
+    if (!in_stride)
+        in_stride = width * 3;
+
+    if (flipped)
+    {
+        out_buf += (out_stride * (height - 1));
+        out_stride = -out_stride;
+    }
+
+    while (height)
+    {
+        uint8_t* psrc = in_buf;
+        uint8_t* pdst = out_buf;
+        int32_t hcount = width;
+        while (hcount)
+        {
+            pdst[1] = static_cast<uint8_t>(((yr_table[psrc[2]] + yg_table[psrc[1]] + yb_table[psrc[0]]) >> 15) + 16) | 0x01;
+            pdst[3] = static_cast<uint8_t>(((yr_table[psrc[5]] + yg_table[psrc[4]] + yb_table[psrc[3]]) >> 15) + 16) | 0x01;
+            pdst[0] = static_cast<uint8_t>(((((ur_table[psrc[2]] + ug_table[psrc[1]] + ub_table[psrc[0]]) >> 15) + 128) + \
+                (((ur_table[psrc[5]] + ug_table[psrc[4]] + ub_table[psrc[3]]) >> 15) + 128)) / 2);
+            pdst[2] = static_cast<uint8_t>(((((vr_table[psrc[2]] + vg_table[psrc[1]] + vb_table[psrc[0]]) >> 15) + 128) + \
+                (((vr_table[psrc[5]] + vg_table[psrc[4]] + vb_table[psrc[3]]) >> 15) + 128)) / 2);
+            psrc += 6;
+            pdst += 4;
+            hcount -= 2;
+        }
+
+        in_buf += in_stride;
+        out_buf += out_stride;
+
+        height--;
     }
 }
 
@@ -3237,6 +3319,57 @@ void blipvert::RGB565_to_NV12(int32_t  width, int32_t height,
     }
 }
 
+void blipvert::RGB565_to_Y42T(int32_t  width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD* in_palette)
+{
+    if (!out_stride)
+        out_stride = width * 2;
+
+    if (!in_stride)
+        in_stride = width * 2;
+
+    if (flipped)
+    {
+        out_buf += (out_stride * (height - 1));
+        out_stride = -out_stride;
+    }
+
+    while (height)
+    {
+        uint16_t* psrc = reinterpret_cast<uint16_t*>(in_buf);
+        uint8_t* pdst = out_buf;
+        int32_t hcount = width;
+        while (hcount)
+        {
+            uint8_t red1;
+            uint8_t green1;
+            uint8_t blue1;
+            UnpackRGB565Word(psrc[0], red1, green1, blue1)
+
+            uint8_t red2;
+            uint8_t green2;
+            uint8_t blue2;
+            UnpackRGB565Word(psrc[1], red2, green2, blue2)
+
+            pdst[1] = static_cast<uint8_t>(((yr_table[red1] + yg_table[green1] + yb_table[blue1]) >> 15) + 16) | 0x01;
+            pdst[3] = static_cast<uint8_t>(((yr_table[red2] + yg_table[green2] + yb_table[blue2]) >> 15) + 16) | 0x01;
+            pdst[0] = static_cast<uint8_t>(((((ur_table[red2] + ug_table[green2] + ub_table[blue2]) >> 15) + 128) + \
+            (((ur_table[red1] + ug_table[green1] + ub_table[blue1]) >> 15) + 128)) / 2);
+            pdst[2] = static_cast<uint8_t>(((((vr_table[red2] + vg_table[green2] + vb_table[blue2]) >> 15) + 128) + \
+            (((vr_table[red1] + vg_table[green1] + vb_table[blue1]) >> 15) + 128)) / 2);
+            psrc += 2;
+            pdst += 4;
+            hcount -= 2;
+        }
+
+        in_buf += in_stride;
+        out_buf += out_stride;
+        height--;
+    }
+}
+
 //
 // RGB555 to YUV transforms
 //
@@ -3610,7 +3743,10 @@ void blipvert::RGB555_to_Y16(int32_t width, int32_t height, uint8_t* out_buf, in
     }
 }
 
-void blipvert::ARGB1555_to_AYUV(int32_t  width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette)
+void blipvert::ARGB1555_to_AYUV(int32_t  width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD* in_palette)
 {
     if (!out_stride)
         out_stride = width * 4;
@@ -3641,6 +3777,63 @@ void blipvert::ARGB1555_to_AYUV(int32_t  width, int32_t height, uint8_t* out_buf
 
             psrc++;
             hcount--;
+        }
+
+        in_buf += in_stride;
+        out_buf += out_stride;
+        height--;
+    }
+}
+
+void blipvert::ARGB1555_to_Y42T(int32_t  width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD* in_palette)
+{
+    if (!out_stride)
+        out_stride = width * 2;
+
+    if (!in_stride)
+        in_stride = width * 2;
+
+    if (flipped)
+    {
+        out_buf += (out_stride * (height - 1));
+        out_stride = -out_stride;
+    }
+
+    while (height)
+    {
+        uint16_t* psrc = reinterpret_cast<uint16_t*>(in_buf);
+        uint8_t* pdst = out_buf;
+        int32_t hcount = width;
+        while (hcount)
+        {
+            uint8_t alpha1;
+            uint8_t red1;
+            uint8_t green1;
+            uint8_t blue1;
+            UnpackARGB555Word(psrc[0], alpha1, red1, green1, blue1)
+
+            uint8_t alpha2;
+            uint8_t red2;
+            uint8_t green2;
+            uint8_t blue2;
+            UnpackARGB555Word(psrc[1], alpha2, red2, green2, blue2)
+
+            uint8_t Y = static_cast<uint8_t>(((yr_table[red1] + yg_table[green1] + yb_table[blue1]) >> 15) + 16);
+            pdst[1] = alpha1 > 127 ? Y | 0x01 : Y & 0xFE;
+
+            Y = static_cast<uint8_t>(((yr_table[red2] + yg_table[green2] + yb_table[blue2]) >> 15) + 16);
+            pdst[3] = alpha2 > 127 ? Y | 0x01 : Y & 0xFE;
+
+            pdst[0] = static_cast<uint8_t>(((((ur_table[red2] + ug_table[green2] + ub_table[blue2]) >> 15) + 128) + \
+                (((ur_table[red1] + ug_table[green1] + ub_table[blue1]) >> 15) + 128)) / 2);
+            pdst[2] = static_cast<uint8_t>(((((vr_table[red2] + vg_table[green2] + vb_table[blue2]) >> 15) + 128) + \
+                (((vr_table[red1] + vg_table[green1] + vb_table[blue1]) >> 15) + 128)) / 2);
+            psrc += 2;
+            pdst += 4;
+            hcount -= 2;
         }
 
         in_buf += in_stride;
@@ -3798,6 +3991,57 @@ void blipvert::RGB555_to_NV12(int32_t  width, int32_t height,
         in_buf += in_stride_x_2;
         out_buf += out_stride_x_2;
         uvplane += out_stride;
+    }
+}
+
+void blipvert::RGB555_to_Y42T(int32_t  width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD* in_palette)
+{
+    if (!out_stride)
+        out_stride = width * 2;
+
+    if (!in_stride)
+        in_stride = width * 2;
+
+    if (flipped)
+    {
+        out_buf += (out_stride * (height - 1));
+        out_stride = -out_stride;
+    }
+
+    while (height)
+    {
+        uint16_t* psrc = reinterpret_cast<uint16_t*>(in_buf);
+        uint8_t* pdst = out_buf;
+        int32_t hcount = width;
+        while (hcount)
+        {
+            uint8_t red1;
+            uint8_t green1;
+            uint8_t blue1;
+            UnpackRGB555Word(psrc[0], red1, green1, blue1)
+
+            uint8_t red2;
+            uint8_t green2;
+            uint8_t blue2;
+            UnpackRGB555Word(psrc[1], red2, green2, blue2)
+
+            pdst[1] = static_cast<uint8_t>(((yr_table[red1] + yg_table[green1] + yb_table[blue1]) >> 15) + 16) | 0x01;
+            pdst[3] = static_cast<uint8_t>(((yr_table[red2] + yg_table[green2] + yb_table[blue2]) >> 15) + 16) | 0x01;
+            pdst[0] = static_cast<uint8_t>(((((ur_table[red2] + ug_table[green2] + ub_table[blue2]) >> 15) + 128) + \
+            (((ur_table[red1] + ug_table[green1] + ub_table[blue1]) >> 15) + 128)) / 2);
+            pdst[2] = static_cast<uint8_t>(((((vr_table[red2] + vg_table[green2] + vb_table[blue2]) >> 15) + 128) + \
+            (((vr_table[red1] + vg_table[green1] + vb_table[blue1]) >> 15) + 128)) / 2);
+            psrc += 2;
+            pdst += 4;
+            hcount -= 2;
+        }
+
+        in_buf += in_stride;
+        out_buf += out_stride;
+        height--;
     }
 }
 

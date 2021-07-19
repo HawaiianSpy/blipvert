@@ -57,6 +57,11 @@ namespace BlipvertUnitTests
 			Run8bitAlphaTestSeries(MVFMT_RGBA, MVFMT_AYUV);
 		}
 
+		TEST_METHOD(RGBA_to_Y42T_UnitTest)
+		{
+			Run8bitAlphaTestSeries(MVFMT_RGBA, MVFMT_Y42T);
+		}
+
 		//
 		// RGB32 to YUV
 		//

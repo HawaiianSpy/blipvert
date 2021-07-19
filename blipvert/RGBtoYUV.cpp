@@ -1696,6 +1696,46 @@ void blipvert::RGBA_to_AYUV(int32_t width, int32_t height, uint8_t* out_buf, int
     }
 }
 
+void blipvert::RGBA_to_Y42T(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette)
+{
+    if (!out_stride)
+        out_stride = width * 2;
+
+    if (!in_stride)
+        in_stride = width * 4;
+
+    if (flipped)
+    {
+        out_buf += (out_stride * (height - 1));
+        out_stride = -out_stride;
+    }
+
+    while (height)
+    {
+        uint8_t* psrc = in_buf;
+        uint8_t* pdst = out_buf;
+        int32_t hcount = width;
+        while (hcount)
+        {
+            uint8_t Y = static_cast<uint8_t>(((yr_table[psrc[2]] + yg_table[psrc[1]] + yb_table[psrc[0]]) >> 15) + 16);
+            pdst[1] = psrc[3] > 127 ? Y | 0x01 : Y & 0xFE;
+            Y = static_cast<uint8_t>(((yr_table[psrc[6]] + yg_table[psrc[5]] + yb_table[psrc[4]]) >> 15) + 16);
+            pdst[3] = psrc[7] > 127 ? Y | 0x01 : Y & 0xFE;
+            pdst[0] = static_cast<uint8_t>(((((ur_table[psrc[2]] + ug_table[psrc[1]] + ub_table[psrc[0]]) >> 15) + 128) + \
+                (((ur_table[psrc[6]] + ug_table[psrc[5]] + ub_table[psrc[4]]) >> 15) + 128)) / 2);
+            pdst[2] = static_cast<uint8_t>(((((vr_table[psrc[2]] + vg_table[psrc[1]] + vb_table[psrc[0]]) >> 15) + 128) + \
+                (((vr_table[psrc[6]] + vg_table[psrc[5]] + vb_table[psrc[4]]) >> 15) + 128)) / 2);
+            psrc += 8;
+            pdst += 4;
+            hcount -= 2;
+        }
+
+        in_buf += in_stride;
+        out_buf += out_stride;
+        height--;
+    }
+}
+
 
 //
 // Public RGB32 to YUV transforms

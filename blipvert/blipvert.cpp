@@ -415,6 +415,7 @@ TransformTableEntry TransformTable[] = {
     { MVFMT_RGBA, MVFMT_CLJR, RGB32_to_CLJR },
     { MVFMT_RGBA, MVFMT_Y800, RGB32_to_Y800 },
     { MVFMT_RGBA, MVFMT_Y16, RGB32_to_Y16 },
+    { MVFMT_RGBA, MVFMT_Y42T, RGBA_to_Y42T },
 
     { MVFMT_RGB32, MVFMT_YUY2, RGB32_to_YUY2 },
     { MVFMT_RGB32, MVFMT_UYVY, RGB32_to_UYVY },

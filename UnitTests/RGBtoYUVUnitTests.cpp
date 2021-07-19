@@ -611,6 +611,11 @@ namespace BlipvertUnitTests
 			Run8bitPalletizedTestSeries(MVFMT_RGB8, MVFMT_IMC4);
 		}
 
+		TEST_METHOD(RGB8_to_Y42T_UnitTest)
+		{
+			Run8bitPalletizedTestSeries(MVFMT_RGB8, MVFMT_Y42T);
+		}
+
 	private:
 
 		void Run8bitTestSeries(const MediaFormatID& rgbFormat, const MediaFormatID& yuvFormat)

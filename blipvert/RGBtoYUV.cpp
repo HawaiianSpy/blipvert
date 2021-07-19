@@ -4596,3 +4596,54 @@ void blipvert::RGB8_to_NV12(int32_t  width, int32_t height,
         uvplane += out_stride;
     }
 }
+
+void blipvert::RGB8_to_Y42T(int32_t  width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD* in_palette)
+{
+    if (!out_stride)
+        out_stride = width * 2;
+
+    if (!in_stride)
+        in_stride = width;
+
+    if (in_palette == nullptr)
+        in_palette = rgb8_greyscale_palette;
+
+    if (flipped)
+    {
+        out_buf += (out_stride * (height - 1));
+        out_stride = -out_stride;
+    }
+
+    while (height)
+    {
+        uint8_t* psrc = in_buf;
+        uint8_t* pdst = out_buf;
+        int32_t hcount = width;
+        while (hcount)
+        {
+            uint8_t red1 = in_palette[*psrc].rgbRed;
+            uint8_t green1 = in_palette[*psrc].rgbGreen;
+            uint8_t blue1 = in_palette[*psrc++].rgbBlue;
+
+            uint8_t red2 = in_palette[*psrc].rgbRed;
+            uint8_t green2 = in_palette[*psrc].rgbGreen;
+            uint8_t blue2 = in_palette[*psrc++].rgbBlue;
+
+            pdst[1] = static_cast<uint8_t>(((yr_table[red1] + yg_table[green1] + yb_table[blue1]) >> 15) + 16) | 0x01;
+            pdst[3] = static_cast<uint8_t>(((yr_table[red2] + yg_table[green2] + yb_table[blue2]) >> 15) + 16) | 0x01;
+            pdst[0] = static_cast<uint8_t>(((((ur_table[red2] + ug_table[green2] + ub_table[blue2]) >> 15) + 128) + \
+                (((ur_table[red1] + ug_table[green1] + ub_table[blue1]) >> 15) + 128)) / 2);
+            pdst[2] = static_cast<uint8_t>(((((vr_table[red2] + vg_table[green2] + vb_table[blue2]) >> 15) + 128) + \
+                (((vr_table[red1] + vg_table[green1] + vb_table[blue1]) >> 15) + 128)) / 2);
+            pdst += 4;
+            hcount -= 2;
+        }
+
+        in_buf += in_stride;
+        out_buf += out_stride;
+        height--;
+    }
+}

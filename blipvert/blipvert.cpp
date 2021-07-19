@@ -545,6 +545,7 @@ TransformTableEntry TransformTable[] = {
     { MVFMT_RGB8, MVFMT_IMC2, RGB8_to_IMC2 },
     { MVFMT_RGB8, MVFMT_IMC3, RGB8_to_IMC3 },
     { MVFMT_RGB8, MVFMT_IMC4, RGB8_to_IMC4 },
+    { MVFMT_RGB8, MVFMT_Y42T, RGB8_to_Y42T },
 
     // YUV to YUV
 

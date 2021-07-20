@@ -2998,56 +2998,35 @@ void Y41P_to_PackedY422(int32_t width, int32_t height,
         out_stride = -out_stride;
     }
 
-    int32_t width_m_8 = width - 8;
     for (int32_t y = 0; y < height; y++)
     {
         uint8_t* psrc = in_buf;
         uint8_t* pdst = out_buf;
-        for (int32_t x = 0; x < width_m_8; x += 8)
+        for (int32_t x = 0; x < width; x += 8)
         {
-            pdst[out_u] = pdst[out_u + 4] = psrc[0];
-            pdst[out_v] = pdst[out_v + 4] = psrc[2];
-            pdst[out_y0] = psrc[1];
-            pdst[out_y1] = psrc[3];
+            pdst[out_u] = psrc[0];          // U0
+            pdst[out_v] = psrc[2];          // V0
+            pdst[out_y0] = psrc[1];         // Y0
+            pdst[out_y1] = psrc[3];         // Y1
 
-            pdst[out_u + 4] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[0]) + static_cast<uint16_t>(psrc[4])) >> 1);
-            pdst[out_v + 4] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[2]) + static_cast<uint16_t>(psrc[6])) >> 1);
-            pdst[out_y0 + 4] = psrc[5];
-            pdst[out_y1 + 4] = psrc[7];
+            pdst[out_u + 4] = psrc[0];      // U0
+            pdst[out_v + 4] = psrc[2];      // V0
+            pdst[out_y0 + 4] = psrc[5];     // Y2
+            pdst[out_y1 + 4] = psrc[7];     // Y3
 
-            pdst[out_u + 8] = psrc[4];
-            pdst[out_v + 8] = psrc[6];
-            pdst[out_y0 + 8] = psrc[8];
-            pdst[out_y1 + 8] = psrc[9];
+            pdst[out_u + 8] = psrc[4];      // U4
+            pdst[out_v + 8] = psrc[6];      // V4
+            pdst[out_y0 + 8] = psrc[8];     // Y4
+            pdst[out_y1 + 8] = psrc[9];     // Y5
 
-            pdst[out_u + 12] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[4]) + static_cast<uint16_t>(psrc[12])) >> 1);
-            pdst[out_v + 12] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[6]) + static_cast<uint16_t>(psrc[14])) >> 1);
-            pdst[out_y0 + 12] = psrc[10];
-            pdst[out_y1 + 12] = psrc[11];
+            pdst[out_u + 12] = psrc[4];     // U4
+            pdst[out_v + 12] = psrc[6];     // V4
+            pdst[out_y0 + 12] = psrc[10];   // Y6
+            pdst[out_y1 + 12] = psrc[11];   // Y7   
 
             psrc += 12;
             pdst += 16;
         }
-        // Convert last set here to prevent reading past the line
-        pdst[out_u] = pdst[out_u + 4] = psrc[0];
-        pdst[out_v] = pdst[out_v + 4] = psrc[2];
-        pdst[out_y0] = psrc[1];
-        pdst[out_y1] = psrc[3];
-
-        pdst[out_u + 4] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[0]) + static_cast<uint16_t>(psrc[4])) >> 1);
-        pdst[out_v + 4] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[2]) + static_cast<uint16_t>(psrc[6])) >> 1);
-        pdst[out_y0 + 4] = psrc[5];
-        pdst[out_y1 + 4] = psrc[7];
-
-        pdst[out_u + 8] = psrc[4];
-        pdst[out_v + 8] = psrc[6];
-        pdst[out_y0 + 8] = psrc[8];
-        pdst[out_y1 + 8] = psrc[9];
-
-        pdst[out_u + 12] = psrc[4];
-        pdst[out_v + 12] = psrc[6];
-        pdst[out_y0 + 12] = psrc[10];
-        pdst[out_y1 + 12] = psrc[11];
 
         in_buf += in_stride;
         out_buf += out_stride;
@@ -3317,7 +3296,7 @@ void Y41P_to_IMCx(int32_t width, int32_t height,
         {
             yp[0] = psrc[1];
             yp[out_stride] = psrc[1 + in_stride];
-            yp[1] = psrc[3];
+            yp[1] = psrc[3]; 
             yp[1 + out_stride] = psrc[3 + in_stride];
 
             up[x] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[0]) + \
@@ -10191,17 +10170,17 @@ void blipvert::Y41P_to_IYU1(int32_t width, int32_t height,
         uint8_t* pdst = out_buf;
         for (int32_t x = 0; x < width; x += 8)
         {
-            pdst[0] = psrc[0];        // U0
-            pdst[3] = psrc[2];        // V0
-            pdst[1] = psrc[1];        // Y0
-            pdst[2] = psrc[3];        // Y1
-            pdst[4] = psrc[5];        // Y2
-            pdst[5] = psrc[7];        // Y3
+            pdst[0] = psrc[0];      // U0
+            pdst[3] = psrc[2];      // V0
+            pdst[1] = psrc[1];      // Y0
+            pdst[2] = psrc[3];      // Y1
+            pdst[4] = psrc[5];      // Y2
+            pdst[5] = psrc[7];      // Y3
 
-            pdst[6] = psrc[4];        // U4
-            pdst[9] = psrc[6];        // V4
-            pdst[7] = psrc[8];        // Y4
-            pdst[8] = psrc[9];        // Y5
+            pdst[6] = psrc[4];      // U4
+            pdst[9] = psrc[6];      // V4
+            pdst[7] = psrc[8];      // Y4
+            pdst[8] = psrc[9];      // Y5
             pdst[10] = psrc[10];    // Y6
             pdst[11] = psrc[11];    // Y7
 
@@ -10231,83 +10210,47 @@ void blipvert::Y41P_to_IYU2(int32_t width, int32_t height,
         out_stride = -out_stride;
     }
 
-    int32_t width_m_8 = width - 8;
-
     for (int32_t y = 0; y < height; y++)
     {
         uint8_t* psrc = in_buf;
         uint8_t* pdst = out_buf;
-        for (int32_t x = 0; x < width_m_8; x += 8)
+        for (int32_t x = 0; x < width; x += 8)
         {
-            pdst[0] = psrc[0];    // U
-            pdst[1] = psrc[1];    // Y0
-            pdst[2] = psrc[2];    // V
+            pdst[0] = psrc[0];      // U0
+            pdst[1] = psrc[1];      // Y0
+            pdst[2] = psrc[2];      // V0
 
-            pdst[3] = static_cast<uint8_t>(((static_cast<uint32_t>(psrc[0]) * 768) + (static_cast<uint32_t>(psrc[4]) * 256)) >> 10);
-            pdst[4] = psrc[3];    // Y1
-            pdst[5] = static_cast<uint8_t>(((static_cast<uint32_t>(psrc[2]) * 768) + (static_cast<uint32_t>(psrc[6]) * 256)) >> 10);
+            pdst[3] = psrc[0];      // U0      
+            pdst[4] = psrc[3];      // Y1
+            pdst[5] = psrc[2];      // V0
 
-            pdst[6] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[0]) + static_cast<uint16_t>(psrc[4])) >> 1);
-            pdst[7] = psrc[5];    // Y2
-            pdst[8] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[2]) + static_cast<uint16_t>(psrc[6])) >> 1);
+            pdst[6] = psrc[0];      // U0
+            pdst[7] = psrc[5];      // Y2
+            pdst[8] = psrc[2];      // V0
 
-            pdst[9] = static_cast<uint8_t>(((static_cast<uint32_t>(psrc[0]) * 256) + (static_cast<uint32_t>(psrc[4]) * 768)) >> 10);
-            pdst[10] = psrc[7];    // Y3
-            pdst[11] = static_cast<uint8_t>(((static_cast<uint32_t>(psrc[2]) * 256) + (static_cast<uint32_t>(psrc[6]) * 768)) >> 10);
+            pdst[9] = psrc[0];      // U0
+            pdst[10] = psrc[7];     // Y3
+            pdst[11] = psrc[2];     // V0
 
-            pdst[12] = psrc[4];    // U
-            pdst[13] = psrc[8];    // Y4
-            pdst[14] = psrc[6];    // V
+            pdst[12] = psrc[4];     // U4
+            pdst[13] = psrc[8];     // Y4
+            pdst[14] = psrc[6];     // V4
 
-            pdst[15] = static_cast<uint8_t>(((static_cast<uint32_t>(psrc[4]) * 768) + (static_cast<uint32_t>(psrc[12]) * 256)) >> 10);
-            pdst[16] = psrc[9];    // Y5
-            pdst[17] = static_cast<uint8_t>(((static_cast<uint32_t>(psrc[6]) * 768) + (static_cast<uint32_t>(psrc[14]) * 256)) >> 10);
+            pdst[15] = psrc[4];     // U4
+            pdst[16] = psrc[9];     // Y5
+            pdst[17] = psrc[6];     // V4
 
-            pdst[18] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[4]) + static_cast<uint16_t>(psrc[12])) >> 1);
-            pdst[19] = psrc[10];// Y6
-            pdst[20] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[6]) + static_cast<uint16_t>(psrc[14])) >> 1);
+            pdst[18] = psrc[4];     // U4
+            pdst[19] = psrc[10];    // Y6
+            pdst[20] = psrc[6];     // V4
 
-            pdst[21] = static_cast<uint8_t>(((static_cast<uint32_t>(psrc[4]) * 256) + (static_cast<uint32_t>(psrc[12]) * 768)) >> 10);
-            pdst[22] = psrc[11];// Y7
-            pdst[23] = static_cast<uint8_t>(((static_cast<uint32_t>(psrc[6]) * 256) + (static_cast<uint32_t>(psrc[14]) * 768)) >> 10);
+            pdst[21] = psrc[4];     // U4
+            pdst[22] = psrc[11];    // Y7
+            pdst[23] = psrc[6];     // V4
 
             psrc += 12;
             pdst += 24;
         }
-
-        // Take care of the last block here to prevent
-        // a read outside of the source line.
-        pdst[0] = psrc[0];    // U
-        pdst[1] = psrc[1];    // Y0
-        pdst[2] = psrc[2];    // V
-
-        pdst[3] = static_cast<uint8_t>(((static_cast<uint32_t>(psrc[0]) * 768) + (static_cast<uint32_t>(psrc[4]) * 256)) >> 10);
-        pdst[4] = psrc[3];    // Y1
-        pdst[5] = static_cast<uint8_t>(((static_cast<uint32_t>(psrc[2]) * 768) + (static_cast<uint32_t>(psrc[6]) * 256)) >> 10);
-
-        pdst[6] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[0]) + static_cast<uint16_t>(psrc[4])) >> 1);
-        pdst[7] = psrc[5];    // Y2
-        pdst[8] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[2]) + static_cast<uint16_t>(psrc[6])) >> 1);
-
-        pdst[9] = static_cast<uint8_t>(((static_cast<uint32_t>(psrc[0]) * 256) + (static_cast<uint32_t>(psrc[4]) * 768)) >> 10);
-        pdst[10] = psrc[7];    // Y3
-        pdst[11] = static_cast<uint8_t>(((static_cast<uint32_t>(psrc[2]) * 256) + (static_cast<uint32_t>(psrc[6]) * 768)) >> 10);
-
-        pdst[12] = psrc[4];     // U
-        pdst[13] = psrc[8];     // Y4
-        pdst[14] = psrc[6];     // V
-
-        pdst[15] = psrc[4];     // U
-        pdst[16] = psrc[9];     // Y5
-        pdst[17] = psrc[6];     // V
-
-        pdst[18] = psrc[4];     // U
-        pdst[19] = psrc[10];    // Y6
-        pdst[20] = psrc[6];     // V
-
-        pdst[21] = psrc[4];     // U
-        pdst[22] = psrc[11];    // Y7
-        pdst[23] = psrc[6];     // V
 
         in_buf += in_stride;
         out_buf += out_stride;
@@ -10337,14 +10280,14 @@ void blipvert::Y41P_to_Y800(int32_t width, int32_t height,
         uint8_t* pdst = out_buf;
         for (int32_t x = 0; x < width; x += 8)
         {
-            pdst[0] = psrc[1];    // Y0
-            pdst[1] = psrc[3];    // Y1
-            pdst[2] = psrc[5];    // Y2
-            pdst[3] = psrc[7];    // Y3
-            pdst[4] = psrc[8];    // Y4
-            pdst[5] = psrc[9];    // Y5
-            pdst[6] = psrc[10];    // Y6
-            pdst[7] = psrc[11];    // Y7
+            pdst[0] = psrc[1];      // Y0
+            pdst[1] = psrc[3];      // Y1
+            pdst[2] = psrc[5];      // Y2
+            pdst[3] = psrc[7];      // Y3
+            pdst[4] = psrc[8];      // Y4
+            pdst[5] = psrc[9];      // Y5
+            pdst[6] = psrc[10];     // Y6
+            pdst[7] = psrc[11];     // Y7
 
             psrc += 12;
             pdst += 8;
@@ -10676,56 +10619,35 @@ void blipvert::Y41P_to_Y42T(int32_t width, int32_t height,
         out_stride = -out_stride;
     }
 
-    int32_t width_m_8 = width - 8;
     for (int32_t y = 0; y < height; y++)
     {
         uint8_t* psrc = in_buf;
         uint8_t* pdst = out_buf;
-        for (int32_t x = 0; x < width_m_8; x += 8)
+        for (int32_t x = 0; x < width; x += 8)
         {
-            pdst[0] = pdst[0 + 4] = psrc[0];
-            pdst[2] = pdst[2 + 4] = psrc[2];
-            pdst[1] = psrc[1] | 0x1;
-            pdst[3] = psrc[3] | 0x1;
+            pdst[0] = psrc[0];              // U0
+            pdst[2] = psrc[2];              // V0
+            pdst[1] = psrc[1] | 0x1;        // Y0
+            pdst[3] = psrc[3] | 0x1;        // Y1
 
-            pdst[0 + 4] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[0]) + static_cast<uint16_t>(psrc[4])) >> 1);
-            pdst[2 + 4] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[2]) + static_cast<uint16_t>(psrc[6])) >> 1);
-            pdst[1 + 4] = psrc[5] | 0x1;
-            pdst[3 + 4] = psrc[7] | 0x1;
+            pdst[0 + 4] = psrc[0];          // U0
+            pdst[2 + 4] = psrc[2];          // V0
+            pdst[1 + 4] = psrc[5] | 0x1;    // Y2
+            pdst[3 + 4] = psrc[7] | 0x1;    // Y3
 
-            pdst[0 + 8] = psrc[4];
-            pdst[2 + 8] = psrc[6];
-            pdst[1 + 8] = psrc[8] | 0x1;
-            pdst[3 + 8] = psrc[9] | 0x1;
+            pdst[0 + 8] = psrc[4];          // U4
+            pdst[2 + 8] = psrc[6];          // V4
+            pdst[1 + 8] = psrc[8] | 0x1;    // Y4
+            pdst[3 + 8] = psrc[9] | 0x1;    // Y5
 
-            pdst[0 + 12] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[4]) + static_cast<uint16_t>(psrc[12])) >> 1);
-            pdst[2 + 12] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[6]) + static_cast<uint16_t>(psrc[14])) >> 1);
-            pdst[1 + 12] = psrc[10] | 0x1;
-            pdst[3 + 12] = psrc[11] | 0x1;
+            pdst[0 + 12] = psrc[4];         // U4
+            pdst[2 + 12] = psrc[6];         // V4
+            pdst[1 + 12] = psrc[10] | 0x1;  // Y6
+            pdst[3 + 12] = psrc[11] | 0x1;  // Y7
 
             psrc += 12;
             pdst += 16;
         }
-        // Convert last set here to prevent reading past the line
-        pdst[0] = pdst[0 + 4] = psrc[0];
-        pdst[2] = pdst[2 + 4] = psrc[2];
-        pdst[1] = psrc[1] | 0x1;
-        pdst[3] = psrc[3] | 0x1;
-
-        pdst[0 + 4] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[0]) + static_cast<uint16_t>(psrc[4])) >> 1);
-        pdst[2 + 4] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[2]) + static_cast<uint16_t>(psrc[6])) >> 1);
-        pdst[1 + 4] = psrc[5] | 0x1;
-        pdst[3 + 4] = psrc[7] | 0x1;
-
-        pdst[0 + 8] = psrc[4];
-        pdst[2 + 8] = psrc[6];
-        pdst[1 + 8] = psrc[8] | 0x1;
-        pdst[3 + 8] = psrc[9] | 0x1;
-
-        pdst[0 + 12] = psrc[4];
-        pdst[2 + 12] = psrc[6];
-        pdst[1 + 12] = psrc[10] | 0x1;
-        pdst[3 + 12] = psrc[11] | 0x1;
 
         in_buf += in_stride;
         out_buf += out_stride;

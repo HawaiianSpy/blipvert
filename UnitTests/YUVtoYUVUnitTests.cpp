@@ -2159,6 +2159,66 @@ namespace BlipvertUnitTests
 			RunYAlphaTestSeries(MVFMT_Y42T, MVFMT_YVU9);
 		}
 
+		TEST_METHOD(Y42T_to_IYU1_UnitTest)
+		{
+			RunYAlphaTestSeries(MVFMT_Y42T, MVFMT_IYU1);
+		}
+
+		TEST_METHOD(Y42T_to_IYU2_UnitTest)
+		{
+			RunYAlphaTestSeries(MVFMT_Y42T, MVFMT_IYU2);
+		}
+
+		TEST_METHOD(Y42T_to_Y800_UnitTest)
+		{
+			RunYAlphaTestSeries(MVFMT_Y42T, MVFMT_Y800);
+		}
+
+		TEST_METHOD(Y42T_to_Y16_UnitTest)
+		{
+			RunYAlphaTestSeries(MVFMT_Y42T, MVFMT_Y16);
+		}
+
+		TEST_METHOD(Y42T_to_CLJR_UnitTest)
+		{
+			RunYAlphaTestSeries(MVFMT_Y42T, MVFMT_CLJR);
+		}
+
+		TEST_METHOD(Y42T_to_Y41P_UnitTest)
+		{
+			RunYAlphaTestSeries(MVFMT_Y42T, MVFMT_Y41P);
+		}
+
+		TEST_METHOD(Y42T_to_AYUV_UnitTest)
+		{
+			RunYAlphaTestSeries(MVFMT_Y42T, MVFMT_AYUV);
+		}
+
+		TEST_METHOD(Y42T_to_IMC1_UnitTest)
+		{
+			RunYAlphaTestSeries(MVFMT_Y42T, MVFMT_IMC1);
+		}
+
+		TEST_METHOD(Y42T_to_IMC2_UnitTest)
+		{
+			RunYAlphaTestSeries(MVFMT_Y42T, MVFMT_IMC2);
+		}
+
+		TEST_METHOD(Y42T_to_IMC3_UnitTest)
+		{
+			RunYAlphaTestSeries(MVFMT_Y42T, MVFMT_IMC3);
+		}
+
+		TEST_METHOD(Y42T_to_IMC4_UnitTest)
+		{
+			RunYAlphaTestSeries(MVFMT_Y42T, MVFMT_IMC4);
+		}
+
+		TEST_METHOD(Y42T_to_NV12_UnitTest)
+		{
+			RunYAlphaTestSeries(MVFMT_Y42T, MVFMT_NV12);
+		}
+
 	private:
 		void Run8bitAlphaTestSeries(const MediaFormatID& inFormat, const MediaFormatID& outFormat)
 		{

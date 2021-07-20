@@ -145,7 +145,7 @@ void blipvert::Interlaced_to_Progressive(int32_t height, int32_t line_bytes, boo
 
 uint32_t blipvert::CalculateBufferSize(const MediaFormatID& inFormat, uint32_t width, uint32_t height, uint32_t stride)
 {
-    if (width < 8 || (width % 4 != 0) || height< 16 || (height % 4 != 0))
+    if (width < 8 || (width % 8 != 0) || height< 16 || (height % 8 != 0))
     {
         return 0;
     }

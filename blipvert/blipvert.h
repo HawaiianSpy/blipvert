@@ -202,7 +202,7 @@ namespace blipvert
     //      in_palette:     Pointer to the palette for a palletized input bitmap. Ignored for non-palletized input bitmap formats.
     //
     // IMPORTANT:   For reasons related to the bitmap format definitions, all input parameters must follow these rules:
-    //              1. Both the width and height values must be even multiples of 4.
+    //              1. Both the width and height values must be even multiples of 8.
     //              2. The width values must be >= 8;
     //              3. The height value must be >= 16.
     //              4. The stride value must be >= the minimum number of bytes-per-line needed for the width of the bitmap format.

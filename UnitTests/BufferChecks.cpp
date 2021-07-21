@@ -90,6 +90,7 @@ BufferCheckEntry BufferCheckFuncTable[] = {
 	{MVFMT_IMC4, Check_IMC4},
 	{MVFMT_NV12, Check_NV12},
 	{MVFMT_Y42T, Check_Y42T},
+	{MVFMT_Y41T, Check_Y41T},
 	{MVFMT_RGBA, Check_RGBA},
 	{MVFMT_RGB32, Check_RGB32},
 	{MVFMT_RGB24, Check_RGB24},
@@ -693,4 +694,10 @@ bool BlipvertUnitTests::Check_Y42T(uint8_t ry_level, uint8_t gu_level, uint8_t b
 		width, height,
 		pBuffer, stride,
 		1, 3, 0, 2);
+}
+
+bool BlipvertUnitTests::Check_Y41T(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha,
+	int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride)
+{
+	return Check_Y41P(alpha > 127 ? ry_level | 0x01 : ry_level & 0xFE, gu_level, bv_level, alpha, width, height, pBuffer, stride);
 }

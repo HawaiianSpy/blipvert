@@ -522,3 +522,8 @@ void blipvert::Y42T_to_Greyscale(int32_t  width, int32_t height, uint8_t* buf, i
 {
     PackedY422_to_Greyscale(width, height, buf, stride, 0, 2);
 }
+
+void blipvert::Y41T_to_Greyscale(int32_t  width, int32_t height, uint8_t* buf, int32_t stride, xRGBQUAD* in_palette)
+{
+    Y41P_to_Greyscale(width, height, buf, stride);
+}

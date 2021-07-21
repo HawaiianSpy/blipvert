@@ -61,5 +61,6 @@ namespace blipvert
     void IMC4_to_Greyscale(int32_t width, int32_t height, uint8_t* buf, int32_t stride = 0, xRGBQUAD* in_palette = nullptr);
     void NV12_to_Greyscale(int32_t width, int32_t height, uint8_t* buf, int32_t stride = 0, xRGBQUAD* in_palette = nullptr);
     void Y42T_to_Greyscale(int32_t width, int32_t height, uint8_t* buf, int32_t stride = 0, xRGBQUAD* in_palette = nullptr);
+    void Y41T_to_Greyscale(int32_t width, int32_t height, uint8_t* buf, int32_t stride = 0, xRGBQUAD* in_palette = nullptr);
 };
 

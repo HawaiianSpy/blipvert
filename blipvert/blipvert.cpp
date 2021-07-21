@@ -1025,6 +1025,7 @@ GreyscaleTableEntry GreyscaleTable[] = {
     { MVFMT_IMC4, IMC4_to_Greyscale },
     { MVFMT_NV12, NV12_to_Greyscale },
     { MVFMT_Y42T, Y42T_to_Greyscale },
+    { MVFMT_Y41T, Y41T_to_Greyscale },
     { MVFMT_UNDEFINED, nullptr }
 };
 
@@ -1056,6 +1057,7 @@ FillcolorTableEntry FillColorTable[] = {
     { MVFMT_IMC4, Fill_IMC4 },
     { MVFMT_NV12, Fill_NV12 },
     { MVFMT_Y42T, Fill_Y42T },
+    { MVFMT_Y41T, Fill_Y41T },
     { MVFMT_UNDEFINED, nullptr }
 };
 

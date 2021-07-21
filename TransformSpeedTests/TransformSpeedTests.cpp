@@ -80,7 +80,7 @@ vector<const MediaFormatID*> YUVFormats = {
 	&MVFMT_NV12
 };
 
-void RunFromYUVSpeedTest(const MediaFormatID& in_format, const MediaFormatID& out_format, uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha)
+void RunSpeedTest(const MediaFormatID& in_format, const MediaFormatID& out_format, uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha)
 {
 	t_transformfunc encodeTransPtr = FindVideoTransform(in_format, out_format);
 	if (encodeTransPtr == nullptr)
@@ -107,12 +107,18 @@ void RunFromYUVSpeedTest(const MediaFormatID& in_format, const MediaFormatID& ou
 	uint8_t* outBufPtr = outBuf.get();
 	memset(outBufPtr, 0, outBufBize);
 
-	uint8_t Y;
-	uint8_t U;
-	uint8_t V;
-	FastRGBtoYUV(red, green, blue, &Y, &U, &V);
-
-	fillBufFunctPtr(Y, U, V, alpha, width, height, inBufPtr, 0);
+	if (IsYUVColorspace(in_format))
+	{
+		uint8_t Y;
+		uint8_t U;
+		uint8_t V;
+		FastRGBtoYUV(red, green, blue, &Y, &U, &V);
+		fillBufFunctPtr(Y, U, V, alpha, width, height, inBufPtr, 0);
+	}
+	else
+	{
+		fillBufFunctPtr(red, green, blue, alpha, width, height, inBufPtr, 0);
+	}
 
 	std::cout << "Framerate test: " << in_format << " to " << out_format;
 
@@ -130,47 +136,15 @@ void RunFromYUVSpeedTest(const MediaFormatID& in_format, const MediaFormatID& ou
 	std::cout << " @ " << framerate << " fps."<< std::endl;
 }
 
-void RunFromRGBSpeedTest(const MediaFormatID& in_format, const MediaFormatID& out_format, uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha)
-{
-	t_transformfunc encodeTransPtr = FindVideoTransform(in_format, out_format);
-	t_fillcolorfunc fillBufFunctPtr = FindFillColorTransform(in_format);
-
-	uint32_t inBufBize = CalculateBufferSize(in_format, width, height);
-	uint32_t outBufBize = CalculateBufferSize(out_format, width, height);
-
-	std::unique_ptr<uint8_t[]> inBuf(new uint8_t[inBufBize]);
-	uint8_t* inBufPtr = inBuf.get();
-	memset(inBufPtr, 0, inBufBize);
-
-	std::unique_ptr<uint8_t[]> outBuf(new uint8_t[outBufBize]);
-	uint8_t* outBufPtr = outBuf.get();
-	memset(outBufPtr, 0, outBufBize);
-
-	fillBufFunctPtr(red, green, blue, alpha, width, height, inBufPtr, 0);
-
-	auto start = chrono::steady_clock::now();
-
-	for (int count = 0; count < numframes; count++)
-	{
-		encodeTransPtr(width, height, outBufPtr, 0, inBufPtr, 0, false, nullptr);
-	}
-
-	auto end = chrono::steady_clock::now();
-
-	double ms = static_cast<double>(chrono::duration_cast<chrono::milliseconds>(end - start).count());
-	double framerate = 1000.0 / (ms / static_cast<double>(numframes));
-	std::cout << "Framerate test: " << in_format << " to " << out_format << " @ " << framerate << " fps." << std::endl;
-}
-
 void RunTest(const MediaFormatID& in_format, const MediaFormatID& out_format)
 {
 	if (IsYUVColorspace(in_format))
 	{
-		RunFromYUVSpeedTest(in_format, out_format, 128, 128, 128, 255);
+		RunSpeedTest(in_format, out_format, 128, 128, 128, 255);
 	}
 	else if (IsRGBColorspace(in_format))
 	{
-		RunFromRGBSpeedTest(in_format, out_format, 128, 128, 128, 255);
+		RunSpeedTest(in_format, out_format, 128, 128, 128, 255);
 	}
 }
 

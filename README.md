@@ -42,7 +42,7 @@ Read the header files for the details. Fairly self-explainatory.
 1. Both the width and height values must be even multiples of 8.
 2. The width values must be >= 8;
 3. The height values must be >= 16.
-4. The stride values must be >= the minimum number of bytes-per-line needed for the width of the bitmap format.
+4. The stride values must be >= the minimum number of physical bytes-per-line needed to contain the logical width of the bitmap format.
 
 The minimum granularity for the bitmap dimensions is 8 pixels for both width and height. Transforms, like Y41P, horizontally represent the pixels in 8-pixel chunks. Other transforms, like YUV9 or YVU9, use 4x4 chunks.  All the digital video bitmaps I have seen have their dimensions in pixels at this granularity anyway.
 

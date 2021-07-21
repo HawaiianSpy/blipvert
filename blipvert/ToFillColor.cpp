@@ -753,3 +753,10 @@ void blipvert::Fill_Y42T(uint8_t y_level, uint8_t u_level, uint8_t v_level, uint
         buf, stride,
         1, 3, 0, 2);
 }
+
+void blipvert::Fill_Y41T(uint8_t y_level, uint8_t u_level, uint8_t v_level, uint8_t alpha,
+    int32_t width, int32_t height, uint8_t* buf, int32_t stride)
+{
+    Fill_Y41P(alpha > 127 ? y_level | 0x01 : y_level & 0xFE, u_level, v_level, alpha, width, height, buf, stride);
+}
+

@@ -31,7 +31,7 @@ P.S. If you found this library helpful and have improvements/bug fixes to contri
 ******************************
 
 
-# The Ten-Cent Tour Of The API
+# Ten-Cent Tour Of The API
 
 Read the header files for the details. Fairly self-explainatory.
 

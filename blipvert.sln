@@ -7,7 +7,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "blipvert", "blipvert\blipve
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BlipvertUnitTests", "UnitTests\UnitTests.vcxproj", "{B8F52108-C451-4464-A360-F756F0418A62}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TransformSpeedTests", "TransformSpeedTests\TransformSpeedTests.vcxproj", "{972AA584-5B01-4C97-B150-E9A5253781FB}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TransformFramerateTests", "TransformFramerateTests\TransformFramerateTests.vcxproj", "{972AA584-5B01-4C97-B150-E9A5253781FB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

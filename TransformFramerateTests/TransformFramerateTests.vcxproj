@@ -22,8 +22,9 @@
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
     <ProjectGuid>{972aa584-5b01-4c97-b150-e9a5253781fb}</ProjectGuid>
-    <RootNamespace>TransformSpeedTests</RootNamespace>
+    <RootNamespace>TransformFramerateTests</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>TransformFramerateTests</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -147,7 +148,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="TransformSpeedTests.cpp" />
+    <ClCompile Include="TransformFramerateTests.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\blipvert\blipvert.vcxproj">

@@ -80,7 +80,7 @@ vector<const MediaFormatID*> YUVFormats = {
 	&MVFMT_NV12
 };
 
-void RunSpeedTest(const MediaFormatID& in_format, const MediaFormatID& out_format, uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha)
+void FramerateTest(const MediaFormatID& in_format, const MediaFormatID& out_format, uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha)
 {
 	t_transformfunc encodeTransPtr = FindVideoTransform(in_format, out_format);
 	if (encodeTransPtr == nullptr)
@@ -140,11 +140,11 @@ void RunTest(const MediaFormatID& in_format, const MediaFormatID& out_format)
 {
 	if (IsYUVColorspace(in_format))
 	{
-		RunSpeedTest(in_format, out_format, 128, 128, 128, 255);
+		FramerateTest(in_format, out_format, 128, 128, 128, 255);
 	}
 	else if (IsRGBColorspace(in_format))
 	{
-		RunSpeedTest(in_format, out_format, 128, 128, 128, 255);
+		FramerateTest(in_format, out_format, 128, 128, 128, 255);
 	}
 }
 
@@ -152,6 +152,7 @@ void RunAllTransforms()
 {
 	cout << "Transform test run for frame resolution: " << width << " x " << height << "..." << endl << endl;
 
+	// RGB to YUV
 	for (const MediaFormatID* in_format : RGBFormats)
 	{
 		for (const MediaFormatID* out_format : YUVFormats)
@@ -160,6 +161,7 @@ void RunAllTransforms()
 		}
 	}
 
+	// YUV to RGB
 	for (const MediaFormatID* in_format : YUVFormats)
 	{
 		for (const MediaFormatID* out_format : RGBFormats)
@@ -168,6 +170,7 @@ void RunAllTransforms()
 		}
 	}
 
+	// RGB to RGB
 	for (const MediaFormatID* in_format : RGBFormats)
 	{
 		for (const MediaFormatID* out_format : RGBFormats)
@@ -179,6 +182,7 @@ void RunAllTransforms()
 		}
 	}
 
+	// YUV to YUV
 	for (const MediaFormatID* in_format : YUVFormats)
 	{
 		for (const MediaFormatID* out_format : YUVFormats)

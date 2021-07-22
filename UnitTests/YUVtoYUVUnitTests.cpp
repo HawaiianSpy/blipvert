@@ -2075,6 +2075,11 @@ namespace BlipvertUnitTests
 			Run8bitTestSeries(MVFMT_NV12, MVFMT_IYU1);
 		}
 
+		TEST_METHOD(NV12_to_IYU2_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_NV12, MVFMT_IYU2);
+		}
+
 		TEST_METHOD(NV12_to_Y800_UnitTest)
 		{
 			Run8bitTestSeries(MVFMT_NV12, MVFMT_Y800);
@@ -2088,6 +2093,11 @@ namespace BlipvertUnitTests
 		TEST_METHOD(NV12_to_CLJR_UnitTest)
 		{
 			Run8bitTestSeries(MVFMT_NV12, MVFMT_CLJR);
+		}
+
+		TEST_METHOD(NV12_to_Y41P_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_NV12, MVFMT_Y41P);
 		}
 
 		TEST_METHOD(NV12_to_IMC1_UnitTest)

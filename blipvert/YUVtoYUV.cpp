@@ -11931,6 +11931,73 @@ void blipvert::NV12_to_IYU1(int32_t width, int32_t height,
     }
 }
 
+void blipvert::NV12_to_IYU2(int32_t width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD*)
+{
+    if (!out_stride)
+        out_stride = width * 3;
+
+    int16_t uv_width = width;
+    int16_t uv_height = height / 2;
+
+    if (!in_stride)
+        in_stride = width;
+
+    uint8_t* uvplane = in_buf + (in_stride * height);
+
+    if (flipped)
+    {
+        out_buf += (out_stride * (height - 1));
+        out_stride = -out_stride;
+    }
+
+    int32_t out_stride_x_2 = out_stride * 2;
+    int32_t in_stride_x_2 = in_stride * 2;
+
+    for (int16_t y = 0; y < uv_height; y++)
+    {
+        uint8_t* yp = in_buf;
+        uint8_t* up = uvplane;
+        uint8_t* vp = uvplane + 1;
+        uint8_t* pdst = out_buf;
+
+        for (int16_t x = 0; x < width; x += 2)
+        {
+            // column 1 row 1
+            pdst[0] = *up;
+            pdst[1] = yp[0];
+            pdst[2] = *vp;
+
+            // column 1 row 2
+            pdst[out_stride] = *up;
+            pdst[1 + out_stride] = yp[in_stride];
+            pdst[2 + out_stride] = *vp;
+
+            // column 2 row 1
+            pdst[3] = *up;
+            pdst[4] = yp[1];
+            pdst[5] = *vp;
+
+            // column 2 row 2
+            pdst[3 + out_stride] = *up;
+            pdst[4 + out_stride] = yp[1 + in_stride];
+            pdst[5 + out_stride] = *vp;
+
+            pdst += 6;
+            yp += 2;
+            up += 2;
+            vp += 2;
+        }
+
+        in_buf += in_stride_x_2;
+        uvplane += in_stride;
+        out_buf += out_stride_x_2;
+    }
+}
+
+
 void blipvert::NV12_to_Y800(int32_t width, int32_t height,
     uint8_t* out_buf, int32_t out_stride,
     uint8_t* in_buf, int32_t in_stride,
@@ -12048,6 +12115,135 @@ void blipvert::NV12_to_CLJR(int32_t width, int32_t height,
         in_buf += in_stride_x_2;
         uvplane += in_stride;
         out_buf += out_stride_x_2;
+    }
+}
+
+void blipvert::NV12_to_Y41P(int32_t width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD* in_palette)
+{
+    if (!out_stride)
+        out_stride = width * 12 / 8;
+
+    int16_t uv_width = width;
+    int16_t uv_height = height / 2;
+
+    if (!in_stride)
+        in_stride = width;
+
+    uint8_t* uvplane = in_buf + (in_stride * height);
+
+    if (flipped)
+    {
+        out_buf += (out_stride * (height - 1));
+        out_stride = -out_stride;
+    }
+
+    int32_t out_stride_x_2 = out_stride * 2;
+    int32_t in_stride_x_2 = in_stride * 2;
+
+    uint8_t* yp;
+    uint8_t* up;
+    uint8_t* vp;
+    uint8_t* pdst;
+
+    for (int32_t y = 0; y < height - 2; y += 2)
+    {
+        yp = in_buf;
+        up = uvplane;
+        vp = uvplane + 1;
+        pdst = out_buf;
+
+        for (int32_t x = 0; x < width; x += 8)
+        {
+            pdst[0] = static_cast<uint8_t>((static_cast<uint16_t>(up[0]) + static_cast<uint16_t>(up[2])) >> 1);
+            pdst[2] = static_cast<uint8_t>((static_cast<uint16_t>(vp[0]) + static_cast<uint16_t>(vp[2])) >> 1);
+            pdst[1] = yp[0];
+            pdst[3] = yp[1];
+            pdst[5] = yp[2];
+            pdst[7] = yp[3];
+
+            pdst[out_stride] = static_cast<uint8_t>((static_cast<uint16_t>(up[0]) + \
+                static_cast<uint16_t>(up[2]) + \
+                static_cast<uint16_t>(up[in_stride]) + \
+                static_cast<uint16_t>(up[2 + in_stride])) >> 2);
+            pdst[2 + out_stride] = static_cast<uint8_t>((static_cast<uint16_t>(vp[0]) + \
+                static_cast<uint16_t>(vp[2]) + \
+                static_cast<uint16_t>(vp[in_stride]) + \
+                static_cast<uint16_t>(vp[2 + in_stride])) >> 2);
+            pdst[1 + out_stride] = yp[in_stride];
+            pdst[3 + out_stride] = yp[1 + in_stride];
+            pdst[5 + out_stride] = yp[2 + in_stride];
+            pdst[7 + out_stride] = yp[3 + in_stride];
+
+            pdst[4] = static_cast<uint8_t>((static_cast<uint16_t>(up[4]) + static_cast<uint16_t>(up[6])) >> 1);
+            pdst[6] = static_cast<uint8_t>((static_cast<uint16_t>(vp[4]) + static_cast<uint16_t>(vp[6])) >> 1);
+            pdst[8] = yp[4];
+            pdst[9] = yp[5];
+            pdst[10] = yp[6];
+            pdst[11] = yp[7];
+
+            pdst[4 + out_stride] = static_cast<uint8_t>((static_cast<uint16_t>(up[4]) + \
+                static_cast<uint16_t>(up[6]) + \
+                static_cast<uint16_t>(up[4 + in_stride]) + \
+                static_cast<uint16_t>(up[6 + in_stride])) >> 2);
+            pdst[6 + out_stride] = static_cast<uint8_t>((static_cast<uint16_t>(vp[4]) + \
+                static_cast<uint16_t>(vp[6]) + \
+                static_cast<uint16_t>(vp[4 + in_stride]) + \
+                static_cast<uint16_t>(vp[6 + in_stride])) >> 2);
+            pdst[8 + out_stride] = yp[4 + in_stride];
+            pdst[9 + out_stride] = yp[5 + in_stride];
+            pdst[10 + out_stride] = yp[6 + in_stride];
+            pdst[11 + out_stride] = yp[7 + in_stride];
+
+            pdst += 12;
+            yp += 8;
+            up += 8;
+            vp += 8;
+        }
+
+        in_buf += in_stride_x_2;
+        uvplane += in_stride;
+        out_buf += out_stride_x_2;
+    }
+
+    // Get the last line without reading past the u & v buffers
+    yp = in_buf;
+    up = uvplane;
+    vp = uvplane + 1;
+    pdst = out_buf;
+
+    for (int32_t x = 0; x < width; x += 8)
+    {
+        pdst[0] = pdst[out_stride] = static_cast<uint8_t>((static_cast<uint16_t>(up[0]) + static_cast<uint16_t>(up[2])) >> 1);
+        pdst[2] = pdst[2 + out_stride] = static_cast<uint8_t>((static_cast<uint16_t>(vp[0]) + static_cast<uint16_t>(vp[2])) >> 1);
+        pdst[1] = yp[0];
+        pdst[3] = yp[1];
+        pdst[5] = yp[2];
+        pdst[7] = yp[3];
+
+        pdst[1 + out_stride] = yp[in_stride];
+        pdst[3 + out_stride] = yp[1 + in_stride];
+        pdst[5 + out_stride] = yp[2 + in_stride];
+        pdst[7 + out_stride] = yp[3 + in_stride];
+
+        pdst[4] = pdst[4 + out_stride] = static_cast<uint8_t>((static_cast<uint16_t>(up[4]) + static_cast<uint16_t>(up[6])) >> 1);
+        pdst[6] = pdst[6 + out_stride] = static_cast<uint8_t>((static_cast<uint16_t>(vp[4]) + static_cast<uint16_t>(vp[6])) >> 1);
+        pdst[8] = yp[4];
+        pdst[9] = yp[5];
+        pdst[10] = yp[6];
+        pdst[11] = yp[7];
+
+        pdst[8 + out_stride] = yp[4 + in_stride];
+        pdst[9 + out_stride] = yp[5 + in_stride];
+        pdst[10 + out_stride] = yp[6 + in_stride];
+        pdst[11 + out_stride] = yp[7 + in_stride];
+
+        pdst += 12;
+        yp += 8;
+        up += 4;
+        vp += 4;
     }
 }
 

@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="TransformSpeedTests.cpp">
+    <ClCompile Include="TransformFramerateTests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

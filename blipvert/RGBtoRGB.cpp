@@ -561,14 +561,7 @@ void blipvert::RGB555_to_ARGB1555(int32_t width, int32_t height,
 
     do
     {
-        uint16_t* psrc = reinterpret_cast<uint16_t*>(in_buf);
-        uint16_t* pdst = reinterpret_cast<uint16_t*>(out_buf);
-        int32_t hcount = width;
-        do
-        {
-            *pdst++ = *psrc++;
-        } while (--hcount);
-
+        memcpy(out_buf, in_buf, width * 2);
         in_buf += in_stride;
         out_buf += out_stride;
     } while (--height);
@@ -631,13 +624,12 @@ void blipvert::ARGB1555_to_RGB555(int32_t width, int32_t height,
 
     do
     {
-        uint16_t* psrc = reinterpret_cast<uint16_t*>(in_buf);
-        uint16_t* pdst = reinterpret_cast<uint16_t*>(out_buf);
-        int32_t hcount = width;
-        do
+        uint32_t* psrc = reinterpret_cast<uint32_t*>(in_buf);
+        uint32_t* pdst = reinterpret_cast<uint32_t*>(out_buf);
+        for (int32_t x = 0; x < width; x += 2)
         {
-            *pdst++ = *psrc++ | 0x8000;
-        } while (--hcount);
+            *pdst++ = (*psrc++ | 0x80008000);
+        }
 
         in_buf += in_stride;
         out_buf += out_stride;

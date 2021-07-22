@@ -181,7 +181,7 @@ namespace BlipvertUnitTests
 
 		TEST_METHOD(ARGB1555_to_RGB555_UnitTest)
 		{
-			Run555bitTestSeries(MVFMT_ARGB1555, MVFMT_RGB555);
+			Run555AlphabitTestSeries(MVFMT_ARGB1555, MVFMT_RGB555);
 		}
 
 		//

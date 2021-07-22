@@ -203,41 +203,6 @@ void blipvert::RGBA_to_ARGB1555(int32_t width, int32_t height,
     } while (--height);
 }
 
-void blipvert::ARGB1555_to_RGBA(int32_t width, int32_t height,
-    uint8_t* out_buf, int32_t out_stride,
-    uint8_t* in_buf, int32_t in_stride,
-    bool flipped, xRGBQUAD* in_palette)
-{
-    if (!out_stride)
-        out_stride = width * 4;
-
-    if (!in_stride)
-        in_stride = width * 2;
-
-    if (flipped)
-    {
-        out_buf += (out_stride * (height - 1));
-        out_stride = -out_stride;
-    }
-
-    do
-    {
-        uint16_t* psrc = reinterpret_cast<uint16_t*>(in_buf);
-        uint8_t* pdst = out_buf;
-        int32_t hcount = width;
-        do
-        {
-            uint16_t source = *psrc;
-            UnpackARGB555Word(source, pdst[3], pdst[2], pdst[1], pdst[0])
-                psrc++;
-            pdst += 4;
-        } while (--hcount);
-
-        in_buf += in_stride;
-        out_buf += out_stride;
-    } while (--height);
-}
-
 void blipvert::RGBA_to_RGB32(int32_t width, int32_t height,
     uint8_t* out_buf, int32_t out_stride,
     uint8_t* in_buf, int32_t in_stride,
@@ -564,6 +529,114 @@ void blipvert::RGB555_to_RGB565(int32_t width, int32_t height,
         {
             *pdst++ = ((*psrc & (RGB555_RED_MASK | RGB555_GREEN_MASK)) << 1) | (*psrc & RGB565_BLUE_MASK);
             psrc++;
+        } while (--hcount);
+
+        in_buf += in_stride;
+        out_buf += out_stride;
+    } while (--height);
+}
+
+void blipvert::RGB555_to_ARGB1555(int32_t width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD* in_palette)
+{
+    if (!out_stride)
+        out_stride = width * 2;
+
+    if (!in_stride)
+        in_stride = width * 2;
+
+    if (out_stride == in_stride && !flipped)
+    {
+        memcpy(out_buf, in_buf, out_stride * height);
+        return;
+    }
+
+    if (flipped)
+    {
+        out_buf += (out_stride * (height - 1));
+        out_stride = -out_stride;
+    }
+
+    do
+    {
+        uint16_t* psrc = reinterpret_cast<uint16_t*>(in_buf);
+        uint16_t* pdst = reinterpret_cast<uint16_t*>(out_buf);
+        int32_t hcount = width;
+        do
+        {
+            *pdst++ = *psrc++;
+        } while (--hcount);
+
+        in_buf += in_stride;
+        out_buf += out_stride;
+    } while (--height);
+}
+
+//
+// ARGB1555 to RGB
+//
+
+void blipvert::ARGB1555_to_RGBA(int32_t width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD* in_palette)
+{
+    if (!out_stride)
+        out_stride = width * 4;
+
+    if (!in_stride)
+        in_stride = width * 2;
+
+    if (flipped)
+    {
+        out_buf += (out_stride * (height - 1));
+        out_stride = -out_stride;
+    }
+
+    do
+    {
+        uint16_t* psrc = reinterpret_cast<uint16_t*>(in_buf);
+        uint8_t* pdst = out_buf;
+        int32_t hcount = width;
+        do
+        {
+            uint16_t source = *psrc++;
+            UnpackARGB555Word(source, pdst[3], pdst[2], pdst[1], pdst[0])
+            pdst += 4;
+        } while (--hcount);
+
+        in_buf += in_stride;
+        out_buf += out_stride;
+    } while (--height);
+}
+
+void blipvert::ARGB1555_to_RGB555(int32_t width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD* in_palette)
+{
+    if (!out_stride)
+        out_stride = width * 2;
+
+    if (!in_stride)
+        in_stride = width * 2;
+
+    if (flipped)
+    {
+        out_buf += (out_stride * (height - 1));
+        out_stride = -out_stride;
+    }
+
+    do
+    {
+        uint16_t* psrc = reinterpret_cast<uint16_t*>(in_buf);
+        uint16_t* pdst = reinterpret_cast<uint16_t*>(out_buf);
+        int32_t hcount = width;
+        do
+        {
+            *pdst++ = *psrc++ | 0x8000;
         } while (--hcount);
 
         in_buf += in_stride;

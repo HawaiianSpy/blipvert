@@ -60,15 +60,6 @@ namespace BlipvertUnitTests
 		}
 
 		//
-		// RGBA to RGBx
-		//
-
-		TEST_METHOD(ARGB1555_to_RGBA_UnitTest)
-		{
-			Run555AlphabitTestSeries(MVFMT_ARGB1555, MVFMT_RGBA);
-		}
-
-		//
 		// RGB32 to RGBx
 		//
 
@@ -174,6 +165,25 @@ namespace BlipvertUnitTests
 			Run555bitTestSeries(MVFMT_RGB555, MVFMT_RGB565);
 		}
 
+		TEST_METHOD(RGB555_to_ARGB1555_UnitTest)
+		{
+			Run555bitTestSeries(MVFMT_RGB555, MVFMT_ARGB1555);
+		}
+
+		//
+		// ARGB1555 to RGBx
+		//
+
+		TEST_METHOD(ARGB1555_to_RGBA_UnitTest)
+		{
+			Run555AlphabitTestSeries(MVFMT_ARGB1555, MVFMT_RGBA);
+		}
+
+		TEST_METHOD(ARGB1555_to_RGB555_UnitTest)
+		{
+			Run555bitTestSeries(MVFMT_ARGB1555, MVFMT_RGB555);
+		}
+
 		//
 		// RGB8 to RGBx
 		//
@@ -207,29 +217,6 @@ namespace BlipvertUnitTests
 		{
 			Run8bitPalletizedTestSeries(MVFMT_RGB8, MVFMT_RGB555);
 		}
-
-		//TEST_METHOD(RGB8_to_RGB24_Torture_UnitTest)
-		//{
-		//	uint16_t index = 100;
-		//	while (index--)
-		//	{
-		//		Run8bitPalletizedTestSeries(MVFMT_RGB8, MVFMT_RGB24);
-		//	}
-		//}
-
-		//TEST_METHOD(RGB8_to_RGB24_Fast_Torture_UnitTest)
-		//{
-		//	bool savef = get_UseFasterLooping();
-		//	set_UseFasterLooping(true);
-
-		//	uint16_t index = 100;
-		//	while (index--)
-		//	{
-		//		Run8bitPalletizedTestSeries(MVFMT_RGB8, MVFMT_RGB24);
-		//	}
-
-		//	set_UseFasterLooping(savef);
-		//}
 
 		//
 		// RGB4 to RGBx

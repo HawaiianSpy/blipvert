@@ -53,7 +53,8 @@ vector<const MediaFormatID*> RGBFormats = {
 	&MVFMT_RGB32,
 	&MVFMT_RGB24,
 	&MVFMT_RGB565,
-	&MVFMT_RGB555
+	&MVFMT_RGB555,
+	&MVFMT_ARGB1555
 };
 
 vector<const MediaFormatID*> YUVFormats = {

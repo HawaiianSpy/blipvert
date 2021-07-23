@@ -2362,6 +2362,94 @@ void blipvert::RGB32_to_Y42T(int32_t  width, int32_t height,
     }
 }
 
+void blipvert::RGB32_to_Y41T(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette)
+{
+    if (!out_stride)
+        out_stride = width / 8 * 12;
+
+    if (!in_stride)
+        in_stride = width * 4;
+
+    if (flipped)
+    {
+        out_buf += (out_stride * (height - 1));
+        out_stride = -out_stride;
+    }
+
+    while (height)
+    {
+        uint8_t* psrc = in_buf;
+        uint8_t* pdst = out_buf;
+        int32_t hcount = width;
+        while (hcount)
+        {
+            int16_t bluea = psrc[0];
+            int16_t greena = psrc[1];
+            int16_t reda = psrc[2];
+
+            bluea += psrc[4];
+            greena += psrc[5];
+            reda += psrc[6];
+
+            bluea += psrc[8];
+            greena += psrc[9];
+            reda += psrc[10];
+
+            bluea += psrc[12];
+            greena += psrc[13];
+            reda += psrc[14];
+
+            bluea >>= 2;
+            greena >>= 2;
+            reda >>= 2;
+
+            pdst[0] = static_cast<uint8_t>(((ur_table[reda] + ug_table[greena] + ub_table[bluea]) >> 15) + 128);
+            pdst[2] = static_cast<uint8_t>(((vr_table[reda] + vg_table[greena] + vb_table[bluea]) >> 15) + 128);
+
+            pdst[1] = static_cast<uint8_t>(((yr_table[psrc[2]] + yg_table[psrc[1]] + yb_table[psrc[0]]) >> 15) + 16) | 0x01;
+            pdst[3] = static_cast<uint8_t>(((yr_table[psrc[6]] + yg_table[psrc[5]] + yb_table[psrc[4]]) >> 15) + 16) | 0x01;
+            pdst[5] = static_cast<uint8_t>(((yr_table[psrc[10]] + yg_table[psrc[9]] + yb_table[psrc[8]]) >> 15) + 16) | 0x01;
+            pdst[7] = static_cast<uint8_t>(((yr_table[psrc[14]] + yg_table[psrc[13]] + yb_table[psrc[12]]) >> 15) + 16) | 0x01;
+
+            bluea = psrc[16];
+            greena = psrc[17];
+            reda = psrc[18];
+
+            bluea += psrc[20];
+            greena += psrc[21];
+            reda += psrc[22];
+
+            bluea += psrc[24];
+            greena += psrc[25];
+            reda += psrc[26];
+
+            bluea += psrc[28];
+            greena += psrc[29];
+            reda += psrc[30];
+
+            bluea >>= 2;
+            greena >>= 2;
+            reda >>= 2;
+
+            pdst[4] = static_cast<uint8_t>(((ur_table[reda] + ug_table[greena] + ub_table[bluea]) >> 15) + 128);
+            pdst[6] = static_cast<uint8_t>(((vr_table[reda] + vg_table[greena] + vb_table[bluea]) >> 15) + 128);
+
+            pdst[8] = static_cast<uint8_t>(((yr_table[psrc[18]] + yg_table[psrc[17]] + yb_table[psrc[16]]) >> 15) + 16) | 0x01;
+            pdst[9] = static_cast<uint8_t>(((yr_table[psrc[22]] + yg_table[psrc[21]] + yb_table[psrc[20]]) >> 15) + 16) | 0x01;
+            pdst[10] = static_cast<uint8_t>(((yr_table[psrc[26]] + yg_table[psrc[25]] + yb_table[psrc[24]]) >> 15) + 16) | 0x01;
+            pdst[11] = static_cast<uint8_t>(((yr_table[psrc[30]] + yg_table[psrc[29]] + yb_table[psrc[28]]) >> 15) + 16) | 0x01;
+
+            psrc += 32;
+            pdst += 12;
+            hcount -= 8;
+        }
+
+        in_buf += in_stride;
+        out_buf += out_stride;
+        height--;
+    }
+}
+
 //
 // RGB24 to YUV transforms
 //
@@ -2886,6 +2974,94 @@ void blipvert::RGB24_to_Y42T(int32_t  width, int32_t height,
         in_buf += in_stride;
         out_buf += out_stride;
 
+        height--;
+    }
+}
+
+void blipvert::RGB24_to_Y41T(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette)
+{
+    if (!out_stride)
+        out_stride = width / 8 * 12;
+
+    if (!in_stride)
+        in_stride = width * 3;
+
+    if (flipped)
+    {
+        out_buf += (out_stride * (height - 1));
+        out_stride = -out_stride;
+    }
+
+    while (height)
+    {
+        uint8_t* psrc = in_buf;
+        uint8_t* pdst = out_buf;
+        int32_t hcount = width;
+        while (hcount)
+        {
+            int16_t bluea = psrc[0];
+            int16_t greena = psrc[1];
+            int16_t reda = psrc[2];
+
+            bluea += psrc[3];
+            greena += psrc[4];
+            reda += psrc[5];
+
+            bluea += psrc[6];
+            greena += psrc[7];
+            reda += psrc[8];
+
+            bluea += psrc[9];
+            greena += psrc[10];
+            reda += psrc[11];
+
+            bluea >>= 2;
+            greena >>= 2;
+            reda >>= 2;
+
+            pdst[0] = static_cast<uint8_t>(((ur_table[reda] + ug_table[greena] + ub_table[bluea]) >> 15) + 128);
+            pdst[2] = static_cast<uint8_t>(((vr_table[reda] + vg_table[greena] + vb_table[bluea]) >> 15) + 128);
+
+            pdst[1] = static_cast<uint8_t>(((yr_table[psrc[2]] + yg_table[psrc[1]] + yb_table[psrc[0]]) >> 15) + 16) | 0x01;
+            pdst[3] = static_cast<uint8_t>(((yr_table[psrc[5]] + yg_table[psrc[4]] + yb_table[psrc[3]]) >> 15) + 16) | 0x01;
+            pdst[5] = static_cast<uint8_t>(((yr_table[psrc[8]] + yg_table[psrc[7]] + yb_table[psrc[6]]) >> 15) + 16) | 0x01;
+            pdst[7] = static_cast<uint8_t>(((yr_table[psrc[11]] + yg_table[psrc[10]] + yb_table[psrc[9]]) >> 15) + 16) | 0x01;
+
+            bluea = psrc[12];
+            greena = psrc[13];
+            reda = psrc[14];
+
+            bluea += psrc[15];
+            greena += psrc[16];
+            reda += psrc[17];
+
+            bluea += psrc[18];
+            greena += psrc[19];
+            reda += psrc[20];
+
+            bluea += psrc[21];
+            greena += psrc[22];
+            reda += psrc[23];
+
+            bluea >>= 2;
+            greena >>= 2;
+            reda >>= 2;
+
+            pdst[4] = static_cast<uint8_t>(((ur_table[reda] + ug_table[greena] + ub_table[bluea]) >> 15) + 128);
+            pdst[6] = static_cast<uint8_t>(((vr_table[reda] + vg_table[greena] + vb_table[bluea]) >> 15) + 128);
+
+            pdst[8] = static_cast<uint8_t>(((yr_table[psrc[14]] + yg_table[psrc[13]] + yb_table[psrc[12]]) >> 15) + 16) | 0x01;
+            pdst[9] = static_cast<uint8_t>(((yr_table[psrc[17]] + yg_table[psrc[16]] + yb_table[psrc[15]]) >> 15) + 16) | 0x01;
+            pdst[10] = static_cast<uint8_t>(((yr_table[psrc[20]] + yg_table[psrc[19]] + yb_table[psrc[18]]) >> 15) + 16) | 0x01;
+            pdst[11] = static_cast<uint8_t>(((yr_table[psrc[23]] + yg_table[psrc[22]] + yb_table[psrc[21]]) >> 15) + 16) | 0x01;
+
+            psrc += 24;
+            pdst += 12;
+            hcount -= 8;
+        }
+
+        in_buf += in_stride;
+        out_buf += out_stride;
         height--;
     }
 }
@@ -3458,6 +3634,98 @@ void blipvert::RGB565_to_Y42T(int32_t  width, int32_t height,
             psrc += 2;
             pdst += 4;
             hcount -= 2;
+        }
+
+        in_buf += in_stride;
+        out_buf += out_stride;
+        height--;
+    }
+}
+
+void blipvert::RGB565_to_Y41T(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette)
+{
+    if (!out_stride)
+        out_stride = width / 8 * 12;
+
+    if (!in_stride)
+        in_stride = width * 2;
+
+    if (flipped)
+    {
+        out_buf += (out_stride * (height - 1));
+        out_stride = -out_stride;
+    }
+
+    while (height)
+    {
+        uint16_t* psrc = reinterpret_cast<uint16_t*>(in_buf);
+        uint8_t* pdst = out_buf;
+        int32_t hcount = width;
+        while (hcount)
+        {
+            int16_t blue[4];
+            int16_t green[4];
+            int16_t red[4];
+
+            int16_t bluea = blue[0] = static_cast<int16_t>(UnpackRGB565Blue(psrc[0]));
+            int16_t greena = green[0] = static_cast<int16_t>(UnpackRGB565Green(psrc[0]));
+            int16_t reda = red[0] = static_cast<int16_t>(UnpackRGB565Red(psrc[0]));
+
+            bluea += (blue[1] = static_cast<int16_t>(UnpackRGB565Blue(psrc[1])));
+            greena += (green[1] = static_cast<int16_t>(UnpackRGB565Green(psrc[1])));
+            reda += (red[1] = static_cast<int16_t>(UnpackRGB565Red(psrc[1])));
+
+            bluea += (blue[2] = static_cast<int16_t>(UnpackRGB565Blue(psrc[2])));
+            greena += (green[2] = static_cast<int16_t>(UnpackRGB565Green(psrc[2])));
+            reda += (red[2] = static_cast<int16_t>(UnpackRGB565Red(psrc[2])));
+
+            bluea += (blue[3] = static_cast<int16_t>(UnpackRGB565Blue(psrc[3])));
+            greena += (green[3] = static_cast<int16_t>(UnpackRGB565Green(psrc[3])));
+            reda += (red[3] = static_cast<int16_t>(UnpackRGB565Red(psrc[3])));
+
+            bluea >>= 2;
+            greena >>= 2;
+            reda >>= 2;
+
+            pdst[0] = static_cast<uint8_t>(((ur_table[reda] + ug_table[greena] + ub_table[bluea]) >> 15) + 128);
+            pdst[2] = static_cast<uint8_t>(((vr_table[reda] + vg_table[greena] + vb_table[bluea]) >> 15) + 128);
+
+            pdst[1] = static_cast<uint8_t>(((yr_table[red[0]] + yg_table[green[0]] + yb_table[blue[0]]) >> 15) + 16) | 0x01;
+            pdst[3] = static_cast<uint8_t>(((yr_table[red[1]] + yg_table[green[1]] + yb_table[blue[1]]) >> 15) + 16) | 0x01;
+            pdst[5] = static_cast<uint8_t>(((yr_table[red[2]] + yg_table[green[2]] + yb_table[blue[2]]) >> 15) + 16) | 0x01;
+            pdst[7] = static_cast<uint8_t>(((yr_table[red[3]] + yg_table[green[3]] + yb_table[blue[3]]) >> 15) + 16) | 0x01;
+
+            bluea = blue[0] = static_cast<int16_t>(UnpackRGB565Blue(psrc[4]));
+            greena = green[0] = static_cast<int16_t>(UnpackRGB565Green(psrc[4]));
+            reda = red[0] = static_cast<int16_t>(UnpackRGB565Red(psrc[4]));
+
+            bluea += (blue[1] = static_cast<int16_t>(UnpackRGB565Blue(psrc[5])));
+            greena += (green[1] = static_cast<int16_t>(UnpackRGB565Green(psrc[5])));
+            reda += (red[1] = static_cast<int16_t>(UnpackRGB565Red(psrc[5])));
+
+            bluea += (blue[2] = static_cast<int16_t>(UnpackRGB565Blue(psrc[6])));
+            greena += (green[2] = static_cast<int16_t>(UnpackRGB565Green(psrc[6])));
+            reda += (red[2] = static_cast<int16_t>(UnpackRGB565Red(psrc[6])));
+
+            bluea += (blue[3] = static_cast<int16_t>(UnpackRGB565Blue(psrc[7])));
+            greena += (green[3] = static_cast<int16_t>(UnpackRGB565Green(psrc[7])));
+            reda += (red[3] = static_cast<int16_t>(UnpackRGB565Red(psrc[7])));
+
+            bluea >>= 2;
+            greena >>= 2;
+            reda >>= 2;
+
+            pdst[4] = static_cast<uint8_t>(((ur_table[reda] + ug_table[greena] + ub_table[bluea]) >> 15) + 128);
+            pdst[6] = static_cast<uint8_t>(((vr_table[reda] + vg_table[greena] + vb_table[bluea]) >> 15) + 128);
+
+            pdst[8] = static_cast<uint8_t>(((yr_table[red[0]] + yg_table[green[0]] + yb_table[blue[0]]) >> 15) + 16) | 0x01;
+            pdst[9] = static_cast<uint8_t>(((yr_table[red[1]] + yg_table[green[1]] + yb_table[blue[1]]) >> 15) + 16) | 0x01;
+            pdst[10] = static_cast<uint8_t>(((yr_table[red[2]] + yg_table[green[2]] + yb_table[blue[2]]) >> 15) + 16) | 0x01;
+            pdst[11] = static_cast<uint8_t>(((yr_table[red[3]] + yg_table[green[3]] + yb_table[blue[3]]) >> 15) + 16) | 0x01;
+
+            psrc += 8;
+            pdst += 12;
+            hcount -= 8;
         }
 
         in_buf += in_stride;
@@ -4250,6 +4518,98 @@ void blipvert::RGB555_to_Y42T(int32_t  width, int32_t height,
     }
 }
 
+void blipvert::RGB555_to_Y41T(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette)
+{
+    if (!out_stride)
+        out_stride = width / 8 * 12;
+
+    if (!in_stride)
+        in_stride = width * 2;
+
+    if (flipped)
+    {
+        out_buf += (out_stride * (height - 1));
+        out_stride = -out_stride;
+    }
+
+    while (height)
+    {
+        uint16_t* psrc = reinterpret_cast<uint16_t*>(in_buf);
+        uint8_t* pdst = out_buf;
+        int32_t hcount = width;
+        while (hcount)
+        {
+            int16_t blue[4];
+            int16_t green[4];
+            int16_t red[4];
+
+            int16_t bluea = blue[0] = static_cast<int16_t>(UnpackRGB555Blue(psrc[0]));
+            int16_t greena = green[0] = static_cast<int16_t>(UnpackRGB555Green(psrc[0]));
+            int16_t reda = red[0] = static_cast<int16_t>(UnpackRGB555Red(psrc[0]));
+
+            bluea += (blue[1] = static_cast<int16_t>(UnpackRGB555Blue(psrc[1])));
+            greena += (green[1] = static_cast<int16_t>(UnpackRGB555Green(psrc[1])));
+            reda += (red[1] = static_cast<int16_t>(UnpackRGB555Red(psrc[1])));
+
+            bluea += (blue[2] = static_cast<int16_t>(UnpackRGB555Blue(psrc[2])));
+            greena += (green[2] = static_cast<int16_t>(UnpackRGB555Green(psrc[2])));
+            reda += (red[2] = static_cast<int16_t>(UnpackRGB555Red(psrc[2])));
+
+            bluea += (blue[3] = static_cast<int16_t>(UnpackRGB555Blue(psrc[3])));
+            greena += (green[3] = static_cast<int16_t>(UnpackRGB555Green(psrc[3])));
+            reda += (red[3] = static_cast<int16_t>(UnpackRGB555Red(psrc[3])));
+
+            bluea >>= 2;
+            greena >>= 2;
+            reda >>= 2;
+
+            pdst[0] = static_cast<uint8_t>(((ur_table[reda] + ug_table[greena] + ub_table[bluea]) >> 15) + 128);
+            pdst[2] = static_cast<uint8_t>(((vr_table[reda] + vg_table[greena] + vb_table[bluea]) >> 15) + 128);
+
+            pdst[1] = static_cast<uint8_t>(((yr_table[red[0]] + yg_table[green[0]] + yb_table[blue[0]]) >> 15) + 16) | 0x01;
+            pdst[3] = static_cast<uint8_t>(((yr_table[red[1]] + yg_table[green[1]] + yb_table[blue[1]]) >> 15) + 16) | 0x01;
+            pdst[5] = static_cast<uint8_t>(((yr_table[red[2]] + yg_table[green[2]] + yb_table[blue[2]]) >> 15) + 16) | 0x01;
+            pdst[7] = static_cast<uint8_t>(((yr_table[red[3]] + yg_table[green[3]] + yb_table[blue[3]]) >> 15) + 16) | 0x01;
+
+            bluea = blue[0] = static_cast<int16_t>(UnpackRGB555Blue(psrc[4]));
+            greena = green[0] = static_cast<int16_t>(UnpackRGB555Green(psrc[4]));
+            reda = red[0] = static_cast<int16_t>(UnpackRGB555Red(psrc[4]));
+
+            bluea += (blue[1] = static_cast<int16_t>(UnpackRGB555Blue(psrc[5])));
+            greena += (green[1] = static_cast<int16_t>(UnpackRGB555Green(psrc[5])));
+            reda += (red[1] = static_cast<int16_t>(UnpackRGB555Red(psrc[5])));
+
+            bluea += (blue[2] = static_cast<int16_t>(UnpackRGB555Blue(psrc[6])));
+            greena += (green[2] = static_cast<int16_t>(UnpackRGB555Green(psrc[6])));
+            reda += (red[2] = static_cast<int16_t>(UnpackRGB555Red(psrc[6])));
+
+            bluea += (blue[3] = static_cast<int16_t>(UnpackRGB555Blue(psrc[7])));
+            greena += (green[3] = static_cast<int16_t>(UnpackRGB555Green(psrc[7])));
+            reda += (red[3] = static_cast<int16_t>(UnpackRGB555Red(psrc[7])));
+
+            bluea >>= 2;
+            greena >>= 2;
+            reda >>= 2;
+
+            pdst[4] = static_cast<uint8_t>(((ur_table[reda] + ug_table[greena] + ub_table[bluea]) >> 15) + 128);
+            pdst[6] = static_cast<uint8_t>(((vr_table[reda] + vg_table[greena] + vb_table[bluea]) >> 15) + 128);
+
+            pdst[8] = static_cast<uint8_t>(((yr_table[red[0]] + yg_table[green[0]] + yb_table[blue[0]]) >> 15) + 16) | 0x01;
+            pdst[9] = static_cast<uint8_t>(((yr_table[red[1]] + yg_table[green[1]] + yb_table[blue[1]]) >> 15) + 16) | 0x01;
+            pdst[10] = static_cast<uint8_t>(((yr_table[red[2]] + yg_table[green[2]] + yb_table[blue[2]]) >> 15) + 16) | 0x01;
+            pdst[11] = static_cast<uint8_t>(((yr_table[red[3]] + yg_table[green[3]] + yb_table[blue[3]]) >> 15) + 16) | 0x01;
+
+            psrc += 8;
+            pdst += 12;
+            hcount -= 8;
+        }
+
+        in_buf += in_stride;
+        out_buf += out_stride;
+        height--;
+    }
+}
+
 //
 // RGB8 to YUV transforms
 //
@@ -4845,6 +5205,101 @@ void blipvert::RGB8_to_Y42T(int32_t  width, int32_t height,
                 (((vr_table[red1] + vg_table[green1] + vb_table[blue1]) >> 15) + 128)) / 2);
             pdst += 4;
             hcount -= 2;
+        }
+
+        in_buf += in_stride;
+        out_buf += out_stride;
+        height--;
+    }
+}
+
+void blipvert::RGB8_to_Y41T(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette)
+{
+    if (!out_stride)
+        out_stride = width / 8 * 12;
+
+    if (!in_stride)
+        in_stride = width;
+
+    if (in_palette == nullptr)
+        in_palette = rgb8_greyscale_palette;
+
+    if (flipped)
+    {
+        out_buf += (out_stride * (height - 1));
+        out_stride = -out_stride;
+    }
+
+    while (height)
+    {
+        uint8_t* psrc = in_buf;
+        uint8_t* pdst = out_buf;
+        int32_t hcount = width;
+        while (hcount)
+        {
+            int16_t blue[4];
+            int16_t green[4];
+            int16_t red[4];
+
+            int16_t bluea = blue[0] = in_palette[psrc[0]].rgbBlue;
+            int16_t greena = green[0] = in_palette[psrc[0]].rgbGreen;
+            int16_t reda = red[0] = in_palette[psrc[0]].rgbRed;
+
+            bluea += (blue[1] = in_palette[psrc[1]].rgbBlue);
+            greena += (green[1] = in_palette[psrc[1]].rgbGreen);
+            reda += (red[1] = in_palette[psrc[1]].rgbRed);
+
+            bluea += (blue[2] = in_palette[psrc[2]].rgbBlue);
+            greena += (green[2] = in_palette[psrc[2]].rgbGreen);
+            reda += (red[2] = in_palette[psrc[2]].rgbRed);
+
+            bluea += (blue[3] = in_palette[psrc[3]].rgbBlue);
+            greena += (green[3] = in_palette[psrc[3]].rgbGreen);
+            reda += (red[3] = in_palette[psrc[3]].rgbRed);
+
+            bluea >>= 2;
+            greena >>= 2;
+            reda >>= 2;
+
+            pdst[0] = static_cast<uint8_t>(((ur_table[reda] + ug_table[greena] + ub_table[bluea]) >> 15) + 128);
+            pdst[2] = static_cast<uint8_t>(((vr_table[reda] + vg_table[greena] + vb_table[bluea]) >> 15) + 128);
+
+            pdst[1] = static_cast<uint8_t>(((yr_table[red[0]] + yg_table[green[0]] + yb_table[blue[0]]) >> 15) + 16) | 0x01;
+            pdst[3] = static_cast<uint8_t>(((yr_table[red[1]] + yg_table[green[1]] + yb_table[blue[1]]) >> 15) + 16) | 0x01;
+            pdst[5] = static_cast<uint8_t>(((yr_table[red[2]] + yg_table[green[2]] + yb_table[blue[2]]) >> 15) + 16) | 0x01;
+            pdst[7] = static_cast<uint8_t>(((yr_table[red[3]] + yg_table[green[3]] + yb_table[blue[3]]) >> 15) + 16) | 0x01;
+
+            bluea = blue[0] = in_palette[psrc[4]].rgbBlue;
+            greena = green[0] = in_palette[psrc[4]].rgbGreen;
+            reda = red[0] = in_palette[psrc[4]].rgbRed;
+
+            bluea += (blue[1] = in_palette[psrc[5]].rgbBlue);
+            greena += (green[1] = in_palette[psrc[5]].rgbGreen);
+            reda += (red[1] = in_palette[psrc[5]].rgbRed);
+
+            bluea += (blue[2] = in_palette[psrc[6]].rgbBlue);
+            greena += (green[2] = in_palette[psrc[6]].rgbGreen);
+            reda += (red[2] = in_palette[psrc[6]].rgbRed);
+
+            bluea += (blue[3] = in_palette[psrc[7]].rgbBlue);
+            greena += (green[3] = in_palette[psrc[7]].rgbGreen);
+            reda += (red[3] = in_palette[psrc[7]].rgbRed);
+
+            bluea >>= 2;
+            greena >>= 2;
+            reda >>= 2;
+
+            pdst[4] = static_cast<uint8_t>(((ur_table[reda] + ug_table[greena] + ub_table[bluea]) >> 15) + 128);
+            pdst[6] = static_cast<uint8_t>(((vr_table[reda] + vg_table[greena] + vb_table[bluea]) >> 15) + 128);
+
+            pdst[8] = static_cast<uint8_t>(((yr_table[red[0]] + yg_table[green[0]] + yb_table[blue[0]]) >> 15) + 16) | 0x01;
+            pdst[9] = static_cast<uint8_t>(((yr_table[red[1]] + yg_table[green[1]] + yb_table[blue[1]]) >> 15) + 16) | 0x01;
+            pdst[10] = static_cast<uint8_t>(((yr_table[red[2]] + yg_table[green[2]] + yb_table[blue[2]]) >> 15) + 16) | 0x01;
+            pdst[11] = static_cast<uint8_t>(((yr_table[red[3]] + yg_table[green[3]] + yb_table[blue[3]]) >> 15) + 16) | 0x01;
+
+            psrc += 8;
+            pdst += 12;
+            hcount -= 8;
         }
 
         in_buf += in_stride;

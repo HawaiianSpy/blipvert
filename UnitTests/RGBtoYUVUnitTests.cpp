@@ -62,6 +62,11 @@ namespace BlipvertUnitTests
 			Run8bitAlphaTestSeries(MVFMT_RGBA, MVFMT_Y42T);
 		}
 
+		TEST_METHOD(RGBA_to_Y41T_UnitTest)
+		{
+			Run8bitAlphaTestSeries(MVFMT_RGBA, MVFMT_Y41T);
+		}
+
 		//
 		// RGB32 to YUV
 		//
@@ -510,6 +515,11 @@ namespace BlipvertUnitTests
 		TEST_METHOD(ARGB1555_to_Y42T_UnitTest)
 		{
 			Run555AlphabitTestSeries(MVFMT_ARGB1555, MVFMT_Y42T);
+		}
+
+		TEST_METHOD(ARGB1555_to_Y41T_UnitTest)
+		{
+			Run555AlphabitTestSeries(MVFMT_ARGB1555, MVFMT_Y41T);
 		}
 
 		//

@@ -573,6 +573,40 @@ namespace BlipvertUnitTests
 			Run8bitYAlphaTestSeries(MVFMT_Y42T, MVFMT_ARGB1555);
 		}
 
+		//
+		// Y41T to RGB
+		//
+
+		TEST_METHOD(Y41T_to_RGBA_UnitTest)
+		{
+			Run8bitYAlphaTestSeries(MVFMT_Y41T, MVFMT_RGBA);
+		}
+
+		TEST_METHOD(Y41T_to_RGB32_UnitTest)
+		{
+			Run8bitYAlphaTestSeries(MVFMT_Y41T, MVFMT_RGB32);
+		}
+
+		TEST_METHOD(Y41T_to_RGB24_UnitTest)
+		{
+			Run8bitYAlphaTestSeries(MVFMT_Y41T, MVFMT_RGB24);
+		}
+
+		TEST_METHOD(Y41T_to_RGB565_UnitTest)
+		{
+			Run8bitYAlphaTestSeries(MVFMT_Y41T, MVFMT_RGB565);
+		}
+
+		TEST_METHOD(Y41T_to_RGB555_UnitTest)
+		{
+			Run8bitYAlphaTestSeries(MVFMT_Y41T, MVFMT_RGB555);
+		}
+
+		TEST_METHOD(Y41T_to_ARGB1555_UnitTest)
+		{
+			Run8bitYAlphaTestSeries(MVFMT_Y41T, MVFMT_ARGB1555);
+		}
+
 	private:
 		void Run8bitYAlphaTestSeries(const MediaFormatID& yuvFormat, const MediaFormatID& rgbFormat)
 		{

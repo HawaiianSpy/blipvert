@@ -140,14 +140,7 @@ void FramerateTest(const MediaFormatID& in_format, const MediaFormatID& out_form
 
 void RunTest(const MediaFormatID& in_format, const MediaFormatID& out_format)
 {
-	if (IsYUVColorspace(in_format))
-	{
-		FramerateTest(in_format, out_format, 128, 128, 128, 255);
-	}
-	else if (IsRGBColorspace(in_format))
-	{
-		FramerateTest(in_format, out_format, 128, 128, 128, 255);
-	}
+	FramerateTest(in_format, out_format, 128, 128, 128, 255);
 }
 
 void RunAllTransforms()

@@ -29,6 +29,7 @@
 #include "legacydefs.h"
 #include "ToGreyscale.h"
 #include "ToFillColor.h"
+#include "SetPixel.h"
 #include <string>
 
 namespace blipvert
@@ -236,6 +237,12 @@ namespace blipvert
     // Note: Since there exists duplicate fourcc definitions for the same bitmap format, the main 
     //       definition name will be used if a duplicate format was requested.
     t_fillcolorfunc FindFillColorTransform(const MediaFormatID& inFormat);
+
+    // Finds a individual pixel setter for the given format.
+    // Returns a t_setpixelfunc pointer for the requested function. Retuns nullptr if a match couldn't be found.
+    // Note: Since there exists duplicate fourcc definitions for the same bitmap format, the main 
+    //       definition name will be used if a duplicate format was requested.
+    t_setpixelfunc FindSetPixelColor(const MediaFormatID& inFormat);
 
     // Returns information about the given video format.
     //

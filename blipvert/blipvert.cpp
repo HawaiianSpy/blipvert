@@ -59,6 +59,11 @@ typedef struct {
 } FillcolorTableEntry;
 
 typedef struct {
+    const MediaFormatID& inputEncoding;
+    t_setpixelfunc pProcAddr;
+} SetPixelTableEntry;
+
+typedef struct {
     Fourcc fourcc;
     MediaFormatID formatId;
 } FourccToMediaID;
@@ -1133,6 +1138,38 @@ FillcolorTableEntry FillColorTable[] = {
     { MVFMT_UNDEFINED, nullptr }
 };
 
+SetPixelTableEntry SetPixelTable[] = {
+    { MVFMT_RGBA, SetPixel_RGBA },
+    { MVFMT_RGB32, SetPixel_RGB32 },
+    { MVFMT_RGB24, SetPixel_RGB24 },
+    { MVFMT_RGB565, SetPixel_RGB565 },
+    { MVFMT_RGB555, SetPixel_RGB555 },
+    { MVFMT_ARGB1555, SetPixel_ARGB1555 },
+    { MVFMT_YUY2, SetPixel_YUY2 },
+    { MVFMT_UYVY, SetPixel_UYVY },
+    { MVFMT_YVYU, SetPixel_YVYU },
+    { MVFMT_VYUY, SetPixel_VYUY },
+    { MVFMT_I420, SetPixel_I420 },
+    { MVFMT_YV12, SetPixel_YV12 },
+    { MVFMT_YVU9, SetPixel_YVU9 },
+    { MVFMT_YUV9, SetPixel_YUV9 },
+    { MVFMT_IYU1, SetPixel_IYU1 },
+    { MVFMT_IYU2, SetPixel_IYU2 },
+    { MVFMT_Y800, SetPixel_Y800 },
+    { MVFMT_Y16, SetPixel_Y16 },
+    { MVFMT_Y41P, SetPixel_Y41P },
+    { MVFMT_CLJR, SetPixel_CLJR },
+    { MVFMT_AYUV, SetPixel_AYUV },
+    { MVFMT_IMC1, SetPixel_IMC1 },
+    { MVFMT_IMC2, SetPixel_IMC2 },
+    { MVFMT_IMC3, SetPixel_IMC3 },
+    { MVFMT_IMC4, SetPixel_IMC4 },
+    { MVFMT_NV12, SetPixel_NV12 },
+    { MVFMT_Y42T, SetPixel_Y42T },
+    { MVFMT_Y41T, SetPixel_Y41T },
+    { MVFMT_UNDEFINED, nullptr }
+};
+
 VideoFormatInfo VideoFmtTable[] = {
     // Unpacked YUV formats:
     {MVFMT_AYUV, FOURCC_AYUV, FOURCC_UNDEFINED, 32, ColorspaceType::YUV, true},
@@ -1227,6 +1264,7 @@ VideoFormatInfo VideoFmtTable[] = {
 map<MediaFormatID, t_transformfunc> TransformMap;
 map<MediaFormatID, t_greyscalefunc> GreyscaleMap;
 map<MediaFormatID, t_fillcolorfunc> FillColorMap;
+map<MediaFormatID, t_setpixelfunc> SetPixelMap;
 map<MediaFormatID, VideoFormatInfo*> MediaFormatInfoMap;
 map<Fourcc, const MediaFormatID> FourccToIDMap;
 
@@ -1257,6 +1295,13 @@ void blipvert::InitializeLibrary(void)
     while (FillColorTable[index].pProcAddr != nullptr)
     {
         FillColorMap.insert(make_pair(FillColorTable[index].inputEncoding, FillColorTable[index].pProcAddr));
+        index++;
+    }
+
+    index = 0;
+    while (FillColorTable[index].pProcAddr != nullptr)
+    {
+        SetPixelMap.insert(make_pair(SetPixelTable[index].inputEncoding, SetPixelTable[index].pProcAddr));
         index++;
     }
 
@@ -1364,6 +1409,33 @@ t_fillcolorfunc blipvert::FindFillColorTransform(const MediaFormatID& inFormat)
         {
             map<MediaFormatID, t_fillcolorfunc>::iterator it = FillColorMap.find(inid);
             if (it != FillColorMap.end())
+            {
+                return *(it->second);
+            }
+        }
+    }
+
+    return nullptr;
+}
+
+t_setpixelfunc blipvert::FindSetPixelColor(const MediaFormatID& inFormat)
+{
+    map<MediaFormatID, t_setpixelfunc>::iterator it = SetPixelMap.find(inFormat);
+    if (it != SetPixelMap.end())
+    {
+        return *(it->second);
+    }
+
+    // Not found, so try cross-referenced formats in case there's a known duplicate definition.
+
+    VideoFormatInfo inInfo;
+    if (GetVideoFormatInfo(inFormat, inInfo))
+    {
+        MediaFormatID inid;
+        if (GetVideoFormatID(inInfo.xRefFourcc, inid))
+        {
+            map<MediaFormatID, t_setpixelfunc>::iterator it = SetPixelMap.find(inid);
+            if (it != SetPixelMap.end())
             {
                 return *(it->second);
             }

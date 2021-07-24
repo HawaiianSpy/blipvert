@@ -2268,6 +2268,7 @@ void blipvert::RGB32_to_NV12(int32_t  width, int32_t height,
     {
         out_buf += (out_stride * (height - 1));
         uvplane += (out_stride * (uv_height - 1));
+        out_stride = -out_stride;
     }
 
     uint16_t red;
@@ -2883,6 +2884,7 @@ void blipvert::RGB24_to_NV12(int32_t  width, int32_t height,
     {
         out_buf += (out_stride * (height - 1));
         uvplane += (out_stride * (uv_height - 1));
+        out_stride = -out_stride;
     }
 
     uint16_t red;
@@ -3530,6 +3532,7 @@ void blipvert::RGB565_to_NV12(int32_t  width, int32_t height,
     {
         out_buf += (out_stride * (height - 1));
         uvplane += (out_stride * (uv_height - 1));
+        out_stride = -out_stride;
     }
 
     uint16_t red;
@@ -4406,6 +4409,7 @@ void blipvert::RGB555_to_NV12(int32_t  width, int32_t height,
     {
         out_buf += (out_stride * (height - 1));
         uvplane += (out_stride * (uv_height - 1));
+        out_stride = -out_stride;
     }
 
     uint16_t red;
@@ -5097,6 +5101,7 @@ void blipvert::RGB8_to_NV12(int32_t  width, int32_t height,
     {
         out_buf += (out_stride * (height - 1));
         uvplane += (out_stride * (uv_height - 1));
+        out_stride = -out_stride;
     }
 
     uint16_t red;

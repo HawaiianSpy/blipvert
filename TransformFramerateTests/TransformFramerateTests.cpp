@@ -78,7 +78,8 @@ vector<const MediaFormatID*> YUVFormats = {
 	&MVFMT_IMC2,
 	&MVFMT_IMC3,
 	&MVFMT_IMC4,
-	&MVFMT_NV12
+	&MVFMT_NV12,
+	&MVFMT_Y41T
 };
 
 void FramerateTest(const MediaFormatID& in_format, const MediaFormatID& out_format, uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha)

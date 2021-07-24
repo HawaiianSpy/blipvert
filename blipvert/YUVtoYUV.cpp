@@ -11570,6 +11570,51 @@ void blipvert::Y41P_to_Y42T(int32_t width, int32_t height,
     }
 }
 
+void blipvert::Y41P_to_Y41T(int32_t width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD* in_palette)
+{
+    if (!in_stride)
+        in_stride = width * 12 / 8;
+
+    if (!out_stride)
+        out_stride = width * 12 / 8;
+
+    if (flipped)
+    {
+        out_buf += (out_stride * (height - 1));
+        out_stride = -out_stride;
+    }
+    while (height)
+    {
+        uint8_t* psrc = in_buf;
+        uint8_t* pdst = out_buf;
+        int32_t hcount = width;
+        while (hcount)
+        {
+            *pdst++ = *psrc++;          // U0
+            *pdst++ = *psrc++ | 0x01;   // Y0
+            *pdst++ = *psrc++;          // V0
+            *pdst++ = *psrc++ | 0x01;   // Y1
+            *pdst++ = *psrc++;          // U4
+            *pdst++ = *psrc++ | 0x01;   // Y2
+            *pdst++ = *psrc++;          // V4
+            *pdst++ = *psrc++ | 0x01;   // Y3
+            *pdst++ = *psrc++ | 0x01;   // Y4
+            *pdst++ = *psrc++ | 0x01;   // Y5
+            *pdst++ = *psrc++ | 0x01;   // Y6
+            *pdst++ = *psrc++ | 0x01;   // Y7
+
+            hcount -= 8;
+        }
+
+        in_buf += in_stride;
+        out_buf += out_stride;
+        height--;
+    }
+}
+
 void IMCx_to_IMCx(int32_t width, int32_t height,
     uint8_t* out_buf, int32_t out_stride, bool out_ufirst, bool out_interlaced,
     uint8_t* in_buf, int32_t in_stride, bool in_ufirst, bool in_interlaced,
@@ -14721,6 +14766,7 @@ void blipvert::Y41T_to_CLJR(int32_t width, int32_t height,
         out_buf += out_stride;
     }
 }
+
 void blipvert::Y41T_to_Y41P(int32_t width, int32_t height,
     uint8_t* out_buf, int32_t out_stride,
     uint8_t* in_buf, int32_t in_stride,

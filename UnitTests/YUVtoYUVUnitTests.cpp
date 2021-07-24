@@ -1675,6 +1675,11 @@ namespace BlipvertUnitTests
 			Run8bitTestSeries(MVFMT_Y41P, MVFMT_Y42T);
 		}
 
+		TEST_METHOD(Y41P_to_Y41T_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_Y41P, MVFMT_Y41T);
+		}
+
 		//
 		// IMC1 to YUVx
 		//

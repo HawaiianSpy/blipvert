@@ -173,6 +173,7 @@
     <ClCompile Include="RGBtoYUVUnitTests.cpp" />
     <ClCompile Include="ToGreyscaleUnitTests.cpp" />
     <ClCompile Include="UtilityFunctionUnitTests.cpp" />
+    <ClCompile Include="VFlipUnitTests.cpp" />
     <ClCompile Include="YUVtoRGBUnitTests.cpp" />
     <ClCompile Include="YUVtoYUVUnitTests.cpp" />
   </ItemGroup>

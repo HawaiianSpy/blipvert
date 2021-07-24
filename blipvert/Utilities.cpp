@@ -142,6 +142,28 @@ void blipvert::Interlaced_to_Progressive(int32_t height, int32_t line_bytes, boo
     }
 }
 
+uint32_t blipvert::CalculateMinimumLineSize(const MediaFormatID& inFormat, uint32_t width)
+{
+    if (width < 8 || (width % 8 != 0) )
+    {
+        return 0;
+    }
+    VideoFormatInfo info;
+    if (!GetVideoFormatInfo(inFormat, info))
+    {
+        return 0;
+    }
+
+    if (info.effectiveBitsPerPixel <= 0)
+    {
+        return 0;
+    }
+
+    uint32_t bitsPerLine = width * static_cast<uint32_t>(info.effectiveBitsPerPixel);
+    uint32_t bytesPerLine = bitsPerLine / 8;//((bitsPerLine + 31) & (~31)) / 8;
+
+    return bytesPerLine;
+}
 
 uint32_t blipvert::CalculateBufferSize(const MediaFormatID& inFormat, uint32_t width, uint32_t height, uint32_t stride)
 {

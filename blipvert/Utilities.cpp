@@ -155,12 +155,7 @@ uint32_t blipvert::CalculateBufferSize(const MediaFormatID& inFormat, uint32_t w
         return 0;
     };
 
-    uint32_t result = calcfunct(width, height, stride);
-    if (UseFasterLooping && inFormat == MVFMT_RGB24 || inFormat == MVFMT_IYU2)
-    {
-        result++;
-    }
-    return result;
+    return calcfunct(width, height, stride);
 }
 
 int32_t blipvert::CalculateMinimumLineStride(const MediaFormatID& inFormat, uint32_t width, uint32_t height)

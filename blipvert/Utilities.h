@@ -59,6 +59,18 @@ namespace blipvert
     //              4. The stride value must be >= the minimum number of bytes-per-line needed for the width of the bitmap format.
     uint32_t CalculateBufferSize(const MediaFormatID& inFormat, uint32_t width, uint32_t height, int32_t stride = 0);
 
+    // Returns the minimum size in bytes needed to contain one horizontal line of the bitmap.
+    //
+    // Parameters:
+    //      inFormat:           The media ID to calculate.
+    //      width & height:     The dimensions of the bitmap in pixels.
+    // Returns the size of the line in bytes.
+     //
+    // IMPORTANT:   For reasons related to the bitmap format definitions, all input parameters must follow these rules:
+    //              1. Both the width and height values must be even multiples of 8.
+    //              2. The width values must be >= 8;
+    //              3. The height value must be >= 16.
+    //              4. The stride value must be >= the minimum number of bytes-per-line needed for the width of the bitmap format.
     int32_t CalculateMinimumLineStride(const MediaFormatID& inFormat, uint32_t width, uint32_t height);
 
     // Returns TRUE if the colorspace is RGB

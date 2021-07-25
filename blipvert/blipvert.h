@@ -252,8 +252,8 @@ namespace blipvert
     //       definition name will be used if a duplicate format was requested.
     t_flipverticalfunc FindFlipVerticalTransform(const MediaFormatID& inFormat);
 
-    // Finds a vertical flip in place video transform for the given input media format.
-    // Returns a t_flipverticalfunc pointer for the requested transform function. Retuns nullptr if a match couldn't be found.
+    // Finds a buffer size calculation function for the given format.
+    // Returns a t_calcbuffsizefunc pointer for the requested transform function. Retuns nullptr if a match couldn't be found.
     // Note: Since there exists duplicate fourcc definitions for the same bitmap format, the main 
     //       definition name will be used if a duplicate format was requested.
     t_calcbuffsizefunc FindBufSizeCalculator(const MediaFormatID& inFormat);

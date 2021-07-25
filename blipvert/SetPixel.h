@@ -28,6 +28,8 @@
 
 namespace blipvert
 {
+    // TODO: This is a hack for unit testing purposes.
+
     typedef void(__cdecl* t_setpixelfunc) (uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha, int32_t x, int32_t y, int32_t width, int32_t height, uint8_t* buf, int32_t stride);
 
     // RGB Colorspace fill functions

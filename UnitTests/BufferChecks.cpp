@@ -39,28 +39,27 @@ const uint32_t BlipvertUnitTests::StrideBumpTestValue = 16;
 
 uint32_t BlipvertUnitTests::StrideBump = 0;
 
-uint32_t BlipvertUnitTests::CalculateStrideBump(const MediaFormatID& inFormat, uint32_t width)
+uint32_t BlipvertUnitTests::CalculateStrideBump(const MediaFormatID& inFormat, uint32_t width, uint32_t height)
 {
 	if (!StrideBump)
 	{
 		return 0;
 	}
 
-	VideoFormatInfo info;
-	if (!GetVideoFormatInfo(inFormat, info))
+	if (width < 8 || (width % 8 != 0) || height < 16 || (height % 8 != 0))
 	{
 		return 0;
 	}
 
-	if (info.effectiveBitsPerPixel <= 0)
+	t_calcbuffsizefunc calcfunct = FindBufSizeCalculator(inFormat);
+	if (!calcfunct)
 	{
 		return 0;
-	}
+	};
 
-	uint32_t bitsPerLine = width * static_cast<uint32_t>(info.effectiveBitsPerPixel);
-	uint32_t bytesPerLine = ((bitsPerLine + 31) & (~31)) / 8;
-
-	return bytesPerLine + StrideBump;
+	int32_t stride = 0;
+	uint32_t result = calcfunct(width, height, stride);
+	return stride + StrideBump;
 }
 
 typedef struct {

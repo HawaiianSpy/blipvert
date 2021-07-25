@@ -64,6 +64,16 @@ typedef struct {
 } SetPixelTableEntry;
 
 typedef struct {
+    const MediaFormatID& inputEncoding;
+    t_flipverticalfunc pProcAddr;
+} FlipVerticalTableEntry;
+
+typedef struct {
+    const MediaFormatID& inputEncoding;
+    t_calcbuffsizefunc pProcAddr;
+} CalcBufSizeTableEntry;
+
+typedef struct {
     Fourcc fourcc;
     MediaFormatID formatId;
 } FourccToMediaID;
@@ -1169,6 +1179,72 @@ SetPixelTableEntry SetPixelTable[] = {
     { MVFMT_Y41T, SetPixel_Y41T },
     { MVFMT_UNDEFINED, nullptr }
 };
+CalcBufSizeTableEntry CalcBufSizeTable[] = {
+    { MVFMT_RGBA, CalcBufferSize_RGBA },
+    { MVFMT_RGB32, CalcBufferSize_RGB32 },
+    { MVFMT_RGB24, CalcBufferSize_RGB24 },
+    { MVFMT_RGB565, CalcBufferSize_RGB565 },
+    { MVFMT_RGB555, CalcBufferSize_RGB555 },
+    { MVFMT_ARGB1555, CalcBufferSize_ARGB1555 },
+    { MVFMT_RGB8, CalcBufferSize_RGB8 },
+    { MVFMT_RGB4, CalcBufferSize_RGB4 },
+    { MVFMT_RGB1, CalcBufferSize_RGB1 },
+    { MVFMT_AYUV, CalcBufferSize_AYUV },
+    { MVFMT_UYVY, CalcBufferSize_UYVY },
+    { MVFMT_YVYU, CalcBufferSize_YVYU },
+    { MVFMT_VYUY, CalcBufferSize_VYUY },
+    { MVFMT_YUY2, CalcBufferSize_YUY2 },
+    { MVFMT_I420, CalcBufferSize_I420 },
+    { MVFMT_YV12, CalcBufferSize_YV12 },
+    { MVFMT_YVU9, CalcBufferSize_YVU9 },
+    { MVFMT_YUV9, CalcBufferSize_YUV9 },
+    { MVFMT_IYU1, CalcBufferSize_IYU1 },
+    { MVFMT_IYU2, CalcBufferSize_IYU2 },
+    { MVFMT_Y800, CalcBufferSize_Y800 },
+    { MVFMT_Y16, CalcBufferSize_Y16 },
+    { MVFMT_Y41P, CalcBufferSize_Y41P },
+    { MVFMT_CLJR, CalcBufferSize_CLJR },
+    { MVFMT_IMC1, CalcBufferSize_IMC1 },
+    { MVFMT_IMC2, CalcBufferSize_IMC2 },
+    { MVFMT_IMC3, CalcBufferSize_IMC3 },
+    { MVFMT_IMC4, CalcBufferSize_IMC4 },
+    { MVFMT_NV12, CalcBufferSize_NV12 },
+    { MVFMT_Y42T, CalcBufferSize_Y42T },
+    { MVFMT_Y41T, CalcBufferSize_Y41T },
+    { MVFMT_UNDEFINED, nullptr }
+};
+
+FlipVerticalTableEntry FlipVerticalTable[] = {
+    { MVFMT_RGBA, FlipVertical_RGBA },
+    { MVFMT_RGB32, FlipVertical_RGB32 },
+    { MVFMT_RGB24, FlipVertical_RGB24 },
+    { MVFMT_RGB565, FlipVertical_RGB565 },
+    { MVFMT_RGB555, FlipVertical_RGB555 },
+    { MVFMT_ARGB1555, FlipVertical_ARGB1555 },
+    { MVFMT_YUY2, FlipVertical_YUY2 },
+    { MVFMT_UYVY, FlipVertical_UYVY },
+    { MVFMT_YVYU, FlipVertical_YVYU },
+    { MVFMT_VYUY, FlipVertical_VYUY },
+    { MVFMT_I420, FlipVertical_I420 },
+    { MVFMT_YV12, FlipVertical_YV12 },
+    { MVFMT_YVU9, FlipVertical_YVU9 },
+    { MVFMT_YUV9, FlipVertical_YUV9 },
+    { MVFMT_IYU1, FlipVertical_IYU1 },
+    { MVFMT_IYU2, FlipVertical_IYU2 },
+    { MVFMT_Y800, FlipVertical_Y800 },
+    { MVFMT_Y16, FlipVertical_Y16 },
+    { MVFMT_Y41P, FlipVertical_Y41P },
+    { MVFMT_CLJR, FlipVertical_CLJR },
+    { MVFMT_AYUV, FlipVertical_AYUV },
+    { MVFMT_IMC1, FlipVertical_IMC1 },
+    { MVFMT_IMC2, FlipVertical_IMC2 },
+    { MVFMT_IMC3, FlipVertical_IMC3 },
+    { MVFMT_IMC4, FlipVertical_IMC4 },
+    { MVFMT_NV12, FlipVertical_NV12 },
+    { MVFMT_Y42T, FlipVertical_Y42T },
+    { MVFMT_Y41T, FlipVertical_Y41T },
+    { MVFMT_UNDEFINED, nullptr }
+};
 
 VideoFormatInfo VideoFmtTable[] = {
     // Unpacked YUV formats:
@@ -1265,6 +1341,8 @@ map<MediaFormatID, t_transformfunc> TransformMap;
 map<MediaFormatID, t_greyscalefunc> GreyscaleMap;
 map<MediaFormatID, t_fillcolorfunc> FillColorMap;
 map<MediaFormatID, t_setpixelfunc> SetPixelMap;
+map<MediaFormatID, t_flipverticalfunc> FlipVerticalMap;
+map<MediaFormatID, t_calcbuffsizefunc> CalcBufSizeMap;
 map<MediaFormatID, VideoFormatInfo*> MediaFormatInfoMap;
 map<Fourcc, const MediaFormatID> FourccToIDMap;
 
@@ -1299,9 +1377,23 @@ void blipvert::InitializeLibrary(void)
     }
 
     index = 0;
-    while (FillColorTable[index].pProcAddr != nullptr)
+    while (SetPixelTable[index].pProcAddr != nullptr)
     {
         SetPixelMap.insert(make_pair(SetPixelTable[index].inputEncoding, SetPixelTable[index].pProcAddr));
+        index++;
+    }
+
+    index = 0;
+    while (FlipVerticalTable[index].pProcAddr != nullptr)
+    {
+        FlipVerticalMap.insert(make_pair(FlipVerticalTable[index].inputEncoding, FlipVerticalTable[index].pProcAddr));
+        index++;
+    }
+
+    index = 0;
+    while (CalcBufSizeTable[index].pProcAddr != nullptr)
+    {
+        CalcBufSizeMap.insert(make_pair(CalcBufSizeTable[index].inputEncoding, CalcBufSizeTable[index].pProcAddr));
         index++;
     }
 
@@ -1436,6 +1528,60 @@ t_setpixelfunc blipvert::FindSetPixelColor(const MediaFormatID& inFormat)
         {
             map<MediaFormatID, t_setpixelfunc>::iterator it = SetPixelMap.find(inid);
             if (it != SetPixelMap.end())
+            {
+                return *(it->second);
+            }
+        }
+    }
+
+    return nullptr;
+}
+
+t_flipverticalfunc blipvert::FindFlipVerticalTransform(const MediaFormatID& inFormat)
+{
+    map<MediaFormatID, t_flipverticalfunc>::iterator it = FlipVerticalMap.find(inFormat);
+    if (it != FlipVerticalMap.end())
+    {
+        return *(it->second);
+    }
+
+    // Not found, so try cross-referenced formats in case there's a known duplicate definition.
+
+    VideoFormatInfo inInfo;
+    if (GetVideoFormatInfo(inFormat, inInfo))
+    {
+        MediaFormatID inid;
+        if (GetVideoFormatID(inInfo.xRefFourcc, inid))
+        {
+            map<MediaFormatID, t_flipverticalfunc>::iterator it = FlipVerticalMap.find(inid);
+            if (it != FlipVerticalMap.end())
+            {
+                return *(it->second);
+            }
+        }
+    }
+
+    return nullptr;
+}
+
+t_calcbuffsizefunc blipvert::FindBufSizeCalculator(const MediaFormatID& inFormat)
+{
+    map<MediaFormatID, t_calcbuffsizefunc>::iterator it = CalcBufSizeMap.find(inFormat);
+    if (it != CalcBufSizeMap.end())
+    {
+        return *(it->second);
+    }
+
+    // Not found, so try cross-referenced formats in case there's a known duplicate definition.
+
+    VideoFormatInfo inInfo;
+    if (GetVideoFormatInfo(inFormat, inInfo))
+    {
+        MediaFormatID inid;
+        if (GetVideoFormatID(inInfo.xRefFourcc, inid))
+        {
+            map<MediaFormatID, t_calcbuffsizefunc>::iterator it = CalcBufSizeMap.find(inid);
+            if (it != CalcBufSizeMap.end())
             {
                 return *(it->second);
             }

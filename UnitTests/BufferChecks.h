@@ -36,7 +36,7 @@ namespace BlipvertUnitTests
 	extern const uint32_t StrideBumpTestValue;
 	extern uint32_t StrideBump;
 
-	extern uint32_t CalculateStrideBump(const blipvert::MediaFormatID& inFormat, uint32_t width);
+	extern uint32_t CalculateStrideBump(const blipvert::MediaFormatID& inFormat, uint32_t width, uint32_t height);
 
 	typedef bool(__cdecl* t_buffercheckfunc) (uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha,int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride);
 

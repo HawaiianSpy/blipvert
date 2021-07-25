@@ -160,7 +160,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="blipvert.h" />
+    <ClInclude Include="CalculateBufferSize.h" />
     <ClInclude Include="CommonMacros.h" />
+    <ClInclude Include="FlipVertical.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="legacydefs.h" />
     <ClInclude Include="LookupTables.h" />
@@ -176,7 +178,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="blipvert.cpp" />
+    <ClCompile Include="CalculateBufferSize.cpp" />
     <ClCompile Include="CommonMacros.cpp" />
+    <ClCompile Include="FlipVertical.cpp" />
     <ClCompile Include="LookupTables.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

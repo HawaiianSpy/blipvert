@@ -142,94 +142,43 @@ void blipvert::Interlaced_to_Progressive(int32_t height, int32_t line_bytes, boo
     }
 }
 
-uint32_t blipvert::CalculateMinimumLineSize(const MediaFormatID& inFormat, uint32_t width)
-{
-    if (width < 8 || (width % 8 != 0) )
-    {
-        return 0;
-    }
-    VideoFormatInfo info;
-    if (!GetVideoFormatInfo(inFormat, info))
-    {
-        return 0;
-    }
-
-    if (info.effectiveBitsPerPixel <= 0)
-    {
-        return 0;
-    }
-
-    uint32_t bitsPerLine = width * static_cast<uint32_t>(info.effectiveBitsPerPixel);
-    uint32_t bytesPerLine = bitsPerLine / 8;//((bitsPerLine + 31) & (~31)) / 8;
-
-    return bytesPerLine;
-}
-
-uint32_t blipvert::CalculateBufferSize(const MediaFormatID& inFormat, uint32_t width, uint32_t height, uint32_t stride)
+uint32_t blipvert::CalculateBufferSize(const MediaFormatID& inFormat, uint32_t width, uint32_t height, int32_t stride)
 {
     if (width < 8 || (width % 8 != 0) || height< 16 || (height % 8 != 0))
     {
         return 0;
     }
 
-    VideoFormatInfo info;
-    if (!GetVideoFormatInfo(inFormat, info))
+    t_calcbuffsizefunc calcfunct = FindBufSizeCalculator(inFormat);
+    if (!calcfunct)
     {
         return 0;
-    }
+    };
 
-    if (info.effectiveBitsPerPixel <= 0)
-    {
-        return 0;
-    }
-
-    uint32_t bitsPerLine = width * static_cast<uint32_t>(info.effectiveBitsPerPixel);
-    uint32_t bytesPerLine = bitsPerLine / 8;//((bitsPerLine + 31) & (~31)) / 8;
-
-    if (stride != 0 && stride < bytesPerLine)
-    {
-        return 0;
-    }
-
-    if (stride > bytesPerLine)
-    {
-        bytesPerLine = stride;
-
-        // Planar bitmap formats with consecutive planes need special treatment
-        if (inFormat == MVFMT_YVU9 || inFormat == MVFMT_YUV9)
-        {
-            // Decimation of 4x4 for u & v: YVU9, YUV9
-            height += (height / 2);
-        }
-        else if ((inFormat == MVFMT_IYUV || inFormat == MVFMT_P420 || inFormat == MVFMT_I420 || inFormat == MVFMT_CLPL) ||
-                inFormat == MVFMT_YV12)
-        {
-            // Decimation of 2x2 for u & v: IYUV, YV12
-            height += height;
-        }
-        else if (inFormat == MVFMT_IMC2 || inFormat == MVFMT_IMC4 || inFormat == MVFMT_NV12)
-        {
-            height += (height / 2);
-        }
-    }
-
-    uint32_t result = 0;
+    uint32_t result = calcfunct(width, height, stride);
     if (UseFasterLooping && inFormat == MVFMT_RGB24 || inFormat == MVFMT_IYU2)
     {
-        result = (bytesPerLine * height) + 1;
+        result++;
     }
-    else if (inFormat == MVFMT_IMC1 || inFormat == MVFMT_IMC3)
+    return result;
+}
+
+int32_t blipvert::CalculateMinimumLineStride(const MediaFormatID& inFormat, uint32_t width, uint32_t height)
+{
+    if (width < 8 || (width % 8 != 0) || height < 16 || (height % 8 != 0))
     {
-        // Use the line # of the last UV plane on 16 line boundry + the height of the UV plane
-        // for the actual number of vertical lines in the bitmap.
-        result = (((((height * 3) / 2) + 15) & (~15)) + height / 2) * bytesPerLine;
-    }
-    else
-    {
-        result = bytesPerLine * height;
+        return 0;
     }
 
-    return result;
+    t_calcbuffsizefunc calcfunct = FindBufSizeCalculator(inFormat);
+    if (!calcfunct)
+    {
+        return 0;
+    };
+
+    int32_t stride = 0;
+    uint32_t result = calcfunct(width, height, stride);
+    return stride;
 }
 
 bool blipvert::IsRGBColorspace(const MediaFormatID& encoding)

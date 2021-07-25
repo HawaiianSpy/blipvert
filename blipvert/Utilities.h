@@ -57,8 +57,9 @@ namespace blipvert
     //              2. The width values must be >= 8;
     //              3. The height value must be >= 16.
     //              4. The stride value must be >= the minimum number of bytes-per-line needed for the width of the bitmap format.
-    uint32_t CalculateBufferSize(const MediaFormatID& inFormat, uint32_t width, uint32_t height, uint32_t stride = 0);
-    uint32_t CalculateMinimumLineSize(const MediaFormatID& inFormat, uint32_t width);
+    uint32_t CalculateBufferSize(const MediaFormatID& inFormat, uint32_t width, uint32_t height, int32_t stride = 0);
+
+    int32_t CalculateMinimumLineStride(const MediaFormatID& inFormat, uint32_t width, uint32_t height);
 
     // Returns TRUE if the colorspace is RGB
     bool IsRGBColorspace(const MediaFormatID& encoding);

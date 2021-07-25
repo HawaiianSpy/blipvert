@@ -2256,7 +2256,6 @@ void blipvert::RGB32_to_NV12(int32_t  width, int32_t height,
     if (!in_stride)
         in_stride = width * 4;
 
-    int32_t uv_width = width;
     int32_t uv_height = height / 2;
 
     if (!out_stride)

@@ -33,6 +33,9 @@ using namespace blipvert;
 
 void blipvert::SetPixel_RGBA(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha, int32_t x, int32_t y, int32_t width, int32_t height, uint8_t* buf, int32_t stride)
 {
+    if (!stride)
+        stride = width * 4;
+
     uint8_t* pixel = buf + (y * stride) + (x * 4);
     pixel[0] = bv_level;
     pixel[1] = gu_level;
@@ -42,6 +45,9 @@ void blipvert::SetPixel_RGBA(uint8_t ry_level, uint8_t gu_level, uint8_t bv_leve
 
 void blipvert::SetPixel_RGB32(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha, int32_t x, int32_t y, int32_t width, int32_t height, uint8_t* buf, int32_t stride)
 {
+    if (!stride)
+        stride = width * 4;
+
     uint8_t* pixel = buf + (y * stride) + (x * 4);
     pixel[0] = bv_level;
     pixel[1] = gu_level;
@@ -51,6 +57,9 @@ void blipvert::SetPixel_RGB32(uint8_t ry_level, uint8_t gu_level, uint8_t bv_lev
 
 void blipvert::SetPixel_RGB24(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha, int32_t x, int32_t y, int32_t width, int32_t height, uint8_t* buf, int32_t stride)
 {
+    if (!stride)
+        stride = width * 3;
+
     uint8_t* pixel = buf + (y * stride) + (x * 3);
     pixel[0] = bv_level;
     pixel[1] = gu_level;
@@ -59,12 +68,18 @@ void blipvert::SetPixel_RGB24(uint8_t ry_level, uint8_t gu_level, uint8_t bv_lev
 
 void blipvert::SetPixel_RGB565(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha, int32_t x, int32_t y, int32_t width, int32_t height, uint8_t* buf, int32_t stride)
 {
+    if (!stride)
+        stride = width * 2;
+
     uint8_t* pixel = buf + (y * stride) + (x * 2);
     PackRGB565Word(*reinterpret_cast<uint16_t*>(pixel), ry_level, gu_level, bv_level);
 }
 
 void blipvert::SetPixel_RGB555(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha, int32_t x, int32_t y, int32_t width, int32_t height, uint8_t* buf, int32_t stride)
 {
+    if (!stride)
+        stride = width * 2;
+
     uint8_t* pixel = buf + (y * stride) + (x * 2);
     PackRGB555Word(*reinterpret_cast<uint16_t*>(pixel), ry_level, gu_level, bv_level);
 
@@ -72,14 +87,20 @@ void blipvert::SetPixel_RGB555(uint8_t ry_level, uint8_t gu_level, uint8_t bv_le
 
 void blipvert::SetPixel_ARGB1555(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha, int32_t x, int32_t y, int32_t width, int32_t height, uint8_t* buf, int32_t stride)
 {
+    if (!stride)
+        stride = width * 2;
+
     uint8_t* pixel = buf + (y * stride) + (x * 2);
     PackARGB555Word(*reinterpret_cast<uint16_t*>(pixel), (alpha > 127 ? 0x8000 : 0x0000), ry_level, gu_level, bv_level);
 }
 
 void SetPixel_PackedY422(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha,
-    int32_t x, int32_t y, uint8_t* buf, int32_t stride,
+    int32_t width, int32_t height, int32_t x, int32_t y, uint8_t* buf, int32_t stride,
     int16_t Y0, int16_t Y1, int16_t U, int16_t V)
 {
+    if (!stride)
+        stride = width * 2;
+
     uint8_t* mpixel = buf + (y * stride) + (x / 2 * 4);
     mpixel[U] = gu_level;
     mpixel[V] = bv_level;
@@ -95,22 +116,22 @@ void SetPixel_PackedY422(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, u
 
 void blipvert::SetPixel_YUY2(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha, int32_t x, int32_t y, int32_t width, int32_t height, uint8_t* buf, int32_t stride)
 {
-    SetPixel_PackedY422(ry_level, gu_level, bv_level, alpha, x, y, buf, stride, 0, 2, 1, 3);
+    SetPixel_PackedY422(ry_level, gu_level, bv_level, alpha, width, height, x, y, buf, stride, 0, 2, 1, 3);
 }
 
 void blipvert::SetPixel_UYVY(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha, int32_t x, int32_t y, int32_t width, int32_t height, uint8_t* buf, int32_t stride)
 {
-    SetPixel_PackedY422(ry_level, gu_level, bv_level, alpha, x, y, buf, stride, 1, 3, 0, 2);
+    SetPixel_PackedY422(ry_level, gu_level, bv_level, alpha, width, height, x, y, buf, stride, 1, 3, 0, 2);
 }
 
 void blipvert::SetPixel_YVYU(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha, int32_t x, int32_t y, int32_t width, int32_t height, uint8_t* buf, int32_t stride)
 {
-    SetPixel_PackedY422(ry_level, gu_level, bv_level, alpha, x, y, buf, stride, 0, 2, 3, 1);
+    SetPixel_PackedY422(ry_level, gu_level, bv_level, alpha, width, height, x, y, buf, stride, 0, 2, 3, 1);
 }
 
 void blipvert::SetPixel_VYUY(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha, int32_t x, int32_t y, int32_t width, int32_t height, uint8_t* buf, int32_t stride)
 {
-    SetPixel_PackedY422(ry_level, gu_level, bv_level, alpha, x, y, buf, stride, 1, 3, 2, 0);
+    SetPixel_PackedY422(ry_level, gu_level, bv_level, alpha, width, height, x, y, buf, stride, 1, 3, 2, 0);
 }
 
 void SetPixel_PlanarYUV(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha,
@@ -121,15 +142,15 @@ void SetPixel_PlanarYUV(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, ui
     int32_t uv_height = height / decimation;
 
     int16_t y_stride, uv_stride;
-    if (stride > width)
-    {
-        y_stride = stride;
-        uv_stride = stride;
-    }
-    else
+    if (!stride)
     {
         y_stride = width;
         uv_stride = uv_width;
+    }
+    else
+    {
+        y_stride = stride;
+        uv_stride = stride;
     }
 
     uint8_t* vplane;
@@ -180,6 +201,9 @@ void blipvert::SetPixel_YUV9(uint8_t ry_level, uint8_t gu_level, uint8_t bv_leve
 
 void blipvert::SetPixel_IYU1(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha, int32_t x, int32_t y, int32_t width, int32_t height, uint8_t* buf, int32_t stride)
 {
+    if (!stride)
+        stride = width * 12 / 8;
+
     uint8_t* mpixel = buf + (y * stride) + (x / 4 * 6);
     mpixel[0] = gu_level;
     mpixel[3] = bv_level;
@@ -201,6 +225,9 @@ void blipvert::SetPixel_IYU1(uint8_t ry_level, uint8_t gu_level, uint8_t bv_leve
 
 void blipvert::SetPixel_IYU2(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha, int32_t x, int32_t y, int32_t width, int32_t height, uint8_t* buf, int32_t stride)
 {
+    if (!stride)
+        stride = width * 3;
+
     uint8_t* pixel = buf + (y * stride) + (x * 3);
     pixel[0] = gu_level;
     pixel[1] = ry_level;
@@ -209,11 +236,17 @@ void blipvert::SetPixel_IYU2(uint8_t ry_level, uint8_t gu_level, uint8_t bv_leve
 
 void blipvert::SetPixel_Y800(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha, int32_t x, int32_t y, int32_t width, int32_t height, uint8_t* buf, int32_t stride)
 {
+    if (!stride)
+        stride = width;
+
     *(buf + (y * stride) + x) = ry_level;
 }
 
 void blipvert::SetPixel_Y16(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha, int32_t x, int32_t y, int32_t width, int32_t height, uint8_t* buf, int32_t stride)
 {
+    if (!stride)
+        stride = width * 2;
+
     uint8_t* pixel = buf + (y * stride) + (x * 2);
     buf[0] = 0;
     buf[1] = ry_level;
@@ -221,6 +254,9 @@ void blipvert::SetPixel_Y16(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level
 
 void blipvert::SetPixel_Y41P(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha, int32_t x, int32_t y, int32_t width, int32_t height, uint8_t* buf, int32_t stride)
 {
+    if (!stride)
+        stride = width / 8 * 12;
+    
     uint8_t* mpixel = buf + (y * stride) + (x / 8 * 12);
     uint8_t pixel = x % 8;
     if (pixel < 4)
@@ -264,6 +300,9 @@ void blipvert::SetPixel_Y41P(uint8_t ry_level, uint8_t gu_level, uint8_t bv_leve
 
 void blipvert::SetPixel_CLJR(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha, int32_t x, int32_t y, int32_t width, int32_t height, uint8_t* buf, int32_t stride)
 {
+    if (!stride)
+        stride = width;
+
     uint8_t* mpixel = buf + (y * stride) + (x / 4 * 4);
     uint8_t pixel = x % 4;
     uint32_t andMask;
@@ -294,6 +333,9 @@ void blipvert::SetPixel_CLJR(uint8_t ry_level, uint8_t gu_level, uint8_t bv_leve
 
 void blipvert::SetPixel_AYUV(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha, int32_t x, int32_t y, int32_t width, int32_t height, uint8_t* buf, int32_t stride)
 {
+    if (!stride)
+        stride = width * 4;
+
     uint8_t* pixel = buf + (y * stride) + (x * 4);
     pixel[0] = bv_level;
     pixel[1] = gu_level;
@@ -306,6 +348,9 @@ void SetPixel_IMCx(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t
     int32_t x, int32_t y, int32_t width, int32_t height, uint8_t* buf, int32_t stride,
     bool ufirst, bool interlaced)
 {
+    if (!stride)
+        stride = width;
+
     int32_t uv_width = width / 2;
     int32_t uv_height = height / 2;
 
@@ -365,6 +410,9 @@ void blipvert::SetPixel_IMC4(uint8_t ry_level, uint8_t gu_level, uint8_t bv_leve
 
 void blipvert::SetPixel_NV12(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha, int32_t x, int32_t y, int32_t width, int32_t height, uint8_t* buf, int32_t stride)
 {
+    if (!stride)
+        stride = width;
+
     int32_t uv_width = width;
     int32_t uv_height = height / 2;
 
@@ -378,6 +426,9 @@ void blipvert::SetPixel_NV12(uint8_t ry_level, uint8_t gu_level, uint8_t bv_leve
 
 void blipvert::SetPixel_Y42T(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha, int32_t x, int32_t y, int32_t width, int32_t height, uint8_t* buf, int32_t stride)
 {
+    if (!stride)
+        stride = width * 2;
+
     uint8_t* mpixel = buf + (y * stride) + (x / 2 * 4);
     mpixel[0] = gu_level;
     mpixel[2] = bv_level;
@@ -393,6 +444,9 @@ void blipvert::SetPixel_Y42T(uint8_t ry_level, uint8_t gu_level, uint8_t bv_leve
 
 void blipvert::SetPixel_Y41T(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha, int32_t x, int32_t y, int32_t width, int32_t height, uint8_t* buf, int32_t stride)
 {
+    if (!stride)
+        stride = width / 8 * 12;
+
     uint8_t* mpixel = buf + (y * stride) + (x / 8 * 12);
     uint8_t pixel = x % 8;
     if (pixel < 4)

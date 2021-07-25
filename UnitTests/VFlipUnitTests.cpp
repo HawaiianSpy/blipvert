@@ -88,8 +88,8 @@ namespace BlipvertUnitTests
 			&MVFMT_IYU2,
 			&MVFMT_Y41P,
 			&MVFMT_CLJR,
-			//&MVFMT_I420,
-			//&MVFMT_YV12,
+			&MVFMT_I420,
+			&MVFMT_YV12,
 			//&MVFMT_YUV9,
 			//&MVFMT_YVU9,
 			//&MVFMT_IMC1,
@@ -97,7 +97,7 @@ namespace BlipvertUnitTests
 			//&MVFMT_IMC3,
 			//&MVFMT_IMC4,
 			//&MVFMT_NV12,
-			&MVFMT_Y41T
+			//&MVFMT_Y41T
 		};
 
 		void RunAllTests()
@@ -166,22 +166,17 @@ namespace BlipvertUnitTests
 			t_setpixelfunc outSetPixelFunctPtr = FindSetPixelColor(outFormat);
 			Assert::IsNotNull(reinterpret_cast<void*>(outSetPixelFunctPtr), wstring(L"outSetPixelFunctPtr returned a null function pointer: " + outFormatName).c_str());
 
+			t_flipverticalfunc outFlipVerticalFunctPtr = FindFlipVerticalTransform(outFormat);
+			Assert::IsNotNull(reinterpret_cast<void*>(outFlipVerticalFunctPtr), wstring(L"outFlipVerticalFunctPtr returned a null function pointer: " + outFormatName).c_str());
+
 			uint32_t width = TestBufferWidth;
 			uint32_t height = TestBufferHeight;
 
-			uint32_t in_stride = CalculateStrideBump(inFormat, width);
-			if (!in_stride)
-			{
-				in_stride = CalculateMinimumLineSize(inFormat, width);
-			}
+			uint32_t in_stride = CalculateStrideBump(inFormat, width, height);
 			uint32_t inBufBize = CalculateBufferSize(inFormat, width, height, in_stride);
 			Assert::IsTrue(inBufBize != 0, wstring(L"inBufBize size retuned zero: " + inFormatName + L" to " + outFormatName).c_str());
 
-			uint32_t out_stride = CalculateStrideBump(outFormat, width);
-			if (!out_stride)
-			{
-				out_stride = CalculateMinimumLineSize(outFormat, width);
-			}
+			uint32_t out_stride = CalculateStrideBump(outFormat, width, height);
 			uint32_t outBufBize = CalculateBufferSize(outFormat, width, height, out_stride);
 			Assert::IsTrue(outBufBize != 0, wstring(L"outBufBize size retuned zero: " + inFormatName + L" to " + outFormatName).c_str());
 
@@ -249,21 +244,7 @@ namespace BlipvertUnitTests
 			encodeTransPtr(width, height, outTestBufPtr, out_stride, inBufPtr, in_stride, false, nullptr);
 
 			// Now, manually vertically flip the test buffer here.
-			uint8_t* top = outTestBufPtr;
-			uint8_t* bottom = outTestBufPtr + (out_stride * (height - 1));
-
-			for (uint32_t y = 0; y < height / 2; y++)
-			{
-				for (uint32_t x = 0; x < out_stride; x ++)
-				{
-					uint8_t temp = top[x];
-					top[x] = bottom[x];
-					bottom[x] = temp;
-				}
-
-				top += out_stride;
-				bottom -= out_stride;
-			}
+			outFlipVerticalFunctPtr(width, height, outTestBufPtr, out_stride);
 
 			// Run the transform we want to test with the flipping on.
 			encodeTransPtr(width, height, outBufPtr, out_stride, inBufPtr, in_stride, true, nullptr);

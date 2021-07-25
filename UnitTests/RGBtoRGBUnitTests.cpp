@@ -363,11 +363,11 @@ namespace BlipvertUnitTests
 			uint32_t width = TestBufferWidth;
 			uint32_t height = TestBufferHeight;
 
-			uint32_t in_stride = CalculateStrideBump(inFormat, width);
+			uint32_t in_stride = CalculateStrideBump(inFormat, width, height);
 			uint32_t inBufBize = CalculateBufferSize(inFormat, width, height, in_stride);
 			Assert::IsTrue(inBufBize != 0, L"inBufBize size retuned zero.");
 
-			uint32_t out_stride = CalculateStrideBump(outFormat, width);
+			uint32_t out_stride = CalculateStrideBump(outFormat, width, height);
 			uint32_t outBufBize = CalculateBufferSize(outFormat, width, height, out_stride);
 			Assert::IsTrue(outBufBize != 0, L"outBufBize size retuned zero.");
 
@@ -423,11 +423,11 @@ namespace BlipvertUnitTests
 			uint32_t width = TestBufferWidth;
 			uint32_t height = TestBufferHeight;
 
-			uint32_t in_stride = CalculateStrideBump(inFormat, width);
+			uint32_t in_stride = CalculateStrideBump(inFormat, width, height);
 			uint32_t inBufBize = CalculateBufferSize(inFormat, width, height, in_stride);
 			Assert::IsTrue(inBufBize != 0, L"inBufBize size retuned zero.");
 
-			uint32_t out_stride = CalculateStrideBump(outFormat, width);
+			uint32_t out_stride = CalculateStrideBump(outFormat, width, height);
 			uint32_t outBufBize = CalculateBufferSize(outFormat, width, height, out_stride);
 			Assert::IsTrue(outBufBize != 0, L"outBufBize size retuned zero.");
 
@@ -520,11 +520,11 @@ namespace BlipvertUnitTests
 			uint32_t width = TestBufferWidth;
 			uint32_t height = TestBufferHeight;
 
-			uint32_t in_stride = CalculateStrideBump(inFormat, width);
+			uint32_t in_stride = CalculateStrideBump(inFormat, width, height);
 			uint32_t inBufBize = CalculateBufferSize(inFormat, width, height, in_stride);
 			Assert::IsTrue(inBufBize != 0, L"inBufBize size retuned zero.");
 
-			uint32_t out_stride = CalculateStrideBump(outFormat, width);
+			uint32_t out_stride = CalculateStrideBump(outFormat, width, height);
 			uint32_t outBufBize = CalculateBufferSize(outFormat, width, height, out_stride);
 			Assert::IsTrue(outBufBize != 0, L"outBufBize size retuned zero.");
 
@@ -588,11 +588,11 @@ namespace BlipvertUnitTests
 			uint32_t width = TestBufferWidth;
 			uint32_t height = TestBufferHeight;
 
-			uint32_t in_stride = CalculateStrideBump(inFormat, width);
+			uint32_t in_stride = CalculateStrideBump(inFormat, width, height);
 			uint32_t inBufBize = CalculateBufferSize(inFormat, width, height, in_stride);
 			Assert::IsTrue(inBufBize != 0, L"inBufBize size retuned zero.");
 
-			uint32_t out_stride = CalculateStrideBump(outFormat, width);
+			uint32_t out_stride = CalculateStrideBump(outFormat, width, height);
 			uint32_t outBufBize = CalculateBufferSize(outFormat, width, height, out_stride);
 			Assert::IsTrue(outBufBize != 0, L"outBufBize size retuned zero.");
 
@@ -654,11 +654,11 @@ namespace BlipvertUnitTests
 			uint32_t width = TestBufferWidth;
 			uint32_t height = TestBufferHeight;
 
-			uint32_t in_stride = CalculateStrideBump(inFormat, width);
+			uint32_t in_stride = CalculateStrideBump(inFormat, width, height);
 			uint32_t inBufBize = CalculateBufferSize(inFormat, width, height, in_stride);
 			Assert::IsTrue(inBufBize != 0, L"inBufBize size retuned zero.");
 
-			uint32_t out_stride = CalculateStrideBump(outFormat, width);
+			uint32_t out_stride = CalculateStrideBump(outFormat, width, height);
 			uint32_t outBufBize = CalculateBufferSize(outFormat, width, height, out_stride);
 			Assert::IsTrue(outBufBize != 0, L"outBufBize size retuned zero.");
 
@@ -705,11 +705,11 @@ namespace BlipvertUnitTests
 			uint32_t width = TestBufferWidth;
 			uint32_t height = TestBufferHeight;
 
-			uint32_t in_stride = CalculateStrideBump(inFormat, width);
+			uint32_t in_stride = CalculateStrideBump(inFormat, width, height);
 			uint32_t inBufBize = CalculateBufferSize(inFormat, width, height, in_stride);
 			Assert::IsTrue(inBufBize != 0, L"inBufBize size retuned zero.");
 
-			uint32_t out_stride = CalculateStrideBump(outFormat, width);
+			uint32_t out_stride = CalculateStrideBump(outFormat, width, height);
 			uint32_t outBufBize = CalculateBufferSize(outFormat, width, height, out_stride);
 			Assert::IsTrue(outBufBize != 0, L"outBufBize size retuned zero.");
 

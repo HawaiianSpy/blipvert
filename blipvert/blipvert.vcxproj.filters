@@ -57,6 +57,12 @@
     <ClInclude Include="SetPixel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="FlipVertical.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CalculateBufferSize.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="blipvert.cpp">
@@ -93,6 +99,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SetPixel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FlipVertical.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CalculateBufferSize.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

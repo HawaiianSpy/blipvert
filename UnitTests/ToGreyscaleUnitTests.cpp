@@ -244,7 +244,7 @@ namespace BlipvertUnitTests
 			uint32_t width = TestBufferWidth;
 			uint32_t height = TestBufferHeight;
 
-			uint32_t stride = CalculateStrideBump(format, width);
+			uint32_t stride = CalculateStrideBump(format, width, height);
 			uint32_t bufBize = CalculateBufferSize(format, width, height, stride);
 			Assert::IsTrue(bufBize != 0, L"bufBize size retuned zero.");
 
@@ -301,7 +301,7 @@ namespace BlipvertUnitTests
 			uint32_t width = TestBufferWidth;
 			uint32_t height = TestBufferHeight;
 
-			uint32_t stride = CalculateStrideBump(format, width);
+			uint32_t stride = CalculateStrideBump(format, width, height);
 			uint32_t bufBize = CalculateBufferSize(format, width, height, stride);
 			Assert::IsTrue(bufBize != 0, L"bufBize size retuned zero.");
 
@@ -372,7 +372,7 @@ namespace BlipvertUnitTests
 			uint32_t width = TestBufferWidth;
 			uint32_t height = TestBufferHeight;
 
-			uint32_t stride = CalculateStrideBump(format, width);
+			uint32_t stride = CalculateStrideBump(format, width, height);
 			uint32_t bufBize = CalculateBufferSize(format, width, height, stride);
 			Assert::IsTrue(bufBize != 0, L"bufBize size retuned zero.");
 
@@ -465,7 +465,7 @@ namespace BlipvertUnitTests
 			uint32_t width = TestBufferWidth;
 			uint32_t height = TestBufferHeight;
 
-			uint32_t stride = CalculateStrideBump(format, width);
+			uint32_t stride = CalculateStrideBump(format, width, height);
 			uint32_t bufBize = CalculateBufferSize(format, width, height, stride);
 			Assert::IsTrue(bufBize != 0, L"bufBize size retuned zero.");
 

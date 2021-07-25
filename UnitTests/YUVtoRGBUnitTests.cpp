@@ -717,11 +717,11 @@ namespace BlipvertUnitTests
 			uint32_t width = TestBufferWidth;
 			uint32_t height = TestBufferHeight;
 
-			uint32_t in_stride = CalculateStrideBump(yuvFormat, width);
+			uint32_t in_stride = CalculateStrideBump(yuvFormat, width, height);
 			uint32_t yuvBufBize = CalculateBufferSize(yuvFormat, width, height, in_stride);
 			Assert::IsTrue(yuvBufBize != 0, L"YUV buffer size retuned zero.");
 
-			uint32_t out_stride = CalculateStrideBump(rgbFormat, width);
+			uint32_t out_stride = CalculateStrideBump(rgbFormat, width, height);
 			uint32_t rgbBufBize = CalculateBufferSize(rgbFormat, width, height, out_stride);
 			Assert::IsTrue(rgbBufBize != 0, L"RGB buffer size retuned zero.");
 
@@ -765,11 +765,11 @@ namespace BlipvertUnitTests
 			uint32_t width = TestBufferWidth;
 			uint32_t height = TestBufferHeight;
 
-			uint32_t in_stride = CalculateStrideBump(yuvFormat, width);
+			uint32_t in_stride = CalculateStrideBump(yuvFormat, width, height);
 			uint32_t yuvBufBize = CalculateBufferSize(yuvFormat, width, height, in_stride);
 			Assert::IsTrue(yuvBufBize != 0, L"YUV buffer size retuned zero.");
 
-			uint32_t out_stride = CalculateStrideBump(rgbFormat, width);
+			uint32_t out_stride = CalculateStrideBump(rgbFormat, width, height);
 			uint32_t rgbBufBize = CalculateBufferSize(rgbFormat, width, height, out_stride);
 			Assert::IsTrue(rgbBufBize != 0, L"RGB buffer size retuned zero.");
 
@@ -835,11 +835,11 @@ namespace BlipvertUnitTests
 			uint32_t width = TestBufferWidth;
 			uint32_t height = TestBufferHeight;
 
-			uint32_t in_stride = CalculateStrideBump(yuvFormat, width);
+			uint32_t in_stride = CalculateStrideBump(yuvFormat, width, height);
 			uint32_t yuvBufBize = CalculateBufferSize(yuvFormat, width, height, in_stride);
 			Assert::IsTrue(yuvBufBize != 0, L"YUV buffer size retuned zero.");
 
-			uint32_t out_stride = CalculateStrideBump(rgbFormat, width);
+			uint32_t out_stride = CalculateStrideBump(rgbFormat, width, height);
 			uint32_t rgbBufBize = CalculateBufferSize(rgbFormat, width, height, out_stride);
 			Assert::IsTrue(rgbBufBize != 0, L"RGB buffer size retuned zero.");
 
@@ -941,11 +941,11 @@ namespace BlipvertUnitTests
 			uint32_t width = TestBufferWidth;
 			uint32_t height = TestBufferHeight;
 
-			uint32_t in_stride = CalculateStrideBump(yuvFormat, width);
+			uint32_t in_stride = CalculateStrideBump(yuvFormat, width, height);
 			uint32_t yuvBufBize = CalculateBufferSize(yuvFormat, width, height, in_stride);
 			Assert::IsTrue(yuvBufBize != 0, L"YUV buffer size retuned zero.");
 
-			uint32_t out_stride = CalculateStrideBump(rgbFormat, width);
+			uint32_t out_stride = CalculateStrideBump(rgbFormat, width, height);
 			uint32_t rgbBufBize = CalculateBufferSize(rgbFormat, width, height, out_stride);
 			Assert::IsTrue(rgbBufBize != 0, L"RGB buffer size retuned zero.");
 
@@ -1011,11 +1011,11 @@ namespace BlipvertUnitTests
 			uint32_t width = TestBufferWidth;
 			uint32_t height = TestBufferHeight;
 
-			uint32_t in_stride = CalculateStrideBump(yuvFormat, width);
+			uint32_t in_stride = CalculateStrideBump(yuvFormat, width, height);
 			uint32_t yuvBufBize = CalculateBufferSize(yuvFormat, width, height, in_stride);
 			Assert::IsTrue(yuvBufBize != 0, L"YUV buffer size retuned zero.");
 
-			uint32_t out_stride = CalculateStrideBump(rgbFormat, width);
+			uint32_t out_stride = CalculateStrideBump(rgbFormat, width, height);
 			uint32_t rgbBufBize = CalculateBufferSize(rgbFormat, width, height, out_stride);
 			Assert::IsTrue(rgbBufBize != 0, L"RGB buffer size retuned zero.");
 
@@ -1076,11 +1076,11 @@ namespace BlipvertUnitTests
 			uint32_t width = TestBufferWidth;
 			uint32_t height = TestBufferHeight;
 
-			uint32_t in_stride = CalculateStrideBump(yuvFormat, width);
+			uint32_t in_stride = CalculateStrideBump(yuvFormat, width, height);
 			uint32_t yuvBufBize = CalculateBufferSize(yuvFormat, width, height, in_stride);
 			Assert::IsTrue(yuvBufBize != 0, L"YUV buffer size retuned zero.");
 
-			uint32_t out_stride = CalculateStrideBump(rgbFormat, width);
+			uint32_t out_stride = CalculateStrideBump(rgbFormat, width, height);
 			uint32_t rgbBufBize = CalculateBufferSize(rgbFormat, width, height, out_stride);
 			Assert::IsTrue(rgbBufBize != 0, L"RGB buffer size retuned zero.");
 

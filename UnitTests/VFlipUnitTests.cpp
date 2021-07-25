@@ -54,9 +54,54 @@ namespace BlipvertUnitTests
 
 		TEST_METHOD(FlipBufferUnitTest)
 		{
-			InitSourceImages();
-			m_SrcFormatName = utf8ToUtf16Str(m_SourceMFmt);
+			RunAllTests();
 
+			uint32_t saveb = StrideBump;
+			StrideBump = StrideBumpTestValue;
+
+			RunAllTests();
+
+			StrideBump = saveb;
+		}
+
+	private:
+
+		vector<const MediaFormatID*> RGBFormats = {
+			&MVFMT_RGBA,
+			&MVFMT_RGB32,
+			&MVFMT_RGB24,
+			&MVFMT_RGB565,
+			&MVFMT_RGB555,
+			&MVFMT_ARGB1555
+		};
+
+		vector<const MediaFormatID*> YUVFormats = {
+			&MVFMT_AYUV,
+			&MVFMT_YUY2,
+			&MVFMT_UYVY,
+			&MVFMT_YVYU,
+			&MVFMT_VYUY,
+			&MVFMT_Y42T,
+			&MVFMT_Y800,
+			&MVFMT_Y16,
+			&MVFMT_IYU1,
+			&MVFMT_IYU2,
+			&MVFMT_Y41P,
+			&MVFMT_CLJR,
+			//&MVFMT_I420,
+			//&MVFMT_YV12,
+			//&MVFMT_YUV9,
+			//&MVFMT_YVU9,
+			//&MVFMT_IMC1,
+			//&MVFMT_IMC2,
+			//&MVFMT_IMC3,
+			//&MVFMT_IMC4,
+			//&MVFMT_NV12,
+			&MVFMT_Y41T
+		};
+
+		void RunAllTests()
+		{
 			// RGB to YUV
 			for (const MediaFormatID* in_format : RGBFormats)
 			{
@@ -67,13 +112,13 @@ namespace BlipvertUnitTests
 			}
 
 			// YUV to RGB
-			//for (const MediaFormatID* in_format : YUVFormats)
-			//{
-			//	for (const MediaFormatID* out_format : RGBFormats)
-			//	{
-			//		RunSingleTest(*in_format, *out_format);
-			//	}
-			//}
+			for (const MediaFormatID* in_format : YUVFormats)
+			{
+				for (const MediaFormatID* out_format : RGBFormats)
+				{
+					RunSingleTest(*in_format, *out_format);
+				}
+			}
 
 			// RGB to RGB
 			for (const MediaFormatID* in_format : RGBFormats)
@@ -88,72 +133,17 @@ namespace BlipvertUnitTests
 			}
 
 			// YUV to YUV
-			//for (const MediaFormatID* in_format : YUVFormats)
-			//{
-			//	for (const MediaFormatID* out_format : YUVFormats)
-			//	{
-			//		if (*in_format != *out_format)
-			//		{
-			//			RunSingleTest(*in_format, *out_format);
-			//		}
-			//	}
-			//}
-
-			CleanupSourceImages();
+			for (const MediaFormatID* in_format : YUVFormats)
+			{
+				for (const MediaFormatID* out_format : YUVFormats)
+				{
+					if (*in_format != *out_format)
+					{
+						RunSingleTest(*in_format, *out_format);
+					}
+				}
+			}
 		}
-
-	private:
-		static const uint32_t		m_Red{ 0xFFFF0000 };
-		static const uint32_t		m_Green{ 0xFF00FF00 };
-		static const uint32_t		m_Blue{ 0xFF0000FF };
-		static const uint32_t		m_Grey{ 0xFF808080 };
-		static const uint32_t		m_RedT{ 0x00FF0000 };
-		static const uint32_t		m_GreenT{ 0x0000FF00 };
-		static const uint32_t		m_BlueT{ 0x0000F00FF };
-		static const uint32_t		m_GreyT{ 0x00808080 };
-
-		vector<const MediaFormatID*> RGBFormats = {
-			&MVFMT_RGBA,
-			&MVFMT_RGB32,
-			&MVFMT_RGB24/*,
-			&MVFMT_RGB565,
-			&MVFMT_RGB555,
-			&MVFMT_ARGB1555*/
-		};
-
-		vector<const MediaFormatID*> YUVFormats = {
-			&MVFMT_AYUV,
-			&MVFMT_YUY2,
-			&MVFMT_UYVY,
-			&MVFMT_YVYU,
-			&MVFMT_VYUY,
-			/*&MVFMT_Y42T,*/
-			&MVFMT_Y800,
-			&MVFMT_Y16,
-			&MVFMT_IYU1,
-			&MVFMT_IYU2,
-			&MVFMT_Y41P,
-			/*&MVFMT_CLJR,*/
-			&MVFMT_I420,
-			&MVFMT_YV12,
-			&MVFMT_YUV9,
-			&MVFMT_YVU9,
-			&MVFMT_IMC1,
-			&MVFMT_IMC2,
-			&MVFMT_IMC3,
-			&MVFMT_IMC4,
-			&MVFMT_NV12,
-			/*&MVFMT_Y41T*/
-		};
-
-		MediaFormatID		m_SourceMFmt{ MVFMT_RGB32 };
-		uint32_t			m_SourceSize;
-		uint32_t			m_SourceStride;
-		uint8_t*			m_SourceImage{ nullptr };
-		uint8_t*			m_SourceImageVFlipped{ nullptr };
-		wstring				m_SrcFormatName;
-		wstring				m_InFormatName;
-		wstring				m_OutFormatName;
 
 		wstring utf8ToUtf16Str(const string& str)
 		{
@@ -162,122 +152,130 @@ namespace BlipvertUnitTests
 			return wstring(buf.data(), buf.size());
 		}
 
-		void CleanupSourceImages()
-		{
-			if (m_SourceImage)
-			{
-				delete m_SourceImage;
-				m_SourceImage = nullptr;
-			}
-
-			if (m_SourceImageVFlipped)
-			{
-				delete m_SourceImageVFlipped;
-				m_SourceImageVFlipped = nullptr;
-			}
-		}
-
-		void InitSourceImages()
-		{
-			m_SourceStride = CalculateStrideBump(m_SourceMFmt, TestBufferWidth);
-			if (!m_SourceStride)
-			{
-				m_SourceStride = CalculateMinimumLineSize(m_SourceMFmt, TestBufferWidth);
-			}
-
-			m_SourceSize = CalculateBufferSize(m_SourceMFmt, TestBufferWidth, TestBufferHeight);
-
-			m_SourceImage = new uint8_t[m_SourceSize];
-			memset(m_SourceImage, 0, m_SourceSize);
-
-			m_SourceImageVFlipped = new uint8_t[m_SourceSize];
-			memset(m_SourceImageVFlipped, 0, m_SourceSize);
-
-			uint8_t* yp = m_SourceImage;
-			uint8_t* yfp = m_SourceImageVFlipped + (m_SourceStride * (TestBufferHeight - 1));
-
-			for (uint32_t y = 0; y < TestBufferHeight; y++)
-			{
-				uint32_t* xp = reinterpret_cast<uint32_t*>(yp);
-				uint32_t* xfp = reinterpret_cast<uint32_t*>(yfp);
-
-				uint32_t leftColor = y < TestBufferHeight / 2 ? m_Red : m_Blue;
-				uint32_t rightColor = y < TestBufferHeight / 2 ? m_Green : m_Grey;
-
-				for (uint32_t x = 0; x < TestBufferWidth; x++)
-				{
-					if (x < TestBufferWidth / 2)
-					{
-						xp[x] = leftColor;
-						xfp[x] = leftColor;
-					}
-					else
-					{
-						xp[x] = rightColor;
-						xfp[x] = rightColor;
-					}
-				}
-
-				yp += m_SourceStride;
-				yfp -= m_SourceStride;
-			}
-		}
-
 		void RunSingleTest(const MediaFormatID& inFormat, const MediaFormatID& outFormat)
 		{
-			if (inFormat == m_SourceMFmt || outFormat == m_SourceMFmt)
-			{
-				return;
-			}
+			wstring inFormatName = utf8ToUtf16Str(inFormat);
+			wstring outFormatName = utf8ToUtf16Str(outFormat);
 
-			m_InFormatName = utf8ToUtf16Str(inFormat);
-			m_OutFormatName = utf8ToUtf16Str(outFormat);
-
-			// Get the transform function to be tested.
 			t_transformfunc encodeTransPtr = FindVideoTransform(inFormat, outFormat);
-			Assert::IsNotNull(reinterpret_cast<void*>(encodeTransPtr), wstring(L"encodeTransPtr returned a null function pointer: " + m_InFormatName + L" to " + m_OutFormatName).c_str());
+			Assert::IsNotNull(reinterpret_cast<void*>(encodeTransPtr), wstring(L"encodeTransPtr returned a null function pointer: " + inFormatName + L" to " + outFormatName).c_str());
 
-			// The the transform functions to make the source and destination test images.
-			t_transformfunc sourceTransPtr = FindVideoTransform(m_SourceMFmt, inFormat);
-			Assert::IsNotNull(reinterpret_cast<void*>(encodeTransPtr), wstring(L"sourceTransPtr returned a null function pointer: " + m_SrcFormatName + L" to " + m_InFormatName).c_str());
+			t_setpixelfunc inSetPixelFunctPtr = FindSetPixelColor(inFormat);
+			Assert::IsNotNull(reinterpret_cast<void*>(inSetPixelFunctPtr), wstring(L"inSetPixelFunctPtr returned a null function pointer: " + inFormatName).c_str());
 
-			t_transformfunc destTransPtr = FindVideoTransform(m_SourceMFmt, outFormat);
-			Assert::IsNotNull(reinterpret_cast<void*>(encodeTransPtr), wstring(L"destTransPtr returned a null function pointer: " + m_SrcFormatName + L" to " + m_InFormatName).c_str());
+			t_setpixelfunc outSetPixelFunctPtr = FindSetPixelColor(outFormat);
+			Assert::IsNotNull(reinterpret_cast<void*>(outSetPixelFunctPtr), wstring(L"outSetPixelFunctPtr returned a null function pointer: " + outFormatName).c_str());
 
-			// Setup the test buffers for the transform to be tested.
 			uint32_t width = TestBufferWidth;
 			uint32_t height = TestBufferHeight;
 
 			uint32_t in_stride = CalculateStrideBump(inFormat, width);
+			if (!in_stride)
+			{
+				in_stride = CalculateMinimumLineSize(inFormat, width);
+			}
 			uint32_t inBufBize = CalculateBufferSize(inFormat, width, height, in_stride);
-			Assert::IsTrue(inBufBize != 0, wstring(L"inBufBize size retuned zero: " + m_InFormatName + L" to " + m_OutFormatName).c_str());
+			Assert::IsTrue(inBufBize != 0, wstring(L"inBufBize size retuned zero: " + inFormatName + L" to " + outFormatName).c_str());
 
 			uint32_t out_stride = CalculateStrideBump(outFormat, width);
+			if (!out_stride)
+			{
+				out_stride = CalculateMinimumLineSize(outFormat, width);
+			}
 			uint32_t outBufBize = CalculateBufferSize(outFormat, width, height, out_stride);
-			Assert::IsTrue(outBufBize != 0, wstring(L"outBufBize size retuned zero: " + m_InFormatName + L" to " + m_OutFormatName).c_str());
+			Assert::IsTrue(outBufBize != 0, wstring(L"outBufBize size retuned zero: " + inFormatName + L" to " + outFormatName).c_str());
 
-			unique_ptr<uint8_t[]> inBuf(new uint8_t[inBufBize]);
+			std::unique_ptr<uint8_t[]> inBuf(new uint8_t[inBufBize]);
 			uint8_t* inBufPtr = inBuf.get();
 			memset(inBufPtr, 0, inBufBize);
 
-			unique_ptr<uint8_t[]> outBuf(new uint8_t[outBufBize]);
+			std::unique_ptr<uint8_t[]> outBuf(new uint8_t[outBufBize]);
 			uint8_t* outBufPtr = outBuf.get();
 			memset(outBufPtr, 0, outBufBize);
 
-			// Fill the input buffer with the test image.
-			sourceTransPtr(width, height, inBufPtr, in_stride, m_SourceImage, m_SourceStride, false, nullptr);
-
-			// Setup the test image for the output buffer
-			unique_ptr<uint8_t[]> outTestBuf(new uint8_t[outBufBize]);
+			std::unique_ptr<uint8_t[]> outTestBuf(new uint8_t[outBufBize]);
 			uint8_t* outTestBufPtr = outTestBuf.get();
 			memset(outTestBufPtr, 0, outBufBize);
 
-			destTransPtr(width, height, outTestBufPtr, out_stride, m_SourceImageVFlipped, m_SourceStride, false, nullptr);
+			uint8_t alpha = 255;
 
-			// Run the teansform we want to test with the flipping on.
+			bool inyuv = IsYUVColorspace(inFormat);
+
+			// input transform buffer
+
+			uint8_t upper_ry = 0xFF; // red
+			uint8_t upper_gu = 0x00;
+			uint8_t upper_bv = 0x00;
+
+			if (inyuv)
+			{
+				uint8_t y, u, v;
+				FastRGBtoYUV(upper_ry, upper_gu, upper_bv, &y, &u, &v);
+				upper_ry = y;
+				upper_gu = u;
+				upper_bv = v;
+			}
+
+			for (uint32_t y = 0; y < height / 2; y++)
+			{
+				for (uint32_t x = 0; x < width; x++)
+				{
+					inSetPixelFunctPtr(upper_ry, upper_gu, upper_bv, alpha, x, y, width, height, inBufPtr, in_stride);
+				}
+			}
+
+			uint8_t lower_ry = 0x00; // green
+			uint8_t lower_gu = 0xFF;
+			uint8_t lower_bv = 0x00;
+
+			if (inyuv)
+			{
+				uint8_t y, u, v;
+				FastRGBtoYUV(lower_ry, lower_gu, lower_bv, &y, &u, &v);
+				lower_ry = y;
+				lower_gu = u;
+				lower_bv = v;
+			}
+
+			for (uint32_t y = height / 2; y < height; y++)
+			{
+				for (uint32_t x = 0; x < width; x++)
+				{
+					inSetPixelFunctPtr(lower_ry, lower_gu, lower_bv, alpha, x, y, width, height, inBufPtr, in_stride);
+				}
+			}
+
+			// Use the transform top be tested to convert th inout buffer into the test buffer without flipping.
+			encodeTransPtr(width, height, outTestBufPtr, out_stride, inBufPtr, in_stride, false, nullptr);
+
+			// Now, manually vertically flip the test buffer here.
+			uint8_t* top = outTestBufPtr;
+			uint8_t* bottom = outTestBufPtr + (out_stride * (height - 1));
+
+			for (uint32_t y = 0; y < height / 2; y++)
+			{
+				for (uint32_t x = 0; x < out_stride; x ++)
+				{
+					uint8_t temp = top[x];
+					top[x] = bottom[x];
+					bottom[x] = temp;
+				}
+
+				top += out_stride;
+				bottom -= out_stride;
+			}
+
+			// Run the transform we want to test with the flipping on.
 			encodeTransPtr(width, height, outBufPtr, out_stride, inBufPtr, in_stride, true, nullptr);
 
-			Assert::AreEqual(0, memcmp(outBufPtr, outTestBufPtr, outBufBize), wstring(L"outBufPtr did not match outTestBufPtr: " + m_InFormatName + L" to " + m_OutFormatName).c_str());
+			// Finally compare the externally flipped bitmap with the flipping done by the transform.
+			int result = memcmp(outBufPtr, outTestBufPtr, outBufBize);
+			if (result)
+			{
+				__debugbreak();
+			}
+
+			Assert::AreEqual(0, result, wstring(L"outBufPtr did not match outTestBufPtr: " + inFormatName + L" to " + outFormatName).c_str());
 		}
 	};
 }

@@ -7,14 +7,7 @@ I originally called the project "blipvert" because I was a fan of the Max Headro
 
 After looking at the code, you may be asking yourself, "Why the heck would I *ever* want to convert a Y41P bitmap to IYU2?" Probably never, nowadays. Yet, I would suggest you view this act of video programming obsessive-compulsive disorder like achieveing a gold badge on HackerRank before it was cool. Instead of whiling away the hours moving nonsensecal numbers around in random arrays, as one does on HackerRank, at least I had some, more or less, useful code to show for it afterwards. =:D
 
-Regarding testing: The common transform functions were tested back in the day using this process:
-
-1. Run a webcam through a DirectShow filter graph.
-2. Insert one of the transform functions into the graph.
-3. Transform whatever the output bitmap was into a format that can be displayed by a video renderer.
-4. Does it look like the same video stream that went in? If so, "pass." If not, "fail." 
-
-I'm working on a complete unit test suite for all of the transforms and the utility functions.
+As of 25 July, 2021, Blipvert now has a complete unit test suite that exercises all the code in the transforms.
 
 Regards,
 
@@ -65,6 +58,15 @@ The function pointer definition used for in-place conversion to greyscale.
 #### ```t_fillcolorfunc```
 The function pointer definition used for in-place color fills.
 #
+#### ```t_setpixelfunc```
+The function pointer definition used for setting individual pixels in a bitmap. This is a hack for the unit testing for now.
+#
+#### ```t_flipverticalfunc```
+The function pointer definition used for vertically flipping a bitmap in place. This is a hack for the unit testing for now.
+#
+#### ```t_calcbuffsizefunc```
+The function pointer definition used calculating the size of a bitmap's buffer. Better to use the existing ```CalculateBufferSize``` function, but that function does call this.
+#
 #### ```VideoFormatInfo```
 Structure containing info for a particular video format.
 #
@@ -87,6 +89,15 @@ Returns a function pointer that will perform an in-place conversion of the bitma
 #
 #### ```t_fillcolorfunc FindFillColorTransform(const MediaFormatID& inFormat);```
 Returns a function pointer that will perform an in-place color fill of the bitmap.
+#
+#### ```t_setpixelfunc FindSetPixelColor(const MediaFormatID& inFormat);```
+Returns a function pointer for an individual pixel setter for the given format.
+#
+#### ```t_flipverticalfunc FindFlipVerticalTransform(const MediaFormatID& inFormat);```
+Returns a function pointer for a vertical flip in place video transform for the given input media format.
+#
+#### ```t_calcbuffsizefunc FindBufSizeCalculator(const MediaFormatID& inFormat);```
+Returns a function pointer for a buffer size calculation function of the given format.
 #
 #### ```bool GetVideoFormatInfo(const MediaFormatID& inFormat, VideoFormatInfo& info);```
 Returns useful information about the media type.

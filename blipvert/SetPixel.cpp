@@ -91,7 +91,7 @@ void blipvert::SetPixel_ARGB1555(uint8_t ry_level, uint8_t gu_level, uint8_t bv_
         stride = width * 2;
 
     uint8_t* pixel = buf + (y * stride) + (x * 2);
-    PackARGB555Word(*reinterpret_cast<uint16_t*>(pixel), (alpha > 127 ? 0x8000 : 0x0000), ry_level, gu_level, bv_level);
+    PackARGB555Word(*reinterpret_cast<uint16_t*>(pixel), (alpha > 127 ? RGB555_ALPHA_MASK : 0x0000), ry_level, gu_level, bv_level);
 }
 
 void SetPixel_PackedY422(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha,
@@ -256,44 +256,49 @@ void blipvert::SetPixel_Y41P(uint8_t ry_level, uint8_t gu_level, uint8_t bv_leve
 {
     if (!stride)
         stride = width / 8 * 12;
-    
-    uint8_t* mpixel = buf + (y * stride) + (x / 8 * 12);
-    uint8_t pixel = x % 8;
-    if (pixel < 4)
-    {
-        mpixel[0] = gu_level;
-        mpixel[2] = bv_level;
-    }
-    else
-    {
-        mpixel[4] = gu_level;
-        mpixel[6] = bv_level;
-    }
 
-    switch (pixel) {
+    uint8_t* mpixel = buf + (y * stride) + (x / 8 * 12);
+
+    switch (x % 8) {
     case 0:
         mpixel[1] = ry_level;
+        mpixel[0] = gu_level;
+        mpixel[2] = bv_level;
         break;
     case 1:
         mpixel[3] = ry_level;
+        mpixel[0] = gu_level;
+        mpixel[2] = bv_level;
         break;
     case 2:
         mpixel[5] = ry_level;
+        mpixel[0] = gu_level;
+        mpixel[2] = bv_level;
         break;
     case 3:
         mpixel[7] = ry_level;
+        mpixel[0] = gu_level;
+        mpixel[2] = bv_level;
         break;
     case 4:
         mpixel[8] = ry_level;
+        mpixel[4] = gu_level;
+        mpixel[6] = bv_level;
         break;
     case 5:
         mpixel[9] = ry_level;
+        mpixel[4] = gu_level;
+        mpixel[6] = bv_level;
         break;
     case 6:
         mpixel[10] = ry_level;
+        mpixel[4] = gu_level;
+        mpixel[6] = bv_level;
         break;
     case 7:
         mpixel[11] = ry_level;
+        mpixel[4] = gu_level;
+        mpixel[6] = bv_level;
         break;
     };
 }
@@ -426,66 +431,10 @@ void blipvert::SetPixel_NV12(uint8_t ry_level, uint8_t gu_level, uint8_t bv_leve
 
 void blipvert::SetPixel_Y42T(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha, int32_t x, int32_t y, int32_t width, int32_t height, uint8_t* buf, int32_t stride)
 {
-    if (!stride)
-        stride = width * 2;
-
-    uint8_t* mpixel = buf + (y * stride) + (x / 2 * 4);
-    mpixel[0] = gu_level;
-    mpixel[2] = bv_level;
-    if (x & 1)
-    {
-        mpixel[3] = alpha > 127 ? ry_level | 0x01 : ry_level & 0xFE;
-    }
-    else
-    {
-        mpixel[1] = alpha > 127 ? ry_level | 0x01 : ry_level & 0xFE;
-    }
+    SetPixel_UYVY(alpha > 127 ? ry_level | 0x01 : ry_level & 0xFE, gu_level, bv_level, alpha, x, y, width, height, buf, stride);
 }
 
 void blipvert::SetPixel_Y41T(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha, int32_t x, int32_t y, int32_t width, int32_t height, uint8_t* buf, int32_t stride)
 {
-    if (!stride)
-        stride = width / 8 * 12;
-
-    uint8_t* mpixel = buf + (y * stride) + (x / 8 * 12);
-    uint8_t pixel = x % 8;
-    if (pixel < 4)
-    {
-        mpixel[0] = gu_level;
-        mpixel[2] = bv_level;
-    }
-    else
-    {
-        mpixel[4] = gu_level;
-        mpixel[6] = bv_level;
-    }
-
-    ry_level = alpha > 127 ? ry_level | 0x01 : ry_level & 0xFE;
-
-    switch (pixel) {
-    case 0:
-        mpixel[1] = ry_level;
-        break;
-    case 1:
-        mpixel[3] = ry_level;
-        break;
-    case 2:
-        mpixel[5] = ry_level;
-        break;
-    case 3:
-        mpixel[7] = ry_level;
-        break;
-    case 4:
-        mpixel[8] = ry_level;
-        break;
-    case 5:
-        mpixel[9] = ry_level;
-        break;
-    case 6:
-        mpixel[10] = ry_level;
-        break;
-    case 7:
-        mpixel[11] = ry_level;
-        break;
-    };
+    SetPixel_Y41P(alpha > 127 ? ry_level | 0x01 : ry_level & 0xFE, gu_level, bv_level, alpha, x, y, width, height, buf, stride);
 }

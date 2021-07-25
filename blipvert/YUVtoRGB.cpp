@@ -3190,7 +3190,7 @@ void blipvert::AYUV_to_ARGB1555(int32_t width, int32_t height,
         while (hcount)
         {
             int32_t Y = luminance_table[psrc[2]];
-            PackARGB555Word(*pdst, (psrc[3] > 127 ? 0x8000 : 0x0000),
+            PackARGB555Word(*pdst, (psrc[3] > 127 ? RGB555_ALPHA_MASK : 0x0000),
                 saturation_table[Y + v_table[psrc[0]]],                 // red
                 saturation_table[Y + uv_table[psrc[1]][psrc[0]]],       // green
                 saturation_table[Y + u_table[psrc[1]]]);                // blue
@@ -3797,13 +3797,13 @@ void blipvert::Y42T_to_ARGB1555(int32_t width, int32_t height,
             int32_t red = v_table[psrc[2]];
 
             int32_t Y = luminance_table[psrc[1] & 0xFE];
-            PackARGB555Word(pdst[0], (psrc[1] & 0x01 ? 0x8000 : 0x0000),
+            PackARGB555Word(pdst[0], (psrc[1] & 0x01 ? RGB555_ALPHA_MASK : 0x0000),
                 saturation_table[Y + red],
                 saturation_table[Y + green],
                 saturation_table[Y + blue]);
 
             Y = luminance_table[psrc[3] & 0xFE];
-            PackARGB555Word(pdst[1], (psrc[3] & 0x01 ? 0x8000 : 0x0000),
+            PackARGB555Word(pdst[1], (psrc[3] & 0x01 ? RGB555_ALPHA_MASK : 0x0000),
                 saturation_table[Y + red],
                 saturation_table[Y + green],
                 saturation_table[Y + blue]);
@@ -4284,25 +4284,25 @@ void blipvert::Y41T_to_ARGB1555(int32_t width, int32_t height,
             int32_t red = v_table[psrc[2]];
 
             int32_t Y = luminance_table[psrc[1] & 0xFE];
-            PackARGB555Word(pdst[0], static_cast<uint16_t>(psrc[1] & 0x01 ? 0x8000 : 0x0000),
+            PackARGB555Word(pdst[0], static_cast<uint16_t>(psrc[1] & 0x01 ? RGB555_ALPHA_MASK : 0x0000),
                 saturation_table[Y + red],
                 saturation_table[Y + green],
                 saturation_table[Y + blue]);
 
             Y = luminance_table[psrc[3] & 0xFE];
-            PackARGB555Word(pdst[1], static_cast<uint16_t>(psrc[3] & 0x01 ? 0x8000 : 0x0000),
+            PackARGB555Word(pdst[1], static_cast<uint16_t>(psrc[3] & 0x01 ? RGB555_ALPHA_MASK : 0x0000),
                 saturation_table[Y + red],
                 saturation_table[Y + green],
                 saturation_table[Y + blue]);
 
             Y = luminance_table[psrc[5] & 0xFE];
-            PackARGB555Word(pdst[2], static_cast<uint16_t>(psrc[5] & 0x01 ? 0x8000 : 0x0000),
+            PackARGB555Word(pdst[2], static_cast<uint16_t>(psrc[5] & 0x01 ? RGB555_ALPHA_MASK : 0x0000),
                 saturation_table[Y + red],
                 saturation_table[Y + green],
                 saturation_table[Y + blue]);
 
             Y = luminance_table[psrc[7] & 0xFE];
-            PackARGB555Word(pdst[3], static_cast<uint16_t>(psrc[7] & 0x01 ? 0x8000 : 0x0000),
+            PackARGB555Word(pdst[3], static_cast<uint16_t>(psrc[7] & 0x01 ? RGB555_ALPHA_MASK : 0x0000),
                 saturation_table[Y + red],
                 saturation_table[Y + green],
                 saturation_table[Y + blue]);
@@ -4312,25 +4312,25 @@ void blipvert::Y41T_to_ARGB1555(int32_t width, int32_t height,
             red = v_table[psrc[6]];
 
             Y = luminance_table[psrc[8] & 0xFE];
-            PackARGB555Word(pdst[4], static_cast<uint16_t>(psrc[8] & 0x01 ? 0x8000 : 0x0000),
+            PackARGB555Word(pdst[4], static_cast<uint16_t>(psrc[8] & 0x01 ? RGB555_ALPHA_MASK : 0x0000),
                 saturation_table[Y + red],
                 saturation_table[Y + green],
                 saturation_table[Y + blue]);
 
             Y = luminance_table[psrc[9] & 0xFE];
-            PackARGB555Word(pdst[5], static_cast<uint16_t>(psrc[9] & 0x01 ? 0x8000 : 0x0000),
+            PackARGB555Word(pdst[5], static_cast<uint16_t>(psrc[9] & 0x01 ? RGB555_ALPHA_MASK : 0x0000),
                 saturation_table[Y + red],
                 saturation_table[Y + green],
                 saturation_table[Y + blue]);
 
             Y = luminance_table[psrc[10] & 0xFE];
-            PackARGB555Word(pdst[6], static_cast<uint16_t>(psrc[10] & 0x01 ? 0x8000 : 0x0000),
+            PackARGB555Word(pdst[6], static_cast<uint16_t>(psrc[10] & 0x01 ? RGB555_ALPHA_MASK : 0x0000),
                 saturation_table[Y + red],
                 saturation_table[Y + green],
                 saturation_table[Y + blue]);
 
             Y = luminance_table[psrc[11] & 0xFE];
-            PackARGB555Word(pdst[7], static_cast<uint16_t>(psrc[11] & 0x01 ? 0x8000 : 0x0000),
+            PackARGB555Word(pdst[7], static_cast<uint16_t>(psrc[11] & 0x01 ? RGB555_ALPHA_MASK : 0x0000),
                 saturation_table[Y + red],
                 saturation_table[Y + green],
                 saturation_table[Y + blue]);

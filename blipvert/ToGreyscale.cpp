@@ -170,7 +170,7 @@ void blipvert::RGB555_to_Greyscale(int32_t  width, int32_t height, uint8_t* buf,
         uint32_t count = width * height;
         while (count)
         {
-            *pdst = (*reinterpret_cast<uint16_t*>(buf) & 0x8000) | rgba555_greyscale[((yr_table[UnpackRGB555Red(*pdst)] +  yg_table[UnpackRGB555Green(*pdst)] +  yb_table[UnpackRGB555Blue(*pdst)]) >> 15) + 16];
+            *pdst = (*reinterpret_cast<uint16_t*>(buf) & RGB555_ALPHA_MASK) | rgba555_greyscale[((yr_table[UnpackRGB555Red(*pdst)] +  yg_table[UnpackRGB555Green(*pdst)] +  yb_table[UnpackRGB555Blue(*pdst)]) >> 15) + 16];
             pdst++;
             count--;
         }
@@ -183,7 +183,7 @@ void blipvert::RGB555_to_Greyscale(int32_t  width, int32_t height, uint8_t* buf,
             int32_t hcount = width;
             while (hcount)
             {
-                *pdst = (*reinterpret_cast<uint16_t*>(buf) & 0x8000) | rgba555_greyscale[((yr_table[UnpackRGB555Red(*pdst)] +  yg_table[UnpackRGB555Green(*pdst)] + yb_table[UnpackRGB555Blue(*pdst)]) >> 15) + 16];
+                *pdst = (*reinterpret_cast<uint16_t*>(buf) & RGB555_ALPHA_MASK) | rgba555_greyscale[((yr_table[UnpackRGB555Red(*pdst)] +  yg_table[UnpackRGB555Green(*pdst)] + yb_table[UnpackRGB555Blue(*pdst)]) >> 15) + 16];
                 pdst++;
                 hcount--;
             }

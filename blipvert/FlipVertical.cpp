@@ -34,18 +34,30 @@ void FlipSinglePlane(int32_t height, uint8_t* buf, int32_t stride)
 {
     uint8_t* yp_top = buf;
     uint8_t* yp_bottom = buf + (stride * (height - 1));
+    int32_t count = stride / sizeof(uint32_t);
+    int32_t remainder = stride % sizeof(uint32_t);
     for (int32_t y = 0; y < height / 2; y++)
     {
-        uint8_t* xp_top = yp_top;
-        uint8_t* xp_bottom = yp_bottom;
+        uint32_t* xp_top = reinterpret_cast<uint32_t*>(yp_top);
+        uint32_t* xp_bottom = reinterpret_cast<uint32_t*>(yp_bottom);
 
-        for (int32_t x = 0; x < stride; x++)
+        for (int32_t x = 0; x < count; x++)
         {
-            uint8_t temp = *xp_top;
-            *xp_top = *xp_bottom;
-            *xp_bottom = temp;
-            xp_top++;
-            xp_bottom++;
+            uint32_t temp = *xp_top;
+            *xp_top++ = *xp_bottom;
+            *xp_bottom++ = temp;
+        }
+
+        if (remainder)
+        {
+            uint8_t* r_top = reinterpret_cast<uint8_t*>(xp_top);
+            uint8_t* r_bottom = reinterpret_cast<uint8_t*>(xp_bottom);
+            for (int32_t x = 0; x < remainder; x++)
+            {
+                uint8_t temp = *r_top;
+                *r_top++ = *r_bottom;
+                *r_bottom++ = temp;
+            }
         }
 
         yp_top += stride;

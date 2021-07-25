@@ -194,7 +194,7 @@ void blipvert::RGBA_to_ARGB1555(int32_t width, int32_t height,
         int32_t hcount = width;
         do
         {
-            PackARGB555Word(*pdst++, (psrc[3] > 127 ? 0x8000 : 0x0000), psrc[2], psrc[1], psrc[0]);
+            PackARGB555Word(*pdst++, (psrc[3] > 127 ? RGB555_ALPHA_MASK : 0x0000), psrc[2], psrc[1], psrc[0]);
             psrc += 4;
         } while (--hcount);
 
@@ -737,7 +737,7 @@ void blipvert::RGB565_to_RGB555(int32_t width, int32_t height,
         int32_t hcount = width;
         do
         {
-            *pdst++ = 0x8000 | (((*psrc & (RGB565_RED_MASK | RGB565_GREEN_MASK)) >> 1) & (RGB555_RED_MASK | RGB555_GREEN_MASK)) | (*psrc & RGB555_BLUE_MASK);
+            *pdst++ = RGB555_ALPHA_MASK | (((*psrc & (RGB565_RED_MASK | RGB565_GREEN_MASK)) >> 1) & (RGB555_RED_MASK | RGB555_GREEN_MASK)) | (*psrc & RGB555_BLUE_MASK);
             //PackRGB555Word(*pdst++, UnpackRGB565Red(*psrc), UnpackRGB565Green(*psrc), UnpackRGB565Blue(*psrc))
             psrc++;
         } while (--hcount);

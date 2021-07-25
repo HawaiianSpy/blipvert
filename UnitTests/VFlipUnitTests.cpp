@@ -54,6 +54,8 @@ namespace BlipvertUnitTests
 
 		TEST_METHOD(FlipBufferUnitTest)
 		{
+			alpha = 255;
+
 			RunAllTests();
 
 			uint32_t saveb = StrideBump;
@@ -62,9 +64,21 @@ namespace BlipvertUnitTests
 			RunAllTests();
 
 			StrideBump = saveb;
+
+			alpha = 0;
+
+			RunAllTests();
+
+			saveb = StrideBump;
+			StrideBump = StrideBumpTestValue;
+
+			RunAllTests();
+
+			StrideBump = saveb;
 		}
 
 	private:
+		uint8_t alpha = 255;
 
 		vector<const MediaFormatID*> RGBFormats = {
 			&MVFMT_RGBA,
@@ -157,6 +171,8 @@ namespace BlipvertUnitTests
 			wstring inFormatName = utf8ToUtf16Str(inFormat);
 			wstring outFormatName = utf8ToUtf16Str(outFormat);
 
+			// Get function pointers
+
 			t_transformfunc encodeTransPtr = FindVideoTransform(inFormat, outFormat);
 			Assert::IsNotNull(reinterpret_cast<void*>(encodeTransPtr), wstring(L"encodeTransPtr returned a null function pointer: " + inFormatName + L" to " + outFormatName).c_str());
 
@@ -171,6 +187,8 @@ namespace BlipvertUnitTests
 
 			uint32_t width = TestBufferWidth;
 			uint32_t height = TestBufferHeight;
+
+			// Allocate the buffers.
 
 			uint32_t in_stride = CalculateStrideBump(inFormat, width, height);
 			uint32_t inBufBize = CalculateBufferSize(inFormat, width, height, in_stride);
@@ -192,7 +210,7 @@ namespace BlipvertUnitTests
 			uint8_t* outTestBufPtr = outTestBuf.get();
 			memset(outTestBufPtr, 0, outBufBize);
 
-			uint8_t alpha = 255;
+			// Set pixels in bitmap with on color on the upper half and another on the bottom.
 
 			bool inyuv = IsYUVColorspace(inFormat);
 
@@ -240,7 +258,7 @@ namespace BlipvertUnitTests
 				}
 			}
 
-			// Use the transform top be tested to convert th inout buffer into the test buffer without flipping.
+			// Use the transform to be tested to convert the input buffer into the test buffer without flipping.
 			encodeTransPtr(width, height, outTestBufPtr, out_stride, inBufPtr, in_stride, false, nullptr);
 
 			// Now, manually vertically flip the test buffer here.

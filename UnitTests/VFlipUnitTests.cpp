@@ -90,14 +90,14 @@ namespace BlipvertUnitTests
 			&MVFMT_CLJR,
 			&MVFMT_I420,
 			&MVFMT_YV12,
-			//&MVFMT_YUV9,
-			//&MVFMT_YVU9,
-			//&MVFMT_IMC1,
-			//&MVFMT_IMC2,
-			//&MVFMT_IMC3,
-			//&MVFMT_IMC4,
-			//&MVFMT_NV12,
-			//&MVFMT_Y41T
+			&MVFMT_YUV9,
+			&MVFMT_YVU9,
+			&MVFMT_IMC1,
+			&MVFMT_IMC2,
+			&MVFMT_IMC3,
+			&MVFMT_IMC4,
+			&MVFMT_NV12,
+			&MVFMT_Y41T
 		};
 
 		void RunAllTests()
@@ -251,10 +251,10 @@ namespace BlipvertUnitTests
 
 			// Finally compare the externally flipped bitmap with the flipping done by the transform.
 			int result = memcmp(outBufPtr, outTestBufPtr, outBufBize);
-			if (result)
-			{
-				__debugbreak();
-			}
+			//if (result)
+			//{
+			//	__debugbreak();
+			//}
 
 			Assert::AreEqual(0, result, wstring(L"outBufPtr did not match outTestBufPtr: " + inFormatName + L" to " + outFormatName).c_str());
 		}

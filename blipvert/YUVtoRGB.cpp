@@ -852,6 +852,12 @@ void IMCx_to_RGB32(int32_t width, int32_t height,
         }
     }
 
+    if (flipped)
+    {
+        out_buf += (out_stride * (height - 1));
+        out_stride = -out_stride;
+    }
+
     int32_t out_stride_x_2 = out_stride * 2;
     int32_t in_stride_x_2 = in_stride * 2;
 

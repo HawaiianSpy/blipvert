@@ -7,7 +7,7 @@ I originally called the project "blipvert" because I was a fan of the Max Headro
 
 After looking at the code, you may be asking yourself, "Why the heck would I *ever* want to convert a Y41P bitmap to IYU2?" Probably never, nowadays. Yet, I would suggest you view this act of video programming obsessive-compulsive disorder like achieveing a gold badge on HackerRank before it was cool. Instead of whiling away the hours moving nonsensecal numbers around in random arrays, as one does on HackerRank, at least I had some, more or less, useful code to show for it afterwards. =:D
 
-As of 25 July, 2021, Blipvert now has a complete unit test suite that exercises all the code in the transforms.
+As of 25 July, 2021, Blipvert now has a complete unit test suite that covers all the code in the transforms.
 
 Regards,
 
@@ -65,7 +65,7 @@ The function pointer definition used for setting individual pixels in a bitmap. 
 The function pointer definition used for vertically flipping a bitmap in place. This is a hack for the unit testing for now.
 #
 #### ```t_calcbuffsizefunc```
-The function pointer definition used calculating the size of a bitmap's buffer. Better to use the existing ```CalculateBufferSize``` function, but that function does call this.
+The function pointer definition used for calculating the size of a bitmap's buffer. Easier to use the existing ```CalculateBufferSize``` function, but that function does call this.
 #
 #### ```VideoFormatInfo```
 Structure containing info for a particular video format.
@@ -121,7 +121,11 @@ Fast colospace conversion using lookup tables. Good enough for 99.5% of the appl
 #
 #### ```uint32_t CalculateBufferSize(const MediaFormatID& inFormat, uint32_t width, uint32_t height, uint32_t in_stride = 0);```
  Calculates size of the buffer given the video format and dimensions.
+ #
+#### ```int32_t CalculateMinimumLineStride(const MediaFormatID& inFormat, uint32_t width, uint32_t height);```
+ Returns the minimum size in bytes needed to contain one horizontal line of the bitmap.
 #
+
 #### ```bool IsRGBColorspace(const MediaFormatID& encoding);```
 #### ```bool IsRGBColorspace(const Fourcc fourcc);```
 #### ```bool IsYUVColorspace(const MediaFormatID& encoding);```

@@ -30,7 +30,6 @@
 
 namespace blipvert
 {
-    // In-place transform of bitmaps to greyscale.
     typedef uint32_t(__cdecl* t_calcbuffsizefunc) (int32_t width, int32_t height, int32_t& stride);
 
     uint32_t CalcBufferSize_RGBA(int32_t width, int32_t height, int32_t& stride);

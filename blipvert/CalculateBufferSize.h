@@ -62,6 +62,7 @@ namespace blipvert
     uint32_t CalcBufferSize_IMC3(int32_t width, int32_t height, int32_t& stride);
     uint32_t CalcBufferSize_IMC4(int32_t width, int32_t height, int32_t& stride);
     uint32_t CalcBufferSize_NV12(int32_t width, int32_t height, int32_t& stride);
+    uint32_t CalcBufferSize_NV21(int32_t width, int32_t height, int32_t& stride);
     uint32_t CalcBufferSize_Y42T(int32_t width, int32_t height, int32_t& stride);
     uint32_t CalcBufferSize_Y41T(int32_t width, int32_t height, int32_t& stride);
 };

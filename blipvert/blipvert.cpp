@@ -1245,6 +1245,7 @@ FlipVerticalTableEntry FlipVerticalTable[] = {
     { MVFMT_IMC3, FlipVertical_IMC3 },
     { MVFMT_IMC4, FlipVertical_IMC4 },
     { MVFMT_NV12, FlipVertical_NV12 },
+    { MVFMT_NV21, FlipVertical_NV21 },
     { MVFMT_Y42T, FlipVertical_Y42T },
     { MVFMT_Y41T, FlipVertical_Y41T },
     { MVFMT_UNDEFINED, nullptr }

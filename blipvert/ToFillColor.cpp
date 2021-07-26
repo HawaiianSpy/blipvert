@@ -719,6 +719,20 @@ void Fill_NVx(uint8_t y_level, uint8_t u_level, uint8_t v_level, uint8_t alpha,
 
     uint8_t* uvplane = buf + (stride * height);
 
+    uint8_t U;
+    uint8_t V;
+
+    if (ufirst)
+    {
+        U = 0;
+        V = 1;
+    }
+    else
+    {
+        U = 1;
+        V = 0;
+    }
+
     if (stride == width)
     {
         memset(buf, y_level, width * height);
@@ -732,31 +746,16 @@ void Fill_NVx(uint8_t y_level, uint8_t u_level, uint8_t v_level, uint8_t alpha,
         }
     }
 
-    if (ufirst)
+    for (int32_t y = 0; y < uv_height; y++)
     {
-        for (int32_t y = 0; y < uv_height; y++)
+        uint8_t* uvp = uvplane;
+        for (int32_t x = 0; x < uv_width; x++)
         {
-            uint8_t* uvp = uvplane;
-            for (int32_t x = 0; x < uv_width; x++)
-            {
-                *uvp++ = u_level;
-                *uvp++ = v_level;
-            }
-            uvplane += stride;
+            uvp[U] = u_level;
+            uvp[V] = v_level;
+            uvp += 2;
         }
-    }
-    else
-    {
-        for (int32_t y = 0; y < uv_height; y++)
-        {
-            uint8_t* uvp = uvplane;
-            for (int32_t x = 0; x < uv_width; x++)
-            {
-                *uvp++ = v_level;
-                *uvp++ = u_level;
-            }
-            uvplane += stride;
-        }
+        uvplane += stride;
     }
 }
 

@@ -495,7 +495,7 @@ void blipvert::CLJR_to_Greyscale(int32_t  width, int32_t height, uint8_t* buf, i
     }
 }
 
-void blipvert::NV12_to_Greyscale(int32_t  width, int32_t height, uint8_t* buf, int32_t stride, xRGBQUAD* in_palette)
+void NVx_to_Greyscale(int32_t  width, int32_t height, uint8_t* buf, int32_t stride)
 {
     int32_t uv_height = height / 2;
 
@@ -518,9 +518,14 @@ void blipvert::NV12_to_Greyscale(int32_t  width, int32_t height, uint8_t* buf, i
     }
 }
 
+void blipvert::NV12_to_Greyscale(int32_t  width, int32_t height, uint8_t* buf, int32_t stride, xRGBQUAD* in_palette)
+{
+    NVx_to_Greyscale(width, height, buf, stride);
+}
+
 void blipvert::NV21_to_Greyscale(int32_t  width, int32_t height, uint8_t* buf, int32_t stride, xRGBQUAD* in_palette)
 {
-    NV12_to_Greyscale(width, height, buf, stride, in_palette);
+    NVx_to_Greyscale(width, height, buf, stride);
 }
 
 void blipvert::Y42T_to_Greyscale(int32_t  width, int32_t height, uint8_t* buf, int32_t stride, xRGBQUAD* in_palette)

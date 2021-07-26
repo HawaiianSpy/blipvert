@@ -328,6 +328,11 @@ uint32_t blipvert::CalcBufferSize_NV12(int32_t width, int32_t height, int32_t& s
     return height * stride;
 }
 
+uint32_t blipvert::CalcBufferSize_NV21(int32_t width, int32_t height, int32_t& stride)
+{
+    return CalcBufferSize_NV12(width, height, stride);
+}
+
 uint32_t blipvert::CalcBufferSize_Y42T(int32_t width, int32_t height, int32_t& stride)
 {
     return CalcBufferSize_UYVY(width, height, stride);

@@ -302,7 +302,7 @@ void blipvert::FlipVertical_IMC4(int32_t width, int32_t height, uint8_t* buf, in
     FlipVertical_IMCx(width, height, buf, stride, true, true);
 }
 
-void blipvert::FlipVertical_NV12(int32_t width, int32_t height, uint8_t* buf, int32_t stride)
+void FlipVertical_NVx(int32_t width, int32_t height, uint8_t* buf, int32_t stride)
 {
     if (!stride)
         stride = width;
@@ -314,6 +314,16 @@ void blipvert::FlipVertical_NV12(int32_t width, int32_t height, uint8_t* buf, in
 
     FlipSinglePlane(height, buf, stride);
     FlipSinglePlane(uv_height, uvplane, stride);
+}
+
+void blipvert::FlipVertical_NV12(int32_t width, int32_t height, uint8_t* buf, int32_t stride)
+{
+    FlipVertical_NVx(width, height, buf, stride);
+}
+
+void blipvert::FlipVertical_NV21(int32_t width, int32_t height, uint8_t* buf, int32_t stride)
+{
+    FlipVertical_NVx(width, height, buf, stride);
 }
 
 void blipvert::FlipVertical_Y42T(int32_t width, int32_t height, uint8_t* buf, int32_t stride)

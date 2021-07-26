@@ -88,6 +88,7 @@ BufferCheckEntry BufferCheckFuncTable[] = {
 	{MVFMT_IMC3, Check_IMC3},
 	{MVFMT_IMC4, Check_IMC4},
 	{MVFMT_NV12, Check_NV12},
+	{MVFMT_NV21, Check_NV21},
 	{MVFMT_Y42T, Check_Y42T},
 	{MVFMT_Y41T, Check_Y41T},
 	{MVFMT_RGBA, Check_RGBA},
@@ -553,7 +554,8 @@ bool BlipvertUnitTests::Check_IYU2(uint8_t ry_level, uint8_t gu_level, uint8_t b
 }
 
 
-bool BlipvertUnitTests::Check_NV12(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha, int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride)
+bool Check_NVx(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level,
+	int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride, bool ufirst)
 {
 	int32_t uv_width = width / 2;
 	int32_t uv_height = height / 2;
@@ -561,7 +563,21 @@ bool BlipvertUnitTests::Check_NV12(uint8_t ry_level, uint8_t gu_level, uint8_t b
 	if (!stride)
 		stride = width;
 
-	uint8_t* uvplane = pBuffer + (stride * height);;
+	uint8_t* uvplane = pBuffer + (stride * height);
+
+	uint8_t U;
+	uint8_t V;
+
+	if (ufirst)
+	{
+		U = 0;
+		V = 1;
+	}
+	else
+	{
+		U = 1;
+		V = 0;
+	}
 
 	for (int32_t y = 0; y < height; y += 2)
 	{
@@ -573,8 +589,9 @@ bool BlipvertUnitTests::Check_NV12(uint8_t ry_level, uint8_t gu_level, uint8_t b
 			if (yp[1] != ry_level) return false;
 			if (yp[stride] != ry_level) return false;
 			if (yp[stride + 1] != ry_level) return false;
-			if (*uvp++ != gu_level) return false;
-			if (*uvp++ != bv_level) return false;
+			if (uvp[U] != gu_level) return false;
+			if (uvp[V] != bv_level) return false;
+			uvp += 2;
 			yp += 2;
 		}
 
@@ -583,6 +600,15 @@ bool BlipvertUnitTests::Check_NV12(uint8_t ry_level, uint8_t gu_level, uint8_t b
 	}
 
 	return true;
+}
+
+bool BlipvertUnitTests::Check_NV12(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha, int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride)
+{
+	return Check_NVx(ry_level, gu_level, bv_level, width, height, pBuffer, stride, true);
+}
+bool BlipvertUnitTests::Check_NV21(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha, int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride)
+{
+	return Check_NVx(ry_level, gu_level, bv_level, width, height, pBuffer, stride, false);
 }
 
 

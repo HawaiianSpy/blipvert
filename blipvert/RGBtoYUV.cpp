@@ -2248,10 +2248,10 @@ void blipvert::RGB32_to_IMC4(int32_t  width, int32_t height,
     RGB32_to_IMCx(width, height, out_buf, out_stride, in_buf, in_stride, true, true, flipped);
 }
 
-void blipvert::RGB32_to_NV12(int32_t  width, int32_t height,
+void RGB32_to_NVx(int32_t  width, int32_t height,
     uint8_t* out_buf, int32_t out_stride,
     uint8_t* in_buf, int32_t in_stride,
-    bool flipped, xRGBQUAD* in_palette)
+    bool flipped, bool ufirst)
 {
     if (!in_stride)
         in_stride = width * 4;
@@ -2262,6 +2262,20 @@ void blipvert::RGB32_to_NV12(int32_t  width, int32_t height,
         out_stride = width;
 
     uint8_t* uvplane = out_buf + (out_stride * height);
+
+    uint8_t U;
+    uint8_t V;
+
+    if (ufirst)
+    {
+        U = 0;
+        V = 1;
+    }
+    else
+    {
+        U = 1;
+        V = 0;
+    }
 
     if (flipped)
     {
@@ -2308,9 +2322,10 @@ void blipvert::RGB32_to_NV12(int32_t  width, int32_t height,
             green >>= 2;
             blue >>= 2;
 
-            *uvp++ = static_cast<uint8_t>(((ur_table[red] + ug_table[green] + ub_table[blue]) >> 15) + 128);
-            *uvp++ = static_cast<uint8_t>(((vr_table[red] + vg_table[green] + vb_table[blue]) >> 15) + 128);
+            uvp[U] = static_cast<uint8_t>(((ur_table[red] + ug_table[green] + ub_table[blue]) >> 15) + 128);
+            uvp[V] = static_cast<uint8_t>(((vr_table[red] + vg_table[green] + vb_table[blue]) >> 15) + 128);
 
+            uvp += 2;
             psrc += 8;
             yp += 2;
         }
@@ -2319,6 +2334,22 @@ void blipvert::RGB32_to_NV12(int32_t  width, int32_t height,
         out_buf += out_stride_x_2;
         uvplane += out_stride;
     }
+}
+
+void blipvert::RGB32_to_NV12(int32_t  width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD* in_palette)
+{
+    RGB32_to_NVx(width, height, out_buf, out_stride, in_buf, in_stride, flipped, true);
+}
+
+void blipvert::RGB32_to_NV21(int32_t  width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD* in_palette)
+{
+    RGB32_to_NVx(width, height, out_buf, out_stride, in_buf, in_stride, flipped, false);
 }
 
 void blipvert::RGB32_to_Y42T(int32_t  width, int32_t height,
@@ -2863,10 +2894,10 @@ void blipvert::RGB24_to_IMC4(int32_t  width, int32_t height,
     RGB24_to_IMCx(width, height, out_buf, out_stride, in_buf, in_stride, true, true, flipped);
 }
 
-void blipvert::RGB24_to_NV12(int32_t  width, int32_t height,
+void RGB24_to_NVx(int32_t  width, int32_t height,
     uint8_t* out_buf, int32_t out_stride,
     uint8_t* in_buf, int32_t in_stride,
-    bool flipped, xRGBQUAD* in_palette)
+    bool flipped, bool ufirst)
 {
     if (!in_stride)
         in_stride = width * 3;
@@ -2878,6 +2909,20 @@ void blipvert::RGB24_to_NV12(int32_t  width, int32_t height,
         out_stride = width;
 
     uint8_t* uvplane = out_buf + (out_stride * height);
+
+    uint8_t U;
+    uint8_t V;
+
+    if (ufirst)
+    {
+        U = 0;
+        V = 1;
+    }
+    else
+    {
+        U = 1;
+        V = 0;
+    }
 
     if (flipped)
     {
@@ -2924,9 +2969,10 @@ void blipvert::RGB24_to_NV12(int32_t  width, int32_t height,
             green >>= 2;
             blue >>= 2;
 
-            *uvp++ = static_cast<uint8_t>(((ur_table[red] + ug_table[green] + ub_table[blue]) >> 15) + 128);
-            *uvp++ = static_cast<uint8_t>(((vr_table[red] + vg_table[green] + vb_table[blue]) >> 15) + 128);
+            uvp[U] = static_cast<uint8_t>(((ur_table[red] + ug_table[green] + ub_table[blue]) >> 15) + 128);
+            uvp[V] = static_cast<uint8_t>(((vr_table[red] + vg_table[green] + vb_table[blue]) >> 15) + 128);
 
+            uvp += 2;
             psrc += 6;
             yp += 2;
         }
@@ -2935,6 +2981,22 @@ void blipvert::RGB24_to_NV12(int32_t  width, int32_t height,
         out_buf += out_stride_x_2;
         uvplane += out_stride;
     }
+}
+
+void blipvert::RGB24_to_NV12(int32_t  width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD* in_palette)
+{
+    RGB24_to_NVx(width, height, out_buf, out_stride, in_buf, in_stride, flipped, true);
+}
+
+void blipvert::RGB24_to_NV21(int32_t  width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD* in_palette)
+{
+    RGB24_to_NVx(width, height, out_buf, out_stride, in_buf, in_stride, flipped, false);
 }
 
 void blipvert::RGB24_to_Y42T(int32_t  width, int32_t height,
@@ -3511,10 +3573,10 @@ void blipvert::RGB565_to_IMC4(int32_t  width, int32_t height,
     RGB565_to_IMCx(width, height, out_buf, out_stride, in_buf, in_stride, true, true, flipped);
 }
 
-void blipvert::RGB565_to_NV12(int32_t  width, int32_t height,
+void RGB565_to_NVx(int32_t  width, int32_t height,
     uint8_t* out_buf, int32_t out_stride,
     uint8_t* in_buf, int32_t in_stride,
-    bool flipped, xRGBQUAD* in_palette)
+    bool flipped, bool ufirst)
 {
     if (!in_stride)
         in_stride = width * 2;
@@ -3526,6 +3588,20 @@ void blipvert::RGB565_to_NV12(int32_t  width, int32_t height,
         out_stride = width;
 
     uint8_t* uvplane = out_buf + (out_stride * height);
+
+    uint8_t U;
+    uint8_t V;
+
+    if (ufirst)
+    {
+        U = 0;
+        V = 1;
+    }
+    else
+    {
+        U = 1;
+        V = 0;
+    }
 
     if (flipped)
     {
@@ -3580,9 +3656,10 @@ void blipvert::RGB565_to_NV12(int32_t  width, int32_t height,
             green >>= 2;
             blue >>= 2;
 
-            *uvp++ = static_cast<uint8_t>(((ur_table[red] + ug_table[green] + ub_table[blue]) >> 15) + 128);
-            *uvp++ = static_cast<uint8_t>(((vr_table[red] + vg_table[green] + vb_table[blue]) >> 15) + 128);
+            uvp[U] = static_cast<uint8_t>(((ur_table[red] + ug_table[green] + ub_table[blue]) >> 15) + 128);
+            uvp[V] = static_cast<uint8_t>(((vr_table[red] + vg_table[green] + vb_table[blue]) >> 15) + 128);
 
+            uvp += 2;
             psrc += 4;
             yp += 2;
         }
@@ -3591,6 +3668,22 @@ void blipvert::RGB565_to_NV12(int32_t  width, int32_t height,
         out_buf += out_stride_x_2;
         uvplane += out_stride;
     }
+}
+
+void blipvert::RGB565_to_NV12(int32_t  width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD* in_palette)
+{
+    RGB565_to_NVx(width, height, out_buf, out_stride, in_buf, in_stride, flipped, true);
+}
+
+void blipvert::RGB565_to_NV21(int32_t  width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD* in_palette)
+{
+    RGB565_to_NVx(width, height, out_buf, out_stride, in_buf, in_stride, flipped, false);
 }
 
 void blipvert::RGB565_to_Y42T(int32_t  width, int32_t height,
@@ -4388,10 +4481,10 @@ void blipvert::RGB555_to_AYUV(int32_t width, int32_t height, uint8_t* out_buf, i
     }
 }
 
-void blipvert::RGB555_to_NV12(int32_t  width, int32_t height,
+void RGB555_to_NVx(int32_t  width, int32_t height,
     uint8_t* out_buf, int32_t out_stride,
     uint8_t* in_buf, int32_t in_stride,
-    bool flipped, xRGBQUAD* in_palette)
+    bool flipped, bool ufirst)
 {
     if (!in_stride)
         in_stride = width * 2;
@@ -4403,6 +4496,20 @@ void blipvert::RGB555_to_NV12(int32_t  width, int32_t height,
         out_stride = width;
 
     uint8_t* uvplane = out_buf + (out_stride * height);
+
+    uint8_t U;
+    uint8_t V;
+
+    if (ufirst)
+    {
+        U = 0;
+        V = 1;
+    }
+    else
+    {
+        U = 1;
+        V = 0;
+    }
 
     if (flipped)
     {
@@ -4457,9 +4564,10 @@ void blipvert::RGB555_to_NV12(int32_t  width, int32_t height,
             green >>= 2;
             blue >>= 2;
 
-            *uvp++ = static_cast<uint8_t>(((ur_table[red] + ug_table[green] + ub_table[blue]) >> 15) + 128);
-            *uvp++ = static_cast<uint8_t>(((vr_table[red] + vg_table[green] + vb_table[blue]) >> 15) + 128);
+            uvp[U] = static_cast<uint8_t>(((ur_table[red] + ug_table[green] + ub_table[blue]) >> 15) + 128);
+            uvp[V] = static_cast<uint8_t>(((vr_table[red] + vg_table[green] + vb_table[blue]) >> 15) + 128);
 
+            uvp += 2;
             psrc += 4;
             yp += 2;
         }
@@ -4468,6 +4576,22 @@ void blipvert::RGB555_to_NV12(int32_t  width, int32_t height,
         out_buf += out_stride_x_2;
         uvplane += out_stride;
     }
+}
+
+void blipvert::RGB555_to_NV12(int32_t  width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD* in_palette)
+{
+    RGB555_to_NVx(width, height, out_buf, out_stride, in_buf, in_stride, flipped, true);
+}
+
+void blipvert::RGB555_to_NV21(int32_t  width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD* in_palette)
+{
+    RGB555_to_NVx(width, height, out_buf, out_stride, in_buf, in_stride, flipped, false);
 }
 
 void blipvert::RGB555_to_Y42T(int32_t  width, int32_t height,
@@ -5080,10 +5204,10 @@ void blipvert::RGB8_to_IMC4(int32_t  width, int32_t height,
     RGB8_to_IMCx(width, height, out_buf, out_stride, in_buf, in_stride, true, true, flipped, in_palette);
 }
 
-void blipvert::RGB8_to_NV12(int32_t  width, int32_t height,
+void RGB8_to_NVx(int32_t  width, int32_t height,
     uint8_t* out_buf, int32_t out_stride,
     uint8_t* in_buf, int32_t in_stride,
-    bool flipped, xRGBQUAD* in_palette)
+    bool flipped, xRGBQUAD* in_palette, bool ufirst)
 {
     if (!in_stride)
         in_stride = width;
@@ -5095,6 +5219,20 @@ void blipvert::RGB8_to_NV12(int32_t  width, int32_t height,
         out_stride = width;
 
     uint8_t* uvplane = out_buf + (out_stride * height);
+
+    uint8_t U;
+    uint8_t V;
+
+    if (ufirst)
+    {
+        U = 0;
+        V = 1;
+    }
+    else
+    {
+        U = 1;
+        V = 0;
+    }
 
     if (flipped)
     {
@@ -5153,9 +5291,10 @@ void blipvert::RGB8_to_NV12(int32_t  width, int32_t height,
             green >>= 2;
             blue >>= 2;
 
-            *uvp++ = static_cast<uint8_t>(((ur_table[red] + ug_table[green] + ub_table[blue]) >> 15) + 128);
-            *uvp++ = static_cast<uint8_t>(((vr_table[red] + vg_table[green] + vb_table[blue]) >> 15) + 128);
+            uvp[U] = static_cast<uint8_t>(((ur_table[red] + ug_table[green] + ub_table[blue]) >> 15) + 128);
+            uvp[V] = static_cast<uint8_t>(((vr_table[red] + vg_table[green] + vb_table[blue]) >> 15) + 128);
 
+            uvp += 2;
             psrc += 2;
             yp += 2;
         }
@@ -5165,6 +5304,23 @@ void blipvert::RGB8_to_NV12(int32_t  width, int32_t height,
         uvplane += out_stride;
     }
 }
+
+void blipvert::RGB8_to_NV12(int32_t  width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD* in_palette)
+{
+    RGB8_to_NVx(width, height, out_buf, out_stride, in_buf, in_stride, flipped, in_palette, true);
+}
+
+void blipvert::RGB8_to_NV21(int32_t  width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD* in_palette)
+{
+    RGB8_to_NVx(width, height, out_buf, out_stride, in_buf, in_stride, flipped, in_palette, false);
+}
+
 
 void blipvert::RGB8_to_Y42T(int32_t  width, int32_t height,
     uint8_t* out_buf, int32_t out_stride,

@@ -540,6 +540,30 @@ namespace BlipvertUnitTests
 		}
 
 		//
+		// NV21 to RGB
+		//
+
+		TEST_METHOD(NV21_to_RGB32_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_NV21, MVFMT_RGB32);
+		}
+
+		TEST_METHOD(NV21_to_RGB24_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_NV21, MVFMT_RGB24);
+		}
+
+		TEST_METHOD(NV21_to_RGB565_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_NV21, MVFMT_RGB565);
+		}
+
+		TEST_METHOD(NV21_to_RGB555_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_NV21, MVFMT_RGB555);
+		}
+
+		//
 		// Y42T to RGB
 		//
 

@@ -2328,9 +2328,114 @@ namespace BlipvertUnitTests
 		// NV21 to YUV
 		//
 
+		TEST_METHOD(NV21_to_AYUV_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_NV21, MVFMT_AYUV);
+		}
+
+		TEST_METHOD(NV21_to_YUY2_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_NV21, MVFMT_YUY2);
+		}
+
+		TEST_METHOD(NV21_to_UYVY_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_NV21, MVFMT_UYVY);
+		}
+
+		TEST_METHOD(NV21_to_YVYU_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_NV21, MVFMT_YVYU);
+		}
+
+		TEST_METHOD(NV21_to_VYUY_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_NV21, MVFMT_VYUY);
+		}
+
+		TEST_METHOD(NV21_to_I420_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_NV21, MVFMT_I420);
+		}
+
+		TEST_METHOD(NV21_to_YV12_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_NV21, MVFMT_YV12);
+		}
+
+		TEST_METHOD(NV21_to_YUV9_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_NV21, MVFMT_YUV9);
+		}
+
+		TEST_METHOD(NV21_to_YVU9_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_NV21, MVFMT_YVU9);
+		}
+
+		TEST_METHOD(NV21_to_IYU1_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_NV21, MVFMT_IYU1);
+		}
+
+		TEST_METHOD(NV21_to_IYU2_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_NV21, MVFMT_IYU2);
+		}
+
+		TEST_METHOD(NV21_to_Y800_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_NV21, MVFMT_Y800);
+		}
+
+		TEST_METHOD(NV21_to_Y16_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_NV21, MVFMT_Y16);
+		}
+
+		TEST_METHOD(NV21_to_CLJR_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_NV21, MVFMT_CLJR);
+		}
+
+		TEST_METHOD(NV21_to_Y41P_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_NV21, MVFMT_Y41P);
+		}
+
+		TEST_METHOD(NV21_to_IMC1_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_NV21, MVFMT_IMC1);
+		}
+
+		TEST_METHOD(NV21_to_IMC2_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_NV21, MVFMT_IMC2);
+		}
+
+		TEST_METHOD(NV21_to_IMC3_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_NV21, MVFMT_IMC3);
+		}
+
+		TEST_METHOD(NV21_to_IMC4_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_NV21, MVFMT_IMC4);
+		}
+
 		TEST_METHOD(NV21_to_NV12_UnitTest)
 		{
 			Run8bitTestSeries(MVFMT_NV21, MVFMT_NV12);
+		}
+
+		TEST_METHOD(NV21_to_Y42T_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_NV21, MVFMT_Y42T);
+		}
+
+		TEST_METHOD(NV21_to_Y41T_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_NV21, MVFMT_Y41T);
 		}
 
 		//

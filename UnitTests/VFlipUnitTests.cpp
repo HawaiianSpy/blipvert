@@ -95,7 +95,6 @@ namespace BlipvertUnitTests
 			&MVFMT_UYVY,
 			&MVFMT_YVYU,
 			&MVFMT_VYUY,
-			&MVFMT_Y42T,
 			&MVFMT_Y800,
 			&MVFMT_Y16,
 			&MVFMT_IYU1,
@@ -111,7 +110,9 @@ namespace BlipvertUnitTests
 			&MVFMT_IMC3,
 			&MVFMT_IMC4,
 			&MVFMT_NV12,
-			&MVFMT_Y41T
+			&MVFMT_NV21,
+			&MVFMT_Y41T,
+			&MVFMT_Y42T
 		};
 
 		void RunAllTests()

@@ -2295,7 +2295,8 @@ void RGB32_to_NVx(int32_t  width, int32_t height,
     {
         uint8_t* psrc = in_buf;
         uint8_t* yp = out_buf;
-        uint8_t* uvp = uvplane;
+        uint8_t* up = uvplane + U;
+        uint8_t* vp = uvplane + V;
         for (int32_t x = 0; x < width; x += 2)
         {
             yp[0] = static_cast<uint8_t>(((yr_table[psrc[2]] + yg_table[psrc[1]] + yb_table[psrc[0]]) >> 15) + 16);
@@ -2322,10 +2323,11 @@ void RGB32_to_NVx(int32_t  width, int32_t height,
             green >>= 2;
             blue >>= 2;
 
-            uvp[U] = static_cast<uint8_t>(((ur_table[red] + ug_table[green] + ub_table[blue]) >> 15) + 128);
-            uvp[V] = static_cast<uint8_t>(((vr_table[red] + vg_table[green] + vb_table[blue]) >> 15) + 128);
+            *up = static_cast<uint8_t>(((ur_table[red] + ug_table[green] + ub_table[blue]) >> 15) + 128);
+            *vp = static_cast<uint8_t>(((vr_table[red] + vg_table[green] + vb_table[blue]) >> 15) + 128);
 
-            uvp += 2;
+            up += 2;
+            vp += 2;
             psrc += 8;
             yp += 2;
         }
@@ -2942,7 +2944,8 @@ void RGB24_to_NVx(int32_t  width, int32_t height,
     {
         uint8_t* psrc = in_buf;
         uint8_t* yp = out_buf;
-        uint8_t* uvp = uvplane;
+        uint8_t* up = uvplane + U;
+        uint8_t* vp = uvplane + V;
         for (int32_t x = 0; x < width; x += 2)
         {
             yp[0] = static_cast<uint8_t>(((yr_table[psrc[2]] + yg_table[psrc[1]] + yb_table[psrc[0]]) >> 15) + 16);
@@ -2969,10 +2972,11 @@ void RGB24_to_NVx(int32_t  width, int32_t height,
             green >>= 2;
             blue >>= 2;
 
-            uvp[U] = static_cast<uint8_t>(((ur_table[red] + ug_table[green] + ub_table[blue]) >> 15) + 128);
-            uvp[V] = static_cast<uint8_t>(((vr_table[red] + vg_table[green] + vb_table[blue]) >> 15) + 128);
+            *up = static_cast<uint8_t>(((ur_table[red] + ug_table[green] + ub_table[blue]) >> 15) + 128);
+            *vp = static_cast<uint8_t>(((vr_table[red] + vg_table[green] + vb_table[blue]) >> 15) + 128);
 
-            uvp += 2;
+            up += 2;
+            vp += 2;
             psrc += 6;
             yp += 2;
         }
@@ -3621,7 +3625,8 @@ void RGB565_to_NVx(int32_t  width, int32_t height,
     {
         uint8_t* psrc = in_buf;
         uint8_t* yp = out_buf;
-        uint8_t* uvp = uvplane;
+        uint8_t* up = uvplane + U;
+        uint8_t* vp = uvplane + V;
         for (int32_t x = 0; x < width; x += 2)
         {
             uint8_t redb;
@@ -3656,10 +3661,11 @@ void RGB565_to_NVx(int32_t  width, int32_t height,
             green >>= 2;
             blue >>= 2;
 
-            uvp[U] = static_cast<uint8_t>(((ur_table[red] + ug_table[green] + ub_table[blue]) >> 15) + 128);
-            uvp[V] = static_cast<uint8_t>(((vr_table[red] + vg_table[green] + vb_table[blue]) >> 15) + 128);
+            *up = static_cast<uint8_t>(((ur_table[red] + ug_table[green] + ub_table[blue]) >> 15) + 128);
+            *vp = static_cast<uint8_t>(((vr_table[red] + vg_table[green] + vb_table[blue]) >> 15) + 128);
 
-            uvp += 2;
+            up += 2;
+            vp += 2;
             psrc += 4;
             yp += 2;
         }
@@ -4529,7 +4535,8 @@ void RGB555_to_NVx(int32_t  width, int32_t height,
     {
         uint8_t* psrc = in_buf;
         uint8_t* yp = out_buf;
-        uint8_t* uvp = uvplane;
+        uint8_t* up = uvplane + U;
+        uint8_t* vp = uvplane + V;
         for (int32_t x = 0; x < width; x += 2)
         {
             uint8_t redb;
@@ -4564,10 +4571,11 @@ void RGB555_to_NVx(int32_t  width, int32_t height,
             green >>= 2;
             blue >>= 2;
 
-            uvp[U] = static_cast<uint8_t>(((ur_table[red] + ug_table[green] + ub_table[blue]) >> 15) + 128);
-            uvp[V] = static_cast<uint8_t>(((vr_table[red] + vg_table[green] + vb_table[blue]) >> 15) + 128);
+            *up = static_cast<uint8_t>(((ur_table[red] + ug_table[green] + ub_table[blue]) >> 15) + 128);
+            *vp = static_cast<uint8_t>(((vr_table[red] + vg_table[green] + vb_table[blue]) >> 15) + 128);
 
-            uvp += 2;
+            up += 2;
+            vp += 2;
             psrc += 4;
             yp += 2;
         }
@@ -5252,7 +5260,8 @@ void RGB8_to_NVx(int32_t  width, int32_t height,
     {
         uint8_t* psrc = in_buf;
         uint8_t* yp = out_buf;
-        uint8_t* uvp = uvplane;
+        uint8_t* up = uvplane + U;
+        uint8_t* vp = uvplane + V;
         for (int32_t x = 0; x < width; x += 2)
         {
             uint8_t redb = in_palette[psrc[0]].rgbRed;
@@ -5291,10 +5300,11 @@ void RGB8_to_NVx(int32_t  width, int32_t height,
             green >>= 2;
             blue >>= 2;
 
-            uvp[U] = static_cast<uint8_t>(((ur_table[red] + ug_table[green] + ub_table[blue]) >> 15) + 128);
-            uvp[V] = static_cast<uint8_t>(((vr_table[red] + vg_table[green] + vb_table[blue]) >> 15) + 128);
+            *up = static_cast<uint8_t>(((ur_table[red] + ug_table[green] + ub_table[blue]) >> 15) + 128);
+            *vp = static_cast<uint8_t>(((vr_table[red] + vg_table[green] + vb_table[blue]) >> 15) + 128);
 
-            uvp += 2;
+            up += 2;
+            vp += 2;
             psrc += 2;
             yp += 2;
         }

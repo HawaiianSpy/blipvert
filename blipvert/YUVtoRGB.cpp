@@ -3249,14 +3249,15 @@ void NVx_to_RGB32(int32_t width, int32_t height,
     for (int16_t y = 0; y < height; y += 2)
     {
         uint8_t* yp = in_buf;
-        uint8_t* vup = uvplane;
+        uint8_t* up = uvplane + U;
+        uint8_t* vp = uvplane + V;
         uint8_t* pdst = out_buf;
 
         for (int16_t x = 0; x < width; x += 2)
         {
-            int32_t bprime = u_table[vup[U]];
-            int32_t gprime = uv_table[vup[U]][vup[V]];
-            int32_t rprime = v_table[vup[V]];
+            int32_t bprime = u_table[*up];
+            int32_t gprime = uv_table[*up][*vp];
+            int32_t rprime = v_table[*vp];
 
             // column 1 row 1
             int32_t Y = luminance_table[yp[0]];
@@ -3288,7 +3289,8 @@ void NVx_to_RGB32(int32_t width, int32_t height,
 
             pdst += 8;
             yp += 2;
-            vup += 2;
+            up += 2;
+            vp += 2;
         }
 
         in_buf += in_stride_x_2;
@@ -3355,14 +3357,15 @@ void NVx_to_RGB24(int32_t width, int32_t height,
     for (int16_t y = 0; y < height; y += 2)
     {
         uint8_t* yp = in_buf;
-        uint8_t* uvp = uvplane;
+        uint8_t* up = uvplane + U;
+        uint8_t* vp = uvplane + V;
         uint8_t* pdst = out_buf;
 
         for (int16_t x = 0; x < width; x += 2)
         {
-            int32_t bprime = u_table[uvp[U]];
-            int32_t gprime = uv_table[uvp[U]][uvp[V]];
-            int32_t rprime = v_table[uvp[V]];
+            int32_t bprime = u_table[*up];
+            int32_t gprime = uv_table[*up][*vp];
+            int32_t rprime = v_table[*vp];
 
             // column 1 row 1
             int32_t Y = luminance_table[yp[0]];
@@ -3390,7 +3393,8 @@ void NVx_to_RGB24(int32_t width, int32_t height,
 
             pdst += 6;
             yp += 2;
-            uvp += 2;
+            up += 2;
+            vp += 2;
         }
 
         in_buf += in_stride_x_2;
@@ -3457,14 +3461,15 @@ void NVx_to_RGB565(int32_t width, int32_t height,
     for (int16_t y = 0; y < height; y += 2)
     {
         uint8_t* yp = in_buf;
-        uint8_t* uvp = uvplane;
+        uint8_t* up = uvplane + U;
+        uint8_t* vp = uvplane + V;
         uint8_t* pdst = out_buf;
 
         for (int16_t x = 0; x < width; x += 2)
         {
-            int32_t bprime = u_table[uvp[U]];
-            int32_t gprime = uv_table[uvp[U]][uvp[V]];
-            int32_t rprime = v_table[uvp[V]];
+            int32_t bprime = u_table[*up];
+            int32_t gprime = uv_table[*up][*vp];
+            int32_t rprime = v_table[*vp];
 
             // column 1 row 1
             int32_t Y = luminance_table[yp[0]];
@@ -3496,7 +3501,8 @@ void NVx_to_RGB565(int32_t width, int32_t height,
 
             pdst += 4;
             yp += 2;
-            uvp += 2;
+            up += 2;
+            vp += 2;
         }
 
         in_buf += in_stride_x_2;
@@ -3563,14 +3569,15 @@ void NVx_to_RGB555(int32_t width, int32_t height,
     for (int16_t y = 0; y < height; y += 2)
     {
         uint8_t* yp = in_buf;
-        uint8_t* uvp = uvplane;
+        uint8_t* up = uvplane + U;
+        uint8_t* vp = uvplane + V;
         uint8_t* pdst = out_buf;
 
         for (int16_t x = 0; x < width; x += 2)
         {
-            int32_t bprime = u_table[uvp[U]];
-            int32_t gprime = uv_table[uvp[U]][uvp[V]];
-            int32_t rprime = v_table[uvp[V]];
+            int32_t bprime = u_table[*up];
+            int32_t gprime = uv_table[*up][*vp];
+            int32_t rprime = v_table[*vp];
 
             // column 1 row 1
             int32_t Y = luminance_table[yp[0]];
@@ -3602,7 +3609,8 @@ void NVx_to_RGB555(int32_t width, int32_t height,
 
             pdst += 4;
             yp += 2;
-            uvp += 2;
+            up += 2;
+            vp += 2;
         }
 
         in_buf += in_stride_x_2;

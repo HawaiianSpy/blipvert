@@ -170,6 +170,11 @@ namespace BlipvertUnitTests
 			RunYUV8bitAlphaTestSeries(MVFMT_Y41T);
 		}
 
+		TEST_METHOD(YV16_UnitTest)
+		{
+			RunYUV8bitAlphaTestSeries(MVFMT_YV16);
+		}
+
 	private:
 
 		void RunRGB8bitTestSeries(const MediaFormatID& format)

@@ -1176,6 +1176,7 @@ GreyscaleTableEntry GreyscaleTable[] = {
     { MVFMT_NV21, NV21_to_Greyscale },
     { MVFMT_Y42T, Y42T_to_Greyscale },
     { MVFMT_Y41T, Y41T_to_Greyscale },
+    { MVFMT_YV16, YV16_to_Greyscale },
     { MVFMT_UNDEFINED, nullptr }
 };
 
@@ -1209,6 +1210,7 @@ FillcolorTableEntry FillColorTable[] = {
     { MVFMT_NV21, Fill_NV21 },
     { MVFMT_Y42T, Fill_Y42T },
     { MVFMT_Y41T, Fill_Y41T },
+    { MVFMT_YV16, Fill_YV16 },
     { MVFMT_UNDEFINED, nullptr }
 };
 
@@ -1277,6 +1279,7 @@ CalcBufSizeTableEntry CalcBufSizeTable[] = {
     { MVFMT_NV21, CalcBufferSize_NV21 },
     { MVFMT_Y42T, CalcBufferSize_Y42T },
     { MVFMT_Y41T, CalcBufferSize_Y41T },
+    { MVFMT_YV16, CalcBufferSize_YV16 },
     { MVFMT_UNDEFINED, nullptr }
 };
 
@@ -1310,6 +1313,7 @@ FlipVerticalTableEntry FlipVerticalTable[] = {
     { MVFMT_NV21, FlipVertical_NV21 },
     { MVFMT_Y42T, FlipVertical_Y42T },
     { MVFMT_Y41T, FlipVertical_Y41T },
+    { MVFMT_YV16, FlipVertical_YV16 },
     { MVFMT_UNDEFINED, nullptr }
 };
 

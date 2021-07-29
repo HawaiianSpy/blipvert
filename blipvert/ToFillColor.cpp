@@ -748,12 +748,14 @@ void Fill_NVx(uint8_t y_level, uint8_t u_level, uint8_t v_level, uint8_t alpha,
 
     for (int32_t y = 0; y < uv_height; y++)
     {
-        uint8_t* uvp = uvplane;
+        uint8_t* up = uvplane + U;
+        uint8_t* vp = uvplane + V;
         for (int32_t x = 0; x < uv_width; x++)
         {
-            uvp[U] = u_level;
-            uvp[V] = v_level;
-            uvp += 2;
+            *up = u_level;
+            *vp = v_level;
+            up += 2;
+            vp += 2;
         }
         uvplane += stride;
     }
@@ -788,3 +790,46 @@ void blipvert::Fill_Y41T(uint8_t y_level, uint8_t u_level, uint8_t v_level, uint
     Fill_Y41P(alpha > 127 ? y_level | 0x01 : y_level & 0xFE, u_level, v_level, alpha, width, height, buf, stride);
 }
 
+void blipvert::Fill_YV16(uint8_t y_level, uint8_t u_level, uint8_t v_level, uint8_t alpha,
+    int32_t width, int32_t height, uint8_t* buf, int32_t stride)
+{
+    int32_t uv_width = width / 2;
+
+    int16_t y_stride, uv_stride;
+    if (stride <= width)
+    {
+        y_stride = width;
+        uv_stride = uv_width;
+    }
+    else
+    {
+        y_stride = stride;
+        uv_stride = stride;
+    }
+
+    uint8_t* vplane = buf + (y_stride * height);
+    uint8_t* uplane = vplane + (uv_stride * height);
+
+    if (y_stride == width)
+    {
+        memset(buf, y_level, y_stride * height);
+        memset(vplane, v_level, uv_stride * height);
+        memset(uplane, u_level, uv_stride * height);
+    }
+    else
+    {
+        for (int32_t y = 0; y < height; y++)
+        {
+            memset(buf, y_level, width);
+            buf += y_stride;
+        }
+
+        for (int32_t y = 0; y < height; y++)
+        {
+            memset(uplane, u_level, uv_width);
+            memset(vplane, v_level, uv_width);
+            uplane += uv_stride;
+            vplane += uv_stride;
+        }
+    }
+}

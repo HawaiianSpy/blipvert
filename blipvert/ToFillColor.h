@@ -62,5 +62,6 @@ namespace blipvert
     void Fill_NV21(uint8_t y_level, uint8_t u_level, uint8_t v_level, uint8_t alpha, int32_t width, int32_t height, uint8_t* buf, int32_t stride = 0);
     void Fill_Y42T(uint8_t y_level, uint8_t u_level, uint8_t v_level, uint8_t alpha, int32_t width, int32_t height, uint8_t* buf, int32_t stride = 0);
     void Fill_Y41T(uint8_t y_level, uint8_t u_level, uint8_t v_level, uint8_t alpha, int32_t width, int32_t height, uint8_t* buf, int32_t stride = 0);
+    void Fill_YV16(uint8_t y_level, uint8_t u_level, uint8_t v_level, uint8_t alpha, int32_t width, int32_t height, uint8_t* buf, int32_t stride = 0);
 }
 

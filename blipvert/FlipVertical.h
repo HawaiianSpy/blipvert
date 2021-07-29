@@ -65,5 +65,6 @@ namespace blipvert
     void FlipVertical_NV21(int32_t width, int32_t height, uint8_t* buf, int32_t stride);
     void FlipVertical_Y42T(int32_t width, int32_t height, uint8_t* buf, int32_t stride);
     void FlipVertical_Y41T(int32_t width, int32_t height, uint8_t* buf, int32_t stride);
+    void FlipVertical_YV16(int32_t width, int32_t height, uint8_t* buf, int32_t stride);
 };
 

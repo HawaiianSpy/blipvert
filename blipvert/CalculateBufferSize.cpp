@@ -343,3 +343,21 @@ uint32_t blipvert::CalcBufferSize_Y41T(int32_t width, int32_t height, int32_t& s
     return CalcBufferSize_Y41P(width, height, stride);
 }
 
+uint32_t blipvert::CalcBufferSize_YV16(int32_t width, int32_t height, int32_t& stride)
+{
+    int32_t uv_width = width / 2;
+
+    int16_t y_stride, uv_stride;
+    if (stride <= width)
+    {
+        y_stride = width;
+        uv_stride = uv_width;
+    }
+    else
+    {
+        y_stride = stride;
+        uv_stride = stride;
+    }
+
+    return static_cast<uint32_t>(y_stride * height + (uv_stride * height * 2));
+}

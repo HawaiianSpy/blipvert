@@ -582,16 +582,18 @@ bool Check_NVx(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level,
 	for (int32_t y = 0; y < height; y += 2)
 	{
 		uint8_t* yp = pBuffer;
-		uint8_t* uvp = uvplane;
+		uint8_t* up = uvplane + U;
+		uint8_t* vp = uvplane + V;
 		for (int32_t x = 0; x < width; x += 2)
 		{
 			if (yp[0] != ry_level) return false;
 			if (yp[1] != ry_level) return false;
 			if (yp[stride] != ry_level) return false;
 			if (yp[stride + 1] != ry_level) return false;
-			if (uvp[U] != gu_level) return false;
-			if (uvp[V] != bv_level) return false;
-			uvp += 2;
+			if (*up != gu_level) return false;
+			if (*vp != bv_level) return false;
+			up += 2;
+			vp += 2;
 			yp += 2;
 		}
 
@@ -725,4 +727,8 @@ bool BlipvertUnitTests::Check_Y41T(uint8_t ry_level, uint8_t gu_level, uint8_t b
 	int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride)
 {
 	return Check_Y41P(alpha > 127 ? ry_level | 0x01 : ry_level & 0xFE, gu_level, bv_level, alpha, width, height, pBuffer, stride);
+}
+
+bool BlipvertUnitTests::Check_YV16(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha, int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride)
+{
 }

@@ -537,3 +537,39 @@ void blipvert::Y41T_to_Greyscale(int32_t  width, int32_t height, uint8_t* buf, i
 {
     Y41P_to_Greyscale(width, height, buf, stride);
 }
+
+void blipvert::YV16_to_Greyscale(int32_t width, int32_t height, uint8_t* buf, int32_t stride, xRGBQUAD* in_palette)
+{
+    int32_t uv_width = width / 2;
+
+    int16_t y_stride, uv_stride;
+    if (stride <= width)
+    {
+        y_stride = width;
+        uv_stride = uv_width;
+    }
+    else
+    {
+        y_stride = stride;
+        uv_stride = stride;
+    }
+
+    uint8_t* vplane = buf + (y_stride * height);
+    uint8_t* uplane = vplane + (uv_stride * height);
+
+    if (y_stride == width)
+    {
+        memset(vplane, 0, uv_stride * height);
+        memset(uplane, 0, uv_stride * height);
+    }
+    else
+    {
+        for (int32_t y = 0; y < height; y++)
+        {
+            memset(uplane, 0, uv_width);
+            memset(vplane, 0, uv_width);
+            uplane += uv_stride;
+            vplane += uv_stride;
+        }
+    }
+}

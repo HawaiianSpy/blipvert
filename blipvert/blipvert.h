@@ -106,6 +106,7 @@ namespace blipvert
     extern const Fourcc FOURCC_IMC2;            // https://www.fourcc.org/pixel-format/yuv-imc2/
     extern const Fourcc FOURCC_IMC3;            // As IMC1 except that U and V are swapped
     extern const Fourcc FOURCC_IMC4;            // As IMC2 except that U and V are swapped
+    extern const Fourcc FOURCC_YV16;            // https://www.fourcc.org/pixel-format/yuv-yv16/
 
     extern const Fourcc FOURCC_BI_RGB;          // https://www.fourcc.org/pixel-format/rgb-bi_rgb/
     extern const Fourcc FOURCC_RGB;             // Alias for BI_RGB
@@ -174,6 +175,7 @@ namespace blipvert
     extern const MediaFormatID MVFMT_IMC2;
     extern const MediaFormatID MVFMT_IMC3;
     extern const MediaFormatID MVFMT_IMC4;
+    extern const MediaFormatID MVFMT_YV16;
 
     extern const MediaFormatID MVFMT_RGB1;
     extern const MediaFormatID MVFMT_RGB4;

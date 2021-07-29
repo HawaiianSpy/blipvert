@@ -458,3 +458,28 @@ void blipvert::SetPixel_Y41T(uint8_t ry_level, uint8_t gu_level, uint8_t bv_leve
 {
     SetPixel_Y41P(alpha > 127 ? ry_level | 0x01 : ry_level & 0xFE, gu_level, bv_level, alpha, x, y, width, height, buf, stride);
 }
+
+void blipvert::SetPixel_YV16(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha, int32_t x, int32_t y, int32_t width, int32_t height, uint8_t* buf, int32_t stride)
+{
+    int32_t uv_width = width / 2;
+    int32_t uv_height = height;
+
+    int16_t y_stride, uv_stride;
+    if (!stride)
+    {
+        y_stride = width;
+        uv_stride = uv_width;
+    }
+    else
+    {
+        y_stride = stride;
+        uv_stride = stride;
+    }
+
+    uint8_t* vplane = buf + (y_stride * height);
+    uint8_t* uplane = vplane + (uv_stride * uv_height);
+ 
+    *(buf + (y * y_stride) + x) = ry_level;
+    *(uplane + (y * uv_stride) + x / 2) = gu_level;
+    *(vplane + (y * uv_stride) + x / 2) = bv_level;
+}

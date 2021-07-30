@@ -91,6 +91,7 @@ BufferCheckEntry BufferCheckFuncTable[] = {
 	{MVFMT_NV21, Check_NV21},
 	{MVFMT_Y42T, Check_Y42T},
 	{MVFMT_Y41T, Check_Y41T},
+	{MVFMT_YV16, Check_YV16},
 	{MVFMT_RGBA, Check_RGBA},
 	{MVFMT_RGB32, Check_RGB32},
 	{MVFMT_RGB24, Check_RGB24},
@@ -731,4 +732,42 @@ bool BlipvertUnitTests::Check_Y41T(uint8_t ry_level, uint8_t gu_level, uint8_t b
 
 bool BlipvertUnitTests::Check_YV16(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha, int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride)
 {
+	int32_t uv_width = width / 2;
+
+	int16_t y_stride, uv_stride;
+	if (stride <= width)
+	{
+		y_stride = width;
+		uv_stride = uv_width;
+	}
+	else
+	{
+		y_stride = stride;
+		uv_stride = stride;
+	}
+
+	uint8_t* vplane = pBuffer + (y_stride * height);
+	uint8_t* uplane = vplane + (uv_stride * height);
+
+	for (int32_t y = 0; y < height; y++)
+	{
+		uint8_t* yp = pBuffer;
+		for (int32_t x = 0; x < width; x += 2)
+		{
+			if (yp[0] != ry_level)
+				return false;
+			if (yp[1] != ry_level)
+				return false;
+
+			if (uplane[x >> 1] != gu_level)
+				return false;
+			if (vplane[x >> 1] != bv_level)
+				return false;
+			yp += 2;
+		}
+		pBuffer += y_stride;
+
+		uplane += uv_stride;
+		vplane += uv_stride;
+	}
 }

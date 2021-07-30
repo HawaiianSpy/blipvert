@@ -942,6 +942,9 @@ void RGB8_to_PlanarYUV(int32_t width, int32_t height,
     if (!in_stride)
         in_stride = width;
 
+    if (in_palette == nullptr)
+        in_palette = rgb8_greyscale_palette;
+
     int32_t uv_width = width / decimation;
     int32_t uv_height = height / decimation;
 
@@ -956,9 +959,6 @@ void RGB8_to_PlanarYUV(int32_t width, int32_t height,
         y_stride = out_stride;
         uv_stride = out_stride;
     }
-
-    if (in_palette == nullptr)
-        in_palette = rgb8_greyscale_palette;
 
     uint8_t* vplane;
     uint8_t* uplane;
@@ -2483,6 +2483,76 @@ void blipvert::RGB32_to_Y41T(int32_t width, int32_t height, uint8_t* out_buf, in
     }
 }
 
+void blipvert::RGB32_to_YV16(int32_t  width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette)
+{
+    if (in_stride < width)
+        in_stride = width * 4;
+
+    int32_t uv_width = width / 2;
+
+    int16_t y_stride, uv_stride;
+    if (out_stride <= width)
+    {
+        y_stride = width;
+        uv_stride = uv_width;
+    }
+    else
+    {
+        y_stride = out_stride;
+        uv_stride = out_stride;
+    }
+
+    uint8_t* vplane = out_buf + (y_stride * height);
+    uint8_t* uplane = vplane + (uv_stride * height);
+
+    if (flipped)
+    {
+        out_buf += (y_stride * (height - 1));
+        uplane += (uv_stride * (height - 1));
+        vplane += (uv_stride * (height - 1));
+        y_stride = -y_stride;
+        uv_stride = -uv_stride;
+    }
+
+    uint16_t red;
+    uint16_t green;
+    uint16_t blue;
+
+    for (int32_t y = 0; y < height; y++)
+    {
+        uint8_t* psrc = in_buf;
+        uint8_t* yp = out_buf;
+        for (int32_t x = 0; x < width; x += 2)
+        {
+            yp[0] = static_cast<uint8_t>(((yr_table[psrc[2]] + yg_table[psrc[1]] + yb_table[psrc[0]]) >> 15) + 16);
+            red = psrc[2];
+            green = psrc[1];
+            blue = psrc[0];
+
+            yp[1] = static_cast<uint8_t>(((yr_table[psrc[6]] + yg_table[psrc[5]] + yb_table[psrc[4]]) >> 15) + 16);
+            red += psrc[6];
+            green += psrc[5];
+            blue += psrc[4];
+
+            red >>= 1;
+            green >>= 1;
+            blue >>= 1;
+
+            uplane[x >> 1] = static_cast<uint8_t>(((ur_table[red] + ug_table[green] + ub_table[blue]) >> 15) + 128);
+            vplane[x >> 1] = static_cast<uint8_t>(((vr_table[red] + vg_table[green] + vb_table[blue]) >> 15) + 128);
+
+            psrc += 8;
+            yp += 2;
+        }
+
+        in_buf += in_stride;
+        out_buf += y_stride;
+
+        uplane += uv_stride;
+        vplane += uv_stride;
+    }
+}
+
 //
 // RGB24 to YUV transforms
 //
@@ -3130,6 +3200,76 @@ void blipvert::RGB24_to_Y41T(int32_t width, int32_t height, uint8_t* out_buf, in
         in_buf += in_stride;
         out_buf += out_stride;
         height--;
+    }
+}
+
+void blipvert::RGB24_to_YV16(int32_t  width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette)
+{
+    if (in_stride < width)
+        in_stride = width * 3;
+
+    int32_t uv_width = width / 2;
+
+    int16_t y_stride, uv_stride;
+    if (out_stride <= width)
+    {
+        y_stride = width;
+        uv_stride = uv_width;
+    }
+    else
+    {
+        y_stride = out_stride;
+        uv_stride = out_stride;
+    }
+
+    uint8_t* vplane = out_buf + (y_stride * height);
+    uint8_t* uplane = vplane + (uv_stride * height);
+
+    if (flipped)
+    {
+        out_buf += (y_stride * (height - 1));
+        uplane += (uv_stride * (height - 1));
+        vplane += (uv_stride * (height - 1));
+        y_stride = -y_stride;
+        uv_stride = -uv_stride;
+    }
+
+    uint16_t red;
+    uint16_t green;
+    uint16_t blue;
+
+    for (int32_t y = 0; y < height; y++)
+    {
+        uint8_t* psrc = in_buf;
+        uint8_t* yp = out_buf;
+        for (int32_t x = 0; x < width; x += 2)
+        {
+            yp[0] = static_cast<uint8_t>(((yr_table[psrc[2]] + yg_table[psrc[1]] + yb_table[psrc[0]]) >> 15) + 16);
+            red = psrc[2];
+            green = psrc[1];
+            blue = psrc[0];
+
+            yp[1] = static_cast<uint8_t>(((yr_table[psrc[5]] + yg_table[psrc[4]] + yb_table[psrc[3]]) >> 15) + 16);
+            red += psrc[5];
+            green += psrc[4];
+            blue += psrc[3];
+
+            red >>= 1;
+            green >>= 1;
+            blue >>= 1;
+
+            uplane[x >> 1] = static_cast<uint8_t>(((ur_table[red] + ug_table[green] + ub_table[blue]) >> 15) + 128);
+            vplane[x >> 1] = static_cast<uint8_t>(((vr_table[red] + vg_table[green] + vb_table[blue]) >> 15) + 128);
+
+            psrc += 6;
+            yp += 2;
+        }
+
+        in_buf += in_stride;
+        out_buf += y_stride;
+
+        uplane += uv_stride;
+        vplane += uv_stride;
     }
 }
 
@@ -3832,6 +3972,82 @@ void blipvert::RGB565_to_Y41T(int32_t width, int32_t height, uint8_t* out_buf, i
         in_buf += in_stride;
         out_buf += out_stride;
         height--;
+    }
+}
+
+void blipvert::RGB565_to_YV16(int32_t  width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette)
+{
+    if (!in_stride)
+        in_stride = width * 2;
+
+    int32_t uv_width = width / 2;
+
+    int16_t y_stride, uv_stride;
+    if (out_stride <= width)
+    {
+        y_stride = width;
+        uv_stride = uv_width;
+    }
+    else
+    {
+        y_stride = out_stride;
+        uv_stride = out_stride;
+    }
+
+    uint8_t* vplane = out_buf + (y_stride * height);
+    uint8_t* uplane = vplane + (uv_stride * height);
+
+    if (flipped)
+    {
+        out_buf += (y_stride * (height - 1));
+        uplane += (uv_stride * (height - 1));
+        vplane += (uv_stride * (height - 1));
+        y_stride = -y_stride;
+        uv_stride = -uv_stride;
+    }
+
+    uint16_t red;
+    uint16_t green;
+    uint16_t blue;
+
+    for (int32_t y = 0; y < height; y++)
+    {
+        uint8_t* psrc = in_buf;
+        uint8_t* yp = out_buf;
+        for (int32_t x = 0; x < width; x += 2)
+        {
+            uint8_t redb;
+            uint8_t greenb;
+            uint8_t blueb;
+
+            UnpackRGB565Word(*(reinterpret_cast<uint16_t*>(psrc)), redb, greenb, blueb)
+            yp[0] = static_cast<uint8_t>(((yr_table[redb] + yg_table[greenb] + yb_table[blueb]) >> 15) + 16);
+            red = redb;
+            green = greenb;
+            blue = blueb;
+
+            UnpackRGB565Word(*(reinterpret_cast<uint16_t*>(psrc + 2)), redb, greenb, blueb)
+            yp[1] = static_cast<uint8_t>(((yr_table[redb] + yg_table[greenb] + yb_table[blueb]) >> 15) + 16);
+            red += redb;
+            green += greenb;
+            blue += blueb;
+
+            red >>= 1;
+            green >>= 1;
+            blue >>= 1;
+
+            uplane[x >> 1] = static_cast<uint8_t>(((ur_table[red] + ug_table[green] + ub_table[blue]) >> 15) + 128);
+            vplane[x >> 1] = static_cast<uint8_t>(((vr_table[red] + vg_table[green] + vb_table[blue]) >> 15) + 128);
+
+            psrc += 4;
+            yp += 2;
+        }
+
+        in_buf += in_stride;
+        out_buf += y_stride;
+
+        uplane += uv_stride;
+        vplane += uv_stride;
     }
 }
 
@@ -4745,6 +4961,82 @@ void blipvert::RGB555_to_Y41T(int32_t width, int32_t height, uint8_t* out_buf, i
     }
 }
 
+void blipvert::RGB555_to_YV16(int32_t  width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette)
+{
+    if (!in_stride)
+        in_stride = width * 2;
+
+    int32_t uv_width = width / 2;
+
+    int16_t y_stride, uv_stride;
+    if (out_stride <= width)
+    {
+        y_stride = width;
+        uv_stride = uv_width;
+    }
+    else
+    {
+        y_stride = out_stride;
+        uv_stride = out_stride;
+    }
+
+    uint8_t* vplane = out_buf + (y_stride * height);
+    uint8_t* uplane = vplane + (uv_stride * height);
+
+    if (flipped)
+    {
+        out_buf += (y_stride * (height - 1));
+        uplane += (uv_stride * (height - 1));
+        vplane += (uv_stride * (height - 1));
+        y_stride = -y_stride;
+        uv_stride = -uv_stride;
+    }
+
+    uint16_t red;
+    uint16_t green;
+    uint16_t blue;
+
+    for (int32_t y = 0; y < height; y++)
+    {
+        uint8_t* psrc = in_buf;
+        uint8_t* yp = out_buf;
+        for (int32_t x = 0; x < width; x += 2)
+        {
+            uint8_t redb;
+            uint8_t greenb;
+            uint8_t blueb;
+
+            UnpackRGB555Word(*(reinterpret_cast<uint16_t*>(psrc)), redb, greenb, blueb)
+            yp[0] = static_cast<uint8_t>(((yr_table[redb] + yg_table[greenb] + yb_table[blueb]) >> 15) + 16);
+            red = redb;
+            green = greenb;
+            blue = blueb;
+
+            UnpackRGB555Word(*(reinterpret_cast<uint16_t*>(psrc + 2)), redb, greenb, blueb)
+            yp[1] = static_cast<uint8_t>(((yr_table[redb] + yg_table[greenb] + yb_table[blueb]) >> 15) + 16);
+            red += redb;
+            green += greenb;
+            blue += blueb;
+
+            red >>= 1;
+            green >>= 1;
+            blue >>= 1;
+
+            uplane[x >> 1] = static_cast<uint8_t>(((ur_table[red] + ug_table[green] + ub_table[blue]) >> 15) + 128);
+            vplane[x >> 1] = static_cast<uint8_t>(((vr_table[red] + vg_table[green] + vb_table[blue]) >> 15) + 128);
+
+            psrc += 4;
+            yp += 2;
+        }
+
+        in_buf += in_stride;
+        out_buf += y_stride;
+
+        uplane += uv_stride;
+        vplane += uv_stride;
+    }
+}
+
 //
 // RGB8 to YUV transforms
 //
@@ -5475,5 +5767,84 @@ void blipvert::RGB8_to_Y41T(int32_t width, int32_t height, uint8_t* out_buf, int
         in_buf += in_stride;
         out_buf += out_stride;
         height--;
+    }
+}
+
+void blipvert::RGB8_to_YV16(int32_t  width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette)
+{
+    if (!in_stride)
+        in_stride = width;
+
+    if (in_palette == nullptr)
+        in_palette = rgb8_greyscale_palette;
+
+    int32_t uv_width = width / 2;
+
+    int16_t y_stride, uv_stride;
+    if (out_stride <= width)
+    {
+        y_stride = width;
+        uv_stride = uv_width;
+    }
+    else
+    {
+        y_stride = out_stride;
+        uv_stride = out_stride;
+    }
+
+    uint8_t* vplane = out_buf + (y_stride * height);
+    uint8_t* uplane = vplane + (uv_stride * height);
+
+    if (flipped)
+    {
+        out_buf += (y_stride * (height - 1));
+        uplane += (uv_stride * (height - 1));
+        vplane += (uv_stride * (height - 1));
+        y_stride = -y_stride;
+        uv_stride = -uv_stride;
+    }
+
+    uint16_t red;
+    uint16_t green;
+    uint16_t blue;
+
+    for (int32_t y = 0; y < height; y++)
+    {
+        uint8_t* psrc = in_buf;
+        uint8_t* yp = out_buf;
+        for (int32_t x = 0; x < width; x += 2)
+        {
+            uint8_t redb = in_palette[psrc[0]].rgbRed;
+            uint8_t greenb = in_palette[psrc[0]].rgbGreen;
+            uint8_t blueb = in_palette[psrc[0]].rgbBlue;
+            yp[0] = static_cast<uint8_t>(((yr_table[redb] + yg_table[greenb] + yb_table[blueb]) >> 15) + 16);
+            red = redb;
+            green = greenb;
+            blue = blueb;
+
+            redb = in_palette[psrc[1]].rgbRed;
+            greenb = in_palette[psrc[1]].rgbGreen;
+            blueb = in_palette[psrc[1]].rgbBlue;
+            yp[1] = static_cast<uint8_t>(((yr_table[redb] + yg_table[greenb] + yb_table[blueb]) >> 15) + 16);
+            red += redb;
+            green += greenb;
+            blue += blueb;
+            
+            red >>= 1;
+            green >>= 1;
+            blue >>= 1;
+
+            uplane[x >> 1] = static_cast<uint8_t>(((ur_table[red] + ug_table[green] + ub_table[blue]) >> 15) + 128);
+            vplane[x >> 1] = static_cast<uint8_t>(((vr_table[red] + vg_table[green] + vb_table[blue]) >> 15) + 128);
+
+            psrc += 2;
+            yp += 2;
+        }
+
+        in_buf += in_stride;
+        out_buf += y_stride;
+
+        uplane += uv_stride;
+        vplane += uv_stride;
     }
 }

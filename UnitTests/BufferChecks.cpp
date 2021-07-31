@@ -752,22 +752,25 @@ bool BlipvertUnitTests::Check_YV16(uint8_t ry_level, uint8_t gu_level, uint8_t b
 	for (int32_t y = 0; y < height; y++)
 	{
 		uint8_t* yp = pBuffer;
-		for (int32_t x = 0; x < width; x += 2)
+		uint8_t* up = uplane;
+		uint8_t* vp = vplane;
+		for (int32_t x = 0; x < uv_width; x++)
 		{
-			if (yp[0] != ry_level)
+			if (*yp++ != ry_level)
 				return false;
-			if (yp[1] != ry_level)
+			if (*yp++ != ry_level)
 				return false;
-
-			if (uplane[x >> 1] != gu_level)
+			if (*up != gu_level)
 				return false;
-			if (vplane[x >> 1] != bv_level)
+			if (*vp != bv_level)
 				return false;
-			yp += 2;
+			up++;
+			vp++;
 		}
 		pBuffer += y_stride;
-
 		uplane += uv_stride;
 		vplane += uv_stride;
 	}
+
+	return true;
 }

@@ -6039,6 +6039,213 @@ void NVx_to_PlanarYUV(int32_t width, int32_t height,
     }
 }
 
+void PackedY422_to_YV16(int32_t width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    int32_t in_y0, int32_t in_y1, int32_t in_u, int32_t in_v,
+    bool flipped)
+{
+    if (in_stride < width * 2)
+        in_stride = width * 2;
+
+    int32_t uv_width = width / 2;
+
+    int16_t y_stride, uv_stride;
+    if (out_stride <= width)
+    {
+        y_stride = width;
+        uv_stride = uv_width;
+    }
+    else
+    {
+        y_stride = out_stride;
+        uv_stride = out_stride;
+    }
+
+    uint8_t* vplane = out_buf + (y_stride * height);
+    uint8_t* uplane = vplane + (uv_stride * height);
+
+    if (flipped)
+    {
+        out_buf += (y_stride * (height - 1));
+        uplane += (uv_stride * (height - 1));
+        vplane += (uv_stride * (height - 1));
+        y_stride = -y_stride;
+        uv_stride = -uv_stride;
+    }
+
+    for (int32_t y = 0; y < height; y++)
+    {
+        uint8_t* psrc = in_buf;
+        uint8_t* yp = out_buf;
+        uint8_t* up = uplane;
+        uint8_t* vp = vplane;
+
+        for (int32_t x = 0; x < uv_width; x++)
+        {
+            *yp++ = psrc[in_y0];
+            *yp++ = psrc[in_y1];
+            *up++ = psrc[in_u];
+            *vp++ = psrc[in_v];
+            psrc += 4;
+        }
+
+        in_buf += in_stride;
+        out_buf += y_stride;
+        uplane += uv_stride;
+        vplane += uv_stride;
+    }
+}
+
+void PlanarYUV_to_YV16(int32_t width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride, int32_t in_decimation, bool in_ufirst,
+    bool flipped)
+{
+    int32_t in_uv_width = width / in_decimation;
+    int32_t in_uv_height = height / in_decimation;
+
+    int32_t in_y_stride, in_uv_stride;
+    if (!in_stride)
+    {
+        in_y_stride = width;
+        in_uv_stride = in_uv_width;
+    }
+    else
+    {
+        in_y_stride = in_stride;
+        in_uv_stride = in_stride;
+    }
+
+    uint8_t* in_vplane;
+    uint8_t* in_uplane;
+    if (in_ufirst)
+    {
+        in_uplane = in_buf + (in_y_stride * height);
+        in_vplane = in_uplane + (in_uv_stride * in_uv_height);
+    }
+    else
+    {
+        in_vplane = in_buf + (in_y_stride * height);
+        in_uplane = in_vplane + (in_uv_stride * in_uv_height);
+    }
+
+    int32_t out_uv_width = width / 2;
+
+    int16_t out_y_stride, out_uv_stride;
+    if (out_stride <= width)
+    {
+        out_y_stride = width;
+        out_uv_stride = out_uv_width;
+    }
+    else
+    {
+        out_y_stride = out_stride;
+        out_uv_stride = out_stride;
+    }
+
+    uint8_t* out_vplane = out_buf + (out_y_stride * height);
+    uint8_t* out_uplane = out_vplane + (out_uv_stride * height);
+
+    if (flipped)
+    {
+        out_buf += (out_y_stride * (height - 1));
+        out_uplane += (out_uv_stride * (height - 1));
+        out_vplane += (out_uv_stride * (height - 1));
+        out_y_stride = -out_y_stride;
+        out_uv_stride = -out_uv_stride;
+    }
+
+    // Copy the y plane
+    if (out_y_stride != in_y_stride || flipped)
+    {
+        for (int32_t line = 0; line < height; line++)
+        {
+            memcpy(out_buf, in_buf, width);
+            out_buf += out_y_stride;
+            in_buf += in_y_stride;
+        }
+    }
+    else
+    {
+        memcpy(out_buf, in_buf, out_y_stride * height);
+    }
+
+    int16_t out_uv_stride_x_2 = out_uv_stride * 2;
+    int16_t out_uv_stride_x_3 = out_uv_stride * 3;
+    int16_t out_uv_stride_x_4 = out_uv_stride * 4;
+
+
+    if (in_decimation == 2)
+    {
+        uint8_t* in_up = in_uplane;
+        uint8_t* in_vp = in_vplane;
+        uint8_t* out_up = out_uplane;
+        uint8_t* out_vp = out_vplane;
+
+        // Scaling from 2 x 2 to 2 x 1 decimation
+        for (int32_t y = 0; y < in_uv_height; y++)
+        {
+            memcpy(out_up, in_up, in_uv_width);
+            out_up += out_uv_stride;
+            memcpy(out_up, in_up, in_uv_width);
+            out_up += out_uv_stride;
+            in_up += in_uv_stride;
+
+            memcpy(out_vp, in_vp, in_uv_width);
+            out_vp += out_uv_stride;
+            memcpy(out_vp, in_vp, in_uv_width);
+            out_vp += out_uv_stride;
+            in_vp += in_uv_stride;
+        }
+    }
+    else
+    {
+        // Scaling from 4 x 4 to 2 x 1 decimation
+        for (int32_t y = 0; y < in_uv_height; y++)
+        {
+            uint8_t* in_up = in_uplane;
+            uint8_t* in_vp = in_vplane;
+            uint8_t* out_up = out_uplane;
+            uint8_t* out_vp = out_vplane;
+
+            int32_t dst_index = 0;
+            for (int32_t x = 0; x < in_uv_width; x++)
+            {
+                uint8_t in_u = in_up[x];
+                *out_up = in_u;
+                *(out_up + out_uv_stride) = in_u;
+                *(out_up + out_uv_stride_x_2) = in_u;
+                *(out_up + out_uv_stride_x_3) = in_u;
+                *(out_up + 1) = in_u;
+                *(out_up + 1 + out_uv_stride) = in_u;
+                *(out_up + 1 + out_uv_stride_x_2) = in_u;
+                *(out_up + 1 + out_uv_stride_x_3) = in_u;
+
+                uint8_t in_v = in_vp[x];
+                *out_vp = in_v;
+                *(out_vp + out_uv_stride) = in_v;
+                *(out_vp + out_uv_stride_x_2) = in_v;
+                *(out_vp + out_uv_stride_x_3) = in_v;
+                *(out_vp + 1) = in_v;
+                *(out_vp + 1 + out_uv_stride) = in_v;
+                *(out_vp + 1 + out_uv_stride_x_2) = in_v;
+                *(out_vp + 1 + out_uv_stride_x_3) = in_v;
+
+                out_up += 2;
+                out_vp += 2;
+            }
+
+            out_uplane += out_uv_stride_x_4;
+            out_vplane += out_uv_stride_x_4;
+
+            in_uplane += in_uv_stride;
+            in_vplane += in_uv_stride;
+        }
+    }
+}
+
+
 //
 // Public Yuv to Yuv transform functions
 //
@@ -6598,6 +6805,61 @@ void blipvert::AYUV_to_Y41T(int32_t width, int32_t height, uint8_t* out_buf, int
     }
 }
 
+void blipvert::AYUV_to_YV16(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette)
+{
+    if (in_stride < width)
+        in_stride = width * 4;
+
+    int32_t uv_width = width / 2;
+
+    int16_t y_stride, uv_stride;
+    if (out_stride <= width)
+    {
+        y_stride = width;
+        uv_stride = uv_width;
+    }
+    else
+    {
+        y_stride = out_stride;
+        uv_stride = out_stride;
+    }
+
+    uint8_t* vplane = out_buf + (y_stride * height);
+    uint8_t* uplane = vplane + (uv_stride * height);
+
+    if (flipped)
+    {
+        out_buf += (y_stride * (height - 1));
+        uplane += (uv_stride * (height - 1));
+        vplane += (uv_stride * (height - 1));
+        y_stride = -y_stride;
+        uv_stride = -uv_stride;
+    }
+
+    for (int32_t y = 0; y < height; y++)
+    {
+        uint8_t* psrc = in_buf;
+        uint8_t* yp = out_buf;
+        uint8_t* vp = vplane;
+        uint8_t* up = uplane;
+        for (int32_t x = 0; x < uv_width; x++)
+        {
+            *yp++ = psrc[2];
+            *yp++ = psrc[6];
+            *up++ = (psrc[1] + psrc[5]) / 2;
+            *vp++ = (psrc[0] + psrc[4]) / 2;
+
+            psrc += 8;
+        }
+
+        in_buf += in_stride;
+        out_buf += y_stride;
+
+        uplane += uv_stride;
+        vplane += uv_stride;
+    }
+}
+
 //
 // YUY2 to YUV
 //
@@ -6856,6 +7118,14 @@ void blipvert::YUY2_to_Y41T(int32_t width, int32_t height,
         in_buf, in_stride,
         0, 2, 1, 3,
         flipped);
+}
+
+void blipvert::YUY2_to_YV16(int32_t width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD* in_palette)
+{
+    PackedY422_to_YV16(width, height, out_buf, out_stride, in_buf, in_stride, 0, 2, 1, 3, flipped);
 }
 
 //
@@ -7118,6 +7388,14 @@ void blipvert::UYVY_to_Y41T(int32_t width, int32_t height,
         flipped);
 }
 
+void blipvert::UYVY_to_YV16(int32_t width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD* in_palette)
+{
+    PackedY422_to_YV16(width, height, out_buf, out_stride, in_buf, in_stride, 1, 3, 0, 2, flipped);
+}
+
 //
 // YVYU to YUV
 //
@@ -7376,6 +7654,14 @@ void blipvert::YVYU_to_Y41T(int32_t width, int32_t height,
         in_buf, in_stride,
         0, 2, 3, 1,
         flipped);
+}
+
+void blipvert::YVYU_to_YV16(int32_t width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD* in_palette)
+{
+    PackedY422_to_YV16(width, height, out_buf, out_stride, in_buf, in_stride, 0, 2, 3, 1, flipped);
 }
 
 //
@@ -7638,6 +7924,14 @@ void blipvert::VYUY_to_Y41T(int32_t width, int32_t height,
         flipped);
 }
 
+void blipvert::VYUY_to_YV16(int32_t width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD* in_palette)
+{
+    PackedY422_to_YV16(width, height, out_buf, out_stride, in_buf, in_stride, 1, 3, 2, 0, flipped);
+}
+
 //
 // I420 to YUV
 //
@@ -7846,6 +8140,13 @@ void blipvert::I420_to_Y41T(int32_t width, int32_t height,
     PlanarYUV_to_Y41T(width, height, out_buf, out_stride, in_buf, in_stride, 2, true, flipped);
 }
 
+void blipvert::I420_to_YV16(int32_t width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD* in_palette)
+{
+    PlanarYUV_to_YV16(width, height, out_buf, out_stride, in_buf, in_stride, 2, true, flipped);
+}
 
 //
 // YV12 to YUV
@@ -8074,6 +8375,14 @@ void blipvert::YV12_to_Y41T(int32_t width, int32_t height,
         out_buf, out_stride,
         in_buf, in_stride, 2, false,
         flipped);
+}
+
+void blipvert::YV12_to_YV16(int32_t width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD* in_palette)
+{
+    PlanarYUV_to_YV16(width, height, out_buf, out_stride, in_buf, in_stride, 2, false, flipped);
 }
 
 //
@@ -8305,6 +8614,14 @@ void blipvert::YVU9_to_Y41T(int32_t width, int32_t height,
         flipped);
 }
 
+void blipvert::YVU9_to_YV16(int32_t width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD* in_palette)
+{
+    PlanarYUV_to_YV16(width, height, out_buf, out_stride, in_buf, in_stride, 4, false, flipped);
+}
+
 //
 // YUV9 to YUV
 //
@@ -8532,6 +8849,14 @@ void blipvert::YUV9_to_Y41T(int32_t width, int32_t height,
         out_buf, out_stride,
         in_buf, in_stride, 4, true,
         flipped);
+}
+
+void blipvert::YUV9_to_YV16(int32_t width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD* in_palette)
+{
+    PlanarYUV_to_YV16(width, height, out_buf, out_stride, in_buf, in_stride, 4, true, flipped);
 }
 
 //

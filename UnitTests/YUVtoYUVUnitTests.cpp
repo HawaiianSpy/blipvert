@@ -159,6 +159,11 @@ namespace BlipvertUnitTests
 			Run8bitAlphaTestSeries(MVFMT_AYUV, MVFMT_Y41T);
 		}
 
+		TEST_METHOD(AYUV_to_YV16_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_AYUV, MVFMT_YV16);
+		}
+
 		//
 		// YUY2 to YUVx
 		//
@@ -271,6 +276,11 @@ namespace BlipvertUnitTests
 		TEST_METHOD(YUY2_to_Y41T_UnitTest)
 		{
 			Run8bitTestSeries(MVFMT_YUY2, MVFMT_Y41T);
+		}
+
+		TEST_METHOD(YUY2_to_YV16_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_YUY2, MVFMT_YV16);
 		}
 
 		//
@@ -387,6 +397,11 @@ namespace BlipvertUnitTests
 			Run8bitTestSeries(MVFMT_UYVY, MVFMT_Y41T);
 		}
 
+		TEST_METHOD(UYVY_to_YV16_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_UYVY, MVFMT_YV16);
+		}
+
 		//
 		// YVYU to YUVx
 		//
@@ -501,6 +516,11 @@ namespace BlipvertUnitTests
 			Run8bitTestSeries(MVFMT_YVYU, MVFMT_Y41T);
 		}
 
+		TEST_METHOD(YVYU_to_YV16_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_YVYU, MVFMT_YV16);
+		}
+
 		//
 		// VYUY to YUVx
 		//
@@ -612,6 +632,11 @@ namespace BlipvertUnitTests
 		TEST_METHOD(VYUY_to_Y41T_UnitTest)
 		{
 			Run8bitTestSeries(MVFMT_VYUY, MVFMT_Y41T);
+		}
+
+		TEST_METHOD(VYUY_to_YV16_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_VYUY, MVFMT_YV16);
 		}
 
 		//
@@ -728,6 +753,11 @@ namespace BlipvertUnitTests
 			Run8bitTestSeries(MVFMT_I420, MVFMT_Y41T);
 		}
 
+		TEST_METHOD(I420_to_YV16_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_I420, MVFMT_YV16);
+		}
+
 		//
 		// YV12 to YUVx
 		//
@@ -840,6 +870,11 @@ namespace BlipvertUnitTests
 		TEST_METHOD(YV12_to_Y41T_UnitTest)
 		{
 			Run8bitTestSeries(MVFMT_YV12, MVFMT_Y41T);
+		}
+
+		TEST_METHOD(YV12_to_YV16_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_YV12, MVFMT_YV16);
 		}
 
 		//
@@ -956,6 +991,11 @@ namespace BlipvertUnitTests
 			Run8bitTestSeries(MVFMT_YVU9, MVFMT_Y41T);
 		}
 
+		TEST_METHOD(YVU9_to_YV16_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_YVU9, MVFMT_YV16);
+		}
+
 		//
 		// YUV9 to YUVx
 		//
@@ -1068,6 +1108,11 @@ namespace BlipvertUnitTests
 		TEST_METHOD(YUV9_to_Y41T_UnitTest)
 		{
 			Run8bitTestSeries(MVFMT_YUV9, MVFMT_Y41T);
+		}
+
+		TEST_METHOD(YUV9_to_YV16_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_YUV9, MVFMT_YV16);
 		}
 
 		//

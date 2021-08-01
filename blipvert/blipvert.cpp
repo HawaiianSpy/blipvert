@@ -860,6 +860,7 @@ TransformTableEntry TransformTable[] = {
     { MVFMT_IYU1, MVFMT_NV21, IYU1_to_NV21 },
     { MVFMT_IYU1, MVFMT_Y42T, IYU1_to_Y42T },
     { MVFMT_IYU1, MVFMT_Y41T, IYU1_to_Y41T },
+    { MVFMT_IYU1, MVFMT_YV16, IYU1_to_YV16 },
 
     { MVFMT_IYU2, MVFMT_YUY2, IYU2_to_YUY2 },
     { MVFMT_IYU2, MVFMT_UYVY, IYU2_to_UYVY },

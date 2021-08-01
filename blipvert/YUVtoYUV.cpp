@@ -6245,6 +6245,69 @@ void PlanarYUV_to_YV16(int32_t width, int32_t height,
     }
 }
 
+void blipvert::IYU1_to_YV16(int32_t width, int32_t height,
+    uint8_t* out_buf, int32_t out_stride,
+    uint8_t* in_buf, int32_t in_stride,
+    bool flipped, xRGBQUAD* in_palette)
+{
+    if (!in_stride)
+        in_stride = width * 12 / 8;
+
+    int32_t uv_width = width / 2;
+
+    int16_t y_stride, uv_stride;
+    if (out_stride <= width)
+    {
+        y_stride = width;
+        uv_stride = uv_width;
+    }
+    else
+    {
+        y_stride = out_stride;
+        uv_stride = out_stride;
+    }
+
+    uint8_t* vplane = out_buf + (y_stride * height);
+    uint8_t* uplane = vplane + (uv_stride * height);
+
+    if (flipped)
+    {
+        out_buf += (y_stride * (height - 1));
+        uplane += (uv_stride * (height - 1));
+        vplane += (uv_stride * (height - 1));
+        y_stride = -y_stride;
+        uv_stride = -uv_stride;
+    }
+
+    for (int32_t y = 0; y < height; y++)
+    {
+        uint8_t* psrc = in_buf;
+        uint8_t* yp = out_buf;
+        uint8_t* up = uplane;
+        uint8_t* vp = vplane;
+
+        for (int32_t x = 0; x < uv_width; x += 2)
+        {
+            up[x] = up[x + 1] = psrc[0];
+            yp[0] = psrc[1];
+            yp[1] = psrc[2];
+            vp[x] = vp[x + 1] = psrc[3];
+            yp[2] = psrc[4];
+            yp[3] = psrc[5];
+
+            psrc += 6;
+            yp += 4;
+        }
+
+        in_buf += in_stride;
+        out_buf += y_stride;
+
+        uplane += uv_stride;
+        vplane += uv_stride;
+    }
+}
+
+
 
 //
 // Public Yuv to Yuv transform functions

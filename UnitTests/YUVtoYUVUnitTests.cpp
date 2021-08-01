@@ -1348,6 +1348,11 @@ namespace BlipvertUnitTests
 			Run8bitTestSeries(MVFMT_IYU2, MVFMT_Y41T);
 		}
 
+		TEST_METHOD(IYU2_to_YV16_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_IYU2, MVFMT_YV16);
+		}
+
 		//
 		// Y800 to YUVx
 		//
@@ -1460,6 +1465,11 @@ namespace BlipvertUnitTests
 		TEST_METHOD(Y800_to_Y41T_UnitTest)
 		{
 			RunGreyscaleTestSeries(MVFMT_Y800, MVFMT_Y41T);
+		}
+
+		TEST_METHOD(Y800_to_YV16_UnitTest)
+		{
+			RunGreyscaleTestSeries(MVFMT_Y800, MVFMT_YV16);
 		}
 
 		//
@@ -1576,6 +1586,11 @@ namespace BlipvertUnitTests
 			RunGreyscaleTestSeries(MVFMT_Y16, MVFMT_Y41T);
 		}
 
+		TEST_METHOD(Y16_to_YV16_UnitTest)
+		{
+			RunGreyscaleTestSeries(MVFMT_Y16, MVFMT_YV16);
+		}
+
 		//
 		// CLJR to YUVx
 		//
@@ -1690,6 +1705,11 @@ namespace BlipvertUnitTests
 			RunCLJRTestSeries(MVFMT_CLJR, MVFMT_Y41T);
 		}
 
+		TEST_METHOD(CLJR_to_YV16_UnitTest)
+		{
+			RunCLJRTestSeries(MVFMT_CLJR, MVFMT_YV16);
+		}
+
 		//
 		// Y41P to YUVx
 		//
@@ -1802,6 +1822,11 @@ namespace BlipvertUnitTests
 		TEST_METHOD(Y41P_to_Y41T_UnitTest)
 		{
 			Run8bitTestSeries(MVFMT_Y41P, MVFMT_Y41T);
+		}
+
+		TEST_METHOD(Y41P_to_YV16_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_Y41P, MVFMT_YV16);
 		}
 
 		//

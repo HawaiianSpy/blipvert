@@ -361,7 +361,7 @@ void blipvert::FlipVertical_YV16(int32_t width, int32_t height, uint8_t* buf, in
     uint8_t* vplane = buf + (y_stride * height);
     uint8_t* uplane = vplane + (uv_stride * height);
 
-    FlipSinglePlane(height, buf, stride);
+    FlipSinglePlane(height, buf, y_stride);
     FlipSinglePlane(height, vplane, uv_stride);
     FlipSinglePlane(height, uplane, uv_stride);
 }

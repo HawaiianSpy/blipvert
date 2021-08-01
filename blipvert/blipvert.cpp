@@ -468,6 +468,7 @@ TransformTableEntry TransformTable[] = {
     { MVFMT_RGBA, MVFMT_NV21, RGB32_to_NV21 },
     { MVFMT_RGBA, MVFMT_Y42T, RGBA_to_Y42T },
     { MVFMT_RGBA, MVFMT_Y41T, RGBA_to_Y41T },
+    { MVFMT_RGBA, MVFMT_YV16, RGB32_to_YV16 },
 
     { MVFMT_RGB32, MVFMT_YUY2, RGB32_to_YUY2 },
     { MVFMT_RGB32, MVFMT_UYVY, RGB32_to_UYVY },
@@ -1183,6 +1184,21 @@ TransformTableEntry TransformTable[] = {
     { MVFMT_YV16, MVFMT_YV12, YV16_to_YV12 },
     { MVFMT_YV16, MVFMT_YUV9, YV16_to_YUV9 },
     { MVFMT_YV16, MVFMT_YVU9, YV16_to_YVU9 },
+    { MVFMT_YV16, MVFMT_IYU1, YV16_to_IYU1 },
+    { MVFMT_YV16, MVFMT_IYU2, YV16_to_IYU2 },
+    { MVFMT_YV16, MVFMT_Y800, YV16_to_Y800 },
+    { MVFMT_YV16, MVFMT_Y16, YV16_to_Y16 },
+    { MVFMT_YV16, MVFMT_CLJR, YV16_to_CLJR },
+    { MVFMT_YV16, MVFMT_Y41P, YV16_to_Y41P },
+    { MVFMT_YV16, MVFMT_AYUV, YV16_to_AYUV },
+    { MVFMT_YV16, MVFMT_IMC1, YV16_to_IMC1 },
+    { MVFMT_YV16, MVFMT_IMC2, YV16_to_IMC2 },
+    { MVFMT_YV16, MVFMT_IMC3, YV16_to_IMC3 },
+    { MVFMT_YV16, MVFMT_IMC4, YV16_to_IMC4 },
+    { MVFMT_YV16, MVFMT_NV12, YV16_to_NV12 },
+    { MVFMT_YV16, MVFMT_NV21, YV16_to_NV21 },
+    { MVFMT_YV16, MVFMT_Y42T, YV16_to_Y42T },
+    { MVFMT_YV16, MVFMT_Y41T, YV16_to_Y41T },
 
     { MVFMT_IUYV, MVFMT_UYVY, IUYV_to_UYVY },
     { MVFMT_IY41, MVFMT_Y41P, IY41_to_Y41P },
@@ -1289,6 +1305,7 @@ SetPixelTableEntry SetPixelTable[] = {
     { MVFMT_NV21, SetPixel_NV21 },
     { MVFMT_Y42T, SetPixel_Y42T },
     { MVFMT_Y41T, SetPixel_Y41T },
+    { MVFMT_YV16, SetPixel_YV16 },
     { MVFMT_UNDEFINED, nullptr }
 };
 CalcBufSizeTableEntry CalcBufSizeTable[] = {

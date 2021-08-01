@@ -1005,6 +1005,7 @@ TransformTableEntry TransformTable[] = {
     { MVFMT_IMC1, MVFMT_NV21, IMC1_to_NV21 },
     { MVFMT_IMC1, MVFMT_Y42T, IMC1_to_Y42T },
     { MVFMT_IMC1, MVFMT_Y41T, IMC1_to_Y41T },
+    { MVFMT_IMC1, MVFMT_YV16, IMC1_to_YV16 },
 
     { MVFMT_IMC2, MVFMT_AYUV, IMC2_to_AYUV },
     { MVFMT_IMC2, MVFMT_YUY2, IMC2_to_YUY2 },
@@ -1028,6 +1029,7 @@ TransformTableEntry TransformTable[] = {
     { MVFMT_IMC2, MVFMT_NV21, IMC2_to_NV21 },
     { MVFMT_IMC2, MVFMT_Y42T, IMC2_to_Y42T },
     { MVFMT_IMC2, MVFMT_Y41T, IMC2_to_Y41T },
+    { MVFMT_IMC2, MVFMT_YV16, IMC2_to_YV16 },
 
     { MVFMT_IMC3, MVFMT_AYUV, IMC3_to_AYUV },
     { MVFMT_IMC3, MVFMT_YUY2, IMC3_to_YUY2 },
@@ -1051,6 +1053,7 @@ TransformTableEntry TransformTable[] = {
     { MVFMT_IMC3, MVFMT_NV21, IMC3_to_NV21 },
     { MVFMT_IMC3, MVFMT_Y42T, IMC3_to_Y42T },
     { MVFMT_IMC3, MVFMT_Y41T, IMC3_to_Y41T },
+    { MVFMT_IMC3, MVFMT_YV16, IMC3_to_YV16 },
 
     { MVFMT_IMC4, MVFMT_AYUV, IMC4_to_AYUV },
     { MVFMT_IMC4, MVFMT_YUY2, IMC4_to_YUY2 },
@@ -1074,6 +1077,7 @@ TransformTableEntry TransformTable[] = {
     { MVFMT_IMC4, MVFMT_NV21, IMC4_to_NV21 },
     { MVFMT_IMC4, MVFMT_Y42T, IMC4_to_Y42T },
     { MVFMT_IMC4, MVFMT_Y41T, IMC4_to_Y41T },
+    { MVFMT_IMC4, MVFMT_YV16, IMC4_to_YV16 },
 
     { MVFMT_NV12, MVFMT_AYUV, NV12_to_AYUV },
     { MVFMT_NV12, MVFMT_YUY2, NV12_to_YUY2 },
@@ -1097,6 +1101,7 @@ TransformTableEntry TransformTable[] = {
     { MVFMT_NV12, MVFMT_NV21, NV12_to_NV21 },
     { MVFMT_NV12, MVFMT_Y42T, NV12_to_Y42T },
     { MVFMT_NV12, MVFMT_Y41T, NV12_to_Y41T },
+    { MVFMT_NV12, MVFMT_YV16, NV12_to_YV16 },
 
     { MVFMT_NV21, MVFMT_AYUV, NV21_to_AYUV },
     { MVFMT_NV21, MVFMT_YUY2, NV21_to_YUY2 },
@@ -1120,6 +1125,7 @@ TransformTableEntry TransformTable[] = {
     { MVFMT_NV21, MVFMT_NV12, NV21_to_NV12 },
     { MVFMT_NV21, MVFMT_Y42T, NV21_to_Y42T },
     { MVFMT_NV21, MVFMT_Y41T, NV21_to_Y41T },
+    { MVFMT_NV21, MVFMT_YV16, NV21_to_YV16 },
 
     { MVFMT_Y42T, MVFMT_YUY2, Y42T_to_YUY2 },
     { MVFMT_Y42T, MVFMT_UYVY, Y42T_to_UYVY },
@@ -1143,6 +1149,7 @@ TransformTableEntry TransformTable[] = {
     { MVFMT_Y42T, MVFMT_NV12, Y42T_to_NV12 },
     { MVFMT_Y42T, MVFMT_NV21, Y42T_to_NV21 },
     { MVFMT_Y42T, MVFMT_Y41T, Y42T_to_Y41T },
+    { MVFMT_Y42T, MVFMT_YV16, Y42T_to_YV16 },
 
     { MVFMT_Y41T, MVFMT_YUY2, Y41T_to_YUY2 },
     { MVFMT_Y41T, MVFMT_UYVY, Y41T_to_UYVY },
@@ -1166,6 +1173,7 @@ TransformTableEntry TransformTable[] = {
     { MVFMT_Y41T, MVFMT_NV12, Y41T_to_NV12 },
     { MVFMT_Y41T, MVFMT_NV21, Y41T_to_NV21 },
     { MVFMT_Y41T, MVFMT_Y42T, Y41T_to_Y42T },
+    { MVFMT_Y41T, MVFMT_YV16, Y41T_to_YV16 },
 
     { MVFMT_IUYV, MVFMT_UYVY, IUYV_to_UYVY },
     { MVFMT_IY41, MVFMT_Y41P, IY41_to_Y41P },

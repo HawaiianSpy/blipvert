@@ -2781,6 +2781,49 @@ namespace BlipvertUnitTests
 			RunYAlphaTestSeries(MVFMT_Y41T, MVFMT_YV16);
 		}
 
+		//
+		// YV16 to YUV
+		//
+
+		TEST_METHOD(YV16_to_YUY2_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_YV16, MVFMT_YUY2);
+		}
+
+		TEST_METHOD(YV16_to_UYVY_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_YV16, MVFMT_UYVY);
+		}
+
+		TEST_METHOD(YV16_to_YVYU_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_YV16, MVFMT_YVYU);
+		}
+
+		TEST_METHOD(YV16_to_VYUY_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_YV16, MVFMT_VYUY);
+		}
+
+		TEST_METHOD(YV16_to_I420_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_YV16, MVFMT_I420);
+		}
+
+		TEST_METHOD(YV16_to_YV12_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_YV16, MVFMT_YV12);
+		}
+
+		TEST_METHOD(YV16_to_YVU9_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_YV16, MVFMT_YVU9);
+		}
+
+		TEST_METHOD(YV16_to_YUV9_UnitTest)
+		{
+			Run8bitTestSeries(MVFMT_YV16, MVFMT_YUV9);
+		}
 
 	private:
 		void Run8bitAlphaTestSeries(const MediaFormatID& inFormat, const MediaFormatID& outFormat)

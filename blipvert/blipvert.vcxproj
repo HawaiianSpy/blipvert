@@ -170,6 +170,7 @@
     <ClInclude Include="RGBtoRGB.h" />
     <ClInclude Include="RGBtoYUV.h" />
     <ClInclude Include="SetPixel.h" />
+    <ClInclude Include="Staging.h" />
     <ClInclude Include="ToFillColor.h" />
     <ClInclude Include="ToGreyscale.h" />
     <ClInclude Include="Utilities.h" />
@@ -191,6 +192,7 @@
     <ClCompile Include="RGBtoRGB.cpp" />
     <ClCompile Include="RGBtoYUV.cpp" />
     <ClCompile Include="SetPixel.cpp" />
+    <ClCompile Include="Staging.cpp" />
     <ClCompile Include="ToFillColor.cpp" />
     <ClCompile Include="ToGreyscale.cpp" />
     <ClCompile Include="Utilities.cpp" />

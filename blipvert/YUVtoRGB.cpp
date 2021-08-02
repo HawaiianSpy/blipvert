@@ -292,14 +292,14 @@ void PlanarYUV_to_RGB32(int32_t width, int32_t height,
 
     if (decimation == 2)
     {
-        for (int16_t y = 0; y < height; y += 2)
+        for (int16_t y = 0; y < uv_height; y++)
         {
             uint8_t* yp = in_buf;
             uint8_t* up = uplane;
             uint8_t* vp = vplane;
             uint8_t* pdst = out_buf;
 
-            for (int16_t x = 0; x < width; x += 2)
+            for (int16_t x = 0; x < uv_width; x++)
             {
                 int32_t bprime = u_table[*up];
                 int32_t gprime = uv_table[*up][*vp];
@@ -347,14 +347,14 @@ void PlanarYUV_to_RGB32(int32_t width, int32_t height,
     }
     else if (decimation == 4)
     {
-        for (int16_t y = 0; y < height; y += 4)
+        for (int16_t y = 0; y < uv_height; y++)
         {
             uint8_t* yp = in_buf;
             uint8_t* up = uplane;
             uint8_t* vp = vplane;
             uint8_t* pdst = out_buf;
 
-            for (int16_t x = 0; x < width; x += 4)
+            for (int16_t x = 0; x < uv_width; x++)
             {
                 int32_t bprime = u_table[*up];
                 int32_t gprime = uv_table[*up][*vp];
@@ -362,13 +362,17 @@ void PlanarYUV_to_RGB32(int32_t width, int32_t height,
 
                 for (int16_t row = 0; row < 4; row++)
                 {
+                    int32_t out_row_stride = out_stride * row;
+                    int32_t in_y_stride = y_stride * row;
+
                     for (int16_t col = 0; col < 4; col++)
                     {
-                        int32_t Y = luminance_table[yp[col + y_stride * row]];
-                        pdst[col * 4 + out_stride * row] = saturation_table[Y + bprime];            // blue
-                        pdst[1 + col * 4 + out_stride * row] = saturation_table[Y + gprime];        // green
-                        pdst[2 + col * 4 + out_stride * row] = saturation_table[Y + rprime];        // red
-                        pdst[3 + col * 4 + out_stride * row] = 0xFF;
+                        int32_t Y = luminance_table[yp[y_stride + col]];
+                        int32_t column = col * 4 + out_row_stride;
+                        pdst[column++] = saturation_table[Y + bprime];      // blue
+                        pdst[column++] = saturation_table[Y + gprime];      // green
+                        pdst[column++] = saturation_table[Y + rprime];      // red
+                        pdst[column] = 0xFF;
                     }
                 }
 
@@ -435,14 +439,14 @@ void PlanarYUV_to_RGB24(int32_t width, int32_t height,
 
     if (decimation == 2)
     {
-        for (int16_t y = 0; y < height; y += 2)
+        for (int16_t y = 0; y < uv_height; y++)
         {
             uint8_t* yp = in_buf;
             uint8_t* up = uplane;
             uint8_t* vp = vplane;
             uint8_t* pdst = out_buf;
 
-            for (int16_t x = 0; x < width; x += 2)
+            for (int16_t x = 0; x < uv_width; x++)
             {
                 int32_t bprime = u_table[*up];
                 int32_t gprime = uv_table[*up][*vp];
@@ -486,14 +490,14 @@ void PlanarYUV_to_RGB24(int32_t width, int32_t height,
     }
     else if (decimation == 4)
     {
-        for (int16_t y = 0; y < height; y += 4)
+        for (int16_t y = 0; y < uv_height; y++)
         {
             uint8_t* yp = in_buf;
             uint8_t* up = uplane;
             uint8_t* vp = vplane;
             uint8_t* pdst = out_buf;
 
-            for (int16_t x = 0; x < width; x += 4)
+            for (int16_t x = 0; x < uv_width; x++)
             {
                 int32_t bprime = u_table[*up];
                 int32_t gprime = uv_table[*up][*vp];
@@ -501,12 +505,16 @@ void PlanarYUV_to_RGB24(int32_t width, int32_t height,
 
                 for (int16_t row = 0; row < 4; row++)
                 {
+                    int32_t out_row_stride = out_stride * row;
+                    int32_t in_y_stride = y_stride * row;
+
                     for (int16_t col = 0; col < 4; col++)
                     {
-                        int32_t Y = luminance_table[yp[col + y_stride * row]];
-                        pdst[col * 3 + out_stride * row] = saturation_table[Y + bprime];            // blue
-                        pdst[1 + col * 3 + out_stride * row] = saturation_table[Y + gprime];        // green
-                        pdst[2 + col * 3 + out_stride * row] = saturation_table[Y + rprime];        // red
+                        int32_t Y = luminance_table[yp[in_y_stride + col]];
+                        int32_t column = out_row_stride + col * 3;
+                        pdst[column++] = saturation_table[Y + bprime];      // blue
+                        pdst[column++] = saturation_table[Y + gprime];      // green
+                        pdst[column] = saturation_table[Y + rprime];        // red
                     }
                 }
 
@@ -573,14 +581,14 @@ void PlanarYUV_to_RGB565(int32_t width, int32_t height,
 
     if (decimation == 2)
     {
-        for (int16_t y = 0; y < height; y += 2)
+        for (int16_t y = 0; y < uv_height; y++)
         {
             uint8_t* yp = in_buf;
             uint8_t* up = uplane;
             uint8_t* vp = vplane;
             uint8_t* pdst = out_buf;
 
-            for (int16_t x = 0; x < width; x += 2)
+            for (int16_t x = 0; x < uv_width; x++)
             {
                 int32_t bprime = u_table[*up];
                 int32_t gprime = uv_table[*up][*vp];
@@ -628,14 +636,14 @@ void PlanarYUV_to_RGB565(int32_t width, int32_t height,
     }
     else if (decimation == 4)
     {
-        for (int16_t y = 0; y < height; y += 4)
+        for (int16_t y = 0; y < uv_height; y++)
         {
             uint8_t* yp = in_buf;
             uint8_t* up = uplane;
             uint8_t* vp = vplane;
             uint8_t* pdst = out_buf;
 
-            for (int16_t x = 0; x < width; x += 4)
+            for (int16_t x = 0; x < uv_width; x++)
             {
                 int32_t bprime = u_table[*up];
                 int32_t gprime = uv_table[*up][*vp];
@@ -643,10 +651,13 @@ void PlanarYUV_to_RGB565(int32_t width, int32_t height,
 
                 for (int16_t row = 0; row < 4; row++)
                 {
+                    int32_t out_row_stride = out_stride * row;
+                    int32_t in_y_stride = y_stride * row;
+
                     for (int16_t col = 0; col < 4; col++)
                     {
-                        int32_t Y = luminance_table[yp[col + y_stride * row]];
-                        PackRGB565Word(*(reinterpret_cast<uint16_t*>(pdst + col * 2 + out_stride * row)),
+                        int32_t Y = luminance_table[yp[in_y_stride + col]];
+                        PackRGB565Word(*(reinterpret_cast<uint16_t*>(pdst + out_row_stride + col * 2)),
                             saturation_table[Y + rprime],       // red
                             saturation_table[Y + gprime],       // green
                             saturation_table[Y + bprime]);      // blue
@@ -716,14 +727,14 @@ void PlanarYUV_to_RGB555(int32_t width, int32_t height,
 
     if (decimation == 2)
     {
-        for (int16_t y = 0; y < height; y += 2)
+        for (int16_t y = 0; y < uv_height; y++)
         {
             uint8_t* yp = in_buf;
             uint8_t* up = uplane;
             uint8_t* vp = vplane;
             uint8_t* pdst = out_buf;
 
-            for (int16_t x = 0; x < width; x += 2)
+            for (int16_t x = 0; x < uv_width; x++)
             {
                 int32_t bprime = u_table[*up];
                 int32_t gprime = uv_table[*up][*vp];
@@ -771,14 +782,14 @@ void PlanarYUV_to_RGB555(int32_t width, int32_t height,
     }
     else if (decimation == 4)
     {
-        for (int16_t y = 0; y < height; y += 4)
+        for (int16_t y = 0; y < uv_height; y++)
         {
             uint8_t* yp = in_buf;
             uint8_t* up = uplane;
             uint8_t* vp = vplane;
             uint8_t* pdst = out_buf;
 
-            for (int16_t x = 0; x < width; x += 4)
+            for (int16_t x = 0; x < uv_width; x++)
             {
                 int32_t bprime = u_table[*up];
                 int32_t gprime = uv_table[*up][*vp];
@@ -786,10 +797,13 @@ void PlanarYUV_to_RGB555(int32_t width, int32_t height,
 
                 for (int16_t row = 0; row < 4; row++)
                 {
+                    int32_t out_row_stride = out_stride * row;
+                    int32_t in_y_stride = y_stride * row;
+
                     for (int16_t col = 0; col < 4; col++)
                     {
-                        int32_t Y = luminance_table[yp[col + y_stride * row]];
-                        PackRGB555Word(*(reinterpret_cast<uint16_t*>(pdst + col * 2 + out_stride * row)),
+                        int32_t Y = luminance_table[yp[in_y_stride + col]];
+                        PackRGB555Word(*(reinterpret_cast<uint16_t*>(pdst + out_row_stride + col * 2)),
                             saturation_table[Y + rprime],       // red
                             saturation_table[Y + gprime],       // green
                             saturation_table[Y + bprime]);      // blue

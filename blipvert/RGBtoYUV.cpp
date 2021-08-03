@@ -2202,11 +2202,16 @@ void blipvert::RGB32_to_AYUV(int32_t width, int32_t height,
         int32_t hcount = width;
         while (hcount)
         {
-            *pdst++ = static_cast<uint32_t>(((vr_table[psrc[2]] + vg_table[psrc[1]] + vb_table[psrc[0]]) >> 15) + 128);
-            *pdst++ = static_cast<uint32_t>(((ur_table[psrc[2]] + ug_table[psrc[1]] + ub_table[psrc[0]]) >> 15) + 128);
-            *pdst++ = static_cast<uint8_t>(((yr_table[psrc[2]] + yg_table[psrc[1]] + yb_table[psrc[0]]) >> 15) + 16);
+            uint8_t blue = *psrc++;
+            uint8_t green = *psrc++;
+            uint8_t red = *psrc++;
+            psrc++;
+
+            *pdst++ = static_cast<uint32_t>(((vr_table[red] + vg_table[green] + vb_table[blue]) >> 15) + 128);
+            *pdst++ = static_cast<uint32_t>(((ur_table[red] + ug_table[green] + ub_table[blue]) >> 15) + 128);
+            *pdst++ = static_cast<uint8_t>(((yr_table[red] + yg_table[green] + yb_table[blue]) >> 15) + 16);
             *pdst++ = 0xFF;
-            psrc += 4;
+
             hcount--;
         }
 
@@ -2920,11 +2925,13 @@ void blipvert::RGB24_to_AYUV(int32_t width, int32_t height, uint8_t* out_buf, in
         int32_t hcount = width;
         while (hcount)
         {
-            *pdst++ = static_cast<uint32_t>(((vr_table[psrc[2]] + vg_table[psrc[1]] + vb_table[psrc[0]]) >> 15) + 128);
-            *pdst++ = static_cast<uint32_t>(((ur_table[psrc[2]] + ug_table[psrc[1]] + ub_table[psrc[0]]) >> 15) + 128);
-            *pdst++ = static_cast<uint8_t>(((yr_table[psrc[2]] + yg_table[psrc[1]] + yb_table[psrc[0]]) >> 15) + 16);
+            uint8_t blue = *psrc++;
+            uint8_t green = *psrc++;
+            uint8_t red = *psrc++;
+            *pdst++ = static_cast<uint32_t>(((vr_table[red] + vg_table[green] + vb_table[blue]) >> 15) + 128);
+            *pdst++ = static_cast<uint32_t>(((ur_table[red] + ug_table[green] + ub_table[blue]) >> 15) + 128);
+            *pdst++ = static_cast<uint8_t>(((yr_table[red] + yg_table[green] + yb_table[blue]) >> 15) + 16);
             *pdst++ = 0xFF;
-            psrc += 3;
             hcount--;
         }
 

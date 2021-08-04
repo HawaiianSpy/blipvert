@@ -46,7 +46,7 @@ shared_ptr<TransformStaging> blipvert::Stage_RGBA(uint8_t thread_count, int32_t 
     result->stride = stride;
     result->flipped = flipped;
 
-    if (result->stride < result->width)
+    if (result->stride < result->width * 4)
         result->stride = result->width * 4;
 
     if (result->flipped)
@@ -71,7 +71,7 @@ shared_ptr<TransformStaging> blipvert::Stage_RGB32(uint8_t thread_count, int32_t
     result->stride = stride;
     result->flipped = flipped;
 
-    if (result->stride < result->width)
+    if (result->stride < result->width * 4)
         result->stride = result->width * 4;
 
     if (result->flipped)
@@ -96,7 +96,7 @@ shared_ptr<TransformStaging> blipvert::Stage_RGB24(uint8_t thread_count, int32_t
     result->stride = stride;
     result->flipped = flipped;
 
-    if (result->stride < result->width)
+    if (result->stride < result->width * 3)
         result->stride = result->width * 3;
 
     if (result->flipped)
@@ -121,7 +121,7 @@ shared_ptr<TransformStaging> blipvert::Stage_RGB565(uint8_t thread_count, int32_
     result->stride = stride;
     result->flipped = flipped;
 
-    if (result->stride < result->width)
+    if (result->stride < result->width * 2)
         result->stride = result->width * 2;
 
     if (result->flipped)
@@ -146,7 +146,7 @@ shared_ptr<TransformStaging> blipvert::Stage_RGB555(uint8_t thread_count, int32_
     result->stride = stride;
     result->flipped = flipped;
 
-    if (result->stride < result->width)
+    if (result->stride < result->width * 2)
         result->stride = result->width * 2;
 
     if (result->flipped)
@@ -171,7 +171,7 @@ shared_ptr<TransformStaging> blipvert::Stage_ARGB1555(uint8_t thread_count, int3
     result->stride = stride;
     result->flipped = flipped;
 
-    if (result->stride < result->width)
+    if (result->stride < result->width * 2)
         result->stride = result->width * 2;
 
     if (result->flipped)
@@ -226,8 +226,8 @@ shared_ptr<TransformStaging> blipvert::Stage_RGB4(uint8_t thread_count, int32_t 
     result->flipped = flipped;
     result->palette = palette;
 
-    if (result->stride < result->width)
-        result->stride = result->width;
+    if (result->stride < result->width / 2)
+        result->stride = result->width / 2;
 
     result->has_odd = width % 2 != 0;
     if (!result->stride)
@@ -265,8 +265,8 @@ shared_ptr<TransformStaging> blipvert::Stage_RGB1(uint8_t thread_count, int32_t 
     result->flipped = flipped;
     result->palette = palette;
 
-    if (result->stride < result->width)
-        result->stride = result->width;
+    if (result->stride < result->width / 8)
+        result->stride = result->width / 8;
 
     result->remainder = width % 8;
     if (!result->stride)
@@ -289,3 +289,80 @@ shared_ptr<TransformStaging> blipvert::Stage_RGB1(uint8_t thread_count, int32_t 
 
     return result;
 }
+
+shared_ptr<TransformStaging> Stage_PackedY422(uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped)
+{
+    shared_ptr<TransformStaging> result = make_shared<TransformStaging>();
+    memset(result.get(), 0, sizeof(TransformStaging));
+
+    result->thread_index = 0;
+    result->width = width;
+    result->height = height;
+    result->buf = buf;
+    result->stride = stride;
+    result->flipped = flipped;
+
+    if (result->stride < result->width * 2)
+        result->stride = result->width * 2;
+
+    if (result->flipped)
+    {
+        result->buf += (result->stride * (result->height - 1));
+        result->stride = -result->stride;
+    }
+
+    return result;
+}
+
+shared_ptr<TransformStaging> blipvert::Stage_YUY2(uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
+{
+    shared_ptr<TransformStaging> result = Stage_PackedY422(thread_count, width, height, buf, stride, flipped);
+
+    result->format = &MVFMT_YUY2;
+    result->Y0_index = 0;
+    result->Y1_index = 2;
+    result->U_index = 1;
+    result->V_index = 2;
+
+    return result;
+}
+
+shared_ptr<TransformStaging> blipvert::Stage_UYVY(uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
+{
+    shared_ptr<TransformStaging> result = Stage_PackedY422(thread_count, width, height, buf, stride, flipped);
+
+    result->format = &MVFMT_UYVY;
+    result->Y0_index = 1;
+    result->Y1_index = 3;
+    result->U_index = 0;
+    result->V_index = 2;
+
+    return result;
+}
+
+shared_ptr<TransformStaging> blipvert::Stage_YVYU(uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
+{
+    shared_ptr<TransformStaging> result = Stage_PackedY422(thread_count, width, height, buf, stride, flipped);
+
+    result->format = &MVFMT_YVYU;
+    result->Y0_index = 0;
+    result->Y1_index = 2;
+    result->U_index = 3;
+    result->V_index = 1;
+
+    return result;
+}
+
+shared_ptr<TransformStaging> blipvert::Stage_VYUY(uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
+{
+    shared_ptr<TransformStaging> result = Stage_PackedY422(thread_count, width, height, buf, stride, flipped);
+
+    result->format = &MVFMT_VYUY;
+    result->Y0_index = 1;
+    result->Y1_index = 3;
+    result->U_index = 2;
+    result->V_index = 0;
+
+    return result;
+}
+

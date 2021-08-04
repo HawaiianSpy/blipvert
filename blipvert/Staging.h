@@ -39,6 +39,9 @@ namespace blipvert
         int32_t height;
         uint8_t* buf;
         int32_t stride;
+        int32_t stride_x_2;
+        int32_t stride_x_3;
+        int32_t stride_x_4;
         bool flipped;
         xRGBQUAD* palette;
         bool has_odd;
@@ -53,9 +56,6 @@ namespace blipvert
         int32_t uv_stride;
         uint8_t* vplane;
         uint8_t* uplane;
-        int32_t stride_x_2;
-        int32_t stride_x_3;
-        int32_t stride_x_4;
     } TransformStaging;
 
 
@@ -68,4 +68,9 @@ namespace blipvert
     std::shared_ptr<TransformStaging> Stage_RGB8(uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped = false, xRGBQUAD* palette = nullptr);
     std::shared_ptr<TransformStaging> Stage_RGB4(uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped = false, xRGBQUAD* palette = nullptr);
     std::shared_ptr<TransformStaging> Stage_RGB1(uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped = false, xRGBQUAD* palette = nullptr);
+
+    std::shared_ptr<TransformStaging> Stage_YUY2(uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped = false, xRGBQUAD* palette = nullptr);
+    std::shared_ptr<TransformStaging> Stage_UYVY(uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped = false, xRGBQUAD* palette = nullptr);
+    std::shared_ptr<TransformStaging> Stage_YVYU(uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped = false, xRGBQUAD* palette = nullptr);
+    std::shared_ptr<TransformStaging> Stage_VYUY(uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped = false, xRGBQUAD* palette = nullptr);
 }

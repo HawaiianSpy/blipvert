@@ -173,13 +173,13 @@ uint32_t blipvert::CalcBufferSize_YUY2(int32_t width, int32_t height, int32_t& s
     return height * stride;
 }
 
-uint32_t CalcBufferSize_Planar(int32_t width, int32_t height, int32_t& stride, int32_t decimation)
+uint32_t CalcBufferSize_PlanarYUV(int32_t width, int32_t height, int32_t& stride, int32_t decimation)
 {
     int32_t uv_width = width / decimation;
     int32_t uv_height = height / decimation;
 
     int16_t y_stride, uv_stride;
-    if (stride < width)
+    if (stride <= width)
     {
         stride = width;
         y_stride = width;
@@ -195,24 +195,25 @@ uint32_t CalcBufferSize_Planar(int32_t width, int32_t height, int32_t& stride, i
     result += uv_stride * uv_height * 2;
     return result;
 }
+
 uint32_t blipvert::CalcBufferSize_I420(int32_t width, int32_t height, int32_t& stride)
 {
-    return CalcBufferSize_Planar(width, height, stride, 2);
+    return CalcBufferSize_PlanarYUV(width, height, stride, 2);
 }
 
 uint32_t blipvert::CalcBufferSize_YV12(int32_t width, int32_t height, int32_t& stride)
 {
-    return CalcBufferSize_Planar(width, height, stride, 2);
+    return CalcBufferSize_PlanarYUV(width, height, stride, 2);
 }
 
 uint32_t blipvert::CalcBufferSize_YVU9(int32_t width, int32_t height, int32_t& stride)
 {
-    return CalcBufferSize_Planar(width, height, stride, 4);
+    return CalcBufferSize_PlanarYUV(width, height, stride, 4);
 }
 
 uint32_t blipvert::CalcBufferSize_YUV9(int32_t width, int32_t height, int32_t& stride)
 {
-    return CalcBufferSize_Planar(width, height, stride, 4);
+    return CalcBufferSize_PlanarYUV(width, height, stride, 4);
 }
 
 uint32_t blipvert::CalcBufferSize_IYU1(int32_t width, int32_t height, int32_t& stride)

@@ -366,3 +366,82 @@ shared_ptr<TransformStaging> blipvert::Stage_VYUY(uint8_t thread_count, int32_t 
     return result;
 }
 
+
+shared_ptr<TransformStaging> Stage_PlanarYUV(uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, bool ufirst, int32_t decimation)
+{
+    shared_ptr<TransformStaging> result = make_shared<TransformStaging>();
+    memset(result.get(), 0, sizeof(TransformStaging));
+
+    result->thread_index = 0;
+    result->width = width;
+    result->height = height;
+    result->buf = buf;
+    result->stride = stride;
+    result->flipped = flipped;
+
+
+    result->uv_width = width / decimation;
+    result->uv_height = height / decimation;
+
+    if (stride <= width)
+    {
+        result->y_stride = width;
+        result->uv_stride = result->uv_width;
+    }
+    else
+    {
+        result->y_stride = stride;
+        result->uv_stride = stride;
+    }
+
+    if (ufirst)
+    {
+        result->uplane = result->buf + (result->y_stride * height);
+        result->vplane = result->uplane + (result->uv_stride * result->uv_height);
+    }
+    else
+    {
+        result->vplane = result->buf + (result->y_stride * height);
+        result->uplane = result->vplane + (result->uv_stride * result->uv_height);
+    }
+
+    if (flipped)
+    {
+        result->buf += (result->y_stride * (height - 1));
+        result->uplane += (result->uv_stride * (result->uv_height - 1));
+        result->vplane += (result->uv_stride * (result->uv_height - 1));
+        result->y_stride = -result->y_stride;
+        result->uv_stride = -result->uv_stride;
+    }
+
+    return result;
+}
+
+shared_ptr<TransformStaging> blipvert::Stage_I420(uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
+{
+    shared_ptr<TransformStaging> result = Stage_PlanarYUV(thread_count, width, height, buf, stride, flipped, true, 2);
+    result->format = &MVFMT_I420;
+    return result;
+}
+
+shared_ptr<TransformStaging> blipvert::Stage_YV12(uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
+{
+    shared_ptr<TransformStaging> result = Stage_PlanarYUV(thread_count, width, height, buf, stride, flipped, false, 2);
+    result->format = &MVFMT_YV12;
+    return result;
+}
+
+shared_ptr<TransformStaging> blipvert::Stage_YVU9(uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
+{
+    shared_ptr<TransformStaging> result = Stage_PlanarYUV(thread_count, width, height, buf, stride, flipped, false, 4);
+    result->format = &MVFMT_YVU9;
+    return result;
+}
+
+shared_ptr<TransformStaging> blipvert::Stage_YUV9(uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette )
+{
+    shared_ptr<TransformStaging> result = Stage_PlanarYUV(thread_count, width, height, buf, stride, flipped, true, 4);
+    result->format = &MVFMT_YUV9;
+    return result;
+}
+

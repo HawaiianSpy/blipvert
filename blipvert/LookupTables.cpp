@@ -98,14 +98,15 @@ void blipvert::InitLookupTables()
         rgb8_greyscale_palette[index] = quad;
     }
 
-    for (int16_t index = 0; index <= 16; index++)
+    // RGB 4 greyscale
+    uint8_t value = 0;
+    for (int16_t index = 0; index < 16; index++)
     {
-        uint8_t value = index * 16;
-        if (value > 255) value = 255;
         quad.rgbBlue = value;
         quad.rgbGreen = value;
         quad.rgbRed = value;
-        rgb8_greyscale_palette[index] = quad;
+        rgb4_greyscale_palette[index] = quad;
+        value += 17;
     }
 
     //    Build the YUV to RGB transform lookup tables.

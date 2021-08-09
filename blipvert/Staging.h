@@ -40,9 +40,6 @@ namespace blipvert
         int32_t height;
         uint8_t* buf;
         int32_t stride;
-        int32_t stride_x_2;
-        int32_t stride_x_3;
-        int32_t stride_x_4;
         bool flipped;
         xRGBQUAD* palette;
         bool has_odd;

@@ -718,6 +718,7 @@ shared_ptr<Stage> blipvert::Stage_AYUV(uint8_t thread_index, uint8_t thread_coun
 
 shared_ptr<Stage> Stage_IMCx(uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, bool ufirst, bool interlaced)
 {
+    // TODO
     shared_ptr<Stage> result = make_shared<Stage>();
     memset(result.get(), 0, sizeof(Stage));
 
@@ -802,6 +803,7 @@ shared_ptr<Stage> blipvert::Stage_IMC4(uint8_t thread_index, uint8_t thread_coun
 
 shared_ptr<Stage> Stage_NVx(uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, bool ufirst)
 {
+    // TODO
     shared_ptr<Stage> result = make_shared<Stage>();
     memset(result.get(), 0, sizeof(Stage));
 
@@ -858,20 +860,25 @@ shared_ptr<Stage> blipvert::Stage_Y42T(uint8_t thread_index, uint8_t thread_coun
     shared_ptr<Stage> result = make_shared<Stage>();
     memset(result.get(), 0, sizeof(Stage));
 
+    int32_t slice_height = height / thread_count;
+
     result->format = &MVFMT_Y42T;
     result->width = width;
-    result->height = height;
-    result->buf = buf;
+    result->height = slice_height;
     result->stride = stride;
     result->flipped = flipped;
 
     if (result->stride < width * 2)
         result->stride = width * 2;
 
-    if (flipped)
+    if (result->flipped)
     {
-        result->buf += (result->stride * (height - 1));
+        result->buf = buf + (result->stride * ((height - 1) - thread_index * (slice_height)));
         result->stride = -result->stride;
+    }
+    else
+    {
+        result->buf = buf + thread_index * slice_height * result->stride;
     }
 
     return result;
@@ -882,20 +889,25 @@ shared_ptr<Stage> blipvert::Stage_Y41T(uint8_t thread_index, uint8_t thread_coun
     shared_ptr<Stage> result = make_shared<Stage>();
     memset(result.get(), 0, sizeof(Stage));
 
+    int32_t slice_height = height / thread_count;
+
     result->format = &MVFMT_Y41T;
     result->width = width;
-    result->height = height;
-    result->buf = buf;
+    result->height = slice_height;
     result->stride = stride;
     result->flipped = flipped;
 
     if (result->stride < width / 8 * 12)
         result->stride = width / 8 * 12;
 
-    if (flipped)
+    if (result->flipped)
     {
-        result->buf += (result->stride * (height - 1));
+        result->buf = buf + (result->stride * ((height - 1) - thread_index * (slice_height)));
         result->stride = -result->stride;
+    }
+    else
+    {
+        result->buf = buf + thread_index * slice_height * result->stride;
     }
 
     return result;
@@ -903,6 +915,7 @@ shared_ptr<Stage> blipvert::Stage_Y41T(uint8_t thread_index, uint8_t thread_coun
 
 shared_ptr<Stage> blipvert::Stage_YV16(uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
 {
+    // TODO
     shared_ptr<Stage> result = make_shared<Stage>();
     memset(result.get(), 0, sizeof(Stage));
 

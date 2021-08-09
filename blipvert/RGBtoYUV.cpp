@@ -320,6 +320,11 @@ void RGB32_to_PlanarYUV(int32_t width, int32_t height,
         uv_stride = -uv_stride;
     }
 
+    int32_t in_stride_x_2 = in_stride * 2;
+    int32_t y_stride_x_2 = y_stride * 2;
+    int32_t in_stride_x_4 = in_stride * 4;
+    int32_t y_stride_x_4 = y_stride * 4;
+
     uint16_t red;
     uint16_t green;
     uint16_t blue;
@@ -362,8 +367,8 @@ void RGB32_to_PlanarYUV(int32_t width, int32_t height,
                 psrc += 8;
                 yp += 2;
             }
-            in_buf += (in_stride * 2);
-            out_buf += (y_stride * 2);
+            in_buf += in_stride_x_2;
+            out_buf += y_stride_x_2;
 
             uplane += uv_stride;
             vplane += uv_stride;
@@ -420,8 +425,8 @@ void RGB32_to_PlanarYUV(int32_t width, int32_t height,
                 psrc += 16;
                 yp += 4;
             }
-            in_buf += (in_stride * 4);
-            out_buf += (y_stride * 4);
+            in_buf += in_stride_x_4;
+            out_buf += y_stride_x_4;
 
             uplane += uv_stride;
             vplane += uv_stride;
@@ -474,6 +479,11 @@ void RGB24_to_PlanarYUV(int32_t width, int32_t height,
         uv_stride = -uv_stride;
     }
 
+    int32_t in_stride_x_2 = in_stride * 2;
+    int32_t y_stride_x_2 = y_stride * 2;
+    int32_t in_stride_x_4 = in_stride * 4;
+    int32_t y_stride_x_4 = y_stride * 4;
+
     uint16_t red;
     uint16_t green;
     uint16_t blue;
@@ -516,8 +526,8 @@ void RGB24_to_PlanarYUV(int32_t width, int32_t height,
                 psrc += 6;
                 yp += 2;
             }
-            in_buf += (in_stride * 2);
-            out_buf += (y_stride * 2);
+            in_buf += in_stride_x_2;
+            out_buf += y_stride_x_2;
 
             uplane += uv_stride;
             vplane += uv_stride;
@@ -574,8 +584,8 @@ void RGB24_to_PlanarYUV(int32_t width, int32_t height,
                 psrc += 12;
                 yp += 4;
             }
-            in_buf += (in_stride * 4);
-            out_buf += (y_stride * 4);
+            in_buf += in_stride_x_4;
+            out_buf += y_stride_x_4;
 
             uplane += uv_stride;
             vplane += uv_stride;
@@ -628,6 +638,11 @@ void RGB565_to_PlanarYUV(int32_t width, int32_t height,
         uv_stride = -uv_stride;
     }
 
+    int32_t in_stride_x_2 = in_stride * 2;
+    int32_t y_stride_x_2 = y_stride * 2;
+    int32_t in_stride_x_4 = in_stride * 4;
+    int32_t y_stride_x_4 = y_stride * 4;
+
     uint16_t red;
     uint16_t green;
     uint16_t blue;
@@ -678,8 +693,8 @@ void RGB565_to_PlanarYUV(int32_t width, int32_t height,
                 psrc += 4;
                 yp += 2;
             }
-            in_buf += (in_stride * 2);
-            out_buf += (y_stride * 2);
+            in_buf += in_stride_x_2;
+            out_buf += y_stride_x_2;
 
             uplane += uv_stride;
             vplane += uv_stride;
@@ -748,8 +763,8 @@ void RGB565_to_PlanarYUV(int32_t width, int32_t height,
                 psrc += 8;
                 yp += 4;
             }
-            in_buf += (in_stride * 4);
-            out_buf += (y_stride * 4);
+            in_buf += in_stride_x_4;
+            out_buf += y_stride_x_4;
 
             uplane += uv_stride;
             vplane += uv_stride;
@@ -801,6 +816,11 @@ void RGB555_to_PlanarYUV(int32_t width, int32_t height,
         y_stride = -y_stride;
         uv_stride = -uv_stride;
     }
+
+    int32_t in_stride_x_2 = in_stride * 2;
+    int32_t y_stride_x_2 = y_stride * 2;
+    int32_t in_stride_x_4 = in_stride * 4;
+    int32_t y_stride_x_4 = y_stride * 4;
 
     uint16_t red;
     uint16_t green;
@@ -855,8 +875,8 @@ void RGB555_to_PlanarYUV(int32_t width, int32_t height,
                 psrc += 4;
                 yp += 2;
             }
-            in_buf += (in_stride * 2);
-            out_buf += (y_stride * 2);
+            in_buf += in_stride_x_2;
+            out_buf += y_stride_x_2;
 
             uplane += uv_stride;
             vplane += uv_stride;
@@ -925,8 +945,8 @@ void RGB555_to_PlanarYUV(int32_t width, int32_t height,
                 psrc += 8;
                 yp += 4;
             }
-            in_buf += (in_stride * 4);
-            out_buf += (y_stride * 4);
+            in_buf += in_stride_x_4;
+            out_buf += y_stride_x_4;
 
             uplane += uv_stride;
             vplane += uv_stride;
@@ -982,6 +1002,11 @@ void RGB8_to_PlanarYUV(int32_t width, int32_t height,
         uv_stride = -uv_stride;
     }
 
+    int32_t in_stride_x_2 = in_stride * 2;
+    int32_t y_stride_x_2 = y_stride * 2;
+    int32_t in_stride_x_4 = in_stride * 4;
+    int32_t y_stride_x_4 = y_stride * 4;
+
     uint16_t red;
     uint16_t green;
     uint16_t blue;
@@ -1036,8 +1061,8 @@ void RGB8_to_PlanarYUV(int32_t width, int32_t height,
                 psrc += 2;
                 yp += 2;
             }
-            in_buf += (in_stride * 2);
-            out_buf += (y_stride * 2);
+            in_buf += in_stride_x_2;
+            out_buf += y_stride_x_2;
 
             uplane += uv_stride;
             vplane += uv_stride;
@@ -1106,8 +1131,8 @@ void RGB8_to_PlanarYUV(int32_t width, int32_t height,
                 psrc += 4;
                 yp += 4;
             }
-            in_buf += (in_stride * 4);
-            out_buf += (y_stride * 4);
+            in_buf += in_stride_x_4;
+            out_buf += y_stride_x_4;
 
             uplane += uv_stride;
             vplane += uv_stride;

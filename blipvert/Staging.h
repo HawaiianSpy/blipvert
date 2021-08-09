@@ -53,6 +53,7 @@ namespace blipvert
         int16_t V_index;
         int32_t uv_width;
         int32_t uv_height;
+        int32_t uv_slice_height;
         int32_t y_stride;
         int32_t uv_stride;
         uint8_t* vplane;

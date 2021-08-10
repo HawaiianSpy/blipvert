@@ -33,10 +33,9 @@
 using namespace blipvert;
 using namespace std;
 
-shared_ptr<Stage> blipvert::Stage_RGBA(uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
+shared_ptr<Stage> blipvert::Stage_RGBA(Stage* result, uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
 {
-    shared_ptr<Stage> result = make_shared<Stage>();
-    memset(result.get(), 0, sizeof(Stage));
+    memset(result, 0, sizeof(Stage));
 
     int32_t slice_height = height / thread_count;
 
@@ -59,14 +58,11 @@ shared_ptr<Stage> blipvert::Stage_RGBA(uint8_t thread_index, uint8_t thread_coun
     {
         result->buf = buf + thread_index * slice_height * result->stride;
     }
-
-    return result;
 }
 
-shared_ptr<Stage> blipvert::Stage_RGB32(uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
+shared_ptr<Stage> blipvert::Stage_RGB32(Stage* result, uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
 {
-    shared_ptr<Stage> result = make_shared<Stage>();
-    memset(result.get(), 0, sizeof(Stage));
+     memset(result, 0, sizeof(Stage));
 
     int32_t slice_height = height / thread_count;
 
@@ -91,10 +87,9 @@ shared_ptr<Stage> blipvert::Stage_RGB32(uint8_t thread_index, uint8_t thread_cou
     }
 }
 
-shared_ptr<Stage> blipvert::Stage_RGB24(uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
+shared_ptr<Stage> blipvert::Stage_RGB24(Stage* result, uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
 {
-    shared_ptr<Stage> result = make_shared<Stage>();
-    memset(result.get(), 0, sizeof(Stage));
+    memset(result, 0, sizeof(Stage));
 
     int32_t slice_height = height / thread_count;
 
@@ -117,14 +112,11 @@ shared_ptr<Stage> blipvert::Stage_RGB24(uint8_t thread_index, uint8_t thread_cou
     {
         result->buf = buf + thread_index * slice_height * result->stride;
     }
-
-    return result;
 }
 
-shared_ptr<Stage> blipvert::Stage_RGB565(uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
+shared_ptr<Stage> blipvert::Stage_RGB565(Stage* result, uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
 {
-    shared_ptr<Stage> result = make_shared<Stage>();
-    memset(result.get(), 0, sizeof(Stage));
+    memset(result, 0, sizeof(Stage));
 
     int32_t slice_height = height / thread_count;
 
@@ -147,14 +139,11 @@ shared_ptr<Stage> blipvert::Stage_RGB565(uint8_t thread_index, uint8_t thread_co
     {
         result->buf = buf + thread_index * slice_height * result->stride;
     }
-
-    return result;
 }
 
-shared_ptr<Stage> blipvert::Stage_RGB555(uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
+shared_ptr<Stage> blipvert::Stage_RGB555(Stage* result, uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
 {
-    shared_ptr<Stage> result = make_shared<Stage>();
-    memset(result.get(), 0, sizeof(Stage));
+    memset(result, 0, sizeof(Stage));
 
     int32_t slice_height = height / thread_count;
 
@@ -176,14 +165,11 @@ shared_ptr<Stage> blipvert::Stage_RGB555(uint8_t thread_index, uint8_t thread_co
     {
         result->buf = buf + thread_index * slice_height * result->stride;
     }
-
-    return result;
 }
 
-shared_ptr<Stage> blipvert::Stage_ARGB1555(uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
+shared_ptr<Stage> blipvert::Stage_ARGB1555(Stage* result, uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
 {
-    shared_ptr<Stage> result = make_shared<Stage>();
-    memset(result.get(), 0, sizeof(Stage));
+    memset(result, 0, sizeof(Stage));
 
     int32_t slice_height = height / thread_count;
 
@@ -206,14 +192,11 @@ shared_ptr<Stage> blipvert::Stage_ARGB1555(uint8_t thread_index, uint8_t thread_
     {
         result->buf = buf + thread_index * slice_height * result->stride;
     }
-
-    return result;
 }
 
-shared_ptr<Stage> blipvert::Stage_RGB8(uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
+shared_ptr<Stage> blipvert::Stage_RGB8(Stage* result, uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
 {
-    shared_ptr<Stage> result = make_shared<Stage>();
-    memset(result.get(), 0, sizeof(Stage));
+    memset(result, 0, sizeof(Stage));
 
     int32_t slice_height = height / thread_count;
 
@@ -236,14 +219,11 @@ shared_ptr<Stage> blipvert::Stage_RGB8(uint8_t thread_index, uint8_t thread_coun
     {
         result->buf = buf + thread_index * slice_height * result->stride;
     }
-
-    return result;
 }
 
-shared_ptr<Stage> blipvert::Stage_RGB4(uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
+shared_ptr<Stage> blipvert::Stage_RGB4(Stage* result, uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
 {
-    shared_ptr<Stage> result = make_shared<Stage>();
-    memset(result.get(), 0, sizeof(Stage));
+    memset(result, 0, sizeof(Stage));
 
     int32_t slice_height = height / thread_count;
 
@@ -276,14 +256,11 @@ shared_ptr<Stage> blipvert::Stage_RGB4(uint8_t thread_index, uint8_t thread_coun
     {
         result->buf = buf + thread_index * slice_height * result->stride;
     }
-
-    return result;
 }
 
-shared_ptr<Stage> blipvert::Stage_RGB1(uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
+shared_ptr<Stage> blipvert::Stage_RGB1(Stage* result, uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
 {
-    shared_ptr<Stage> result = make_shared<Stage>();
-    memset(result.get(), 0, sizeof(Stage));
+    memset(result, 0, sizeof(Stage));
 
     int32_t slice_height = height / thread_count;
 
@@ -316,14 +293,11 @@ shared_ptr<Stage> blipvert::Stage_RGB1(uint8_t thread_index, uint8_t thread_coun
     {
         result->buf = buf + thread_index * slice_height * result->stride;
     }
-
-    return result;
 }
 
-shared_ptr<Stage> Stage_PackedY422(uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped)
+shared_ptr<Stage> Stage_PackedY422(Stage* result, uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped)
 {
-    shared_ptr<Stage> result = make_shared<Stage>();
-    memset(result.get(), 0, sizeof(Stage));
+    memset(result, 0, sizeof(Stage));
 
     int32_t slice_height = height / thread_count;
 
@@ -344,67 +318,56 @@ shared_ptr<Stage> Stage_PackedY422(uint8_t thread_index, uint8_t thread_count, i
     {
         result->buf = buf + thread_index * slice_height * result->stride;
     }
-
-    return result;
 }
 
-shared_ptr<Stage> blipvert::Stage_YUY2(uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
+shared_ptr<Stage> blipvert::Stage_YUY2(Stage* result, uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
 {
-    shared_ptr<Stage> result = Stage_PackedY422(thread_index, thread_count, width, height, buf, stride, flipped);
+    Stage_PackedY422(result, thread_index, thread_count, width, height, buf, stride, flipped);
 
     result->format = &MVFMT_YUY2;
     result->Y0_index = 0;
     result->Y1_index = 2;
     result->U_index = 1;
     result->V_index = 2;
-
-    return result;
 }
 
-shared_ptr<Stage> blipvert::Stage_UYVY(uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
+shared_ptr<Stage> blipvert::Stage_UYVY(Stage* result, uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
 {
-    shared_ptr<Stage> result = Stage_PackedY422(thread_index, thread_count, width, height, buf, stride, flipped);
+    Stage_PackedY422(result, thread_index, thread_count, width, height, buf, stride, flipped);
 
     result->format = &MVFMT_UYVY;
     result->Y0_index = 1;
     result->Y1_index = 3;
     result->U_index = 0;
     result->V_index = 2;
-
-    return result;
 }
 
-shared_ptr<Stage> blipvert::Stage_YVYU(uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
+shared_ptr<Stage> blipvert::Stage_YVYU(Stage* result, uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
 {
-    shared_ptr<Stage> result = Stage_PackedY422(thread_index, thread_count, width, height, buf, stride, flipped);
+    Stage_PackedY422(result, thread_index, thread_count, width, height, buf, stride, flipped);
 
     result->format = &MVFMT_YVYU;
     result->Y0_index = 0;
     result->Y1_index = 2;
     result->U_index = 3;
     result->V_index = 1;
-
-    return result;
 }
 
-shared_ptr<Stage> blipvert::Stage_VYUY(uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
+shared_ptr<Stage> blipvert::Stage_VYUY(Stage* result, uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
 {
-    shared_ptr<Stage> result = Stage_PackedY422(thread_index, thread_count, width, height, buf, stride, flipped);
+    Stage_PackedY422(result, thread_index, thread_count, width, height, buf, stride, flipped);
 
     result->format = &MVFMT_VYUY;
     result->Y0_index = 1;
     result->Y1_index = 3;
     result->U_index = 2;
     result->V_index = 0;
-
-    return result;
 }
 
 
-shared_ptr<Stage> Stage_PlanarYUV(uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, bool ufirst, int32_t decimation)
+shared_ptr<Stage> Stage_PlanarYUV(Stage* result, uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, bool ufirst, int32_t decimation)
 {
-    shared_ptr<Stage> result = make_shared<Stage>();
-    memset(result.get(), 0, sizeof(Stage));
+    memset(result, 0, sizeof(Stage));
 
     int32_t slice_height = height / thread_count;
 
@@ -427,35 +390,25 @@ shared_ptr<Stage> Stage_PlanarYUV(uint8_t thread_index, uint8_t thread_count, in
         result->uv_stride = stride;
     }
 
-    if (ufirst)
-    {
-        uint8_t* ubuf = buf + (result->y_stride * height);
-        result->uplane = ubuf + (slice_height * result->uv_stride);
-        result->vplane = result->buf + (result->y_stride * height) + (result->uv_stride * result->uv_height);
-    }
-    else
-    {
-        result->vplane = buf + (result->y_stride * height);
-        result->uplane = result->vplane + (result->uv_stride * result->uv_height);
-    }
-
     if (flipped)
     {
         result->buf = buf + (result->y_stride * ((height - 1) - thread_index * slice_height));
 
+        int32_t offset_from_bottom = (result->uv_stride * ((result->uv_height - 1) - thread_index * result->uv_slice_height));
+
         if (ufirst)
         {
             uint8_t* ubuf = buf + (result->y_stride * height);
-            result->uplane = ubuf + (result->uv_stride * ((result->uv_height - 1) - thread_index * result->uv_slice_height));
+            result->uplane = ubuf + offset_from_bottom;
             uint8_t* vbuf = ubuf + (result->uv_stride * result->uv_height);
-            result->vplane = vbuf + (result->uv_stride * ((result->uv_height - 1) - thread_index * result->uv_slice_height));
+            result->vplane = vbuf + offset_from_bottom;
         }
         else
         {
             uint8_t* vbuf = buf + (result->y_stride * height);
-            result->vplane = vbuf + (result->uv_stride * ((result->uv_height - 1) - thread_index * result->uv_slice_height));
+            result->vplane = vbuf + offset_from_bottom;
             uint8_t* ubuf = vbuf + (result->uv_stride * result->uv_height);
-            result->uplane = ubuf + (result->uv_stride * ((result->uv_height - 1) - thread_index * result->uv_slice_height));
+            result->uplane = ubuf + offset_from_bottom;
         }
 
         result->uv_stride = -result->uv_stride;
@@ -466,57 +419,52 @@ shared_ptr<Stage> Stage_PlanarYUV(uint8_t thread_index, uint8_t thread_count, in
     {
         result->buf = buf + thread_index * slice_height * result->y_stride;
 
+        int32_t offset_from_top = thread_index * result->uv_slice_height * result->uv_stride;
+
         if (ufirst)
         {
             uint8_t* ubuf = buf + (result->y_stride * height);
-            result->uplane = ubuf + (thread_index * result->uv_slice_height * result->uv_stride);
+            result->uplane = ubuf + offset_from_top;
             uint8_t* vbuf = ubuf + (result->uv_stride * result->uv_height);
-            result->vplane = vbuf + (thread_index * result->uv_slice_height * result->uv_stride);
+            result->vplane = vbuf + offset_from_top;
         }
         else
         {
             uint8_t* vbuf = buf + (result->y_stride * height);
-            result->vplane = vbuf + (thread_index * result->uv_slice_height * result->uv_stride);
+            result->vplane = vbuf + offset_from_top;
             uint8_t* ubuf = vbuf + (result->uv_stride * result->uv_height);
-            result->uplane = ubuf + (thread_index * result->uv_slice_height * result->uv_stride);
+            result->uplane = ubuf + offset_from_top;
         }
     }
-
-    return result;
 }
 
-shared_ptr<Stage> blipvert::Stage_I420(uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
+shared_ptr<Stage> blipvert::Stage_I420(Stage* result, uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
 {
-    shared_ptr<Stage> result = Stage_PlanarYUV(thread_index, thread_count, width, height, buf, stride, flipped, true, 2);
+    Stage_PlanarYUV(result, thread_index, thread_count, width, height, buf, stride, flipped, true, 2);
     result->format = &MVFMT_I420;
-    return result;
 }
 
-shared_ptr<Stage> blipvert::Stage_YV12(uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
+shared_ptr<Stage> blipvert::Stage_YV12(Stage* result, uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
 {
-    shared_ptr<Stage> result = Stage_PlanarYUV(thread_index, thread_count, width, height, buf, stride, flipped, false, 2);
+    Stage_PlanarYUV(result, thread_index, thread_count, width, height, buf, stride, flipped, false, 2);
     result->format = &MVFMT_YV12;
-    return result;
 }
 
-shared_ptr<Stage> blipvert::Stage_YVU9(uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
+shared_ptr<Stage> blipvert::Stage_YVU9(Stage* result, uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
 {
-    shared_ptr<Stage> result = Stage_PlanarYUV(thread_index, thread_count, width, height, buf, stride, flipped, false, 4);
+    Stage_PlanarYUV(result, thread_index, thread_count, width, height, buf, stride, flipped, false, 4);
     result->format = &MVFMT_YVU9;
-    return result;
 }
 
-shared_ptr<Stage> blipvert::Stage_YUV9(uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette )
+shared_ptr<Stage> blipvert::Stage_YUV9(Stage* result, uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette )
 {
-    shared_ptr<Stage> result = Stage_PlanarYUV(thread_index, thread_count, width, height, buf, stride, flipped, true, 4);
+    Stage_PlanarYUV(result, thread_index, thread_count, width, height, buf, stride, flipped, true, 4);
     result->format = &MVFMT_YUV9;
-    return result;
 }
 
-shared_ptr<Stage> blipvert::Stage_IYU1(uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
+shared_ptr<Stage> blipvert::Stage_IYU1(Stage* result, uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
 {
-    shared_ptr<Stage> result = make_shared<Stage>();
-    memset(result.get(), 0, sizeof(Stage));
+    memset(result, 0, sizeof(Stage));
 
     int32_t slice_height = height / thread_count;
 
@@ -538,14 +486,11 @@ shared_ptr<Stage> blipvert::Stage_IYU1(uint8_t thread_index, uint8_t thread_coun
     {
         result->buf = buf + thread_index * slice_height * result->stride;
     }
-
-    return result;
 }
 
-shared_ptr<Stage> blipvert::Stage_IYU2(uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
+shared_ptr<Stage> blipvert::Stage_IYU2(Stage* result, uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
 {
-    shared_ptr<Stage> result = make_shared<Stage>();
-    memset(result.get(), 0, sizeof(Stage));
+    memset(result, 0, sizeof(Stage));
 
     int32_t slice_height = height / thread_count;
 
@@ -567,14 +512,11 @@ shared_ptr<Stage> blipvert::Stage_IYU2(uint8_t thread_index, uint8_t thread_coun
     {
         result->buf = buf + thread_index * slice_height * result->stride;
     }
-
-    return result;
 }
 
-shared_ptr<Stage> blipvert::Stage_Y41P(uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
+shared_ptr<Stage> blipvert::Stage_Y41P(Stage* result, uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
 {
-    shared_ptr<Stage> result = make_shared<Stage>();
-    memset(result.get(), 0, sizeof(Stage));
+    memset(result, 0, sizeof(Stage));
 
     int32_t slice_height = height / thread_count;
 
@@ -596,14 +538,11 @@ shared_ptr<Stage> blipvert::Stage_Y41P(uint8_t thread_index, uint8_t thread_coun
     {
         result->buf = buf + thread_index * slice_height * result->stride;
     }
-
-    return result;
 }
 
-shared_ptr<Stage> blipvert::Stage_CLJR(uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
+shared_ptr<Stage> blipvert::Stage_CLJR(Stage* result, uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
 {
-    shared_ptr<Stage> result = make_shared<Stage>();
-    memset(result.get(), 0, sizeof(Stage));
+    memset(result, 0, sizeof(Stage));
 
     int32_t slice_height = height / thread_count;
 
@@ -625,14 +564,11 @@ shared_ptr<Stage> blipvert::Stage_CLJR(uint8_t thread_index, uint8_t thread_coun
     {
         result->buf = buf + thread_index * slice_height * result->stride;
     }
-
-    return result;
 }
 
-shared_ptr<Stage> blipvert::Stage_Y800(uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
+shared_ptr<Stage> blipvert::Stage_Y800(Stage* result, uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
 {
-    shared_ptr<Stage> result = make_shared<Stage>();
-    memset(result.get(), 0, sizeof(Stage));
+    memset(result, 0, sizeof(Stage));
 
     int32_t slice_height = height / thread_count;
 
@@ -654,14 +590,11 @@ shared_ptr<Stage> blipvert::Stage_Y800(uint8_t thread_index, uint8_t thread_coun
     {
         result->buf = buf + thread_index * slice_height * result->stride;
     }
-
-    return result;
 }
 
-shared_ptr<Stage> blipvert::Stage_Y16(uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
+shared_ptr<Stage> blipvert::Stage_Y16(Stage* result, uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
 {
-    shared_ptr<Stage> result = make_shared<Stage>();
-    memset(result.get(), 0, sizeof(Stage));
+    memset(result, 0, sizeof(Stage));
 
     int32_t slice_height = height / thread_count;
 
@@ -683,14 +616,11 @@ shared_ptr<Stage> blipvert::Stage_Y16(uint8_t thread_index, uint8_t thread_count
     {
         result->buf = buf + thread_index * slice_height * result->stride;
     }
-
-    return result;
 }
 
-shared_ptr<Stage> blipvert::Stage_AYUV(uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
+shared_ptr<Stage> blipvert::Stage_AYUV(Stage* result, uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
 {
-    shared_ptr<Stage> result = make_shared<Stage>();
-    memset(result.get(), 0, sizeof(Stage));
+    memset(result, 0, sizeof(Stage));
 
     int32_t slice_height = height / thread_count;
 
@@ -712,114 +642,154 @@ shared_ptr<Stage> blipvert::Stage_AYUV(uint8_t thread_index, uint8_t thread_coun
     {
         result->buf = buf + thread_index * slice_height * result->stride;
     }
-
-    return result;
 }
 
-shared_ptr<Stage> Stage_IMCx(uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, bool ufirst, bool interlaced)
+shared_ptr<Stage> Stage_IMCx(Stage* result, uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, bool ufirst, bool interlaced)
 {
-    // TODO
-    shared_ptr<Stage> result = make_shared<Stage>();
-    memset(result.get(), 0, sizeof(Stage));
+    memset(result, 0, sizeof(Stage));
+
+    int32_t slice_height = height / thread_count;
 
     result->width = width;
-    result->height = height;
-    result->buf = buf;
+    result->height = slice_height;
     result->stride = stride;
     result->flipped = flipped;
 
     result->uv_width = width / 2;
     result->uv_height = height / 2;
+    result->uv_slice_height = result->uv_height / thread_count;
 
     if (result->stride < width)
         result->stride = width;
 
-    if (ufirst)
+    if (flipped)
     {
-        if (interlaced)
+        result->buf = buf + (result->y_stride * ((height - 1) - thread_index * slice_height));
+
+        int32_t offset_from_bottom = result->stride * ((result->uv_height - 1) - thread_index * result->uv_slice_height);
+
+        if (ufirst)
         {
-            result->uplane = result->buf + (result->stride * height);
-            result->vplane = result->uplane + result->uv_width;
+            if (interlaced)
+            {
+                uint8_t* ubuf = buf + (result->stride * height);
+                result->uplane = ubuf + offset_from_bottom;
+                uint8_t* vbuf = ubuf + result->uv_width;
+                result->vplane = vbuf + offset_from_bottom;
+            }
+            else
+            {
+                uint8_t* ubuf = buf + (((height + 15) & ~15) * result->stride);
+                result->uplane = ubuf + offset_from_bottom;
+                uint8_t* vbuf = buf + (((((height * 3) / 2) + 15) & ~15) * result->stride);
+                result->vplane = vbuf + offset_from_bottom;
+            }
         }
         else
         {
-            result->uplane = result->buf + (((height + 15) & ~15) * result->stride);
-            result->vplane = result->buf + (((((height * 3) / 2) + 15) & ~15) * result->stride);
+            if (interlaced)
+            {
+                uint8_t* vbuf = buf + (result->stride * height);
+                result->vplane = vbuf + offset_from_bottom;
+                uint8_t* ubuf = vbuf + result->uv_width;
+                result->uplane = ubuf + offset_from_bottom;
+            }
+            else
+            {
+                uint8_t* vbuf = buf + (((height + 15) & ~15) * result->stride);
+                result->vplane = vbuf + offset_from_bottom;
+                uint8_t* ubuf = buf + (((((height * 3) / 2) + 15) & ~15) * result->stride);
+                result->uplane = ubuf + offset_from_bottom;
+            }
         }
+
+        result->stride = -result->stride;
     }
     else
     {
-        if (interlaced)
+        result->buf = buf + thread_index * slice_height * result->stride;
+
+        int32_t offset_from_top = thread_index * result->uv_slice_height * result->stride;
+
+        if (ufirst)
         {
-            result->vplane = result->buf + (result->stride * height);
-            result->uplane = result->vplane + result->uv_width;
+            if (interlaced)
+            {
+                uint8_t* ubuf = buf + (result->stride * height);
+                result->uplane = ubuf + offset_from_top;
+                uint8_t* vbuf = ubuf + result->uv_width;
+                result->vplane = vbuf + offset_from_top;
+            }
+            else
+            {
+                uint8_t* ubuf = buf + (((height + 15) & ~15) * result->stride);
+                result->uplane = ubuf + offset_from_top;
+                uint8_t* vbuf = buf + (((((height * 3) / 2) + 15) & ~15) * result->stride);
+                result->vplane = vbuf + offset_from_top;
+            }
         }
         else
         {
-            result->vplane = result->buf + (((height + 15) & ~15) * result->stride);
-            result->uplane = result->buf + (((((height * 3) / 2) + 15) & ~15) * result->stride);
+            if (interlaced)
+            {
+                uint8_t* vbuf = buf + (result->stride * height);
+                result->vplane = vbuf + offset_from_top;
+                uint8_t* ubuf = vbuf + result->uv_width;
+                result->uplane = ubuf + offset_from_top;
+            }
+            else
+            {
+                uint8_t* vbuf = buf + (((height + 15) & ~15) * result->stride);
+                result->vplane = vbuf + offset_from_top;
+                uint8_t* ubuf = buf + (((((height * 3) / 2) + 15) & ~15) * result->stride);
+                result->uplane = ubuf + offset_from_top;
+            }
         }
     }
-
-    if (flipped)
-    {
-        result->buf += (result->stride * (height - 1));
-        result->uplane += (result->stride * (result->uv_height - 1));
-        result->vplane += (result->stride * (result->uv_height - 1));
-        result->stride = -result->stride;
-    }
-
-    return result;
 }
 
-shared_ptr<Stage> blipvert::Stage_IMC1(uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
+shared_ptr<Stage> blipvert::Stage_IMC1(Stage* result, uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
 {
-    shared_ptr<Stage> result = Stage_IMCx(thread_index, thread_count, width, height, buf, stride, flipped, false, false);
+    Stage_IMCx(result, thread_index, thread_count, width, height, buf, stride, flipped, false, false);
     result->format = &MVFMT_IMC1;
-    return result;
 }
 
-shared_ptr<Stage> blipvert::Stage_IMC2(uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
+shared_ptr<Stage> blipvert::Stage_IMC2(Stage* result, uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
 {
-    shared_ptr<Stage> result = Stage_IMCx(thread_index, thread_count, width, height, buf, stride, flipped, false, true);
+    Stage_IMCx(result, thread_index, thread_count, width, height, buf, stride, flipped, false, true);
     result->format = &MVFMT_IMC2;
-    return result;
 }
 
-shared_ptr<Stage> blipvert::Stage_IMC3(uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
+shared_ptr<Stage> blipvert::Stage_IMC3(Stage* result, uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
 {
-    shared_ptr<Stage> result = Stage_IMCx(thread_index, thread_count, width, height, buf, stride, flipped, true, false);
+    Stage_IMCx(result, thread_index, thread_count, width, height, buf, stride, flipped, true, false);
     result->format = &MVFMT_IMC3;
-    return result;
 }
 
-shared_ptr<Stage> blipvert::Stage_IMC4(uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
+shared_ptr<Stage> blipvert::Stage_IMC4(Stage* result, uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
 {
-    shared_ptr<Stage> result = Stage_IMCx(thread_index, thread_count, width, height, buf, stride, flipped, true, true);
+    Stage_IMCx(result, thread_index, thread_count, width, height, buf, stride, flipped, true, true);
     result->format = &MVFMT_IMC4;
-    return result;
 }
 
-
-shared_ptr<Stage> Stage_NVx(uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, bool ufirst)
+shared_ptr<Stage> Stage_NVx(Stage* result, uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, bool ufirst)
 {
-    // TODO
-    shared_ptr<Stage> result = make_shared<Stage>();
-    memset(result.get(), 0, sizeof(Stage));
+    memset(result, 0, sizeof(Stage));
+
+    int32_t slice_height = height / thread_count;
 
     result->width = width;
-    result->height = height;
+    result->height = slice_height;
     result->buf = buf;
     result->stride = stride;
     result->flipped = flipped;
 
     result->uv_width = width;
     result->uv_height = height / 2;
+    result->uv_slice_height = result->uv_height / thread_count;
 
     if (result->stride < width)
         result->stride = width;
-
-    result->uvplane = result->buf + (result->stride * height);
 
     if (ufirst)
     {
@@ -832,33 +802,36 @@ shared_ptr<Stage> Stage_NVx(uint8_t thread_index, uint8_t thread_count, int32_t 
         result->V_index = 0;
     }
 
+    uint8_t* uvbuf = buf + (result->stride * height);
+
     if (flipped)
     {
-        result->buf += (result->stride * (height - 1));
-        result->uvplane += (result->stride * (result->uv_height - 1));
+        result->buf = buf + (result->y_stride * ((height - 1) - thread_index * slice_height));
+        result->uvplane = uvbuf + result->stride * ((result->uv_height - 1) - thread_index * result->uv_slice_height);
         result->stride = -result->stride;
     }
-    return result;
+    else
+    {
+        result->buf = buf + thread_index * slice_height * result->stride;
+        result->uvplane = uvbuf + thread_index * result->uv_slice_height * result->stride;
+    }
 }
 
-shared_ptr<Stage> blipvert::Stage_NV12(uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
+shared_ptr<Stage> blipvert::Stage_NV12(Stage* result, uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
 {
-    shared_ptr<Stage> result = Stage_NVx(thread_index, thread_count, width, height, buf, stride, flipped, true);
+    Stage_NVx(result, thread_index, thread_count, width, height, buf, stride, flipped, true);
     result->format = &MVFMT_NV12;
-    return result;
 }
 
-shared_ptr<Stage> blipvert::Stage_NV21(uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
+shared_ptr<Stage> blipvert::Stage_NV21(Stage* result, uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
 {
-    shared_ptr<Stage> result = Stage_NVx(thread_index, thread_count, width, height, buf, stride, flipped, false);
+    Stage_NVx(result, thread_index, thread_count, width, height, buf, stride, flipped, false);
     result->format = &MVFMT_NV21;
-    return result;
 }
 
-shared_ptr<Stage> blipvert::Stage_Y42T(uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
+shared_ptr<Stage> blipvert::Stage_Y42T(Stage* result, uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
 {
-    shared_ptr<Stage> result = make_shared<Stage>();
-    memset(result.get(), 0, sizeof(Stage));
+    memset(result, 0, sizeof(Stage));
 
     int32_t slice_height = height / thread_count;
 
@@ -880,14 +853,11 @@ shared_ptr<Stage> blipvert::Stage_Y42T(uint8_t thread_index, uint8_t thread_coun
     {
         result->buf = buf + thread_index * slice_height * result->stride;
     }
-
-    return result;
 }
 
-shared_ptr<Stage> blipvert::Stage_Y41T(uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
+shared_ptr<Stage> blipvert::Stage_Y41T(Stage* result, uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
 {
-    shared_ptr<Stage> result = make_shared<Stage>();
-    memset(result.get(), 0, sizeof(Stage));
+    memset(result, 0, sizeof(Stage));
 
     int32_t slice_height = height / thread_count;
 
@@ -909,20 +879,17 @@ shared_ptr<Stage> blipvert::Stage_Y41T(uint8_t thread_index, uint8_t thread_coun
     {
         result->buf = buf + thread_index * slice_height * result->stride;
     }
-
-    return result;
 }
 
-shared_ptr<Stage> blipvert::Stage_YV16(uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
+shared_ptr<Stage> blipvert::Stage_YV16(Stage* result, uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
 {
-    // TODO
-    shared_ptr<Stage> result = make_shared<Stage>();
-    memset(result.get(), 0, sizeof(Stage));
+    memset(result, 0, sizeof(Stage));
+
+    int32_t slice_height = height / thread_count;
 
     result->format = &MVFMT_YV16;
     result->width = width;
-    result->height = height;
-    result->buf = buf;
+    result->height = slice_height;
     result->stride = stride;
     result->flipped = flipped;
 
@@ -939,17 +906,28 @@ shared_ptr<Stage> blipvert::Stage_YV16(uint8_t thread_index, uint8_t thread_coun
         result->uv_stride = result->stride;
     }
 
-    result->vplane = result->buf + (result->y_stride * height);
-    result->uplane = result->vplane + (result->uv_stride * height);
-
     if (flipped)
     {
-        result->buf += (result->y_stride * (height - 1));
-        result->uplane += (result->uv_stride * (height - 1));
-        result->vplane += (result->uv_stride * (height - 1));
+        result->buf = buf + (result->y_stride * ((height - 1) - thread_index * slice_height));
+
+        int32_t offset_from_bottom = result->uv_stride * ((height - 1) - thread_index * slice_height);
+
+        uint8_t* vbuf = buf + (result->y_stride * height);
+        result->vplane = vbuf + offset_from_bottom;
+        uint8_t* ubuf = vbuf + (result->uv_stride * height);
+        result->uplane = ubuf + offset_from_bottom;
+
         result->y_stride = -result->y_stride;
         result->uv_stride = -result->uv_stride;
     }
+    else
+    {
+        result->buf = buf + thread_index * slice_height * result->y_stride;
 
-    return result;
+        int32_t offset_from_top = thread_index * slice_height * result->uv_stride;
+        uint8_t* vbuf = buf + (result->y_stride * height);
+        result->vplane = vbuf + offset_from_top;
+        uint8_t* ubuf = vbuf + (result->uv_stride * height);
+        result->uplane = ubuf + offset_from_top;
+    }
 }

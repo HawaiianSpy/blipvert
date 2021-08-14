@@ -71,7 +71,7 @@ map<MediaFormatID, t_stagetransformfunc> StagingMap = {
     { MVFMT_YV16, Stage_YV16 }
 };
 
-t_stagetransformfunc blipvert::FindransformStage(const MediaFormatID& inFormat)
+t_stagetransformfunc blipvert::FindTransformStage(const MediaFormatID& inFormat)
 {
     map<MediaFormatID, t_stagetransformfunc>::iterator it = StagingMap.find(inFormat);
     if (it != StagingMap.end())

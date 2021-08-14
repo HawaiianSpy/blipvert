@@ -27,7 +27,7 @@
 //
 
 
-#include "legacydefs.h"
+#include "blipverttypes.h"
 
 namespace blipvert
 {

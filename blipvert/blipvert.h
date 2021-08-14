@@ -26,19 +26,19 @@
 //  SOFTWARE.
 //
 
-#include "legacydefs.h"
+#include "blipverttypes.h"
 #include "ToGreyscale.h"
 #include "ToFillColor.h"
 #include "SetPixel.h"
 #include "FlipVertical.h"
 #include "CalculateBufferSize.h"
+#include "Staging.h"
 #include <string>
+#include <memory>
+#include <vector>
 
 namespace blipvert
 {
-    using Fourcc = uint32_t;
-    using MediaFormatID = std::string;
-
     typedef enum class ColorspaceType : unsigned short
     {
         Unknown = 0,        // I dunno, beats me.
@@ -218,7 +218,7 @@ namespace blipvert
     void InitializeLibrary(void);
 
     // If true, the library uses faster looping for RGB <--> RGB transforms when the RGB24 format is either a source/target.
-    // The functions will write outside of the expected buffer size, so this should only be used if you have control of the
+    // The functions will write outside of the logical buffer size, so this should only be used if you have control of the
     // size of the I/O buffers. The CalculateBufferSize function will take this flag into account to return a result with the
     // bumped buffer size.
     bool get_UseFasterLooping();
@@ -259,6 +259,14 @@ namespace blipvert
     // Note: Since there exists duplicate fourcc definitions for the same bitmap format, the main 
     //       definition name will be used if a duplicate format was requested.
     t_calcbuffsizefunc FindBufSizeCalculator(const MediaFormatID& inFormat);
+
+    // Finds a staging function for the given input media format.
+    // Returns a t_stagetransformfunc pointer for the requested media format. Retuns nullptr if a match couldn't be found.
+    // Note: Since there exists duplicate fourcc definitions for the same bitmap format, the main 
+    //       definition name will be used if a duplicate format was requested.
+    t_stagetransformfunc FindTransformStage(const MediaFormatID& format);
+
+    std::shared_ptr<std::vector<TransformStage>> MakeTransformStages(const MediaFormatID& inFormat, const MediaFormatID& outFormat, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped = false, xRGBQUAD* palette = nullptr);
 
     // Returns information about the given video format.
     //

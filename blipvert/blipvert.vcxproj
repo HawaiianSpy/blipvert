@@ -160,11 +160,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="blipvert.h" />
+    <ClInclude Include="blipverttypes.h" />
     <ClInclude Include="CalculateBufferSize.h" />
     <ClInclude Include="CommonMacros.h" />
     <ClInclude Include="FlipVertical.h" />
     <ClInclude Include="framework.h" />
-    <ClInclude Include="legacydefs.h" />
     <ClInclude Include="LookupTables.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="RGBtoRGB.h" />

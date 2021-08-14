@@ -1430,6 +1430,42 @@ VideoFormatInfo VideoFmtTable[] = {
     {MVFMT_UNDEFINED, FOURCC_UNDEFINED, FOURCC_UNDEFINED, -1, ColorspaceType::Unknown, false}
 };
 
+map<MediaFormatID, t_stagetransformfunc> StagingMap = {
+    { MVFMT_RGBA, Stage_RGBA },
+    { MVFMT_RGB32, Stage_RGB32 },
+    { MVFMT_RGB24, Stage_RGB24 },
+    { MVFMT_RGB565, Stage_RGB565 },
+    { MVFMT_RGB555, Stage_RGB555 },
+    { MVFMT_ARGB1555, Stage_ARGB1555 },
+    { MVFMT_RGB8, Stage_RGB8 },
+    { MVFMT_RGB4, Stage_RGB4 },
+    { MVFMT_RGB1, Stage_RGB1 },
+    { MVFMT_YUY2, Stage_YUY2 },
+    { MVFMT_UYVY, Stage_UYVY },
+    { MVFMT_YVYU, Stage_YVYU },
+    { MVFMT_VYUY, Stage_VYUY },
+    { MVFMT_I420, Stage_I420 },
+    { MVFMT_YV12, Stage_YV12 },
+    { MVFMT_YVU9, Stage_YVU9 },
+    { MVFMT_YUV9, Stage_YUV9 },
+    { MVFMT_IYU1, Stage_IYU1 },
+    { MVFMT_IYU2, Stage_IYU2 },
+    { MVFMT_Y41P, Stage_Y41P },
+    { MVFMT_CLJR, Stage_CLJR },
+    { MVFMT_Y800, Stage_Y800 },
+    { MVFMT_Y16, Stage_Y16 },
+    { MVFMT_AYUV, Stage_AYUV },
+    { MVFMT_IMC1, Stage_IMC1 },
+    { MVFMT_IMC2, Stage_IMC2 },
+    { MVFMT_IMC3, Stage_IMC3 },
+    { MVFMT_IMC4, Stage_IMC4 },
+    { MVFMT_NV12, Stage_NV12 },
+    { MVFMT_NV21, Stage_NV21 },
+    { MVFMT_Y42T, Stage_Y42T },
+    { MVFMT_Y41T, Stage_Y41T },
+    { MVFMT_YV16, Stage_YV16 }
+};
+
 map<MediaFormatID, VideoFormatInfo*> MediaFormatInfoMap;
 map<Fourcc, const MediaFormatID> FourccToIDMap;
 
@@ -1662,4 +1698,61 @@ bool blipvert::GetVideoFormatID(Fourcc fourcc, MediaFormatID& outFormat)
 
     outFormat = MVFMT_UNDEFINED;
     return false;
+}
+
+t_stagetransformfunc blipvert::FindTransformStage(const MediaFormatID& format)
+{
+    map<MediaFormatID, t_stagetransformfunc>::iterator it = StagingMap.find(format);
+    if (it != StagingMap.end())
+    {
+        return *(it->second);
+    }
+
+    // Not found, so try cross-referenced formats in case there's a known duplicate definition.
+
+    VideoFormatInfo inInfo;
+    if (GetVideoFormatInfo(format, inInfo))
+    {
+        MediaFormatID inid;
+        if (GetVideoFormatID(inInfo.xRefFourcc, inid))
+        {
+            map<MediaFormatID, t_stagetransformfunc>::iterator it = StagingMap.find(inid);
+            if (it != StagingMap.end())
+            {
+                return *(it->second);
+            }
+        }
+    }
+
+    return nullptr;
+}
+
+shared_ptr<vector<TransformStage>> blipvert::MakeTransformStages(const MediaFormatID& inFormat, const MediaFormatID& outFormat, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
+{
+    if (thread_count != 1 && thread_count != 2 && thread_count != 4 && thread_count != 8)
+    {
+        return nullptr;
+    }
+
+    if (height / static_cast<int32_t>(thread_count) < 8)
+    {
+        return nullptr;
+    }
+
+    t_stagetransformfunc inStageFunct = FindTransformStage(inFormat);
+    t_stagetransformfunc outStageFunct = FindTransformStage(outFormat);
+    if (inStageFunct == nullptr || outStageFunct == nullptr)
+    {
+        return nullptr;
+    }
+
+    shared_ptr<vector<TransformStage>> result = make_shared<vector<TransformStage>>(vector<TransformStage>(thread_count));
+
+    for (uint8_t index = 0; index < thread_count; index++)
+    {
+        inStageFunct(&(result.get()->at(index).in), index, thread_count, width, height, buf, stride, flipped, palette);
+        outStageFunct(&(result.get()->at(index).out), index, thread_count, width, height, buf, stride, flipped, palette);
+    }
+
+    return result;
 }

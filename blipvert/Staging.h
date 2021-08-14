@@ -26,8 +26,7 @@
 //  SOFTWARE.
 //
 
-#include "legacydefs.h"
-#include "blipvert.h"
+#include "blipverttypes.h"
 
 namespace blipvert
 {
@@ -62,12 +61,6 @@ namespace blipvert
     } TransformStage;
 
     typedef void(__cdecl* t_stagetransformfunc) (Stage* result, uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette);
-
-    // Finds a to staging function for the given input media format.
-    // Returns a t_stagetransformfunc pointer for the requested transform media format. Retuns nullptr if a match couldn't be found.
-    // Note: Since there exists duplicate fourcc definitions for the same bitmap format, the main 
-    //       definition name will be used if a duplicate format was requested.
-    t_stagetransformfunc FindTransformStage(const MediaFormatID& inFormat);
 
     void Stage_RGBA(Stage* result, uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped = false, xRGBQUAD* palette = nullptr);
     void Stage_RGB32(Stage* result, uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped = false, xRGBQUAD* palette = nullptr);

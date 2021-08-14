@@ -25,13 +25,21 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //  SOFTWARE.
 //
+//
 
+#include <string>
 
-// Place holder for GDI RGBQUAD from wingdih
+namespace blipvert
+{
+    // Place holder for GDI RGBQUAD from wingdih
 
-typedef struct {
-    uint8_t    rgbBlue;
-    uint8_t    rgbGreen;
-    uint8_t    rgbRed;
-    uint8_t    rgbReserved;
-} xRGBQUAD;
+    typedef struct {
+        uint8_t    rgbBlue;
+        uint8_t    rgbGreen;
+        uint8_t    rgbRed;
+        uint8_t    rgbReserved;
+    } xRGBQUAD;
+
+    using Fourcc = uint32_t;
+    using MediaFormatID = std::string;
+}

@@ -27,76 +27,13 @@
 #include "pch.h"
 #include "Staging.h"
 #include "LookupTables.h"
+#include "blipvert.h"
+
 
 #include <cstring>
-#include <map>
-#include <memory>
 
 using namespace blipvert;
 using namespace std;
-
-map<MediaFormatID, t_stagetransformfunc> StagingMap = {
-    { MVFMT_RGBA, Stage_RGBA },
-    { MVFMT_RGB32, Stage_RGB32 },
-    { MVFMT_RGB24, Stage_RGB24 },
-    { MVFMT_RGB565, Stage_RGB565 },
-    { MVFMT_RGB555, Stage_RGB555 },
-    { MVFMT_ARGB1555, Stage_ARGB1555 },
-    { MVFMT_RGB8, Stage_RGB8 },
-    { MVFMT_RGB4, Stage_RGB4 },
-    { MVFMT_RGB1, Stage_RGB1 },
-    { MVFMT_YUY2, Stage_YUY2 },
-    { MVFMT_UYVY, Stage_UYVY },
-    { MVFMT_YVYU, Stage_YVYU },
-    { MVFMT_VYUY, Stage_VYUY },
-    { MVFMT_I420, Stage_I420 },
-    { MVFMT_YV12, Stage_YV12 },
-    { MVFMT_YVU9, Stage_YVU9 },
-    { MVFMT_YUV9, Stage_YUV9 },
-    { MVFMT_IYU1, Stage_IYU1 },
-    { MVFMT_IYU2, Stage_IYU2 },
-    { MVFMT_Y41P, Stage_Y41P },
-    { MVFMT_CLJR, Stage_CLJR },
-    { MVFMT_Y800, Stage_Y800 },
-    { MVFMT_Y16, Stage_Y16 },
-    { MVFMT_AYUV, Stage_AYUV },
-    { MVFMT_IMC1, Stage_IMC1 },
-    { MVFMT_IMC2, Stage_IMC2 },
-    { MVFMT_IMC3, Stage_IMC3 },
-    { MVFMT_IMC4, Stage_IMC4 },
-    { MVFMT_NV12, Stage_NV12 },
-    { MVFMT_NV21, Stage_NV21 },
-    { MVFMT_Y42T, Stage_Y42T },
-    { MVFMT_Y41T, Stage_Y41T },
-    { MVFMT_YV16, Stage_YV16 }
-};
-
-t_stagetransformfunc blipvert::FindTransformStage(const MediaFormatID& inFormat)
-{
-    map<MediaFormatID, t_stagetransformfunc>::iterator it = StagingMap.find(inFormat);
-    if (it != StagingMap.end())
-    {
-        return *(it->second);
-    }
-
-    // Not found, so try cross-referenced formats in case there's a known duplicate definition.
-
-    VideoFormatInfo inInfo;
-    if (GetVideoFormatInfo(inFormat, inInfo))
-    {
-        MediaFormatID inid;
-        if (GetVideoFormatID(inInfo.xRefFourcc, inid))
-        {
-            map<MediaFormatID, t_stagetransformfunc>::iterator it = StagingMap.find(inid);
-            if (it != StagingMap.end())
-            {
-                return *(it->second);
-            }
-        }
-    }
-
-    return nullptr;
-}
 
 void blipvert::Stage_RGBA(Stage* result, uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
 {
@@ -360,7 +297,7 @@ void blipvert::Stage_RGB1(Stage* result, uint8_t thread_index, uint8_t thread_co
     }
 }
 
-shared_ptr<Stage> Stage_PackedY422(Stage* result, uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped)
+void Stage_PackedY422(Stage* result, uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped)
 {
     memset(result, 0, sizeof(Stage));
 
@@ -430,7 +367,7 @@ void blipvert::Stage_VYUY(Stage* result, uint8_t thread_index, uint8_t thread_co
 }
 
 
-shared_ptr<Stage> Stage_PlanarYUV(Stage* result, uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, bool ufirst, int32_t decimation)
+void Stage_PlanarYUV(Stage* result, uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, bool ufirst, int32_t decimation)
 {
     memset(result, 0, sizeof(Stage));
 
@@ -709,7 +646,7 @@ void blipvert::Stage_AYUV(Stage* result, uint8_t thread_index, uint8_t thread_co
     }
 }
 
-shared_ptr<Stage> Stage_IMCx(Stage* result, uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, bool ufirst, bool interlaced)
+void Stage_IMCx(Stage* result, uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, bool ufirst, bool interlaced)
 {
     memset(result, 0, sizeof(Stage));
 
@@ -837,7 +774,7 @@ void blipvert::Stage_IMC4(Stage* result, uint8_t thread_index, uint8_t thread_co
     result->format = &MVFMT_IMC4;
 }
 
-shared_ptr<Stage> Stage_NVx(Stage* result, uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, bool ufirst)
+void Stage_NVx(Stage* result, uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, bool ufirst)
 {
     memset(result, 0, sizeof(Stage));
 

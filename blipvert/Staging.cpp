@@ -373,6 +373,7 @@ void Stage_PlanarYUV(Stage* result, uint8_t thread_index, uint8_t thread_count, 
 
     int32_t slice_height = height / thread_count;
 
+    result->decimation = decimation;
     result->width = width;
     result->height = slice_height;
     result->flipped = flipped;

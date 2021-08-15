@@ -195,23 +195,7 @@ namespace blipvert
     //
     // Function pointer type for all colorspace transforms.
     //
-    // Parameters:
-    //      width & height: Dimensions in pixels of the video frame (inout and output).
-    //      out_buf:        Byte pointer to the output buffer for the transform function.
-    //      out_stride:     The number of bytes per row for the output buffer. 0 (zero) tells the function to
-    //                      use the default bytes/row for the target output format.
-    //      in_buf:         Byte pointer to the input buffer for the transform function.
-    //      in_stride:      The number of bytes per row for the input buffer. 0 (zero) tells the function to
-    //                      use the default bytes/row for the target input format.
-    //      flipped:        true = flip the output bitmap vertically.
-    //      in_palette:     Pointer to the palette for a palletized input bitmap. Ignored for non-palletized input bitmap formats.
-    //
-    // IMPORTANT:   For reasons related to the bitmap format definitions, all input parameters must follow these rules:
-    //              1. Both the width and height values must be even multiples of 8.
-    //              2. The width values must be >= 8;
-    //              3. The height value must be >= 16.
-    //              4. The stride value must be >= the minimum number of bytes-per-line needed for the width of the bitmap format.
-    typedef void(__cdecl* t_transformfunc) (int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped, xRGBQUAD* in_palette);
+    typedef void(__cdecl* t_transformfunc) (Stage* in, Stage* out);
 
 
     // IMPORTANT: This must be called before using any of the colorspace transforms since it initializes the lookup tables.
@@ -266,7 +250,12 @@ namespace blipvert
     //       definition name will be used if a duplicate format was requested.
     t_stagetransformfunc FindTransformStage(const MediaFormatID& format);
 
-    std::shared_ptr<std::vector<TransformStage>> MakeTransformStages(const MediaFormatID& inFormat, const MediaFormatID& outFormat, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped = false, xRGBQUAD* palette = nullptr);
+    // IMPORTANT:   For reasons related to the bitmap format definitions, all input parameters must follow these rules:
+    //              1. Both the width and height values must be even multiples of 8.
+    //              2. The width values must be >= 8;
+    //              3. The height value must be >= 16.
+    //              4. The stride value must be >= the minimum number of bytes-per-line needed for the width of the bitmap format.
+    std::shared_ptr<std::vector<TransformStage>> MakeTransformStages(const MediaFormatID& inFormat, const MediaFormatID& outFormat, uint8_t thread_count, int32_t width, int32_t height, uint8_t* in_buf, int32_t in_stride, uint8_t* out_buf, int32_t out_stride, bool flipped = false, xRGBQUAD* palette = nullptr);
 
     // Returns information about the given video format.
     //

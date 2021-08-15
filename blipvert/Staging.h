@@ -53,6 +53,7 @@ namespace blipvert
         uint8_t* vplane;
         uint8_t* uplane;
         uint8_t* uvplane;
+        int32_t decimation;
     } Stage;
 
     typedef struct TransformStage {

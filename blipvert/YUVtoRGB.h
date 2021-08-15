@@ -28,135 +28,136 @@
 
 
 #include "blipverttypes.h"
+#include "Staging.h"
 
 namespace blipvert
 {
     // YUV (YCbCr) to RGB transforms
 
-    void YUY2_to_RGB32(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void YUY2_to_RGB24(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void YUY2_to_RGB565(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void YUY2_to_RGB555(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
+    void YUY2_to_RGB32(Stage* in, Stage* out);
+    void YUY2_to_RGB24(Stage* in, Stage* out);
+    void YUY2_to_RGB565(Stage* in, Stage* out);
+    void YUY2_to_RGB555(Stage* in, Stage* out);
 
-    void UYVY_to_RGB32(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void UYVY_to_RGB24(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void UYVY_to_RGB565(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void UYVY_to_RGB555(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
+    void UYVY_to_RGB32(Stage* in, Stage* out);
+    void UYVY_to_RGB24(Stage* in, Stage* out);
+    void UYVY_to_RGB565(Stage* in, Stage* out);
+    void UYVY_to_RGB555(Stage* in, Stage* out);
 
-    void YVYU_to_RGB32(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void YVYU_to_RGB24(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void YVYU_to_RGB565(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void YVYU_to_RGB555(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
+    void YVYU_to_RGB32(Stage* in, Stage* out);
+    void YVYU_to_RGB24(Stage* in, Stage* out);
+    void YVYU_to_RGB565(Stage* in, Stage* out);
+    void YVYU_to_RGB555(Stage* in, Stage* out);
 
-    void VYUY_to_RGB32(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void VYUY_to_RGB24(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void VYUY_to_RGB565(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void VYUY_to_RGB555(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
+    void VYUY_to_RGB32(Stage* in, Stage* out);
+    void VYUY_to_RGB24(Stage* in, Stage* out);
+    void VYUY_to_RGB565(Stage* in, Stage* out);
+    void VYUY_to_RGB555(Stage* in, Stage* out);
 
-    void CLJR_to_RGB32(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void CLJR_to_RGB24(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void CLJR_to_RGB565(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void CLJR_to_RGB555(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
+    void CLJR_to_RGB32(Stage* in, Stage* out);
+    void CLJR_to_RGB24(Stage* in, Stage* out);
+    void CLJR_to_RGB565(Stage* in, Stage* out);
+    void CLJR_to_RGB555(Stage* in, Stage* out);
 
-    void Y41P_to_RGB32(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void Y41P_to_RGB24(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void Y41P_to_RGB565(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void Y41P_to_RGB555(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
+    void Y41P_to_RGB32(Stage* in, Stage* out);
+    void Y41P_to_RGB24(Stage* in, Stage* out);
+    void Y41P_to_RGB565(Stage* in, Stage* out);
+    void Y41P_to_RGB555(Stage* in, Stage* out);
 
-    void IYU1_to_RGB32(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void IYU1_to_RGB24(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void IYU1_to_RGB565(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void IYU1_to_RGB555(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
+    void IYU1_to_RGB32(Stage* in, Stage* out);
+    void IYU1_to_RGB24(Stage* in, Stage* out);
+    void IYU1_to_RGB565(Stage* in, Stage* out);
+    void IYU1_to_RGB555(Stage* in, Stage* out);
 
-    void IYU2_to_RGB32(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void IYU2_to_RGB24(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void IYU2_to_RGB565(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void IYU2_to_RGB555(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
+    void IYU2_to_RGB32(Stage* in, Stage* out);
+    void IYU2_to_RGB24(Stage* in, Stage* out);
+    void IYU2_to_RGB565(Stage* in, Stage* out);
+    void IYU2_to_RGB555(Stage* in, Stage* out);
 
-    void YVU9_to_RGB32(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void YVU9_to_RGB24(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void YVU9_to_RGB565(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void YVU9_to_RGB555(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
+    void YVU9_to_RGB32(Stage* in, Stage* out);
+    void YVU9_to_RGB24(Stage* in, Stage* out);
+    void YVU9_to_RGB565(Stage* in, Stage* out);
+    void YVU9_to_RGB555(Stage* in, Stage* out);
 
-    void YUV9_to_RGB32(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void YUV9_to_RGB24(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void YUV9_to_RGB565(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void YUV9_to_RGB555(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
+    void YUV9_to_RGB32(Stage* in, Stage* out);
+    void YUV9_to_RGB24(Stage* in, Stage* out);
+    void YUV9_to_RGB565(Stage* in, Stage* out);
+    void YUV9_to_RGB555(Stage* in, Stage* out);
 
-    void I420_to_RGB32(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void I420_to_RGB24(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void I420_to_RGB565(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void I420_to_RGB555(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
+    void I420_to_RGB32(Stage* in, Stage* out);
+    void I420_to_RGB24(Stage* in, Stage* out);
+    void I420_to_RGB565(Stage* in, Stage* out);
+    void I420_to_RGB555(Stage* in, Stage* out);
 
-    void YV12_to_RGB32(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void YV12_to_RGB24(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void YV12_to_RGB565(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void YV12_to_RGB555(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
+    void YV12_to_RGB32(Stage* in, Stage* out);
+    void YV12_to_RGB24(Stage* in, Stage* out);
+    void YV12_to_RGB565(Stage* in, Stage* out);
+    void YV12_to_RGB555(Stage* in, Stage* out);
 
-    void IMC1_to_RGB32(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void IMC1_to_RGB24(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void IMC1_to_RGB565(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void IMC1_to_RGB555(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
+    void IMC1_to_RGB32(Stage* in, Stage* out);
+    void IMC1_to_RGB24(Stage* in, Stage* out);
+    void IMC1_to_RGB565(Stage* in, Stage* out);
+    void IMC1_to_RGB555(Stage* in, Stage* out);
 
-    void IMC2_to_RGB32(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void IMC2_to_RGB24(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void IMC2_to_RGB565(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void IMC2_to_RGB555(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
+    void IMC2_to_RGB32(Stage* in, Stage* out);
+    void IMC2_to_RGB24(Stage* in, Stage* out);
+    void IMC2_to_RGB565(Stage* in, Stage* out);
+    void IMC2_to_RGB555(Stage* in, Stage* out);
 
-    void IMC3_to_RGB32(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void IMC3_to_RGB24(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void IMC3_to_RGB565(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void IMC3_to_RGB555(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
+    void IMC3_to_RGB32(Stage* in, Stage* out);
+    void IMC3_to_RGB24(Stage* in, Stage* out);
+    void IMC3_to_RGB565(Stage* in, Stage* out);
+    void IMC3_to_RGB555(Stage* in, Stage* out);
 
-    void IMC4_to_RGB32(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void IMC4_to_RGB24(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void IMC4_to_RGB565(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void IMC4_to_RGB555(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
+    void IMC4_to_RGB32(Stage* in, Stage* out);
+    void IMC4_to_RGB24(Stage* in, Stage* out);
+    void IMC4_to_RGB565(Stage* in, Stage* out);
+    void IMC4_to_RGB555(Stage* in, Stage* out);
 
-    void Y800_to_RGB32(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void Y800_to_RGB24(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void Y800_to_RGB565(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void Y800_to_RGB555(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
+    void Y800_to_RGB32(Stage* in, Stage* out);
+    void Y800_to_RGB24(Stage* in, Stage* out);
+    void Y800_to_RGB565(Stage* in, Stage* out);
+    void Y800_to_RGB555(Stage* in, Stage* out);
 
-    void Y16_to_RGB32(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void Y16_to_RGB24(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void Y16_to_RGB565(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void Y16_to_RGB555(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
+    void Y16_to_RGB32(Stage* in, Stage* out);
+    void Y16_to_RGB24(Stage* in, Stage* out);
+    void Y16_to_RGB565(Stage* in, Stage* out);
+    void Y16_to_RGB555(Stage* in, Stage* out);
 
-    void AYUV_to_RGBA(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void AYUV_to_RGB32(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void AYUV_to_RGB24(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void AYUV_to_RGB565(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void AYUV_to_RGB555(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void AYUV_to_ARGB1555(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
+    void AYUV_to_RGBA(Stage* in, Stage* out);
+    void AYUV_to_RGB32(Stage* in, Stage* out);
+    void AYUV_to_RGB24(Stage* in, Stage* out);
+    void AYUV_to_RGB565(Stage* in, Stage* out);
+    void AYUV_to_RGB555(Stage* in, Stage* out);
+    void AYUV_to_ARGB1555(Stage* in, Stage* out);
 
-    void NV12_to_RGB32(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void NV12_to_RGB24(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void NV12_to_RGB565(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void NV12_to_RGB555(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
+    void NV12_to_RGB32(Stage* in, Stage* out);
+    void NV12_to_RGB24(Stage* in, Stage* out);
+    void NV12_to_RGB565(Stage* in, Stage* out);
+    void NV12_to_RGB555(Stage* in, Stage* out);
 
-    void NV21_to_RGB32(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void NV21_to_RGB24(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void NV21_to_RGB565(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void NV21_to_RGB555(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
+    void NV21_to_RGB32(Stage* in, Stage* out);
+    void NV21_to_RGB24(Stage* in, Stage* out);
+    void NV21_to_RGB565(Stage* in, Stage* out);
+    void NV21_to_RGB555(Stage* in, Stage* out);
 
-    void Y42T_to_RGBA(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void Y42T_to_RGB32(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void Y42T_to_RGB24(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void Y42T_to_RGB565(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void Y42T_to_RGB555(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void Y42T_to_ARGB1555(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
+    void Y42T_to_RGBA(Stage* in, Stage* out);
+    void Y42T_to_RGB32(Stage* in, Stage* out);
+    void Y42T_to_RGB24(Stage* in, Stage* out);
+    void Y42T_to_RGB565(Stage* in, Stage* out);
+    void Y42T_to_RGB555(Stage* in, Stage* out);
+    void Y42T_to_ARGB1555(Stage* in, Stage* out);
 
-    void Y41T_to_RGBA(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void Y41T_to_RGB32(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void Y41T_to_RGB24(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void Y41T_to_RGB565(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void Y41T_to_RGB555(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void Y41T_to_ARGB1555(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
+    void Y41T_to_RGBA(Stage* in, Stage* out);
+    void Y41T_to_RGB32(Stage* in, Stage* out);
+    void Y41T_to_RGB24(Stage* in, Stage* out);
+    void Y41T_to_RGB565(Stage* in, Stage* out);
+    void Y41T_to_RGB555(Stage* in, Stage* out);
+    void Y41T_to_ARGB1555(Stage* in, Stage* out);
 
-    void YV16_to_RGB32(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void YV16_to_RGB24(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void YV16_to_RGB565(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
-    void YV16_to_RGB555(int32_t width, int32_t height, uint8_t* out_buf, int32_t out_stride, uint8_t* in_buf, int32_t in_stride, bool flipped = false, xRGBQUAD* in_palette = nullptr);
+    void YV16_to_RGB32(Stage* in, Stage* out);
+    void YV16_to_RGB24(Stage* in, Stage* out);
+    void YV16_to_RGB565(Stage* in, Stage* out);
+    void YV16_to_RGB555(Stage* in, Stage* out);
 }
 

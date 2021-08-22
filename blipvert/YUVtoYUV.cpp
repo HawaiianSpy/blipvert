@@ -1114,57 +1114,19 @@ void IYU2_to_PlanarYUV(Stage* in, Stage* out)
     }
 }
 
-void IYU2_to_IMCx(int32_t width, int32_t height,
-    uint8_t* out_buf, int32_t out_stride, bool ufirst, bool interlaced,
-    uint8_t* in_buf, int32_t in_stride,
-    bool flipped)
+void IYU2_to_IMCx(Stage* in, Stage* out)
 {
-    if (!in_stride)
-        in_stride = width * 3;
+    uint8_t* in_buf = in->buf;
+    int32_t in_stride = in->stride;
+    int32_t width = in->width;
+    int32_t height = in->height;
 
-    int32_t uv_width = width / 2;
-    int32_t uv_height = height / 2;
-
-    if (!out_stride)
-        out_stride = width;
-
-    uint8_t* vplane;
-    uint8_t* uplane;
-    if (ufirst)
-    {
-        if (interlaced)
-        {
-            uplane = out_buf + (out_stride * height);
-            vplane = uplane + uv_width;
-        }
-        else
-        {
-            uplane = out_buf + (((height + 15) & ~15) * out_stride);
-            vplane = out_buf + (((((height * 3) / 2) + 15) & ~15) * out_stride);
-        }
-    }
-    else
-    {
-        if (interlaced)
-        {
-            vplane = out_buf + (out_stride * height);
-            uplane = vplane + uv_width;
-        }
-        else
-        {
-            vplane = out_buf + (((height + 15) & ~15) * out_stride);
-            uplane = out_buf + (((((height * 3) / 2) + 15) & ~15) * out_stride);
-        }
-    }
-
-
-    if (flipped)
-    {
-        out_buf += (out_stride * (height - 1));
-        uplane += (out_stride * (uv_height - 1));
-        vplane += (out_stride * (uv_height - 1));
-        out_stride = -out_stride;
-    }
+    uint8_t* out_buf = out->buf;
+    int32_t out_stride = out->stride;
+    int32_t uv_width = out->uv_width;
+    int32_t uv_height = out->uv_height;
+    uint8_t* uplane = out->uplane;
+    uint8_t* vplane = out->vplane;
 
     int32_t in_stride_x_2 = in_stride * 2;
     int32_t out_stride_x_2 = out_stride * 2;
@@ -1205,54 +1167,19 @@ void IYU2_to_IMCx(int32_t width, int32_t height,
     }
 }
 
-void IMCx_to_IYU2(int32_t width, int32_t height,
-    uint8_t* out_buf, int32_t out_stride,
-    uint8_t* in_buf, int32_t in_stride, bool ufirst, bool interlaced,
-    bool flipped)
+void IMCx_to_IYU2(Stage* in, Stage* out)
 {
-    if (!out_stride)
-        out_stride = width * 3;
+    uint8_t* in_buf = in->buf;
+    int32_t in_stride = in->stride;
+    int32_t width = in->width;
+    int32_t height = in->height;
+    int32_t uv_width = in->uv_width;
+    int32_t uv_height = in->uv_height;
+    uint8_t* uplane = in->uplane;
+    uint8_t* vplane = in->vplane;
 
-    int16_t uv_width = width / 2;
-    int16_t uv_height = height / 2;
-
-    if (in_stride < width)
-        in_stride = width;
-
-    uint8_t* vplane;
-    uint8_t* uplane;
-    if (ufirst)
-    {
-        if (interlaced)
-        {
-            uplane = in_buf + (in_stride * height);
-            vplane = uplane + uv_width;
-        }
-        else
-        {
-            uplane = in_buf + (((height + 15) & ~15) * in_stride);
-            vplane = in_buf + (((((height * 3) / 2) + 15) & ~15) * in_stride);
-        }
-    }
-    else
-    {
-        if (interlaced)
-        {
-            vplane = in_buf + (in_stride * height);
-            uplane = vplane + uv_width;
-        }
-        else
-        {
-            vplane = in_buf + (((height + 15) & ~15) * in_stride);
-            uplane = in_buf + (((((height * 3) / 2) + 15) & ~15) * in_stride);
-        }
-    }
-
-    if (flipped)
-    {
-        out_buf += (out_stride * (height - 1));
-        out_stride = -out_stride;
-    }
+    uint8_t* out_buf = out->buf;
+    int32_t out_stride = out->stride;
 
     int32_t out_stride_x_2 = out_stride * 2;
     int32_t in_stride_x_2 = in_stride * 2;
@@ -1298,23 +1225,19 @@ void IMCx_to_IYU2(int32_t width, int32_t height,
     }
 }
 
-void PackedY422_to_Y41P(int32_t width, int32_t height,
-    uint8_t* out_buf, int32_t out_stride,
-    uint8_t* in_buf, int32_t in_stride,
-    int32_t in_y0, int32_t in_y1, int32_t in_u, int32_t in_v,
-    bool flipped)
+void PackedY422_to_Y41P(Stage* in, Stage* out)
 {
-    if (!out_stride)
-        out_stride = width * 12 / 8;
+    uint8_t* in_buf = in->buf;
+    int32_t width = in->width;
+    int32_t height = in->height;
+    int32_t in_stride = in->stride;
+    int16_t in_Y0 = in->Y0_index;
+    int16_t in_Y1 = in->Y1_index;
+    int16_t in_U = in->U_index;
+    int16_t in_V = in->V_index;
 
-    if (!in_stride)
-        in_stride = width * 2;
-
-    if (flipped)
-    {
-        out_buf += (out_stride * (height - 1));
-        out_stride = -out_stride;
-    }
+    uint8_t* out_buf = out->buf;
+    int32_t out_stride = out->stride;
 
     for (int32_t y = 0; y < height; y++)
     {
@@ -1322,21 +1245,21 @@ void PackedY422_to_Y41P(int32_t width, int32_t height,
         uint8_t* pdst = out_buf;
         for (int32_t x = 0; x < width; x += 8)
         {
-            pdst[0] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[in_u]) + static_cast<uint16_t>(psrc[in_u + 4])) >> 1);
-            pdst[2] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[in_v]) + static_cast<uint16_t>(psrc[in_v + 4])) >> 1);
+            pdst[0] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[in_U]) + static_cast<uint16_t>(psrc[in_U + 4])) >> 1);
+            pdst[2] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[in_V]) + static_cast<uint16_t>(psrc[in_V + 4])) >> 1);
 
-            pdst[1] = psrc[in_y0];
-            pdst[3] = psrc[in_y1];
-            pdst[5] = psrc[in_y0 + 4];
-            pdst[7] = psrc[in_y1 + 4];
+            pdst[1] = psrc[in_Y0];
+            pdst[3] = psrc[in_Y1];
+            pdst[5] = psrc[in_Y0 + 4];
+            pdst[7] = psrc[in_Y1 + 4];
 
-            pdst[4] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[in_u + 8]) + static_cast<uint16_t>(psrc[in_u + 12])) >> 1);
-            pdst[6] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[in_v + 8]) + static_cast<uint16_t>(psrc[in_v + 12])) >> 1);
+            pdst[4] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[in_U + 8]) + static_cast<uint16_t>(psrc[in_U + 12])) >> 1);
+            pdst[6] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[in_V + 8]) + static_cast<uint16_t>(psrc[in_V + 12])) >> 1);
 
-            pdst[8] = psrc[in_y0 + 8];
-            pdst[9] = psrc[in_y1 + 8];
-            pdst[10] = psrc[in_y0 + 12];
-            pdst[11] = psrc[in_y1 + 12];
+            pdst[8] = psrc[in_Y0 + 8];
+            pdst[9] = psrc[in_Y1 + 8];
+            pdst[10] = psrc[in_Y0 + 12];
+            pdst[11] = psrc[in_Y1 + 12];
 
             psrc += 16;
             pdst += 12;

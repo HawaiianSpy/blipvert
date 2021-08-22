@@ -327,10 +327,10 @@ void blipvert::Stage_YUY2(Stage* result, uint8_t thread_index, uint8_t thread_co
     Stage_PackedY422(result, thread_index, thread_count, width, height, buf, stride, flipped);
 
     result->format = &MVFMT_YUY2;
-    result->Y0_index = 0;
-    result->Y1_index = 2;
-    result->U_index = 1;
-    result->V_index = 2;
+    result->y0_index = 0;
+    result->y1_index = 2;
+    result->u_index = 1;
+    result->v_index = 2;
 }
 
 void blipvert::Stage_UYVY(Stage* result, uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
@@ -338,10 +338,10 @@ void blipvert::Stage_UYVY(Stage* result, uint8_t thread_index, uint8_t thread_co
     Stage_PackedY422(result, thread_index, thread_count, width, height, buf, stride, flipped);
 
     result->format = &MVFMT_UYVY;
-    result->Y0_index = 1;
-    result->Y1_index = 3;
-    result->U_index = 0;
-    result->V_index = 2;
+    result->y0_index = 1;
+    result->y1_index = 3;
+    result->u_index = 0;
+    result->v_index = 2;
 }
 
 void blipvert::Stage_YVYU(Stage* result, uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
@@ -349,10 +349,10 @@ void blipvert::Stage_YVYU(Stage* result, uint8_t thread_index, uint8_t thread_co
     Stage_PackedY422(result, thread_index, thread_count, width, height, buf, stride, flipped);
 
     result->format = &MVFMT_YVYU;
-    result->Y0_index = 0;
-    result->Y1_index = 2;
-    result->U_index = 3;
-    result->V_index = 1;
+    result->y0_index = 0;
+    result->y1_index = 2;
+    result->u_index = 3;
+    result->v_index = 1;
 }
 
 void blipvert::Stage_VYUY(Stage* result, uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
@@ -360,10 +360,10 @@ void blipvert::Stage_VYUY(Stage* result, uint8_t thread_index, uint8_t thread_co
     Stage_PackedY422(result, thread_index, thread_count, width, height, buf, stride, flipped);
 
     result->format = &MVFMT_VYUY;
-    result->Y0_index = 1;
-    result->Y1_index = 3;
-    result->U_index = 2;
-    result->V_index = 0;
+    result->y0_index = 1;
+    result->y1_index = 3;
+    result->u_index = 2;
+    result->v_index = 0;
 }
 
 
@@ -796,13 +796,13 @@ void Stage_NVx(Stage* result, uint8_t thread_index, uint8_t thread_count, int32_
 
     if (ufirst)
     {
-        result->U_index = 0;
-        result->V_index = 1;
+        result->u_index = 0;
+        result->v_index = 1;
     }
     else
     {
-        result->U_index = 1;
-        result->V_index = 0;
+        result->u_index = 1;
+        result->v_index = 0;
     }
 
     uint8_t* uvbuf = buf + (result->stride * height);

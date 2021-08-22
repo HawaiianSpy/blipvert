@@ -43,10 +43,10 @@ void RGB32_to_PackedY422(Stage* in, Stage* out)
     int32_t height = in->height;
     int32_t in_stride = in->stride;
     int32_t out_stride = out->stride;
-    int16_t Y0 = out->Y0_index;
-    int16_t Y1 = out->Y1_index;
-    int16_t U = out->U_index;
-    int16_t V = out->V_index;
+    int16_t Y0 = out->y0_index;
+    int16_t Y1 = out->y1_index;
+    int16_t U = out->u_index;
+    int16_t V = out->v_index;
 
 
     while (height)
@@ -81,10 +81,10 @@ void RGB24_to_PackedY422(Stage* in, Stage* out)
     int32_t height = in->height;
     int32_t in_stride = in->stride;
     int32_t out_stride = out->stride;
-    int16_t Y0 = out->Y0_index;
-    int16_t Y1 = out->Y1_index;
-    int16_t U = out->U_index;
-    int16_t V = out->V_index;
+    int16_t Y0 = out->y0_index;
+    int16_t Y1 = out->y1_index;
+    int16_t U = out->u_index;
+    int16_t V = out->v_index;
 
     while (height)
     {
@@ -119,10 +119,10 @@ void RGB565_to_PackedY422(Stage* in, Stage* out)
     int32_t height = in->height;
     int32_t in_stride = in->stride;
     int32_t out_stride = out->stride;
-    int16_t Y0 = out->Y0_index;
-    int16_t Y1 = out->Y1_index;
-    int16_t U = out->U_index;
-    int16_t V = out->V_index;
+    int16_t Y0 = out->y0_index;
+    int16_t Y1 = out->y1_index;
+    int16_t U = out->u_index;
+    int16_t V = out->v_index;
 
     while (height)
     {
@@ -166,10 +166,10 @@ void RGB555_to_PackedY422(Stage* in, Stage* out)
     int32_t height = in->height;
     int32_t in_stride = in->stride;
     int32_t out_stride = out->stride;
-    int16_t Y0 = out->Y0_index;
-    int16_t Y1 = out->Y1_index;
-    int16_t U = out->U_index;
-    int16_t V = out->V_index;
+    int16_t Y0 = out->y0_index;
+    int16_t Y1 = out->y1_index;
+    int16_t U = out->u_index;
+    int16_t V = out->v_index;
 
     while (height)
     {
@@ -214,10 +214,10 @@ void RGB8_to_PackedY422(Stage* in, Stage* out)
     int32_t in_stride = in->stride;
     int32_t out_stride = out->stride;
     xRGBQUAD* in_palette = in->palette;
-    int16_t Y0 = out->Y0_index;
-    int16_t Y1 = out->Y1_index;
-    int16_t U = out->U_index;
-    int16_t V = out->V_index;
+    int16_t Y0 = out->y0_index;
+    int16_t Y1 = out->y1_index;
+    int16_t U = out->u_index;
+    int16_t V = out->v_index;
 
     while (height)
     {
@@ -1840,8 +1840,8 @@ void RGB32_to_NVx(Stage* in, Stage* out)
     int32_t in_stride = in->stride;
     int32_t out_stride = out->stride;
     uint8_t* uvplane = out->uvplane;
-    uint8_t U = out->U_index;
-    uint8_t V = out->V_index;
+    uint8_t U = out->u_index;
+    uint8_t V = out->v_index;
     int32_t in_stride_x_2 = in->stride * 2;
     int32_t out_stride_x_2 = out_stride * 2;
 
@@ -2448,8 +2448,8 @@ void RGB24_to_NVx(Stage* in, Stage* out)
     int32_t in_stride = in->stride;
     int32_t out_stride = out->stride;
     uint8_t* uvplane = out->uvplane;
-    uint8_t U = out->U_index;
-    uint8_t V = out->V_index;
+    uint8_t U = out->u_index;
+    uint8_t V = out->v_index;
     int32_t in_stride_x_2 = in->stride * 2;
     int32_t out_stride_x_2 = out_stride * 2;
 
@@ -3088,8 +3088,8 @@ void RGB565_to_NVx(Stage* in, Stage* out)
     int32_t in_stride = in->stride;
     int32_t out_stride = out->stride;
     uint8_t* uvplane = out->uvplane;
-    uint8_t U = out->U_index;
-    uint8_t V = out->V_index;
+    uint8_t U = out->u_index;
+    uint8_t V = out->v_index;
     int32_t in_stride_x_2 = in->stride * 2;
     int32_t out_stride_x_2 = out_stride * 2;
 
@@ -3942,8 +3942,8 @@ void RGB555_to_NVx(Stage* in, Stage* out)
     int32_t in_stride = in->stride;
     int32_t out_stride = out->stride;
     uint8_t* uvplane = out->uvplane;
-    uint8_t U = out->U_index;
-    uint8_t V = out->V_index;
+    uint8_t U = out->u_index;
+    uint8_t V = out->v_index;
     int32_t in_stride_x_2 = in->stride * 2;
     int32_t out_stride_x_2 = out_stride * 2;
 
@@ -4621,8 +4621,8 @@ void RGB8_to_NVx(Stage* in, Stage* out)
     int32_t in_stride = in->stride;
     int32_t out_stride = out->stride;
     uint8_t* uvplane = out->uvplane;
-    uint8_t U = out->U_index;
-    uint8_t V = out->V_index;
+    uint8_t U = out->u_index;
+    uint8_t V = out->v_index;
     int32_t in_stride_x_2 = in->stride * 2;
     int32_t out_stride_x_2 = out_stride * 2;
     xRGBQUAD* in_palette = in->palette;

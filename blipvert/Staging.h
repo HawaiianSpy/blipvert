@@ -41,10 +41,10 @@ namespace blipvert
         xRGBQUAD* palette;
         bool has_odd;
         uint16_t remainder;
-        int16_t Y0_index;
-        int16_t Y1_index;
-        int16_t U_index;
-        int16_t V_index;
+        int16_t y0_index;
+        int16_t y1_index;
+        int16_t u_index;
+        int16_t v_index;
         int32_t uv_width;
         int32_t uv_height;
         int32_t uv_slice_height;

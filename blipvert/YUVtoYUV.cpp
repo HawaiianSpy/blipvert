@@ -6509,10 +6509,7 @@ void blipvert::YUY2_to_AYUV(Stage* in, Stage* out)
     PackedY422_to_AYUV(in, out);
 }
 
-void blipvert::YUY2_to_IMC1(int32_t width, int32_t height,
-    uint8_t* out_buf, int32_t out_stride,
-    uint8_t* in_buf, int32_t in_stride,
-    bool flipped, xRGBQUAD* in_palette)
+void blipvert::YUY2_to_IMC1(Stage* in, Stage* out)
 {
     PackedY422_to_IMCx(in, out);
 }
@@ -6717,11 +6714,7 @@ void blipvert::YVYU_to_YUV9(Stage* in, Stage* out)
 
 void blipvert::YVYU_to_IYU1(Stage* in, Stage* out)
 {
-    PackedY422_to_IYU1(width, height,
-        out_buf, out_stride,
-        in_buf, in_stride,
-        0, 2, 3, 1,
-        flipped);
+    PackedY422_to_IYU1(in, out);
 }
 
 void blipvert::YVYU_to_IYU2(Stage* in, Stage* out)
@@ -6823,7 +6816,7 @@ void blipvert::VYUY_to_I420(Stage* in, Stage* out)
     PackedY422_to_PlanarYUV(in, out);
 }
 
-void blipvert::VYUY_to_YV12(iStage* in, Stage* out)
+void blipvert::VYUY_to_YV12(Stage* in, Stage* out)
 {
     PackedY422_to_PlanarYUV(in, out);
 }
@@ -6868,7 +6861,7 @@ void blipvert::VYUY_to_Y41P(Stage* in, Stage* out)
     PackedY422_to_Y41P(in, out);
 }
 
-void blipvert::VYUY_to_AYUV(iStage* in, Stage* out)
+void blipvert::VYUY_to_AYUV(Stage* in, Stage* out)
 {
     PackedY422_to_AYUV(win, out);
 }
@@ -11079,10 +11072,7 @@ void blipvert::NV12_to_UYVY(Stage* in, Stage* out)
 
 void blipvert::NV12_to_YVYU(Stage* in, Stage* out)
 {
-    NVx_to_PackedY422(width, height,
-        out_buf, out_stride, 0, 2, 3, 1,	// YVYU
-        in_buf, in_stride, true,
-        flipped);
+    NVx_to_PackedY422(in, out);
 }
 
 void blipvert::NV12_to_VYUY(Stage* in, Stage* out)
@@ -13059,10 +13049,7 @@ void blipvert::Y41T_to_YVU9(Stage* in, Stage* out)
 
 void blipvert::Y41T_to_YUV9(Stage* in, Stage* out)
 {
-    Y41T_to_PlanarYUV(width, height,
-        out_buf, out_stride, 4, true,
-        in_buf, in_stride,
-        flipped);
+    Y41T_to_PlanarYUV(in, out);
 }
 
 void blipvert::Y41T_to_IYU1(Stage* in, Stage* out)

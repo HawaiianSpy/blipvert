@@ -323,12 +323,12 @@ void PlanarYUV_to_PackedY422(Stage* in, Stage* out)
     uint8_t* in_buf = in->buf;
     int32_t width = in->width;
     int32_t height = in->height;
-    int32_t y_stride = in->y_stride;
-    int32_t uv_stride = in->uv_stride;
-    int32_t uv_width = in->uv_width;
-    int32_t uv_height = in->uv_height;
-    uint8_t* uplane = in->uplane;
-    uint8_t* vplane = in->vplane;
+    int32_t in_y_stride = in->y_stride;
+    int32_t in_uv_stride = in->uv_stride;
+    int32_t in_uv_width = in->uv_width;
+    int32_t in_uv_height = in->uv_height;
+    uint8_t* in_uplane = in->uplane;
+    uint8_t* in_vplane = in->vplane;
     int32_t in_decimation = in->decimation;
 
     uint8_t* out_buf = out->buf;
@@ -341,17 +341,17 @@ void PlanarYUV_to_PackedY422(Stage* in, Stage* out)
     int32_t out_stride_x_2 = out_stride * 2;
     int32_t out_stride_x_3 = out_stride * 3;
     int32_t out_stride_x_4 = out_stride * 4;
-    int32_t y_stride_x_2 = y_stride * 2;
-    int32_t y_stride_x_3 = y_stride * 3;
-    int32_t y_stride_x_4 = y_stride * 4;
+    int32_t in_y_stride_x_2 = in_y_stride * 2;
+    int32_t in_y_stride_x_3 = in_y_stride * 3;
+    int32_t in_y_stride_x_4 = in_y_stride * 4;
 
     if (in_decimation == 2)
     {
         for (int32_t y = 0; y < height; y += 2)
         {
             uint8_t* yp = in_buf;
-            uint8_t* up = uplane;
-            uint8_t* vp = vplane;
+            uint8_t* up = in_uplane;
+            uint8_t* vp = in_vplane;
             uint8_t* pdst = out_buf;
 
             for (int32_t x = 0; x < width; x += 2)
@@ -363,8 +363,8 @@ void PlanarYUV_to_PackedY422(Stage* in, Stage* out)
 
                 pdst[out_u + out_stride] = *up;
                 pdst[out_v + out_stride] = *vp;
-                pdst[out_y0 + out_stride] = yp[y_stride];
-                pdst[out_y1 + out_stride] = yp[1 + y_stride];
+                pdst[out_y0 + out_stride] = yp[in_y_stride];
+                pdst[out_y1 + out_stride] = yp[1 + in_y_stride];
 
                 pdst += 4;
                 yp += 2;
@@ -372,9 +372,9 @@ void PlanarYUV_to_PackedY422(Stage* in, Stage* out)
                 vp += 1;
             }
 
-            in_buf += y_stride_x_2;
-            uplane += uv_stride;
-            vplane += uv_stride;
+            in_buf += in_y_stride_x_2;
+            in_uplane += in_uv_stride;
+            in_vplane += in_uv_stride;
             out_buf += out_stride_x_2;
         }
     }
@@ -383,8 +383,8 @@ void PlanarYUV_to_PackedY422(Stage* in, Stage* out)
         for (int32_t y = 0; y < height; y += 4)
         {
             uint8_t* yp = in_buf;
-            uint8_t* up = uplane;
-            uint8_t* vp = vplane;
+            uint8_t* up = in_uplane;
+            uint8_t* vp = in_vplane;
             uint8_t* pdst = out_buf;
 
             for (int32_t x = 0; x < width; x += 4)
@@ -398,20 +398,20 @@ void PlanarYUV_to_PackedY422(Stage* in, Stage* out)
                 // column 1 row 2
                 pdst[out_u + out_stride] = *up;
                 pdst[out_v + out_stride] = *vp;
-                pdst[out_y0 + out_stride] = yp[y_stride];
-                pdst[out_y1 + out_stride] = yp[1 + y_stride];
+                pdst[out_y0 + out_stride] = yp[in_y_stride];
+                pdst[out_y1 + out_stride] = yp[1 + in_y_stride];
 
                 // column 1 row 3
                 pdst[out_u + out_stride_x_2] = *up;
                 pdst[out_v + out_stride_x_2] = *vp;
-                pdst[out_y0 + out_stride_x_2] = yp[y_stride_x_2];
-                pdst[out_y1 + out_stride_x_2] = yp[1 + y_stride_x_2];
+                pdst[out_y0 + out_stride_x_2] = yp[in_y_stride_x_2];
+                pdst[out_y1 + out_stride_x_2] = yp[1 + in_y_stride_x_2];
 
                 // column 1 row 4
                 pdst[out_u + out_stride_x_3] = *up;
                 pdst[out_v + out_stride_x_3] = *vp;
-                pdst[out_y0 + out_stride_x_3] = yp[y_stride_x_3];
-                pdst[out_y1 + out_stride_x_3] = yp[1 + y_stride_x_3];
+                pdst[out_y0 + out_stride_x_3] = yp[in_y_stride_x_3];
+                pdst[out_y1 + out_stride_x_3] = yp[1 + in_y_stride_x_3];
 
                 // column 2 row 1
                 pdst[out_u + 4] = *up;
@@ -422,20 +422,20 @@ void PlanarYUV_to_PackedY422(Stage* in, Stage* out)
                 // column 2 row 2
                 pdst[out_u + out_stride + 4] = *up;
                 pdst[out_v + out_stride + 4] = *vp;
-                pdst[out_y0 + out_stride + 4] = yp[2 + y_stride];
-                pdst[out_y1 + out_stride + 4] = yp[3 + y_stride];
+                pdst[out_y0 + out_stride + 4] = yp[2 + in_y_stride];
+                pdst[out_y1 + out_stride + 4] = yp[3 + in_y_stride];
 
                 // column 2 row 3
                 pdst[out_u + out_stride_x_2 + 4] = *up;
                 pdst[out_v + out_stride_x_2 + 4] = *vp;
-                pdst[out_y0 + out_stride_x_2 + 4] = yp[2 + y_stride_x_2];
-                pdst[out_y1 + out_stride_x_2 + 4] = yp[3 + y_stride_x_2];
+                pdst[out_y0 + out_stride_x_2 + 4] = yp[2 + in_y_stride_x_2];
+                pdst[out_y1 + out_stride_x_2 + 4] = yp[3 + in_y_stride_x_2];
 
                 // column 2 row 4
                 pdst[out_u + out_stride_x_3 + 4] = *up;
                 pdst[out_v + out_stride_x_3 + 4] = *vp;
-                pdst[out_y0 + out_stride_x_3 + 4] = yp[2 + y_stride_x_3];
-                pdst[out_y1 + out_stride_x_3 + 4] = yp[3 + y_stride_x_3];
+                pdst[out_y0 + out_stride_x_3 + 4] = yp[2 + in_y_stride_x_3];
+                pdst[out_y1 + out_stride_x_3 + 4] = yp[3 + in_y_stride_x_3];
 
                 pdst += 8;
                 yp += 4;
@@ -443,9 +443,9 @@ void PlanarYUV_to_PackedY422(Stage* in, Stage* out)
                 vp++;
             }
 
-            in_buf += y_stride_x_4;
-            uplane += uv_stride;
-            vplane += uv_stride;
+            in_buf += in_y_stride_x_4;
+            in_uplane += in_uv_stride;
+            in_vplane += in_uv_stride;
             out_buf += out_stride_x_4;
         }
     }
@@ -456,12 +456,12 @@ void PlanarYUV_to_IYU1(Stage* in, Stage* out)
     uint8_t* in_buf = in->buf;
     int32_t width = in->width;
     int32_t height = in->height;
-    int32_t y_stride = in->y_stride;
-    int32_t uv_stride = in->uv_stride;
-    int32_t uv_width = in->uv_width;
-    int32_t uv_height = in->uv_height;
-    uint8_t* uplane = in->uplane;
-    uint8_t* vplane = in->vplane;
+    int32_t in_y_stride = in->y_stride;
+    int32_t in_uv_stride = in->uv_stride;
+    int32_t in_uv_width = in->uv_width;
+    int32_t in_uv_height = in->uv_height;
+    uint8_t* in_uplane = in->uplane;
+    uint8_t* in_vplane = in->vplane;
     int32_t in_decimation = in->decimation;
 
     uint8_t* out_buf = out->buf;
@@ -470,9 +470,9 @@ void PlanarYUV_to_IYU1(Stage* in, Stage* out)
     int32_t out_stride_x_2 = out_stride * 2;
     int32_t out_stride_x_3 = out_stride * 3;
     int32_t out_stride_x_4 = out_stride * 4;
-    int32_t y_stride_x_2 = y_stride * 2;
-    int32_t y_stride_x_3 = y_stride * 3;
-    int32_t y_stride_x_4 = y_stride * 4;
+    int32_t in_y_stride_x_2 = in_y_stride * 2;
+    int32_t in_y_stride_x_3 = in_y_stride * 3;
+    int32_t in_y_stride_x_4 = in_y_stride * 4;
 
     uint8_t* yp;
     uint8_t* up;
@@ -484,8 +484,8 @@ void PlanarYUV_to_IYU1(Stage* in, Stage* out)
         for (int32_t y = 0; y < height - 2; y += 2)
         {
             yp = in_buf;
-            up = uplane;
-            vp = vplane;
+            up = in_uplane;
+            vp = in_vplane;
             pdst = out_buf;
 
             for (int32_t x = 0; x < width; x += 4)
@@ -499,16 +499,16 @@ void PlanarYUV_to_IYU1(Stage* in, Stage* out)
 
                 pdst[out_stride] = static_cast<uint8_t>((static_cast<uint16_t>(up[0]) + \
                     static_cast<uint16_t>(up[1]) + \
-                    static_cast<uint16_t>(up[uv_stride]) + \
-                    static_cast<uint16_t>(up[1 + uv_stride])) >> 2);
+                    static_cast<uint16_t>(up[in_uv_stride]) + \
+                    static_cast<uint16_t>(up[1 + in_uv_stride])) >> 2);
                 pdst[3 + out_stride] = static_cast<uint8_t>((static_cast<uint16_t>(vp[0]) + \
                     static_cast<uint16_t>(vp[1]) + \
-                    static_cast<uint16_t>(vp[uv_stride]) + \
-                    static_cast<uint16_t>(vp[1 + uv_stride])) >> 2);
-                pdst[1 + out_stride] = yp[y_stride];
-                pdst[2 + out_stride] = yp[1 + y_stride];
-                pdst[4 + out_stride] = yp[2 + y_stride];
-                pdst[5 + out_stride] = yp[3 + y_stride];
+                    static_cast<uint16_t>(vp[in_uv_stride]) + \
+                    static_cast<uint16_t>(vp[1 + in_uv_stride])) >> 2);
+                pdst[1 + out_stride] = yp[in_y_stride];
+                pdst[2 + out_stride] = yp[1 + in_y_stride];
+                pdst[4 + out_stride] = yp[2 + in_y_stride];
+                pdst[5 + out_stride] = yp[3 + in_y_stride];
 
                 pdst += 6;
                 yp += 4;
@@ -516,16 +516,16 @@ void PlanarYUV_to_IYU1(Stage* in, Stage* out)
                 vp += 2;
             }
 
-            in_buf += y_stride_x_2;
-            uplane += uv_stride;
-            vplane += uv_stride;
+            in_buf += in_y_stride_x_2;
+            in_uplane += in_uv_stride;
+            in_vplane += in_uv_stride;
             out_buf += out_stride_x_2;
         }
 
         // Get the last line without reading past the input u & v buffers
         yp = in_buf;
-        up = uplane;
-        vp = vplane;
+        up = in_uplane;
+        vp = in_vplane;
         pdst = out_buf;
 
         for (int32_t x = 0; x < width; x += 4)
@@ -536,10 +536,10 @@ void PlanarYUV_to_IYU1(Stage* in, Stage* out)
             pdst[2] = yp[1];
             pdst[4] = yp[2];
             pdst[5] = yp[3];
-            pdst[1 + out_stride] = yp[y_stride];
-            pdst[2 + out_stride] = yp[1 + y_stride];
-            pdst[4 + out_stride] = yp[2 + y_stride];
-            pdst[5 + out_stride] = yp[3 + y_stride];
+            pdst[1 + out_stride] = yp[in_y_stride];
+            pdst[2 + out_stride] = yp[1 + in_y_stride];
+            pdst[4 + out_stride] = yp[2 + in_y_stride];
+            pdst[5 + out_stride] = yp[3 + in_y_stride];
 
             pdst += 6;
             yp += 4;
@@ -566,31 +566,31 @@ void PlanarYUV_to_IYU1(Stage* in, Stage* out)
                 pdst[5] = yp[3];
 
                 pdst[out_stride] = static_cast<uint8_t>(((static_cast<int32_t>(up[0]) * 768) + \
-                    (static_cast<int32_t>(up[uv_stride]) * 256)) >> 10);
+                    (static_cast<int32_t>(up[in_uv_stride]) * 256)) >> 10);
                 pdst[3 + out_stride] = static_cast<uint8_t>(((static_cast<int32_t>(vp[0]) * 768) + \
-                    (static_cast<int32_t>(vp[uv_stride]) * 256)) >> 10);
-                pdst[1 + out_stride] = yp[y_stride];
-                pdst[2 + out_stride] = yp[1 + y_stride];
-                pdst[4 + out_stride] = yp[2 + y_stride];
-                pdst[5 + out_stride] = yp[3 + y_stride];
+                    (static_cast<int32_t>(vp[in_uv_stride]) * 256)) >> 10);
+                pdst[1 + out_stride] = yp[in_y_stride];
+                pdst[2 + out_stride] = yp[1 + in_y_stride];
+                pdst[4 + out_stride] = yp[2 + in_y_stride];
+                pdst[5 + out_stride] = yp[3 + in_y_stride];
 
                 pdst[out_stride_x_2] = static_cast<uint8_t>((static_cast<uint16_t>(up[0]) + \
-                    static_cast<uint16_t>(up[uv_stride])) >> 1);
+                    static_cast<uint16_t>(up[in_uv_stride])) >> 1);
                 pdst[3 + out_stride_x_2] = static_cast<uint8_t>((static_cast<uint16_t>(vp[0]) + \
-                    static_cast<uint16_t>(vp[uv_stride])) >> 1);
-                pdst[1 + out_stride_x_2] = yp[y_stride_x_2];
-                pdst[2 + out_stride_x_2] = yp[1 + y_stride_x_2];
-                pdst[4 + out_stride_x_2] = yp[2 + y_stride_x_2];
-                pdst[5 + out_stride_x_2] = yp[3 + y_stride_x_2];
+                    static_cast<uint16_t>(vp[in_uv_stride])) >> 1);
+                pdst[1 + out_stride_x_2] = yp[in_y_stride_x_2];
+                pdst[2 + out_stride_x_2] = yp[1 + in_y_stride_x_2];
+                pdst[4 + out_stride_x_2] = yp[2 + in_y_stride_x_2];
+                pdst[5 + out_stride_x_2] = yp[3 + in_y_stride_x_2];
 
                 pdst[out_stride_x_3] = static_cast<uint8_t>(((static_cast<int32_t>(up[0]) * 256) + \
-                    (static_cast<int32_t>(up[uv_stride]) * 768)) >> 10);
+                    (static_cast<int32_t>(up[in_uv_stride]) * 768)) >> 10);
                 pdst[3 + out_stride_x_3] = static_cast<uint8_t>(((static_cast<int32_t>(vp[0]) * 256) + \
-                    (static_cast<int32_t>(vp[uv_stride]) * 768)) >> 10);
-                pdst[1 + out_stride_x_3] = yp[y_stride_x_3];
-                pdst[2 + out_stride_x_3] = yp[1 + y_stride_x_3];
-                pdst[4 + out_stride_x_3] = yp[2 + y_stride_x_3];
-                pdst[5 + out_stride_x_3] = yp[3 + y_stride_x_3];
+                    (static_cast<int32_t>(vp[in_uv_stride]) * 768)) >> 10);
+                pdst[1 + out_stride_x_3] = yp[in_y_stride_x_3];
+                pdst[2 + out_stride_x_3] = yp[1 + in_y_stride_x_3];
+                pdst[4 + out_stride_x_3] = yp[2 + in_y_stride_x_3];
+                pdst[5 + out_stride_x_3] = yp[3 + in_y_stride_x_3];
 
                 pdst += 6;
                 yp += 4;
@@ -598,16 +598,16 @@ void PlanarYUV_to_IYU1(Stage* in, Stage* out)
                 vp++;
             }
 
-            in_buf += y_stride_x_4;
-            uplane += uv_stride;
-            vplane += uv_stride;
+            in_buf += in_y_stride_x_4;
+            uin_plane += in_uv_stride;
+            in_vplane += in_uv_stride;
             out_buf += out_stride_x_4;
         }
 
         // Get the last line without reading past the input u & v buffers
         yp = in_buf;
-        up = uplane;
-        vp = vplane;
+        up = in_uplane;
+        vp = in_vplane;
         pdst = out_buf;
 
         for (int32_t x = 0; x < width; x += 4)
@@ -619,20 +619,20 @@ void PlanarYUV_to_IYU1(Stage* in, Stage* out)
             pdst[4] = yp[2];
             pdst[5] = yp[3];
 
-            pdst[1 + out_stride] = yp[y_stride];
-            pdst[2 + out_stride] = yp[1 + y_stride];
-            pdst[4 + out_stride] = yp[2 + y_stride];
-            pdst[5 + out_stride] = yp[3 + y_stride];
+            pdst[1 + out_stride] = yp[in_y_stride];
+            pdst[2 + out_stride] = yp[1 + in_y_stride];
+            pdst[4 + out_stride] = yp[2 + in_y_stride];
+            pdst[5 + out_stride] = yp[3 + in_y_stride];
 
-            pdst[1 + out_stride_x_2] = yp[y_stride_x_2];
-            pdst[2 + out_stride_x_2] = yp[1 + y_stride_x_2];
-            pdst[4 + out_stride_x_2] = yp[2 + y_stride_x_2];
-            pdst[5 + out_stride_x_2] = yp[3 + y_stride_x_2];
+            pdst[1 + out_stride_x_2] = yp[in_y_stride_x_2];
+            pdst[2 + out_stride_x_2] = yp[1 + in_y_stride_x_2];
+            pdst[4 + out_stride_x_2] = yp[2 + in_y_stride_x_2];
+            pdst[5 + out_stride_x_2] = yp[3 + in_y_stride_x_2];
 
-            pdst[1 + out_stride_x_3] = yp[y_stride_x_3];
-            pdst[2 + out_stride_x_3] = yp[1 + y_stride_x_3];
-            pdst[4 + out_stride_x_3] = yp[2 + y_stride_x_3];
-            pdst[5 + out_stride_x_3] = yp[3 + y_stride_x_3];
+            pdst[1 + out_stride_x_3] = yp[in_y_stride_x_3];
+            pdst[2 + out_stride_x_3] = yp[1 + in_y_stride_x_3];
+            pdst[4 + out_stride_x_3] = yp[2 + in_y_stride_x_3];
+            pdst[5 + out_stride_x_3] = yp[3 + in_y_stride_x_3];
 
             pdst += 6;
             yp += 4;
@@ -648,36 +648,36 @@ void IYU1_to_PlanarYUV(Stage* in, Stage* out)
     int32_t in_stride = in->stride;
 
     uint8_t* out_buf = out->buf;
-    int32_t y_stride = out->y_stride;
-    int32_t uv_stride = out->uv_stride;
-    int32_t uv_width = out->uv_width;
-    int32_t uv_height = out->uv_height;
-    uint8_t* uplane = out->uplane;
-    uint8_t* vplane = out->vplane;
-    int32_t decimation = out->decimation;
+    int32_t out_y_stride = out->y_stride;
+    int32_t out_uv_stride = out->uv_stride;
+    int32_t out_uv_width = out->uv_width;
+    int32_t out_uv_height = out->uv_height;
+    uint8_t* out_uplane = out->uplane;
+    uint8_t* out_vplane = out->vplane;
+    int32_t out_decimation = out->decimation;
 
     int32_t in_stride_x_2 = in_stride * 2;
     int32_t in_stride_x_3 = in_stride * 3;
     int32_t in_stride_x_4 = in_stride * 4;
-    int32_t y_stride_x_2 = y_stride * 2;
-    int32_t y_stride_x_3 = y_stride * 3;
-    int32_t y_stride_x_4 = y_stride * 4;
+    int32_t out_y_stride_x_2 = out_y_stride * 2;
+    int32_t out_y_stride_x_3 = out_y_stride * 3;
+    int32_t out_y_stride_x_4 = out_y_stride * 4;
 
-    if (decimation == 2)
+    if (out_decimation == 2)
     {
-        for (int32_t y = 0; y < uv_height; y++)
+        for (int32_t y = 0; y < out_uv_height; y++)
         {
             uint8_t* psrc = in_buf;
             uint8_t* yp = out_buf;
-            uint8_t* up = uplane;
-            uint8_t* vp = vplane;
+            uint8_t* up = out_uplane;
+            uint8_t* vp = out_vplane;
 
-            for (int32_t x = 0; x < uv_width; x += 2)
+            for (int32_t x = 0; x < out_uv_width; x += 2)
             {
                 yp[0] = psrc[1];
-                yp[y_stride] = psrc[1 + in_stride];
+                yp[out_y_stride] = psrc[1 + in_stride];
                 yp[1] = psrc[2];
-                yp[1 + y_stride] = psrc[2 + in_stride];
+                yp[1 + out_y_stride] = psrc[2 + in_stride];
 
                 up[x] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[0]) + \
                     static_cast<uint16_t>(psrc[in_stride])) >> 1);
@@ -686,9 +686,9 @@ void IYU1_to_PlanarYUV(Stage* in, Stage* out)
                     static_cast<uint16_t>(psrc[3 + in_stride])) >> 1);
 
                 yp[2] = psrc[4];
-                yp[2 + y_stride] = psrc[4 + in_stride];
+                yp[2 + out_y_stride] = psrc[4 + in_stride];
                 yp[3] = psrc[5];
-                yp[3 + y_stride] = psrc[5 + in_stride];
+                yp[3 + out_y_stride] = psrc[5 + in_stride];
 
                 up[x + 1] = up[x];
                 vp[x + 1] = vp[x];
@@ -698,42 +698,42 @@ void IYU1_to_PlanarYUV(Stage* in, Stage* out)
             }
 
             in_buf += in_stride_x_2;
-            out_buf += y_stride_x_2;
+            out_buf += out_y_stride_x_2;
 
-            uplane += uv_stride;
-            vplane += uv_stride;
+            out_uplane += out_uv_stride;
+            out_vplane += out_uv_stride;
         }
     }
-    else if (decimation == 4)
+    else if (out_decimation == 4)
     {
-        for (int32_t y = 0; y < uv_height; y++)
+        for (int32_t y = 0; y < out_uv_height; y++)
         {
             uint8_t* psrc = in_buf;
             uint8_t* yp = out_buf;
-            uint8_t* up = uplane;
-            uint8_t* vp = vplane;
+            uint8_t* up = out_uplane;
+            uint8_t* vp = out_vplane;
 
-            for (int32_t x = 0; x < uv_width; x++)
+            for (int32_t x = 0; x < out_uv_width; x++)
             {
                 yp[0] = psrc[1];
-                yp[y_stride] = psrc[1 + in_stride];
-                yp[y_stride_x_2] = psrc[1 + in_stride_x_2];
-                yp[y_stride_x_3] = psrc[1 + in_stride_x_3];
+                yp[out_y_stride] = psrc[1 + in_stride];
+                yp[out_y_stride_x_2] = psrc[1 + in_stride_x_2];
+                yp[out_y_stride_x_3] = psrc[1 + in_stride_x_3];
 
                 yp[1] = psrc[2];
-                yp[1 + y_stride] = psrc[2 + in_stride];
-                yp[1 + y_stride_x_2] = psrc[2 + in_stride_x_2];
-                yp[1 + y_stride_x_3] = psrc[2 + in_stride_x_3];
+                yp[1 + out_y_stride] = psrc[2 + in_stride];
+                yp[1 + out_y_stride_x_2] = psrc[2 + in_stride_x_2];
+                yp[1 + out_y_stride_x_3] = psrc[2 + in_stride_x_3];
 
                 yp[2] = psrc[4];
-                yp[2 + y_stride] = psrc[4 + in_stride];
-                yp[2 + y_stride_x_2] = psrc[4 + in_stride_x_2];
-                yp[2 + y_stride_x_3] = psrc[4 + in_stride_x_3];
+                yp[2 + out_y_stride] = psrc[4 + in_stride];
+                yp[2 + out_y_stride_x_2] = psrc[4 + in_stride_x_2];
+                yp[2 + out_y_stride_x_3] = psrc[4 + in_stride_x_3];
 
                 yp[3] = psrc[5];
-                yp[3 + y_stride] = psrc[5 + in_stride];
-                yp[3 + y_stride_x_2] = psrc[5 + in_stride_x_2];
-                yp[3 + y_stride_x_3] = psrc[5 + in_stride_x_3];
+                yp[3 + out_y_stride] = psrc[5 + in_stride];
+                yp[3 + out_y_stride_x_2] = psrc[5 + in_stride_x_2];
+                yp[3 + out_y_stride_x_3] = psrc[5 + in_stride_x_3];
 
                 up[x] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[0]) + \
                     static_cast<uint16_t>(psrc[in_stride]) + \
@@ -749,10 +749,10 @@ void IYU1_to_PlanarYUV(Stage* in, Stage* out)
             }
 
             in_buf += in_stride_x_4;
-            out_buf += y_stride_x_4;
+            out_buf += out_y_stride_x_4;
 
-            uplane += uv_stride;
-            vplane += uv_stride;
+            out_uplane += out_uv_stride;
+            out_vplane += out_uv_stride;
         }
     }
 }
@@ -909,12 +909,12 @@ void PlanarYUV_to_IYU2(Stage* in, Stage* out)
     uint8_t* in_buf = in->buf;
     int32_t width = in->width;
     int32_t height = in->height;
-    int32_t y_stride = in->y_stride;
-    int32_t uv_stride = in->uv_stride;
-    int32_t uv_width = in->uv_width;
-    int32_t uv_height = in->uv_height;
-    uint8_t* uplane = in->uplane;
-    uint8_t* vplane = in->vplane;
+    int32_t in_y_stride = in->y_stride;
+    int32_t in_uv_stride = in->uv_stride;
+    int32_t in_uv_width = in->uv_width;
+    int32_t in_uv_height = in->uv_height;
+    uint8_t* in_uplane = in->uplane;
+    uint8_t* in_vplane = in->vplane;
     int32_t in_decimation = in->decimation;
 
     uint8_t* out_buf = out->buf;
@@ -922,16 +922,16 @@ void PlanarYUV_to_IYU2(Stage* in, Stage* out)
 
     int32_t out_stride_x_2 = out_stride * 2;
     int32_t out_stride_x_4 = out_stride * 4;
-    int32_t y_stride_x_2 = y_stride * 2;
-    int32_t y_stride_x_4 = y_stride * 4;
+    int32_t in_y_stride_x_2 = in_y_stride * 2;
+    int32_t in_y_stride_x_4 = in_y_stride * 4;
 
     if (in_decimation == 2)
     {
         for (int32_t y = 0; y < height; y += 2)
         {
             uint8_t* yp = in_buf;
-            uint8_t* up = uplane;
-            uint8_t* vp = vplane;
+            uint8_t* up = in_uplane;
+            uint8_t* vp = in_vplane;
             uint8_t* pdst = out_buf;
 
             for (int32_t x = 0; x < width; x += 2)
@@ -943,7 +943,7 @@ void PlanarYUV_to_IYU2(Stage* in, Stage* out)
 
                 // column 1 row 2
                 pdst[out_stride] = *up;
-                pdst[1 + out_stride] = yp[y_stride];
+                pdst[1 + out_stride] = yp[in_y_stride];
                 pdst[2 + out_stride] = *vp;
 
                 // column 2 row 1
@@ -953,7 +953,7 @@ void PlanarYUV_to_IYU2(Stage* in, Stage* out)
 
                 // column 2 row 2
                 pdst[3 + out_stride] = *up;
-                pdst[4 + out_stride] = yp[1 + y_stride];
+                pdst[4 + out_stride] = yp[1 + in_y_stride];
                 pdst[5 + out_stride] = *vp;
                 pdst += 6;
                 yp += 2;
@@ -961,9 +961,9 @@ void PlanarYUV_to_IYU2(Stage* in, Stage* out)
                 vp += 1;
             }
 
-            in_buf += y_stride_x_2;
-            uplane += uv_stride;
-            vplane += uv_stride;
+            in_buf += in_y_stride_x_2;
+            in_uplane += in_uv_stride;
+            in_vplane += in_uv_stride;
             out_buf += out_stride_x_2;
         }
     }
@@ -972,8 +972,8 @@ void PlanarYUV_to_IYU2(Stage* in, Stage* out)
         for (int32_t y = 0; y < height; y += 4)
         {
             uint8_t* yp = in_buf;
-            uint8_t* up = uplane;
-            uint8_t* vp = vplane;
+            uint8_t* up = in_uplane;
+            uint8_t* vp = in_vplane;
             uint8_t* pdst = out_buf;
 
             for (int32_t x = 0; x < width; x += 4)
@@ -983,7 +983,7 @@ void PlanarYUV_to_IYU2(Stage* in, Stage* out)
                     for (int32_t col = 0; col < 4; col++)
                     {
                         pdst[col * 3 + out_stride * row] = *up;
-                        pdst[1 + col * 3 + out_stride * row] = yp[col + y_stride * row];
+                        pdst[1 + col * 3 + out_stride * row] = yp[col + in_y_stride * row];
                         pdst[2 + col * 3 + out_stride * row] = *vp;
                     }
                 }
@@ -994,9 +994,9 @@ void PlanarYUV_to_IYU2(Stage* in, Stage* out)
                 vp++;
             }
 
-            in_buf += y_stride_x_4;
-            uplane += uv_stride;
-            vplane += uv_stride;
+            in_buf += in_y_stride_x_4;
+            in_uplane += in_uv_stride;
+            in_vplane += in_uv_stride;
             out_buf += out_stride_x_4;
         }
     }
@@ -1010,34 +1010,34 @@ void IYU2_to_PlanarYUV(Stage* in, Stage* out)
     int32_t height = in->height;
 
     uint8_t* out_buf = out->buf;
-    int32_t y_stride = out->y_stride;
-    int32_t uv_stride = out->uv_stride;
-    int32_t uv_width = out->uv_width;
-    int32_t uv_height = out->uv_height;
-    uint8_t* uplane = out->uplane;
-    uint8_t* vplane = out->vplane;
-    int32_t decimation = out->decimation;
+    int32_t out_y_stride = out->y_stride;
+    int32_t out_uv_stride = out->uv_stride;
+    int32_t out_uv_width = out->uv_width;
+    int32_t out_uv_height = out->uv_height;
+    uint8_t* out_uplane = out->uplane;
+    uint8_t* out_vplane = out->vplane;
+    int32_t out_decimation = out->decimation;
 
     int32_t in_stride_x_2 = in_stride * 2;
     int32_t in_stride_x_4 = in_stride * 4;
-    int32_t y_stride_x_2 = y_stride * 2;
-    int32_t y_stride_x_4 = y_stride * 4;
+    int32_t out_y_stride_x_2 = out_y_stride * 2;
+    int32_t out_y_stride_x_4 = out_y_stride * 4;
 
-    if (decimation == 2)
+    if (out_decimation == 2)
     {
-        for (int32_t y = 0; y < uv_height; y++)
+        for (int32_t y = 0; y < out_uv_height; y++)
         {
             uint8_t* psrc = in_buf;
             uint8_t* yp = out_buf;
-            uint8_t* up = uplane;
-            uint8_t* vp = vplane;
+            uint8_t* up = out_uplane;
+            uint8_t* vp = out_vplane;
 
-            for (int32_t x = 0; x < uv_width; x++)
+            for (int32_t x = 0; x < out_uv_width; x++)
             {
                 yp[0] = psrc[1];
-                yp[y_stride] = psrc[1 + in_stride];
+                yp[out_y_stride] = psrc[1 + in_stride];
                 yp[1] = psrc[4];
-                yp[1 + y_stride] = psrc[4 + in_stride];
+                yp[1 + out_y_stride] = psrc[4 + in_stride];
 
                 up[x] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[0]) + \
                     static_cast<uint16_t>(psrc[in_stride]) + \
@@ -1054,13 +1054,13 @@ void IYU2_to_PlanarYUV(Stage* in, Stage* out)
             }
 
             in_buf += in_stride_x_2;
-            out_buf += y_stride_x_2;
+            out_buf += out_y_stride_x_2;
 
-            uplane += uv_stride;
-            vplane += uv_stride;
+            out_uplane += out_uv_stride;
+            out_vplane += out_uv_stride;
         }
     }
-    else if (decimation == 4)
+    else if (out_decimation == 4)
     {
         for (int32_t y = 0; y < height; y += 4)
         {
@@ -1093,23 +1093,23 @@ void IYU2_to_PlanarYUV(Stage* in, Stage* out)
                     v_avg += psrc[11 + is];
 
                     is += in_stride;
-                    ys += y_stride;
+                    ys += out_y_stride;
                 }
 
                 u_avg >>= 4;
                 v_avg >>= 4;
 
-                uplane[x >> 2] = static_cast<uint8_t>(u_avg);
-                vplane[x >> 2] = static_cast<uint8_t>(v_avg);
+                out_uplane[x >> 2] = static_cast<uint8_t>(u_avg);
+                out_vplane[x >> 2] = static_cast<uint8_t>(v_avg);
 
                 psrc += 12;
                 yp += 4;
             }
             in_buf += (in_stride_x_4);
-            out_buf += (y_stride_x_4);
+            out_buf += (out_y_stride_x_4);
 
-            uplane += uv_stride;
-            vplane += uv_stride;
+            out_uplane += out_uv_stride;
+            out_vplane += out_uv_stride;
         }
     }
 }
@@ -1123,22 +1123,22 @@ void IYU2_to_IMCx(Stage* in, Stage* out)
 
     uint8_t* out_buf = out->buf;
     int32_t out_stride = out->stride;
-    int32_t uv_width = out->uv_width;
-    int32_t uv_height = out->uv_height;
-    uint8_t* uplane = out->uplane;
-    uint8_t* vplane = out->vplane;
+    int32_t out_uv_width = out->uv_width;
+    int32_t out_uv_height = out->uv_height;
+    uint8_t* out_uplane = out->uplane;
+    uint8_t* out_vplane = out->vplane;
 
     int32_t in_stride_x_2 = in_stride * 2;
     int32_t out_stride_x_2 = out_stride * 2;
 
-    for (int32_t y = 0; y < uv_height; y++)
+    for (int32_t y = 0; y < out_uv_height; y++)
     {
         uint8_t* psrc = in_buf;
         uint8_t* yp = out_buf;
-        uint8_t* up = uplane;
-        uint8_t* vp = vplane;
+        uint8_t* up = out_uplane;
+        uint8_t* vp = out_vplane;
 
-        for (int32_t x = 0; x < uv_width; x++)
+        for (int32_t x = 0; x < out_uv_width; x++)
         {
             yp[0] = psrc[1];
             yp[out_stride] = psrc[1 + in_stride];
@@ -1162,8 +1162,8 @@ void IYU2_to_IMCx(Stage* in, Stage* out)
         in_buf += in_stride_x_2;
         out_buf += out_stride_x_2;
 
-        uplane += out_stride;
-        vplane += out_stride;
+        out_uplane += out_stride;
+        out_vplane += out_stride;
     }
 }
 
@@ -1173,10 +1173,8 @@ void IMCx_to_IYU2(Stage* in, Stage* out)
     int32_t in_stride = in->stride;
     int32_t width = in->width;
     int32_t height = in->height;
-    int32_t uv_width = in->uv_width;
-    int32_t uv_height = in->uv_height;
-    uint8_t* uplane = in->uplane;
-    uint8_t* vplane = in->vplane;
+    uint8_t* in_uplane = in->uplane;
+    uint8_t* in_vplane = in->vplane;
 
     uint8_t* out_buf = out->buf;
     int32_t out_stride = out->stride;
@@ -1219,8 +1217,8 @@ void IMCx_to_IYU2(Stage* in, Stage* out)
         }
 
         in_buf += in_stride_x_2;
-        uplane += in_stride;
-        vplane += in_stride;
+        in_uplane += in_stride;
+        in_vplane += in_stride;
         out_buf += out_stride_x_2;
     }
 }
@@ -1320,12 +1318,10 @@ void PlanarYUV_to_Y41P(Stage* in, Stage* out)
     uint8_t* in_buf = in->buf;
     int32_t width = in->width;
     int32_t height = in->height;
-    int32_t y_stride = in->y_stride;
-    int32_t uv_stride = in->uv_stride;
-    int32_t uv_width = in->uv_width;
-    int32_t uv_height = in->uv_height;
-    uint8_t* uplane = in->uplane;
-    uint8_t* vplane = in->vplane;
+    int32_t in_y_stride = in->y_stride;
+    int32_t in_uv_stride = in->uv_stride;
+    uint8_t* in_uplane = in->uplane;
+    uint8_t* in_vplane = in->vplane;
     int32_t in_decimation = in->decimation;
 
     uint8_t* out_buf = out->buf;
@@ -1334,9 +1330,9 @@ void PlanarYUV_to_Y41P(Stage* in, Stage* out)
     int32_t out_stride_x_2 = out_stride * 2;
     int32_t out_stride_x_3 = out_stride * 3;
     int32_t out_stride_x_4 = out_stride * 4;
-    int32_t y_stride_x_2 = y_stride * 2;
-    int32_t y_stride_x_3 = y_stride * 3;
-    int32_t y_stride_x_4 = y_stride * 4;
+    int32_t in_y_stride_x_2 = in_y_stride * 2;
+    int32_t in_y_stride_x_3 = in_y_stride * 3;
+    int32_t in_y_stride_x_4 = in_y_stride * 4;
 
     uint8_t* yp;
     uint8_t* up;
@@ -1348,8 +1344,8 @@ void PlanarYUV_to_Y41P(Stage* in, Stage* out)
         for (int32_t y = 0; y < height - 2; y += 2)
         {
             yp = in_buf;
-            up = uplane;
-            vp = vplane;
+            up = in_uplane;
+            vp = in_vplane;
             pdst = out_buf;
 
             for (int32_t x = 0; x < width; x += 8)
@@ -1363,16 +1359,16 @@ void PlanarYUV_to_Y41P(Stage* in, Stage* out)
 
                 pdst[out_stride] = static_cast<uint8_t>((static_cast<uint16_t>(up[0]) + \
                     static_cast<uint16_t>(up[1]) + \
-                    static_cast<uint16_t>(up[uv_stride]) + \
-                    static_cast<uint16_t>(up[1 + uv_stride])) >> 2);
+                    static_cast<uint16_t>(up[in_uv_stride]) + \
+                    static_cast<uint16_t>(up[1 + in_uv_stride])) >> 2);
                 pdst[2 + out_stride] = static_cast<uint8_t>((static_cast<uint16_t>(vp[0]) + \
                     static_cast<uint16_t>(vp[1]) + \
-                    static_cast<uint16_t>(vp[uv_stride]) + \
-                    static_cast<uint16_t>(vp[1 + uv_stride])) >> 2);
-                pdst[1 + out_stride] = yp[y_stride];
-                pdst[3 + out_stride] = yp[1 + y_stride];
-                pdst[5 + out_stride] = yp[2 + y_stride];
-                pdst[7 + out_stride] = yp[3 + y_stride];
+                    static_cast<uint16_t>(vp[in_uv_stride]) + \
+                    static_cast<uint16_t>(vp[1 + in_uv_stride])) >> 2);
+                pdst[1 + out_stride] = yp[in_y_stride];
+                pdst[3 + out_stride] = yp[1 + in_y_stride];
+                pdst[5 + out_stride] = yp[2 + in_y_stride];
+                pdst[7 + out_stride] = yp[3 + in_y_stride];
 
                 pdst[4] = static_cast<uint8_t>((static_cast<uint16_t>(up[2]) + static_cast<uint16_t>(up[3])) >> 1);
                 pdst[6] = static_cast<uint8_t>((static_cast<uint16_t>(vp[2]) + static_cast<uint16_t>(vp[3])) >> 1);
@@ -1383,16 +1379,16 @@ void PlanarYUV_to_Y41P(Stage* in, Stage* out)
 
                 pdst[4 + out_stride] = static_cast<uint8_t>((static_cast<uint16_t>(up[2]) + \
                     static_cast<uint16_t>(up[3]) + \
-                    static_cast<uint16_t>(up[2 + uv_stride]) + \
-                    static_cast<uint16_t>(up[3 + uv_stride])) >> 2);
+                    static_cast<uint16_t>(up[2 + in_uv_stride]) + \
+                    static_cast<uint16_t>(up[3 + in_uv_stride])) >> 2);
                 pdst[6 + out_stride] = static_cast<uint8_t>((static_cast<uint16_t>(vp[2]) + \
                     static_cast<uint16_t>(vp[3]) + \
-                    static_cast<uint16_t>(vp[2 + uv_stride]) + \
-                    static_cast<uint16_t>(vp[3 + uv_stride])) >> 2);
-                pdst[8 + out_stride] = yp[4 + y_stride];
-                pdst[9 + out_stride] = yp[5 + y_stride];
-                pdst[10 + out_stride] = yp[6 + y_stride];
-                pdst[11 + out_stride] = yp[7 + y_stride];
+                    static_cast<uint16_t>(vp[2 + in_uv_stride]) + \
+                    static_cast<uint16_t>(vp[3 + in_uv_stride])) >> 2);
+                pdst[8 + out_stride] = yp[4 + in_y_stride];
+                pdst[9 + out_stride] = yp[5 + in_y_stride];
+                pdst[10 + out_stride] = yp[6 + in_y_stride];
+                pdst[11 + out_stride] = yp[7 + in_y_stride];
 
                 pdst += 12;
                 yp += 8;
@@ -1401,15 +1397,15 @@ void PlanarYUV_to_Y41P(Stage* in, Stage* out)
             }
 
             in_buf += y_stride_x_2;
-            uplane += uv_stride;
-            vplane += uv_stride;
+            in_uplane += in_uv_stride;
+            in_vplane += in_uv_stride;
             out_buf += out_stride_x_2;
         }
 
         // Get the last line without reading past the u & v buffers
         yp = in_buf;
-        up = uplane;
-        vp = vplane;
+        up = in_uplane;
+        vp = in_vplane;
         pdst = out_buf;
 
         for (int32_t x = 0; x < width; x += 8)
@@ -1421,10 +1417,10 @@ void PlanarYUV_to_Y41P(Stage* in, Stage* out)
             pdst[5] = yp[2];
             pdst[7] = yp[3];
 
-            pdst[1 + out_stride] = yp[y_stride];
-            pdst[3 + out_stride] = yp[1 + y_stride];
-            pdst[5 + out_stride] = yp[2 + y_stride];
-            pdst[7 + out_stride] = yp[3 + y_stride];
+            pdst[1 + out_stride] = yp[in_y_stride];
+            pdst[3 + out_stride] = yp[1 + in_y_stride];
+            pdst[5 + out_stride] = yp[2 + in_y_stride];
+            pdst[7 + out_stride] = yp[3 + in_y_stride];
 
             pdst[4] = pdst[4 + out_stride] = static_cast<uint8_t>((static_cast<uint16_t>(up[2]) + static_cast<uint16_t>(up[3])) >> 1);
             pdst[6] = pdst[6 + out_stride] = static_cast<uint8_t>((static_cast<uint16_t>(vp[2]) + static_cast<uint16_t>(vp[3])) >> 1);
@@ -1433,10 +1429,10 @@ void PlanarYUV_to_Y41P(Stage* in, Stage* out)
             pdst[10] = yp[6];
             pdst[11] = yp[7];
 
-            pdst[8 + out_stride] = yp[4 + y_stride];
-            pdst[9 + out_stride] = yp[5 + y_stride];
-            pdst[10 + out_stride] = yp[6 + y_stride];
-            pdst[11 + out_stride] = yp[7 + y_stride];
+            pdst[8 + out_stride] = yp[4 + in_y_stride];
+            pdst[9 + out_stride] = yp[5 + in_y_stride];
+            pdst[10 + out_stride] = yp[6 + in_y_stride];
+            pdst[11 + out_stride] = yp[7 + in_y_stride];
 
             pdst += 12;
             yp += 8;
@@ -1449,8 +1445,8 @@ void PlanarYUV_to_Y41P(Stage* in, Stage* out)
         for (int32_t y = 0; y < height - 4; y += 4)
         {
             yp = in_buf;
-            up = uplane;
-            vp = vplane;
+            up = in_uplane;
+            vp = in_vplane;
             pdst = out_buf;
 
             for (int32_t x = 0; x < width; x += 8)
@@ -1463,31 +1459,31 @@ void PlanarYUV_to_Y41P(Stage* in, Stage* out)
                 pdst[7] = yp[3];
 
                 pdst[out_stride] = static_cast<uint8_t>(((static_cast<int32_t>(up[0]) * 768) + \
-                    (static_cast<int32_t>(up[uv_stride]) * 256)) >> 10);
+                    (static_cast<int32_t>(up[in_uv_stride]) * 256)) >> 10);
                 pdst[2 + out_stride] = static_cast<uint8_t>(((static_cast<int32_t>(vp[0]) * 768) + \
-                    (static_cast<int32_t>(vp[uv_stride]) * 256)) >> 10);
-                pdst[1 + out_stride] = yp[y_stride];
-                pdst[3 + out_stride] = yp[1 + y_stride];
-                pdst[5 + out_stride] = yp[2 + y_stride];
-                pdst[7 + out_stride] = yp[3 + y_stride];
+                    (static_cast<int32_t>(vp[in_uv_stride]) * 256)) >> 10);
+                pdst[1 + out_stride] = yp[in_y_stride];
+                pdst[3 + out_stride] = yp[1 + in_y_stride];
+                pdst[5 + out_stride] = yp[2 + in_y_stride];
+                pdst[7 + out_stride] = yp[3 + in_y_stride];
 
                 pdst[out_stride_x_2] = static_cast<uint8_t>((static_cast<uint16_t>(up[0]) + \
-                    static_cast<uint16_t>(up[uv_stride])) >> 1);
+                    static_cast<uint16_t>(up[in_uv_stride])) >> 1);
                 pdst[2 + out_stride_x_2] = static_cast<uint8_t>((static_cast<uint16_t>(vp[0]) + \
-                    static_cast<uint16_t>(vp[uv_stride])) >> 1);
-                pdst[1 + out_stride_x_2] = yp[y_stride_x_2];
-                pdst[3 + out_stride_x_2] = yp[1 + y_stride_x_2];
-                pdst[5 + out_stride_x_2] = yp[2 + y_stride_x_2];
-                pdst[7 + out_stride_x_2] = yp[3 + y_stride_x_2];
+                    static_cast<uint16_t>(vp[in_uv_stride])) >> 1);
+                pdst[1 + out_stride_x_2] = yp[in_y_stride_x_2];
+                pdst[3 + out_stride_x_2] = yp[1 + in_y_stride_x_2];
+                pdst[5 + out_stride_x_2] = yp[2 + in_y_stride_x_2];
+                pdst[7 + out_stride_x_2] = yp[3 + in_y_stride_x_2];
 
                 pdst[out_stride_x_3] = static_cast<uint8_t>(((static_cast<int32_t>(up[0]) * 256) + \
-                    (static_cast<int32_t>(up[uv_stride]) * 768)) >> 10);
+                    (static_cast<int32_t>(up[in_uv_stride]) * 768)) >> 10);
                 pdst[2 + out_stride_x_3] = static_cast<uint8_t>(((static_cast<int32_t>(vp[0]) * 256) + \
-                    (static_cast<int32_t>(vp[uv_stride]) * 768)) >> 10);
-                pdst[1 + out_stride_x_3] = yp[y_stride_x_3];
-                pdst[3 + out_stride_x_3] = yp[1 + y_stride_x_3];
-                pdst[5 + out_stride_x_3] = yp[2 + y_stride_x_3];
-                pdst[7 + out_stride_x_3] = yp[3 + y_stride_x_3];
+                    (static_cast<int32_t>(vp[in_uv_stride]) * 768)) >> 10);
+                pdst[1 + out_stride_x_3] = yp[in_y_stride_x_3];
+                pdst[3 + out_stride_x_3] = yp[1 + in_y_stride_x_3];
+                pdst[5 + out_stride_x_3] = yp[2 + in_y_stride_x_3];
+                pdst[7 + out_stride_x_3] = yp[3 + in_y_stride_x_3];
 
                 pdst[4] = up[1];
                 pdst[6] = vp[1];
@@ -1497,31 +1493,31 @@ void PlanarYUV_to_Y41P(Stage* in, Stage* out)
                 pdst[11] = yp[7];
 
                 pdst[4 + out_stride] = static_cast<uint8_t>(((static_cast<int32_t>(up[1]) * 768) + \
-                    (static_cast<int32_t>(up[1 + uv_stride]) * 256)) >> 10);
+                    (static_cast<int32_t>(up[1 + in_uv_stride]) * 256)) >> 10);
                 pdst[6 + out_stride] = static_cast<uint8_t>(((static_cast<int32_t>(vp[1]) * 768) + \
-                    (static_cast<int32_t>(vp[1 + uv_stride]) * 256)) >> 10);
-                pdst[8 + out_stride] = yp[4 + y_stride];
-                pdst[9 + out_stride] = yp[5 + y_stride];
-                pdst[10 + out_stride] = yp[6 + y_stride];
-                pdst[11 + out_stride] = yp[7 + y_stride];
+                    (static_cast<int32_t>(vp[1 + in_uv_stride]) * 256)) >> 10);
+                pdst[8 + out_stride] = yp[4 + in_y_stride];
+                pdst[9 + out_stride] = yp[5 + in_y_stride];
+                pdst[10 + out_stride] = yp[6 + in_y_stride];
+                pdst[11 + out_stride] = yp[7 + in_y_stride];
 
                 pdst[4 + out_stride_x_2] = static_cast<uint8_t>((static_cast<uint16_t>(up[1]) + \
-                    static_cast<uint16_t>(up[1 + uv_stride])) >> 1);
+                    static_cast<uint16_t>(up[1 + in_uv_stride])) >> 1);
                 pdst[6 + out_stride_x_2] = static_cast<uint8_t>((static_cast<uint16_t>(vp[1]) + \
-                    static_cast<uint16_t>(vp[1 + uv_stride])) >> 1);
-                pdst[8 + out_stride_x_2] = yp[4 + y_stride_x_2];
-                pdst[9 + out_stride_x_2] = yp[5 + y_stride_x_2];
-                pdst[10 + out_stride_x_2] = yp[6 + y_stride_x_2];
-                pdst[11 + out_stride_x_2] = yp[7 + y_stride_x_2];
+                    static_cast<uint16_t>(vp[1 + in_uv_stride])) >> 1);
+                pdst[8 + out_stride_x_2] = yp[4 + in_y_stride_x_2];
+                pdst[9 + out_stride_x_2] = yp[5 + in_y_stride_x_2];
+                pdst[10 + out_stride_x_2] = yp[6 + in_y_stride_x_2];
+                pdst[11 + out_stride_x_2] = yp[7 + in_y_stride_x_2];
 
                 pdst[4 + out_stride_x_3] = static_cast<uint8_t>(((static_cast<int32_t>(up[1]) * 256) + \
-                    (static_cast<int32_t>(up[1 + uv_stride]) * 768)) >> 10);
+                    (static_cast<int32_t>(up[1 + in_uv_stride]) * 768)) >> 10);
                 pdst[6 + out_stride_x_3] = static_cast<uint8_t>(((static_cast<int32_t>(vp[1]) * 256) + \
-                    (static_cast<int32_t>(vp[1 + uv_stride]) * 768)) >> 10);
-                pdst[8 + out_stride_x_3] = yp[4 + y_stride_x_3];
-                pdst[9 + out_stride_x_3] = yp[5 + y_stride_x_3];
-                pdst[10 + out_stride_x_3] = yp[6 + y_stride_x_3];
-                pdst[11 + out_stride_x_3] = yp[7 + y_stride_x_3];
+                    (static_cast<int32_t>(vp[1 + in_uv_stride]) * 768)) >> 10);
+                pdst[8 + out_stride_x_3] = yp[4 + in_y_stride_x_3];
+                pdst[9 + out_stride_x_3] = yp[5 + in_y_stride_x_3];
+                pdst[10 + out_stride_x_3] = yp[6 + in_y_stride_x_3];
+                pdst[11 + out_stride_x_3] = yp[7 + in_y_stride_x_3];
 
                 pdst += 12;
                 yp += 8;
@@ -1529,16 +1525,16 @@ void PlanarYUV_to_Y41P(Stage* in, Stage* out)
                 vp += 2;
             }
 
-            in_buf += y_stride_x_4;
-            uplane += uv_stride;
-            vplane += uv_stride;
+            in_buf += in_y_stride_x_4;
+            in_uplane += in_uv_stride;
+            in_vplane += in_uv_stride;
             out_buf += out_stride_x_4;
         }
 
         // Get the last line without reading past the u & v buffers
         yp = in_buf;
-        up = uplane;
-        vp = vplane;
+        up = in_uplane;
+        vp = in_vplane;
         pdst = out_buf;
 
         for (int32_t x = 0; x < width; x += 8)
@@ -1550,20 +1546,20 @@ void PlanarYUV_to_Y41P(Stage* in, Stage* out)
             pdst[5] = yp[2];
             pdst[7] = yp[3];
 
-            pdst[1 + out_stride] = yp[y_stride];
-            pdst[3 + out_stride] = yp[1 + y_stride];
-            pdst[5 + out_stride] = yp[2 + y_stride];
-            pdst[7 + out_stride] = yp[3 + y_stride];
+            pdst[1 + out_stride] = yp[in_y_stride];
+            pdst[3 + out_stride] = yp[1 + in_y_stride];
+            pdst[5 + out_stride] = yp[2 + in_y_stride];
+            pdst[7 + out_stride] = yp[3 + in_y_stride];
 
-            pdst[1 + out_stride_x_2] = yp[y_stride_x_2];
-            pdst[3 + out_stride_x_2] = yp[1 + y_stride_x_2];
-            pdst[5 + out_stride_x_2] = yp[2 + y_stride_x_2];
-            pdst[7 + out_stride_x_2] = yp[3 + y_stride_x_2];
+            pdst[1 + out_stride_x_2] = yp[in_y_stride_x_2];
+            pdst[3 + out_stride_x_2] = yp[1 + in_y_stride_x_2];
+            pdst[5 + out_stride_x_2] = yp[2 + in_y_stride_x_2];
+            pdst[7 + out_stride_x_2] = yp[3 + in_y_stride_x_2];
 
-            pdst[1 + out_stride_x_3] = yp[y_stride_x_3];
-            pdst[3 + out_stride_x_3] = yp[1 + y_stride_x_3];
-            pdst[5 + out_stride_x_3] = yp[2 + y_stride_x_3];
-            pdst[7 + out_stride_x_3] = yp[3 + y_stride_x_3];
+            pdst[1 + out_stride_x_3] = yp[in_y_stride_x_3];
+            pdst[3 + out_stride_x_3] = yp[1 + in_y_stride_x_3];
+            pdst[5 + out_stride_x_3] = yp[2 + in_y_stride_x_3];
+            pdst[7 + out_stride_x_3] = yp[3 + in_y_stride_x_3];
 
             pdst[4] = pdst[4 + out_stride] = pdst[4 + out_stride_x_2] = pdst[4 + out_stride_x_3] = up[1];
             pdst[6] = pdst[6 + out_stride] = pdst[6 + out_stride_x_2] = pdst[6 + out_stride_x_3] = vp[1];
@@ -1572,20 +1568,20 @@ void PlanarYUV_to_Y41P(Stage* in, Stage* out)
             pdst[10] = yp[6];
             pdst[11] = yp[7];
 
-            pdst[8 + out_stride] = yp[4 + y_stride];
-            pdst[9 + out_stride] = yp[5 + y_stride];
-            pdst[10 + out_stride] = yp[6 + y_stride];
-            pdst[11 + out_stride] = yp[7 + y_stride];
+            pdst[8 + out_stride] = yp[4 + in_y_stride];
+            pdst[9 + out_stride] = yp[5 + in_y_stride];
+            pdst[10 + out_stride] = yp[6 + in_y_stride];
+            pdst[11 + out_stride] = yp[7 + in_y_stride];
 
-            pdst[8 + out_stride_x_2] = yp[4 + y_stride_x_2];
-            pdst[9 + out_stride_x_2] = yp[5 + y_stride_x_2];
-            pdst[10 + out_stride_x_2] = yp[6 + y_stride_x_2];
-            pdst[11 + out_stride_x_2] = yp[7 + y_stride_x_2];
+            pdst[8 + out_stride_x_2] = yp[4 + in_y_stride_x_2];
+            pdst[9 + out_stride_x_2] = yp[5 + in_y_stride_x_2];
+            pdst[10 + out_stride_x_2] = yp[6 + in_y_stride_x_2];
+            pdst[11 + out_stride_x_2] = yp[7 + in_y_stride_x_2];
 
-            pdst[8 + out_stride_x_3] = yp[4 + y_stride_x_3];
-            pdst[9 + out_stride_x_3] = yp[5 + y_stride_x_3];
-            pdst[10 + out_stride_x_3] = yp[6 + y_stride_x_3];
-            pdst[11 + out_stride_x_3] = yp[7 + y_stride_x_3];
+            pdst[8 + out_stride_x_3] = yp[4 + in_y_stride_x_3];
+            pdst[9 + out_stride_x_3] = yp[5 + in_y_stride_x_3];
+            pdst[10 + out_stride_x_3] = yp[6 + in_y_stride_x_3];
+            pdst[11 + out_stride_x_3] = yp[7 + in_y_stride_x_3];
 
             pdst += 12;
             yp += 8;
@@ -1600,12 +1596,12 @@ void PlanarYUV_to_Y41T(Stage* in, Stage* out)
     uint8_t* in_buf = in->buf;
     int32_t width = in->width;
     int32_t height = in->height;
-    int32_t y_stride = in->y_stride;
-    int32_t uv_stride = in->uv_stride;
-    int32_t uv_width = in->uv_width;
-    int32_t uv_height = in->uv_height;
-    uint8_t* uplane = in->uplane;
-    uint8_t* vplane = in->vplane;
+    int32_t in_y_stride = in->y_stride;
+    int32_t in_uv_stride = in->uv_stride;
+    int32_t in_uv_width = in->uv_width;
+    int32_t in_uv_height = in->uv_height;
+    uint8_t* in_uplane = in->uplane;
+    uint8_t* in_vplane = in->vplane;
     int32_t in_decimation = in->decimation;
 
     uint8_t* out_buf = out->buf;
@@ -1614,9 +1610,9 @@ void PlanarYUV_to_Y41T(Stage* in, Stage* out)
     int32_t out_stride_x_2 = out_stride * 2;
     int32_t out_stride_x_3 = out_stride * 3;
     int32_t out_stride_x_4 = out_stride * 4;
-    int32_t y_stride_x_2 = y_stride * 2;
-    int32_t y_stride_x_3 = y_stride * 3;
-    int32_t y_stride_x_4 = y_stride * 4;
+    int32_t in_y_stride_x_2 = in_y_stride * 2;
+    int32_t in_y_stride_x_3 = in_y_stride * 3;
+    int32_t in_y_stride_x_4 = in_y_stride * 4;
 
     uint8_t* yp;
     uint8_t* up;
@@ -1628,8 +1624,8 @@ void PlanarYUV_to_Y41T(Stage* in, Stage* out)
         for (int32_t y = 0; y < height - 2; y += 2)
         {
             yp = in_buf;
-            up = uplane;
-            vp = vplane;
+            up = in_uplane;
+            vp = in_vplane;
             pdst = out_buf;
 
             for (int32_t x = 0; x < width; x += 8)
@@ -1643,16 +1639,16 @@ void PlanarYUV_to_Y41T(Stage* in, Stage* out)
 
                 pdst[out_stride] = static_cast<uint8_t>((static_cast<uint16_t>(up[0]) + \
                     static_cast<uint16_t>(up[1]) + \
-                    static_cast<uint16_t>(up[uv_stride]) + \
-                    static_cast<uint16_t>(up[1 + uv_stride])) >> 2);
+                    static_cast<uint16_t>(up[in_uv_stride]) + \
+                    static_cast<uint16_t>(up[1 + in_uv_stride])) >> 2);
                 pdst[2 + out_stride] = static_cast<uint8_t>((static_cast<uint16_t>(vp[0]) + \
                     static_cast<uint16_t>(vp[1]) + \
-                    static_cast<uint16_t>(vp[uv_stride]) + \
-                    static_cast<uint16_t>(vp[1 + uv_stride])) >> 2);
-                pdst[1 + out_stride] = yp[y_stride] | 0x01;
-                pdst[3 + out_stride] = yp[1 + y_stride] | 0x01;
-                pdst[5 + out_stride] = yp[2 + y_stride] | 0x01;
-                pdst[7 + out_stride] = yp[3 + y_stride] | 0x01;
+                    static_cast<uint16_t>(vp[in_uv_stride]) + \
+                    static_cast<uint16_t>(vp[1 + in_uv_stride])) >> 2);
+                pdst[1 + out_stride] = yp[in_y_stride] | 0x01;
+                pdst[3 + out_stride] = yp[1 + in_y_stride] | 0x01;
+                pdst[5 + out_stride] = yp[2 + in_ y_stride] | 0x01;
+                pdst[7 + out_stride] = yp[3 + in_y_stride] | 0x01;
 
                 pdst[4] = static_cast<uint8_t>((static_cast<uint16_t>(up[2]) + static_cast<uint16_t>(up[3])) >> 1);
                 pdst[6] = static_cast<uint8_t>((static_cast<uint16_t>(vp[2]) + static_cast<uint16_t>(vp[3])) >> 1);
@@ -1663,16 +1659,16 @@ void PlanarYUV_to_Y41T(Stage* in, Stage* out)
 
                 pdst[4 + out_stride] = static_cast<uint8_t>((static_cast<uint16_t>(up[2]) + \
                     static_cast<uint16_t>(up[3]) + \
-                    static_cast<uint16_t>(up[2 + uv_stride]) + \
-                    static_cast<uint16_t>(up[3 + uv_stride])) >> 2);
+                    static_cast<uint16_t>(up[2 + in_uv_stride]) + \
+                    static_cast<uint16_t>(up[3 + in_uv_stride])) >> 2);
                 pdst[6 + out_stride] = static_cast<uint8_t>((static_cast<uint16_t>(vp[2]) + \
                     static_cast<uint16_t>(vp[3]) + \
-                    static_cast<uint16_t>(vp[2 + uv_stride]) + \
-                    static_cast<uint16_t>(vp[3 + uv_stride])) >> 2);
-                pdst[8 + out_stride] = yp[4 + y_stride] | 0x01;
-                pdst[9 + out_stride] = yp[5 + y_stride] | 0x01;
-                pdst[10 + out_stride] = yp[6 + y_stride] | 0x01;
-                pdst[11 + out_stride] = yp[7 + y_stride] | 0x01;
+                    static_cast<uint16_t>(vp[2 + in_uv_stride]) + \
+                    static_cast<uint16_t>(vp[3 + in_uv_stride])) >> 2);
+                pdst[8 + out_stride] = yp[4 + in_y_stride] | 0x01;
+                pdst[9 + out_stride] = yp[5 + in_y_stride] | 0x01;
+                pdst[10 + out_stride] = yp[6 + in_y_stride] | 0x01;
+                pdst[11 + out_stride] = yp[7 + in_y_stride] | 0x01;
 
                 pdst += 12;
                 yp += 8;
@@ -1681,15 +1677,15 @@ void PlanarYUV_to_Y41T(Stage* in, Stage* out)
             }
 
             in_buf += y_stride_x_2;
-            uplane += uv_stride;
-            vplane += uv_stride;
+            in_uplane += in_uv_stride;
+            in_vplane += in_uv_stride;
             out_buf += out_stride_x_2;
         }
 
         // Get the last line without reading past the u & v buffers
         yp = in_buf;
-        up = uplane;
-        vp = vplane;
+        up = in_uplane;
+        vp = in_vplane;
         pdst = out_buf;
 
         for (int32_t x = 0; x < width; x += 8)
@@ -1701,10 +1697,10 @@ void PlanarYUV_to_Y41T(Stage* in, Stage* out)
             pdst[5] = yp[2] | 0x01;
             pdst[7] = yp[3] | 0x01;
 
-            pdst[1 + out_stride] = yp[y_stride] | 0x01;
-            pdst[3 + out_stride] = yp[1 + y_stride] | 0x01;
-            pdst[5 + out_stride] = yp[2 + y_stride] | 0x01;
-            pdst[7 + out_stride] = yp[3 + y_stride] | 0x01;
+            pdst[1 + out_stride] = yp[in_y_stride] | 0x01;
+            pdst[3 + out_stride] = yp[1 + in_y_stride] | 0x01;
+            pdst[5 + out_stride] = yp[2 + in_y_stride] | 0x01;
+            pdst[7 + out_stride] = yp[3 + in_y_stride] | 0x01;
 
             pdst[4] = pdst[4 + out_stride] = static_cast<uint8_t>((static_cast<uint16_t>(up[2]) + static_cast<uint16_t>(up[3])) >> 1);
             pdst[6] = pdst[6 + out_stride] = static_cast<uint8_t>((static_cast<uint16_t>(vp[2]) + static_cast<uint16_t>(vp[3])) >> 1);
@@ -1713,10 +1709,10 @@ void PlanarYUV_to_Y41T(Stage* in, Stage* out)
             pdst[10] = yp[6] | 0x01;
             pdst[11] = yp[7] | 0x01;
 
-            pdst[8 + out_stride] = yp[4 + y_stride] | 0x01;
-            pdst[9 + out_stride] = yp[5 + y_stride] | 0x01;
-            pdst[10 + out_stride] = yp[6 + y_stride] | 0x01;
-            pdst[11 + out_stride] = yp[7 + y_stride] | 0x01;
+            pdst[8 + out_stride] = yp[4 + in_y_stride] | 0x01;
+            pdst[9 + out_stride] = yp[5 + in_y_stride] | 0x01;
+            pdst[10 + out_stride] = yp[6 + in_y_stride] | 0x01;
+            pdst[11 + out_stride] = yp[7 + in_y_stride] | 0x01;
 
             pdst += 12;
             yp += 8;
@@ -1729,8 +1725,8 @@ void PlanarYUV_to_Y41T(Stage* in, Stage* out)
         for (int32_t y = 0; y < height - 4; y += 4)
         {
             yp = in_buf;
-            up = uplane;
-            vp = vplane;
+            up = in_uplane;
+            vp = in_vplane;
             pdst = out_buf;
 
             for (int32_t x = 0; x < width; x += 8)
@@ -1743,31 +1739,31 @@ void PlanarYUV_to_Y41T(Stage* in, Stage* out)
                 pdst[7] = yp[3] | 0x01;
 
                 pdst[out_stride] = static_cast<uint8_t>(((static_cast<int32_t>(up[0]) * 768) + \
-                    (static_cast<int32_t>(up[uv_stride]) * 256)) >> 10);
+                    (static_cast<int32_t>(up[in_uv_stride]) * 256)) >> 10);
                 pdst[2 + out_stride] = static_cast<uint8_t>(((static_cast<int32_t>(vp[0]) * 768) + \
-                    (static_cast<int32_t>(vp[uv_stride]) * 256)) >> 10);
-                pdst[1 + out_stride] = yp[y_stride] | 0x01;
-                pdst[3 + out_stride] = yp[1 + y_stride] | 0x01;
-                pdst[5 + out_stride] = yp[2 + y_stride] | 0x01;
-                pdst[7 + out_stride] = yp[3 + y_stride] | 0x01;
+                    (static_cast<int32_t>(vp[in_uv_stride]) * 256)) >> 10);
+                pdst[1 + out_stride] = yp[in_y_stride] | 0x01;
+                pdst[3 + out_stride] = yp[1 + in_y_stride] | 0x01;
+                pdst[5 + out_stride] = yp[2 + in_y_stride] | 0x01;
+                pdst[7 + out_stride] = yp[3 + in_y_stride] | 0x01;
 
                 pdst[out_stride_x_2] = static_cast<uint8_t>((static_cast<uint16_t>(up[0]) + \
-                    static_cast<uint16_t>(up[uv_stride])) >> 1);
+                    static_cast<uint16_t>(up[in_uv_stride])) >> 1);
                 pdst[2 + out_stride_x_2] = static_cast<uint8_t>((static_cast<uint16_t>(vp[0]) + \
-                    static_cast<uint16_t>(vp[uv_stride])) >> 1);
-                pdst[1 + out_stride_x_2] = yp[y_stride_x_2] | 0x01;
-                pdst[3 + out_stride_x_2] = yp[1 + y_stride_x_2] | 0x01;
-                pdst[5 + out_stride_x_2] = yp[2 + y_stride_x_2] | 0x01;
-                pdst[7 + out_stride_x_2] = yp[3 + y_stride_x_2] | 0x01;
+                    static_cast<uint16_t>(vp[in_uv_stride])) >> 1);
+                pdst[1 + out_stride_x_2] = yp[in_y_stride_x_2] | 0x01;
+                pdst[3 + out_stride_x_2] = yp[1 + in_y_stride_x_2] | 0x01;
+                pdst[5 + out_stride_x_2] = yp[2 + in_y_stride_x_2] | 0x01;
+                pdst[7 + out_stride_x_2] = yp[3 + in_y_stride_x_2] | 0x01;
 
                 pdst[out_stride_x_3] = static_cast<uint8_t>(((static_cast<int32_t>(up[0]) * 256) + \
-                    (static_cast<int32_t>(up[uv_stride]) * 768)) >> 10);
+                    (static_cast<int32_t>(up[in_uv_stride]) * 768)) >> 10);
                 pdst[2 + out_stride_x_3] = static_cast<uint8_t>(((static_cast<int32_t>(vp[0]) * 256) + \
-                    (static_cast<int32_t>(vp[uv_stride]) * 768)) >> 10);
-                pdst[1 + out_stride_x_3] = yp[y_stride_x_3] | 0x01;
-                pdst[3 + out_stride_x_3] = yp[1 + y_stride_x_3] | 0x01;
-                pdst[5 + out_stride_x_3] = yp[2 + y_stride_x_3] | 0x01;
-                pdst[7 + out_stride_x_3] = yp[3 + y_stride_x_3] | 0x01;
+                    (static_cast<int32_t>(vp[in_uv_stride]) * 768)) >> 10);
+                pdst[1 + out_stride_x_3] = yp[in_y_stride_x_3] | 0x01;
+                pdst[3 + out_stride_x_3] = yp[1 + in_y_stride_x_3] | 0x01;
+                pdst[5 + out_stride_x_3] = yp[2 + in_y_stride_x_3] | 0x01;
+                pdst[7 + out_stride_x_3] = yp[3 + in_y_stride_x_3] | 0x01;
 
                 pdst[4] = up[1];
                 pdst[6] = vp[1];
@@ -1777,31 +1773,31 @@ void PlanarYUV_to_Y41T(Stage* in, Stage* out)
                 pdst[11] = yp[7] | 0x01;
 
                 pdst[4 + out_stride] = static_cast<uint8_t>(((static_cast<int32_t>(up[1]) * 768) + \
-                    (static_cast<int32_t>(up[1 + uv_stride]) * 256)) >> 10);
+                    (static_cast<int32_t>(up[1 + in_uv_stride]) * 256)) >> 10);
                 pdst[6 + out_stride] = static_cast<uint8_t>(((static_cast<int32_t>(vp[1]) * 768) + \
-                    (static_cast<int32_t>(vp[1 + uv_stride]) * 256)) >> 10);
-                pdst[8 + out_stride] = yp[4 + y_stride] | 0x01;
-                pdst[9 + out_stride] = yp[5 + y_stride] | 0x01;
-                pdst[10 + out_stride] = yp[6 + y_stride] | 0x01;
-                pdst[11 + out_stride] = yp[7 + y_stride] | 0x01;
+                    (static_cast<int32_t>(vp[1 + in_uv_stride]) * 256)) >> 10);
+                pdst[8 + out_stride] = yp[4 + in_y_stride] | 0x01;
+                pdst[9 + out_stride] = yp[5 + in_y_stride] | 0x01;
+                pdst[10 + out_stride] = yp[6 + in_y_stride] | 0x01;
+                pdst[11 + out_stride] = yp[7 + in_y_stride] | 0x01;
 
                 pdst[4 + out_stride_x_2] = static_cast<uint8_t>((static_cast<uint16_t>(up[1]) + \
-                    static_cast<uint16_t>(up[1 + uv_stride])) >> 1);
+                    static_cast<uint16_t>(up[1 + in_uv_stride])) >> 1);
                 pdst[6 + out_stride_x_2] = static_cast<uint8_t>((static_cast<uint16_t>(vp[1]) + \
-                    static_cast<uint16_t>(vp[1 + uv_stride])) >> 1);
-                pdst[8 + out_stride_x_2] = yp[4 + y_stride_x_2] | 0x01;
-                pdst[9 + out_stride_x_2] = yp[5 + y_stride_x_2] | 0x01;
-                pdst[10 + out_stride_x_2] = yp[6 + y_stride_x_2] | 0x01;
-                pdst[11 + out_stride_x_2] = yp[7 + y_stride_x_2] | 0x01;
+                    static_cast<uint16_t>(vp[1 + in_uv_stride])) >> 1);
+                pdst[8 + out_stride_x_2] = yp[4 + in_y_stride_x_2] | 0x01;
+                pdst[9 + out_stride_x_2] = yp[5 + in_y_stride_x_2] | 0x01;
+                pdst[10 + out_stride_x_2] = yp[6 + in_y_stride_x_2] | 0x01;
+                pdst[11 + out_stride_x_2] = yp[7 + in_y_stride_x_2] | 0x01;
 
                 pdst[4 + out_stride_x_3] = static_cast<uint8_t>(((static_cast<int32_t>(up[1]) * 256) + \
-                    (static_cast<int32_t>(up[1 + uv_stride]) * 768)) >> 10);
+                    (static_cast<int32_t>(up[1 + in_uv_stride]) * 768)) >> 10);
                 pdst[6 + out_stride_x_3] = static_cast<uint8_t>(((static_cast<int32_t>(vp[1]) * 256) + \
-                    (static_cast<int32_t>(vp[1 + uv_stride]) * 768)) >> 10);
-                pdst[8 + out_stride_x_3] = yp[4 + y_stride_x_3] | 0x01;
-                pdst[9 + out_stride_x_3] = yp[5 + y_stride_x_3] | 0x01;
-                pdst[10 + out_stride_x_3] = yp[6 + y_stride_x_3] | 0x01;
-                pdst[11 + out_stride_x_3] = yp[7 + y_stride_x_3] | 0x01;
+                    (static_cast<int32_t>(vp[1 + in_uv_stride]) * 768)) >> 10);
+                pdst[8 + out_stride_x_3] = yp[4 + in_y_stride_x_3] | 0x01;
+                pdst[9 + out_stride_x_3] = yp[5 + in_y_stride_x_3] | 0x01;
+                pdst[10 + out_stride_x_3] = yp[6 + in_y_stride_x_3] | 0x01;
+                pdst[11 + out_stride_x_3] = yp[7 + in_y_stride_x_3] | 0x01;
 
                 pdst += 12;
                 yp += 8;
@@ -1810,15 +1806,15 @@ void PlanarYUV_to_Y41T(Stage* in, Stage* out)
             }
 
             in_buf += y_stride_x_4;
-            uplane += uv_stride;
-            vplane += uv_stride;
+            in_uplane += in_uv_stride;
+            in_vplane += in_uv_stride;
             out_buf += out_stride_x_4;
         }
 
         // Get the last line without reading past the u & v buffers
         yp = in_buf;
-        up = uplane;
-        vp = vplane;
+        up = in_uplane;
+        vp = in_vplane;
         pdst = out_buf;
 
         for (int32_t x = 0; x < width; x += 8)
@@ -1830,20 +1826,20 @@ void PlanarYUV_to_Y41T(Stage* in, Stage* out)
             pdst[5] = yp[2] | 0x01;
             pdst[7] = yp[3] | 0x01;
 
-            pdst[1 + out_stride] = yp[y_stride] | 0x01;
-            pdst[3 + out_stride] = yp[1 + y_stride] | 0x01;
-            pdst[5 + out_stride] = yp[2 + y_stride] | 0x01;
-            pdst[7 + out_stride] = yp[3 + y_stride] | 0x01;
+            pdst[1 + out_stride] = yp[in_y_stride] | 0x01;
+            pdst[3 + out_stride] = yp[1 + in_y_stride] | 0x01;
+            pdst[5 + out_stride] = yp[2 + in_y_stride] | 0x01;
+            pdst[7 + out_stride] = yp[3 + in_y_stride] | 0x01;
 
-            pdst[1 + out_stride_x_2] = yp[y_stride_x_2] | 0x01;
-            pdst[3 + out_stride_x_2] = yp[1 + y_stride_x_2] | 0x01;
-            pdst[5 + out_stride_x_2] = yp[2 + y_stride_x_2] | 0x01;
-            pdst[7 + out_stride_x_2] = yp[3 + y_stride_x_2] | 0x01;
+            pdst[1 + out_stride_x_2] = yp[in_y_stride_x_2] | 0x01;
+            pdst[3 + out_stride_x_2] = yp[1 + in_y_stride_x_2] | 0x01;
+            pdst[5 + out_stride_x_2] = yp[2 + in_y_stride_x_2] | 0x01;
+            pdst[7 + out_stride_x_2] = yp[3 + in_y_stride_x_2] | 0x01;
 
-            pdst[1 + out_stride_x_3] = yp[y_stride_x_3] | 0x01;
-            pdst[3 + out_stride_x_3] = yp[1 + y_stride_x_3] | 0x01;
-            pdst[5 + out_stride_x_3] = yp[2 + y_stride_x_3] | 0x01;
-            pdst[7 + out_stride_x_3] = yp[3 + y_stride_x_3] | 0x01;
+            pdst[1 + out_stride_x_3] = yp[in_y_stride_x_3] | 0x01;
+            pdst[3 + out_stride_x_3] = yp[1 + in_y_stride_x_3] | 0x01;
+            pdst[5 + out_stride_x_3] = yp[2 + in_y_stride_x_3] | 0x01;
+            pdst[7 + out_stride_x_3] = yp[3 + in_y_stride_x_3] | 0x01;
 
             pdst[4] = pdst[4 + out_stride] = pdst[4 + out_stride_x_2] = pdst[4 + out_stride_x_3] = up[1];
             pdst[6] = pdst[6 + out_stride] = pdst[6 + out_stride_x_2] = pdst[6 + out_stride_x_3] = vp[1];
@@ -1852,20 +1848,20 @@ void PlanarYUV_to_Y41T(Stage* in, Stage* out)
             pdst[10] = yp[6] | 0x01;
             pdst[11] = yp[7] | 0x01;
 
-            pdst[8 + out_stride] = yp[4 + y_stride] | 0x01;
-            pdst[9 + out_stride] = yp[5 + y_stride] | 0x01;
-            pdst[10 + out_stride] = yp[6 + y_stride] | 0x01;
-            pdst[11 + out_stride] = yp[7 + y_stride] | 0x01;
+            pdst[8 + out_stride] = yp[4 + in_y_stride] | 0x01;
+            pdst[9 + out_stride] = yp[5 + in_y_stride] | 0x01;
+            pdst[10 + out_stride] = yp[6 + in_y_stride] | 0x01;
+            pdst[11 + out_stride] = yp[7 + in_y_stride] | 0x01;
 
-            pdst[8 + out_stride_x_2] = yp[4 + y_stride_x_2] | 0x01;
-            pdst[9 + out_stride_x_2] = yp[5 + y_stride_x_2] | 0x01;
-            pdst[10 + out_stride_x_2] = yp[6 + y_stride_x_2] | 0x01;
-            pdst[11 + out_stride_x_2] = yp[7 + y_stride_x_2] | 0x01;
+            pdst[8 + out_stride_x_2] = yp[4 + in_y_stride_x_2] | 0x01;
+            pdst[9 + out_stride_x_2] = yp[5 + in_y_stride_x_2] | 0x01;
+            pdst[10 + out_stride_x_2] = yp[6 + in_y_stride_x_2] | 0x01;
+            pdst[11 + out_stride_x_2] = yp[7 + in_y_stride_x_2] | 0x01;
 
-            pdst[8 + out_stride_x_3] = yp[4 + y_stride_x_3] | 0x01;
-            pdst[9 + out_stride_x_3] = yp[5 + y_stride_x_3] | 0x01;
-            pdst[10 + out_stride_x_3] = yp[6 + y_stride_x_3] | 0x01;
-            pdst[11 + out_stride_x_3] = yp[7 + y_stride_x_3] | 0x01;
+            pdst[8 + out_stride_x_3] = yp[4 + in_y_stride_x_3] | 0x01;
+            pdst[9 + out_stride_x_3] = yp[5 + in_y_stride_x_3] | 0x01;
+            pdst[10 + out_stride_x_3] = yp[6 + in_y_stride_x_3] | 0x01;
+            pdst[11 + out_stride_x_3] = yp[7 + in_y_stride_x_3] | 0x01;
 
             pdst += 12;
             yp += 8;
@@ -1911,12 +1907,10 @@ void PlanarYUV_to_CLJR(Stage* in, Stage* out)
     uint8_t* in_buf = in->buf;
     int32_t width = in->width;
     int32_t height = in->height;
-    int32_t y_stride = in->y_stride;
-    int32_t uv_stride = in->uv_stride;
-    int32_t uv_width = in->uv_width;
-    int32_t uv_height = in->uv_height;
-    uint8_t* uplane = in->uplane;
-    uint8_t* vplane = in->vplane;
+    int32_t in_y_stride = in->y_stride;
+    int32_t in_uv_stride = in->uv_stride;
+    uint8_t* in_uplane = in->uplane;
+    uint8_t* in_vplane = in->vplane;
     int32_t in_decimation = in->decimation;
 
     uint8_t* out_buf = out->buf;
@@ -1925,17 +1919,17 @@ void PlanarYUV_to_CLJR(Stage* in, Stage* out)
     int32_t out_stride_x_2 = out_stride * 2;
     int32_t out_stride_x_3 = out_stride * 3;
     int32_t out_stride_x_4 = out_stride * 4;
-    int32_t y_stride_x_2 = y_stride * 2;
-    int32_t y_stride_x_3 = y_stride * 3;
-    int32_t y_stride_x_4 = y_stride * 4;
+    int32_t in_y_stride_x_2 = in_y_stride * 2;
+    int32_t in_y_stride_x_3 = in_y_stride * 3;
+    int32_t in_y_stride_x_4 = in_y_stride * 4;
 
     if (in_decimation == 2)
     {
         for (int32_t y = 0; y < height; y += 2)
         {
             uint8_t* yp = in_buf;
-            uint8_t* up = uplane;
-            uint8_t* vp = vplane;
+            uint8_t* up = in_uplane;
+            uint8_t* vp = in_vplane;
             uint8_t* pdst = out_buf;
 
             for (int32_t x = 0; x < width; x += 4)
@@ -1943,7 +1937,7 @@ void PlanarYUV_to_CLJR(Stage* in, Stage* out)
                 uint8_t u_val = static_cast<uint8_t>((static_cast<uint16_t>(up[0]) + static_cast<uint16_t>(up[1])) >> 1);
                 uint8_t v_val = static_cast<uint8_t>((static_cast<uint16_t>(vp[0]) + static_cast<uint16_t>(vp[1])) >> 1);
                 PackCLJRDword(*(reinterpret_cast<uint32_t*>(pdst)), u_val, v_val, yp[0], yp[1], yp[2], yp[3])
-                PackCLJRDword(*(reinterpret_cast<uint32_t*>(pdst + out_stride)), u_val, v_val, yp[y_stride], yp[1 + y_stride], yp[2 + y_stride], yp[3 + y_stride])
+                PackCLJRDword(*(reinterpret_cast<uint32_t*>(pdst + out_stride)), u_val, v_val, yp[in_y_stride], yp[1 + in_y_stride], yp[2 + in_y_stride], yp[3 + in_y_stride])
 
                 pdst += 4;
                 yp += 4;
@@ -1952,8 +1946,8 @@ void PlanarYUV_to_CLJR(Stage* in, Stage* out)
             }
 
             in_buf += y_stride_x_2;
-            uplane += uv_stride;
-            vplane += uv_stride;
+            in_uplane += in_uv_stride;
+            in_vplane += in_uv_stride;
             out_buf += out_stride_x_2;
         }
     }
@@ -1962,16 +1956,16 @@ void PlanarYUV_to_CLJR(Stage* in, Stage* out)
         for (int32_t y = 0; y < height; y += 4)
         {
             uint8_t* yp = in_buf;
-            uint8_t* up = uplane;
-            uint8_t* vp = vplane;
+            uint8_t* up = in_uplane;
+            uint8_t* vp = in_vplane;
             uint8_t* pdst = out_buf;
 
             for (int32_t x = 0; x < width; x += 4)
             {
                 PackCLJRDword(*(reinterpret_cast<uint32_t*>(pdst)), *up, *vp, yp[0], yp[1], yp[2], yp[3])
-                PackCLJRDword(*(reinterpret_cast<uint32_t*>(pdst + out_stride)), *up, *vp, yp[y_stride], yp[1 + y_stride], yp[2 + y_stride], yp[3 + y_stride])
-                PackCLJRDword(*(reinterpret_cast<uint32_t*>(pdst + out_stride_x_2)), *up, *vp, yp[y_stride_x_2], yp[1 + y_stride_x_2], yp[2 + y_stride_x_2], yp[3 + y_stride_x_2])
-                PackCLJRDword(*(reinterpret_cast<uint32_t*>(pdst + out_stride_x_3)), *up, *vp, yp[y_stride_x_3], yp[1 + y_stride_x_3], yp[2 + y_stride_x_3], yp[3 + y_stride_x_3])
+                PackCLJRDword(*(reinterpret_cast<uint32_t*>(pdst + out_stride)), *up, *vp, yp[in_y_stride], yp[1 + in_y_stride], yp[2 + in_y_stride], yp[3 + in_y_stride])
+                PackCLJRDword(*(reinterpret_cast<uint32_t*>(pdst + out_stride_x_2)), *up, *vp, yp[in_y_stride_x_2], yp[1 + in_y_stride_x_2], yp[2 + in_y_stride_x_2], yp[3 + in_y_stride_x_2])
+                PackCLJRDword(*(reinterpret_cast<uint32_t*>(pdst + out_stride_x_3)), *up, *vp, yp[in_y_stride_x_3], yp[1 + in_y_stride_x_3], yp[2 + in_y_stride_x_3], yp[3 + in_y_stride_x_3])
                 pdst += 4;
                 yp += 4;
                 up++;
@@ -1979,8 +1973,8 @@ void PlanarYUV_to_CLJR(Stage* in, Stage* out)
             }
 
             in_buf += y_stride_x_4;
-            uplane += uv_stride;
-            vplane += uv_stride;
+            in_uplane += in_uv_stride;
+            in_vplane += in_uv_stride;
             out_buf += out_stride_x_4;
         }
     }
@@ -2058,25 +2052,25 @@ void PlanarYUV_to_Y800(Stage* in, Stage* out)
     uint8_t* in_buf = in->buf;
     int32_t width = in->width;
     int32_t height = in->height;
-    int32_t y_stride = in->y_stride;
+    int32_t in_y_stride = in->y_stride;
 
     uint8_t* out_buf = out->buf;
     int32_t out_stride = out->stride;
 
     // Copy the y plane
 
-    if (out_stride != y_stride || out->flipped)
+    if (out_stride != in_y_stride || out->flipped)
     {
         for (int32_t y = 0; y < height; y++)
         {
             memcpy(out_buf, in_buf, width);
             out_buf += out_stride;
-            in_buf += y_stride;
+            in_buf += in_y_stride;
         }
     }
     else
     {
-        memcpy(out_buf, in_buf, y_stride * height);
+        memcpy(out_buf, in_buf, in_y_stride * height);
     }
 }
 
@@ -2085,7 +2079,7 @@ void PlanarYUV_to_Y16(Stage* in, Stage* out)
     uint8_t* in_buf = in->buf;
     int32_t width = in->width;
     int32_t height = in->height;
-    int32_t y_stride = in->y_stride;
+    int32_t in_y_stride = in->y_stride;
 
     uint8_t* out_buf = out->buf;
     int32_t out_stride = out->stride;
@@ -2103,7 +2097,7 @@ void PlanarYUV_to_Y16(Stage* in, Stage* out)
             *pdst++ = *psrc++;
         }
 
-        in_buf += y_stride;
+        in_buf += in_y_stride;
         out_buf += out_stride;
     }
 }
@@ -2183,36 +2177,36 @@ void Y42T_to_PlanarYUV(Stage* in, Stage* out)
     int32_t in_stride = in->stride;
 
     uint8_t* out_buf = out->buf;
-    int32_t y_stride = out->y_stride;
-    int32_t uv_stride = out->uv_stride;
-    int32_t uv_width = out->uv_width;
-    int32_t uv_height = out->uv_height;
-    uint8_t* uplane = out->uplane;
-    uint8_t* vplane = out->vplane;
+    int32_t out_y_stride = out->y_stride;
+    int32_t out_uv_stride = out->uv_stride;
+    int32_t out_uv_width = out->uv_width;
+    int32_t out_uv_height = out->uv_height;
+    uint8_t* out_uplane = out->uplane;
+    uint8_t* out_vplane = out->vplane;
     int32_t out_decimation = out->decimation;
 
     int32_t in_stride_x_2 = in_stride * 2;
     int32_t in_stride_x_3 = in_stride * 3;
     int32_t in_stride_x_4 = in_stride * 4;
-    int32_t y_stride_x_2 = y_stride * 2;
-    int32_t y_stride_x_3 = y_stride * 3;
-    int32_t y_stride_x_4 = y_stride * 4;
+    int32_t out_y_stride_x_2 = out_y_stride * 2;
+    int32_t out_y_stride_x_3 = out_y_stride * 3;
+    int32_t out_y_stride_x_4 = out_y_stride * 4;
 
     if (out_decimation == 2)
     {
-        for (int32_t y = 0; y < uv_height; y++)
+        for (int32_t y = 0; y < out_uv_height; y++)
         {
             uint8_t* psrc = in_buf;
             uint8_t* yp = out_buf;
-            uint8_t* up = uplane;
-            uint8_t* vp = vplane;
+            uint8_t* up = out_uplane;
+            uint8_t* vp = out_vplane;
 
-            for (int32_t x = 0; x < uv_width; x++)
+            for (int32_t x = 0; x < out_uv_width; x++)
             {
                 yp[0] = psrc[1] & 0xFE;
-                yp[y_stride] = psrc[1 + in_stride] & 0xFE;
+                yp[out_y_stride] = psrc[1 + in_stride] & 0xFE;
                 yp[1] = psrc[3] & 0xFE;
-                yp[1 + y_stride] = psrc[3 + in_stride] & 0xFE;
+                yp[1 + out_y_stride] = psrc[3 + in_stride] & 0xFE;
 
                 up[x] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[0]) + \
                     static_cast<uint16_t>(psrc[in_stride])) >> 1);
@@ -2224,42 +2218,42 @@ void Y42T_to_PlanarYUV(Stage* in, Stage* out)
             }
 
             in_buf += in_stride_x_2;
-            out_buf += y_stride_x_2;
+            out_buf += out_y_stride_x_2;
 
-            uplane += uv_stride;
-            vplane += uv_stride;
+            out_uplane += out_uv_stride;
+            out_vplane += out_uv_stride;
         }
     }
     else if (out_decimation == 4)
     {
-        for (int32_t y = 0; y < uv_height; y++)
+        for (int32_t y = 0; y < out_uv_height; y++)
         {
             uint8_t* psrc = in_buf;
             uint8_t* yp = out_buf;
-            uint8_t* up = uplane;
-            uint8_t* vp = vplane;
+            uint8_t* up = out_uplane;
+            uint8_t* vp = out_vplane;
 
-            for (int32_t x = 0; x < uv_width; x++)
+            for (int32_t x = 0; x < out_uv_width; x++)
             {
                 yp[0] = psrc[1] & 0xFE;
-                yp[y_stride] = psrc[1 + in_stride] & 0xFE;
-                yp[y_stride_x_2] = psrc[1 + in_stride_x_2] & 0xFE;
-                yp[y_stride_x_3] = psrc[1 + in_stride_x_3] & 0xFE;
+                yp[out_y_stride] = psrc[1 + in_stride] & 0xFE;
+                yp[out_y_stride_x_2] = psrc[1 + in_stride_x_2] & 0xFE;
+                yp[out_y_stride_x_3] = psrc[1 + in_stride_x_3] & 0xFE;
 
                 yp[1] = psrc[3] & 0xFE;
-                yp[1 + y_stride] = psrc[3 + in_stride] & 0xFE;
-                yp[1 + y_stride_x_2] = psrc[3 + in_stride_x_2] & 0xFE;
-                yp[1 + y_stride_x_3] = psrc[3 + in_stride_x_3] & 0xFE;
+                yp[1 + out_y_stride] = psrc[3 + in_stride] & 0xFE;
+                yp[1 + out_y_stride_x_2] = psrc[3 + in_stride_x_2] & 0xFE;
+                yp[1 + out_y_stride_x_3] = psrc[3 + in_stride_x_3] & 0xFE;
 
                 yp[2] = psrc[5] & 0xFE;
-                yp[2 + y_stride] = psrc[5 + in_stride] & 0xFE;
-                yp[2 + y_stride_x_2] = psrc[5 + in_stride_x_2] & 0xFE;
-                yp[2 + y_stride_x_3] = psrc[5 + in_stride_x_3] & 0xFE;
+                yp[2 + out_y_stride] = psrc[5 + in_stride] & 0xFE;
+                yp[2 + out_y_stride_x_2] = psrc[5 + in_stride_x_2] & 0xFE;
+                yp[2 + out_y_stride_x_3] = psrc[5 + in_stride_x_3] & 0xFE;
 
                 yp[3] = psrc[7] & 0xFE;
-                yp[3 + y_stride] = psrc[7 + in_stride] & 0xFE;
-                yp[3 + y_stride_x_2] = psrc[7 + in_stride_x_2] & 0xFE;
-                yp[3 + y_stride_x_3] = psrc[7 + in_stride_x_3] & 0xFE;
+                yp[3 + out_y_stride] = psrc[7 + in_stride] & 0xFE;
+                yp[3 + out_y_stride_x_2] = psrc[7 + in_stride_x_2] & 0xFE;
+                yp[3 + out_y_stride_x_3] = psrc[7 + in_stride_x_3] & 0xFE;
 
                 up[x] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[0]) + \
                     static_cast<uint16_t>(psrc[4]) + \
@@ -2283,10 +2277,10 @@ void Y42T_to_PlanarYUV(Stage* in, Stage* out)
             }
 
             in_buf += in_stride_x_4;
-            out_buf += y_stride_x_4;
+            out_buf += out_y_stride_x_4;
 
-            uplane += uv_stride;
-            vplane += uv_stride;
+            out_uplane += out_uv_stride;
+            out_vplane += out_uv_stride;
         }
     }
 }
@@ -2296,12 +2290,10 @@ void PlanarYUV_to_Y42T(Stage* in, Stage* out)
     uint8_t* in_buf = in->buf;
     int32_t width = in->width;
     int32_t height = in->height;
-    int32_t y_stride = in->y_stride;
-    int32_t uv_stride = in->uv_stride;
-    int32_t uv_width = in->uv_width;
-    int32_t uv_height = in->uv_height;
-    uint8_t* uplane = in->uplane;
-    uint8_t* vplane = in->vplane;
+    int32_t in_y_stride = in->y_stride;
+    int32_t in_uv_stride = in->uv_stride;
+    uint8_t* in_uplane = in->uplane;
+    uint8_t* in_vplane = in->vplane;
     int32_t in_decimation = in->decimation;
     
     uint8_t* out_buf = out->buf;
@@ -2310,17 +2302,17 @@ void PlanarYUV_to_Y42T(Stage* in, Stage* out)
     int32_t out_stride_x_2 = out_stride * 2;
     int32_t out_stride_x_3 = out_stride * 3;
     int32_t out_stride_x_4 = out_stride * 4;
-    int32_t y_stride_x_2 = y_stride * 2;
-    int32_t y_stride_x_3 = y_stride * 3;
-    int32_t y_stride_x_4 = y_stride * 4;
+    int32_t in_y_stride_x_2 = in_y_stride * 2;
+    int32_t in_y_stride_x_3 = in_y_stride * 3;
+    int32_t in_y_stride_x_4 = in_y_stride * 4;
 
     if (in_decimation == 2)
     {
         for (int32_t y = 0; y < height; y += 2)
         {
             uint8_t* yp = in_buf;
-            uint8_t* up = uplane;
-            uint8_t* vp = vplane;
+            uint8_t* up = in_uplane;
+            uint8_t* vp = in_vplane;
             uint8_t* pdst = out_buf;
 
             for (int32_t x = 0; x < width; x += 2)
@@ -2332,8 +2324,8 @@ void PlanarYUV_to_Y42T(Stage* in, Stage* out)
 
                 pdst[out_stride] = *up;
                 pdst[2 + out_stride] = *vp;
-                pdst[1 + out_stride] = yp[y_stride] | 0x01;
-                pdst[3 + out_stride] = yp[1 + y_stride] | 0x01;
+                pdst[1 + out_stride] = yp[in_y_stride] | 0x01;
+                pdst[3 + out_stride] = yp[1 + in_y_stride] | 0x01;
 
                 pdst += 4;
                 yp += 2;
@@ -2341,9 +2333,9 @@ void PlanarYUV_to_Y42T(Stage* in, Stage* out)
                 vp += 1;
             }
 
-            in_buf += y_stride_x_2;
-            uplane += uv_stride;
-            vplane += uv_stride;
+            in_buf += in_y_stride_x_2;
+            in_uplane += in_uv_stride;
+            in_vplane += in_uv_stride;
             out_buf += out_stride_x_2;
         }
     }
@@ -2352,8 +2344,8 @@ void PlanarYUV_to_Y42T(Stage* in, Stage* out)
         for (int32_t y = 0; y < height; y += 4)
         {
             uint8_t* yp = in_buf;
-            uint8_t* up = uplane;
-            uint8_t* vp = vplane;
+            uint8_t* up = in_uplane;
+            uint8_t* vp = in_vplane;
             uint8_t* pdst = out_buf;
 
             for (int32_t x = 0; x < width; x += 4)
@@ -2367,20 +2359,20 @@ void PlanarYUV_to_Y42T(Stage* in, Stage* out)
                 // column 1 row 2
                 pdst[out_stride] = *up;
                 pdst[2 + out_stride] = *vp;
-                pdst[1 + out_stride] = yp[y_stride] | 0x01;
-                pdst[3 + out_stride] = yp[1 + y_stride] | 0x01;
+                pdst[1 + out_stride] = yp[in_y_stride] | 0x01;
+                pdst[3 + out_stride] = yp[1 + in_y_stride] | 0x01;
 
                 // column 1 row 3
                 pdst[out_stride_x_2] = *up;
                 pdst[2 + out_stride_x_2] = *vp;
-                pdst[1 + out_stride_x_2] = yp[y_stride_x_2] | 0x01;
-                pdst[3 + out_stride_x_2] = yp[1 + y_stride_x_2] | 0x01;
+                pdst[1 + out_stride_x_2] = yp[in_y_stride_x_2] | 0x01;
+                pdst[3 + out_stride_x_2] = yp[1 + in_y_stride_x_2] | 0x01;
 
                 // column 1 row 4
                 pdst[out_stride_x_3] = *up;
                 pdst[2 + out_stride_x_3] = *vp;
-                pdst[1 + out_stride_x_3] = yp[y_stride_x_3] | 0x01;
-                pdst[3 + out_stride_x_3] = yp[1 + y_stride_x_3] | 0x01;
+                pdst[1 + out_stride_x_3] = yp[in_y_stride_x_3] | 0x01;
+                pdst[3 + out_stride_x_3] = yp[1 + in_y_stride_x_3] | 0x01;
 
                 // column 2 row 1
                 pdst[4] = *up;
@@ -2391,20 +2383,20 @@ void PlanarYUV_to_Y42T(Stage* in, Stage* out)
                 // column 2 row 2
                 pdst[out_stride + 4] = *up;
                 pdst[6 + out_stride] = *vp;
-                pdst[5 + out_stride] = yp[2 + y_stride] | 0x01;
-                pdst[7 + out_stride] = yp[3 + y_stride] | 0x01;
+                pdst[5 + out_stride] = yp[2 + in_y_stride] | 0x01;
+                pdst[7 + out_stride] = yp[3 + in_y_stride] | 0x01;
 
                 // column 2 row 3
                 pdst[out_stride_x_2 + 4] = *up;
                 pdst[6 + out_stride_x_2] = *vp;
-                pdst[5 + out_stride_x_2] = yp[2 + y_stride_x_2] | 0x01;
-                pdst[7 + out_stride_x_2] = yp[3 + y_stride_x_2] | 0x01;
+                pdst[5 + out_stride_x_2] = yp[2 + in_y_stride_x_2] | 0x01;
+                pdst[7 + out_stride_x_2] = yp[3 + in_y_stride_x_2] | 0x01;
 
                 // column 2 row 4
                 pdst[out_stride_x_3 + 4] = *up;
                 pdst[6 + out_stride_x_3] = *vp;
-                pdst[5 + out_stride_x_3] = yp[2 + y_stride_x_3] | 0x01;
-                pdst[7 + out_stride_x_3] = yp[3 + y_stride_x_3] | 0x01;
+                pdst[5 + out_stride_x_3] = yp[2 + in_y_stride_x_3] | 0x01;
+                pdst[7 + out_stride_x_3] = yp[3 + in_y_stride_x_3] | 0x01;
 
                 pdst += 8;
                 yp += 4;
@@ -2412,9 +2404,9 @@ void PlanarYUV_to_Y42T(Stage* in, Stage* out)
                 vp++;
             }
 
-            in_buf += y_stride_x_4;
-            uplane += uv_stride;
-            vplane += uv_stride;
+            in_buf += in_y_stride_x_4;
+            in_uplane += in_uv_stride;
+            in_vplane += in_uv_stride;
             out_buf += out_stride_x_4;
         }
     }
@@ -2465,18 +2457,18 @@ void Y800_to_PlanarYUV(Stage* in, Stage* out)
     int32_t in_stride = in->stride;
 
     uint8_t* out_buf = out->buf;
-    int32_t y_stride = out->y_stride;
+    int32_t out_y_stride = out->y_stride;
 
-    if (y_stride == in_stride)
+    if (out_y_stride == in_stride)
     {
-        memcpy(out_buf, in_buf, y_stride * height);
+        memcpy(out_buf, in_buf, out_y_stride * height);
     }
     else
     {
         for (int32_t y = 0; y < height; y++)
         {
             memcpy(out_buf, in_buf, width);
-            out_buf += y_stride;
+            out_buf += out_y_stride;
             in_buf += in_stride;
         }
     }
@@ -2491,17 +2483,17 @@ void Y800_to_IMCx(Stage* in, Stage* out)
 
     uint8_t* out_buf = out->buf;
     int32_t out_stride = out->stride;
-    int32_t uv_width = out->uv_width;
-    int32_t uv_height = out->uv_height;
-    uint8_t* uplane = out->uplane;
-    uint8_t* vplane = out->vplane;
+    int32_t out_uv_width = out->uv_width;
+    int32_t out_uv_height = out->uv_height;
+    uint8_t* out_uplane = out->uplane;
+    uint8_t* out_vplane = out->vplane;
 
-    for (int32_t y = 0; y < uv_height; y++)
+    for (int32_t y = 0; y < out_uv_height; y++)
     {
-        memset(uplane, 0, uv_width);
-        memset(vplane, 0, uv_width);
-        uplane += out_stride;
-        vplane += out_stride;
+        memset(uplane, 0, out_uv_width);
+        memset(vplane, 0, out_uv_width);
+        out_uplane += out_stride;
+        out_vplane += out_stride;
     }
 
     if (out_stride == in_stride)
@@ -2591,7 +2583,7 @@ void Y16_to_PlanarYUV(Stage* in, Stage* out)
     int32_t in_stride = in->stride;
 
     uint8_t* out_buf = out->buf;
-    int32_t y_stride = out->y_stride;
+    int32_t out_y_stride = out->y_stride;
 
     for (int32_t y = 0; y < height; y++)
     {
@@ -2605,7 +2597,7 @@ void Y16_to_PlanarYUV(Stage* in, Stage* out)
         }
 
         in_buf += in_stride;
-        out_buf += y_stride;
+        out_buf += out_y_stride;
     }
 }
 
@@ -2618,17 +2610,17 @@ void Y16_to_IMCx(Stage* in, Stage* out)
 
     uint8_t* out_buf = out->buf;
     int32_t out_stride = out->stride;
-    int32_t uv_width = out->uv_width;
-    int32_t uv_height = out->uv_height;
-    uint8_t* uplane = out->uplane;
-    uint8_t* vplane = out->vplane;
+    int32_t out_uv_width = out->uv_width;
+    int32_t out_uv_height = out->uv_height;
+    uint8_t* out_uplane = out->uplane;
+    uint8_t* out_vplane = out->vplane;
 
-    for (int32_t y = 0; y < uv_height; y++)
+    for (int32_t y = 0; y < out_uv_height; y++)
     {
-        memset(uplane, 0, uv_width);
-        memset(vplane, 0, uv_width);
-        uplane += out_stride;
-        vplane += out_stride;
+        memset(out_uplane, 0, out_uv_width);
+        memset(out_vplane, 0, out_uv_width);
+        out_uplane += out_stride;
+        out_vplane += out_stride;
     }
 
     for (int32_t y = 0; y < height; y++)
@@ -2734,36 +2726,36 @@ void Y41P_to_PlanarYUV(Stage* in, Stage* out)
     int32_t in_stride = in->stride;
 
     uint8_t* out_buf = out->buf;
-    int32_t y_stride = out->y_stride;
-    int32_t uv_stride = out->uv_stride;
-    int32_t uv_width = out->uv_width;
-    int32_t uv_height = out->uv_height;
-    uint8_t* uplane = out->uplane;
-    uint8_t* vplane = out->vplane;
+    int32_t out_y_stride = out->y_stride;
+    int32_t out_uv_stride = out->uv_stride;
+    int32_t out_uv_width = out->uv_width;
+    int32_t out_uv_height = out->uv_height;
+    uint8_t* out_uplane = out->uplane;
+    uint8_t* out_vplane = out->vplane;
     int32_t out_decimation = out->decimation;
 
     int32_t in_stride_x_2 = in_stride * 2;
     int32_t in_stride_x_3 = in_stride * 3;
     int32_t in_stride_x_4 = in_stride * 4;
-    int32_t y_stride_x_2 = y_stride * 2;
-    int32_t y_stride_x_3 = y_stride * 3;
-    int32_t y_stride_x_4 = y_stride * 4;
+    int32_t out_y_stride_x_2 = out_y_stride * 2;
+    int32_t out_y_stride_x_3 = out_y_stride * 3;
+    int32_t out_y_stride_x_4 = out_y_stride * 4;
 
     if (out_decimation == 2)
     {
-        for (int32_t y = 0; y < uv_height; y++)
+        for (int32_t y = 0; y < out_uv_height; y++)
         {
             uint8_t* psrc = in_buf;
             uint8_t* yp = out_buf;
-            uint8_t* up = uplane;
-            uint8_t* vp = vplane;
+            uint8_t* up = out_uplane;
+            uint8_t* vp = out_vplane;
 
-            for (int32_t x = 0; x < uv_width; x += 4)
+            for (int32_t x = 0; x < out_uv_width; x += 4)
             {
                 yp[0] = psrc[1];
-                yp[y_stride] = psrc[1 + in_stride];
+                yp[out_y_stride] = psrc[1 + in_stride];
                 yp[1] = psrc[3];
-                yp[1 + y_stride] = psrc[3 + in_stride];
+                yp[1 + out_y_stride] = psrc[3 + in_stride];
 
                 up[x] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[0]) + \
                     static_cast<uint16_t>(psrc[in_stride])) >> 1);
@@ -2772,17 +2764,17 @@ void Y41P_to_PlanarYUV(Stage* in, Stage* out)
                     static_cast<uint16_t>(psrc[2 + in_stride])) >> 1);
 
                 yp[2] = psrc[5];
-                yp[2 + y_stride] = psrc[5 + in_stride];
+                yp[2 + out_y_stride] = psrc[5 + in_stride];
                 yp[3] = psrc[7];
-                yp[3 + y_stride] = psrc[7 + in_stride];
+                yp[3 + out_y_stride] = psrc[7 + in_stride];
 
                 up[x + 1] = up[x];
                 vp[x + 1] = vp[x];
 
                 yp[4] = psrc[8];
-                yp[4 + y_stride] = psrc[8 + in_stride];
+                yp[4 + out_y_stride] = psrc[8 + in_stride];
                 yp[5] = psrc[9];
-                yp[5 + y_stride] = psrc[9 + in_stride];
+                yp[5 + out_y_stride] = psrc[9 + in_stride];
 
                 up[x + 2] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[4]) + \
                     static_cast<uint16_t>(psrc[4 + in_stride])) >> 1);
@@ -2791,9 +2783,9 @@ void Y41P_to_PlanarYUV(Stage* in, Stage* out)
                     static_cast<uint16_t>(psrc[6 + in_stride])) >> 1);
 
                 yp[6] = psrc[10];
-                yp[6 + y_stride] = psrc[10 + in_stride];
+                yp[6 + out_y_stride] = psrc[10 + in_stride];
                 yp[7] = psrc[11];
-                yp[7 + y_stride] = psrc[11 + in_stride];
+                yp[7 + out_y_stride] = psrc[11 + in_stride];
 
                 up[x + 3] = up[x + 2];
 
@@ -2804,42 +2796,42 @@ void Y41P_to_PlanarYUV(Stage* in, Stage* out)
             }
 
             in_buf += in_stride_x_2;
-            out_buf += y_stride_x_2;
+            out_buf += out_y_stride_x_2;
 
-            uplane += uv_stride;
-            vplane += uv_stride;
+            out_uplane += out_uv_stride;
+            out_vplane += out_uv_stride;
         }
     }
     else if (out_decimation == 4)
     {
-        for (int32_t y = 0; y < uv_height; y++)
+        for (int32_t y = 0; y < out_uv_height; y++)
         {
             uint8_t* psrc = in_buf;
             uint8_t* yp = out_buf;
-            uint8_t* up = uplane;
-            uint8_t* vp = vplane;
+            uint8_t* up = out_uplane;
+            uint8_t* vp = out_vplane;
 
-            for (int32_t x = 0; x < uv_width; x += 2)
+            for (int32_t x = 0; x < out_uv_width; x += 2)
             {
                 yp[0] = psrc[1];
-                yp[y_stride] = psrc[1 + in_stride];
-                yp[y_stride_x_2] = psrc[1 + in_stride_x_2];
-                yp[y_stride_x_3] = psrc[1 + in_stride_x_3];
+                yp[out_y_stride] = psrc[1 + in_stride];
+                yp[out_y_stride_x_2] = psrc[1 + in_stride_x_2];
+                yp[out_y_stride_x_3] = psrc[1 + in_stride_x_3];
 
                 yp[1] = psrc[3];
-                yp[1 + y_stride] = psrc[3 + in_stride];
-                yp[1 + y_stride_x_2] = psrc[3 + in_stride_x_2];
-                yp[1 + y_stride_x_3] = psrc[3 + in_stride_x_3];
+                yp[1 + out_y_stride] = psrc[3 + in_stride];
+                yp[1 + out_y_stride_x_2] = psrc[3 + in_stride_x_2];
+                yp[1 + out_y_stride_x_3] = psrc[3 + in_stride_x_3];
 
                 yp[2] = psrc[5];
-                yp[2 + y_stride] = psrc[5 + in_stride];
-                yp[2 + y_stride_x_2] = psrc[5 + in_stride_x_2];
-                yp[2 + y_stride_x_3] = psrc[5 + in_stride_x_3];
+                yp[2 + out_y_stride] = psrc[5 + in_stride];
+                yp[2 + out_y_stride_x_2] = psrc[5 + in_stride_x_2];
+                yp[2 + out_y_stride_x_3] = psrc[5 + in_stride_x_3];
 
                 yp[3] = psrc[7];
-                yp[3 + y_stride] = psrc[7 + in_stride];
-                yp[3 + y_stride_x_2] = psrc[7 + in_stride_x_2];
-                yp[3 + y_stride_x_3] = psrc[7 + in_stride_x_3];
+                yp[3 + out_y_stride] = psrc[7 + in_stride];
+                yp[3 + out_y_stride_x_2] = psrc[7 + in_stride_x_2];
+                yp[3 + out_y_stride_x_3] = psrc[7 + in_stride_x_3];
 
                 up[x] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[0]) + \
                     static_cast<uint16_t>(psrc[in_stride]) + \
@@ -2852,24 +2844,24 @@ void Y41P_to_PlanarYUV(Stage* in, Stage* out)
                     static_cast<uint16_t>(psrc[2 + in_stride_x_3])) >> 2);
 
                 yp[4] = psrc[8];
-                yp[4 + y_stride] = psrc[8 + in_stride];
-                yp[4 + y_stride_x_2] = psrc[8 + in_stride_x_2];
-                yp[4 + y_stride_x_3] = psrc[8 + in_stride_x_3];
+                yp[4 + out_y_stride] = psrc[8 + in_stride];
+                yp[4 + out_y_stride_x_2] = psrc[8 + in_stride_x_2];
+                yp[4 + out_y_stride_x_3] = psrc[8 + in_stride_x_3];
 
                 yp[5] = psrc[9];
-                yp[5 + y_stride] = psrc[9 + in_stride];
-                yp[5 + y_stride_x_2] = psrc[9 + in_stride_x_2];
-                yp[5 + y_stride_x_3] = psrc[9 + in_stride_x_3];
+                yp[5 + out_y_stride] = psrc[9 + in_stride];
+                yp[5 + out_y_stride_x_2] = psrc[9 + in_stride_x_2];
+                yp[5 + out_y_stride_x_3] = psrc[9 + in_stride_x_3];
 
                 yp[6] = psrc[10];
-                yp[6 + y_stride] = psrc[10 + in_stride];
-                yp[6 + y_stride_x_2] = psrc[10 + in_stride_x_2];
-                yp[6 + y_stride_x_3] = psrc[10 + in_stride_x_3];
+                yp[6 + out_y_stride] = psrc[10 + in_stride];
+                yp[6 + out_y_stride_x_2] = psrc[10 + in_stride_x_2];
+                yp[6 + out_y_stride_x_3] = psrc[10 + in_stride_x_3];
 
                 yp[7] = psrc[11];
-                yp[7 + y_stride] = psrc[11 + in_stride];
-                yp[7 + y_stride_x_2] = psrc[11 + in_stride_x_2];
-                yp[7 + y_stride_x_3] = psrc[11 + in_stride_x_3];
+                yp[7 + out_y_stride] = psrc[11 + in_stride];
+                yp[7 + out_y_stride_x_2] = psrc[11 + in_stride_x_2];
+                yp[7 + out_y_stride_x_3] = psrc[11 + in_stride_x_3];
 
                 up[x + 1] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[4]) + \
                     static_cast<uint16_t>(psrc[4 + in_stride]) + \
@@ -2886,10 +2878,10 @@ void Y41P_to_PlanarYUV(Stage* in, Stage* out)
             }
 
             in_buf += in_stride_x_4;
-            out_buf += y_stride_x_4;
+            out_buf += out_y_stride_x_4;
 
-            uplane += uv_stride;
-            vplane += uv_stride;
+            out_uplane += out_uv_stride;
+            out_vplane += out_uv_stride;
         }
     }
 }
@@ -2901,32 +2893,30 @@ void Y41P_to_IMCx(Stage* in, Stage* out)
 
     uint8_t* out_buf = out->buf;
     int32_t out_stride = out->stride;
-    int32_t uv_width = out->uv_width;
-    int32_t uv_height = out->uv_height;
-    uint8_t* uplane = out->uplane;
-    uint8_t* vplane = out->vplane;
+    int32_t out_uv_width = out->uv_width;
+    int32_t out_uv_height = out->uv_height;
+    uint8_t* out_uplane = out->uplane;
+    uint8_t* out_vplane = out->vplane;
 
     int32_t in_stride_x_2 = in_stride * 2;
     int32_t out_stride_x_2 = out_stride * 2;
 
-    for (int32_t y = 0; y < uv_height; y++)
+    for (int32_t y = 0; y < out_uv_height; y++)
     {
         uint8_t* psrc = in_buf;
         uint8_t* yp = out_buf;
-        uint8_t* up = uplane;
-        uint8_t* vp = vplane;
 
-        for (int32_t x = 0; x < uv_width; x += 4)
+        for (int32_t x = 0; x < out_uv_width; x += 4)
         {
             yp[0] = psrc[1];
             yp[out_stride] = psrc[1 + in_stride];
             yp[1] = psrc[3]; 
             yp[1 + out_stride] = psrc[3 + in_stride];
 
-            up[x] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[0]) + \
+            out_uplane[x] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[0]) + \
                 static_cast<uint16_t>(psrc[in_stride])) >> 1);
 
-            vp[x] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[2]) + \
+            out_vplane[x] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[2]) + \
                 static_cast<uint16_t>(psrc[2 + in_stride])) >> 1);
 
             yp[2] = psrc[5];
@@ -2934,18 +2924,18 @@ void Y41P_to_IMCx(Stage* in, Stage* out)
             yp[3] = psrc[7];
             yp[3 + out_stride] = psrc[7 + in_stride];
 
-            up[x + 1] = up[x];
-            vp[x + 1] = vp[x];
+            out_uplane[x + 1] = out_uplane[x];
+            out_vplane[x + 1] = out_vplane[x];
 
             yp[4] = psrc[8];
             yp[4 + out_stride] = psrc[8 + in_stride];
             yp[5] = psrc[9];
             yp[5 + out_stride] = psrc[9 + in_stride];
 
-            up[x + 2] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[4]) + \
+            out_uplane[x + 2] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[4]) + \
                 static_cast<uint16_t>(psrc[4 + in_stride])) >> 1);
 
-            vp[x + 2] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[6]) + \
+            out_vplane[x + 2] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[6]) + \
                 static_cast<uint16_t>(psrc[6 + in_stride])) >> 1);
 
             yp[6] = psrc[10];
@@ -2953,9 +2943,9 @@ void Y41P_to_IMCx(Stage* in, Stage* out)
             yp[7] = psrc[11];
             yp[7 + out_stride] = psrc[11 + in_stride];
 
-            up[x + 3] = up[x + 2];
+            out_uplane[x + 3] = out_uplane[x + 2];
 
-            vp[x + 3] = vp[x + 2];
+            out_vplane[x + 3] = out_vplane[x + 2];
 
             psrc += 12;
             yp += 8;
@@ -2964,8 +2954,8 @@ void Y41P_to_IMCx(Stage* in, Stage* out)
         in_buf += in_stride_x_2;
         out_buf += out_stride_x_2;
 
-        uplane += out_stride;
-        vplane += out_stride;
+        out_uplane += out_stride;
+        out_vplane += out_stride;
     }
 }
 
@@ -3582,45 +3572,17 @@ void PackedY422_to_AYUV(Stage* in, Stage* out)
 
 void AYUV_to_PlanarYUV(Stage* in, Stage* out)
 {
-    if (!in_stride)
-        in_stride = width * 4;
+    uint8_t* in_buf = in->buf;
+    int32_t in_stride = in->stride;
 
-    int32_t uv_width = width / decimation;
-    int32_t uv_height = height / decimation;
-
-    int16_t y_stride, uv_stride;
-    if (!out_stride)
-    {
-        y_stride = width;
-        uv_stride = uv_width;
-    }
-    else
-    {
-        y_stride = out_stride;
-        uv_stride = out_stride;
-    }
-
-    uint8_t* vplane;
-    uint8_t* uplane;
-    if (ufirst)
-    {
-        uplane = out_buf + (y_stride * height);
-        vplane = uplane + (uv_stride * uv_height);
-    }
-    else
-    {
-        vplane = out_buf + (y_stride * height);
-        uplane = vplane + (uv_stride * uv_height);
-    }
-
-    if (flipped)
-    {
-        out_buf += (y_stride * (height - 1));
-        uplane += (uv_stride * (uv_height - 1));
-        vplane += (uv_stride * (uv_height - 1));
-        y_stride = -y_stride;
-        uv_stride = -uv_stride;
-    }
+    uint8_t* out_buf = out->buf;
+    int32_t out_y_stride = out->y_stride;
+    int32_t out_uv_stride = out->uv_stride;
+    int32_t out_uv_width = out->uv_width;
+    int32_t out_uv_height = out->uv_height;
+    uint8_t* out_uplane = out->uplane;
+    uint8_t* out_vplane = out->vplane;
+    int32_t out_decimation = out->decimation;
 
     uint16_t v_average;
     uint16_t u_average;
@@ -3643,26 +3605,26 @@ void AYUV_to_PlanarYUV(Stage* in, Stage* out)
 
                 v_average += psrc[0 + in_stride];
                 u_average += psrc[1 + in_stride];
-                yp[y_stride] = psrc[2 + in_stride];
+                yp[out_y_stride] = psrc[2 + in_stride];
 
                 v_average += psrc[4 + in_stride];
                 u_average += psrc[5 + in_stride];
-                yp[y_stride + 1] = psrc[6 + in_stride];
+                yp[out_y_stride + 1] = psrc[6 + in_stride];
 
                 v_average >>= 2;
                 u_average >>= 2;
 
-                vplane[x >> 1] = static_cast<uint8_t>(v_average);
-                uplane[x >> 1] = static_cast<uint8_t>(u_average);
+                out_vplane[x >> 1] = static_cast<uint8_t>(v_average);
+                out_uplane[x >> 1] = static_cast<uint8_t>(u_average);
 
                 psrc += 8;
                 yp += 2;
             }
             in_buf += (in_stride * 2);
-            out_buf += (y_stride * 2);
+            out_buf += (out_y_stride * 2);
 
-            uplane += uv_stride;
-            vplane += uv_stride;
+            out_uplane += out_uv_stride;
+            out_vplane += out_uv_stride;
         }
     }
     else if (decimation == 4)
@@ -3698,78 +3660,55 @@ void AYUV_to_PlanarYUV(Stage* in, Stage* out)
                     yp[ys + 3] = psrc[14 + is];
 
                     is += in_stride;
-                    ys += y_stride;
+                    ys += out_y_stride;
                 }
 
                 v_average >>= 4;
                 u_average >>= 4;
 
-                vplane[x >> 2] = static_cast<uint8_t>(v_average);
-                uplane[x >> 2] = static_cast<uint8_t>(u_average);
+                out_vplane[x >> 2] = static_cast<uint8_t>(v_average);
+                out_uplane[x >> 2] = static_cast<uint8_t>(u_average);
 
                 psrc += 16;
                 yp += 4;
             }
             in_buf += (in_stride * 4);
-            out_buf += (y_stride * 4);
+            out_buf += (out_y_stride * 4);
 
-            uplane += uv_stride;
-            vplane += uv_stride;
+            out_uplane += out_uv_stride;
+            out_vplane += out_uv_stride;
         }
     }
 }
 
 void PlanarYUV_to_AYUV(Stage* in, Stage* out)
 {
-    if (!out_stride)
-        out_stride = width * 4;
+    uint8_t* in_buf = in->buf;
+    int32_t width = in->width;
+    int32_t height = in->height;
+    int32_t in_y_stride = in->y_stride;
+    int32_t in_uv_stride = in->uv_stride;
+    int32_t in_uv_width = in->uv_width;
+    int32_t in_uv_height = in->uv_height;
+    uint8_t* in_uplane = in->uplane;
+    uint8_t* in_vplane = in->vplane;
+    int32_t in_decimation = in->decimation;
 
-    int16_t uv_width = width / decimation;
-    int16_t uv_height = height / decimation;
-
-    int16_t y_stride, uv_stride;
-    if (!in_stride)
-    {
-        y_stride = width;
-        uv_stride = uv_width;
-    }
-    else
-    {
-        y_stride = in_stride;
-        uv_stride = in_stride;
-    }
-
-    uint8_t* vplane;
-    uint8_t* uplane;
-    if (ufirst)
-    {
-        uplane = in_buf + (y_stride * height);
-        vplane = uplane + (uv_stride * uv_height);
-    }
-    else
-    {
-        vplane = in_buf + (y_stride * height);
-        uplane = vplane + (uv_stride * uv_height);
-    }
-
-    if (flipped)
-    {
-        out_buf += (out_stride * (height - 1));
-        out_stride = -out_stride;
-    }
+    uint8_t* out_buf = out->buf;
+    int32_t out_stride = out->stride;
 
     int32_t out_stride_x_2 = out_stride * 2;
     int32_t out_stride_x_4 = out_stride * 4;
-    int32_t y_stride_x_2 = y_stride * 2;
-    int32_t y_stride_x_4 = y_stride * 4;
+    int32_t in_y_stride_x_2 = in_y_stride * 2;
+    int32_t in_y_stride_x_4 = in_y_stride * 4;
 
-    if (decimation == 2)
+    if (in_decimation == 2)
     {
         for (int16_t y = 0; y < height; y += 2)
         {
             uint8_t* yp = in_buf;
-            uint8_t* up = uplane;
-            uint8_t* vp = vplane;
+            uint8_t* up = in_uplane;
+            uint8_t* vp = in_vplane;
             uint8_t* pdst = out_buf;
 
             for (int16_t x = 0; x < width; x += 2)
@@ -3783,7 +3722,7 @@ void PlanarYUV_to_AYUV(Stage* in, Stage* out)
                 // column 1 row 2
                 pdst[out_stride] = *vp;
                 pdst[1 + out_stride] = *up;
-                pdst[2 + out_stride] = yp[y_stride];
+                pdst[2 + out_stride] = yp[in_y_stride];
                 pdst[3 + out_stride] = 0xFF;
 
                 // column 2 row 1
@@ -3795,7 +3734,7 @@ void PlanarYUV_to_AYUV(Stage* in, Stage* out)
                 // column 2 row 2
                 pdst[4 + out_stride] = *vp;
                 pdst[5 + out_stride] = *up;
-                pdst[6 + out_stride] = yp[1 + y_stride];
+                pdst[6 + out_stride] = yp[1 + in_y_stride];
                 pdst[7 + out_stride] = 0xFF;
 
                 pdst += 8;
@@ -3804,19 +3743,19 @@ void PlanarYUV_to_AYUV(Stage* in, Stage* out)
                 vp++;
             }
 
-            in_buf += y_stride_x_2;
-            uplane += uv_stride;
-            vplane += uv_stride;
+            in_buf += in_y_stride_x_2;
+            uplane += in_uv_stride;
+            vplane += in_uv_stride;
             out_buf += out_stride_x_2;
         }
     }
-    else if (decimation == 4)
+    else if (in_decimation == 4)
     {
         for (int16_t y = 0; y < height; y += 4)
         {
             uint8_t* yp = in_buf;
-            uint8_t* up = uplane;
-            uint8_t* vp = vplane;
+            uint8_t* up = in_uplane;
+            uint8_t* vp = in_vplane;
             uint8_t* pdst = out_buf;
 
             for (int16_t x = 0; x < width; x += 4)
@@ -3827,7 +3766,7 @@ void PlanarYUV_to_AYUV(Stage* in, Stage* out)
                     {
                         pdst[col * 4 + out_stride * row] = *vp;
                         pdst[1 + col * 4 + out_stride * row] = *up;
-                        pdst[2 + col * 4 + out_stride * row] = yp[col + y_stride * row];
+                        pdst[2 + col * 4 + out_stride * row] = yp[col + in_y_stride * row];
                         pdst[3 + col * 4 + out_stride * row] = 0xFF;
                     }
                 }
@@ -3838,9 +3777,9 @@ void PlanarYUV_to_AYUV(Stage* in, Stage* out)
                 vp++;
             }
 
-            in_buf += y_stride_x_4;
-            uplane += uv_stride;
-            vplane += uv_stride;
+            in_buf += in_y_stride_x_4;
+            in_uplane += in_uv_stride;
+            in_vplane += in_uv_stride;
             out_buf += out_stride_x_4;
         }
     }
@@ -3848,51 +3787,17 @@ void PlanarYUV_to_AYUV(Stage* in, Stage* out)
 
 void AYUV_to_IMCx(Stage* in, Stage* out)
 {
-    if (!in_stride)
-        in_stride = width * 4;
+    uint8_t* in_buf = in->buf;
+    int32_t in_stride = in->stride;
+    int32_t width = in->width;
+    int32_t height = in->height;
 
-    int32_t uv_height = height / 2;
-    int32_t uv_width = width / 2;
-
-    if (!out_stride)
-        out_stride = width;
-
-    uint8_t* vplane;
-    uint8_t* uplane;
-    if (ufirst)
-    {
-        if (interlaced)
-        {
-            uplane = out_buf + (out_stride * height);
-            vplane = uplane + uv_width;
-        }
-        else
-        {
-            uplane = out_buf + (((height + 15) & ~15) * out_stride);
-            vplane = out_buf + (((((height * 3) / 2) + 15) & ~15) * out_stride);
-        }
-    }
-    else
-    {
-        if (interlaced)
-        {
-            vplane = out_buf + (out_stride * height);
-            uplane = vplane + uv_width;
-        }
-        else
-        {
-            vplane = out_buf + (((height + 15) & ~15) * out_stride);
-            uplane = out_buf + (((((height * 3) / 2) + 15) & ~15) * out_stride);
-        }
-    }
-
-    if (flipped)
-    {
-        out_buf += (out_stride * (height - 1));
-        uplane += (out_stride * (uv_height - 1));
-        vplane += (out_stride * (uv_height - 1));
-        out_stride = -out_stride;
-    }
+    uint8_t* out_buf = out->buf;
+    int32_t out_stride = out->stride;
+    int32_t uv_width = out->uv_width;
+    int32_t uv_height = out->uv_height;
+    uint8_t* uplane = out->uplane;
+    uint8_t* vplane = out->vplane;
 
     int32_t in_stride_x_2 = in_stride * 2;
     int32_t out_stride_x_2 = out_stride * 2;
@@ -3935,48 +3840,17 @@ void AYUV_to_IMCx(Stage* in, Stage* out)
 
 void IMCx_to_AYUV(Stage* in, Stage* out)
 {
-    if (!out_stride)
-        out_stride = width * 4;
+    uint8_t* in_buf = in->buf;
+    int32_t in_stride = in->stride;
+    int32_t width = in->width;
+    int32_t height = in->height;
+    int32_t uv_width = in->uv_width;
+    int32_t uv_height = in->uv_height;
+    uint8_t* uplane = in->uplane;
+    uint8_t* vplane = in->vplane;
 
-    int16_t uv_width = width / 2;
-
-    if (in_stride < width)
-        in_stride = width;
-
-    uint8_t* vplane;
-    uint8_t* uplane;
-    if (ufirst)
-    {
-        if (interlaced)
-        {
-            uplane = in_buf + (in_stride * height);
-            vplane = uplane + uv_width;
-        }
-        else
-        {
-            uplane = in_buf + (((height + 15) & ~15) * in_stride);
-            vplane = in_buf + (((((height * 3) / 2) + 15) & ~15) * in_stride);
-        }
-    }
-    else
-    {
-        if (interlaced)
-        {
-            vplane = in_buf + (in_stride * height);
-            uplane = vplane + uv_width;
-        }
-        else
-        {
-            vplane = in_buf + (((height + 15) & ~15) * in_stride);
-            uplane = in_buf + (((((height * 3) / 2) + 15) & ~15) * in_stride);
-        }
-    }
-
-    if (flipped)
-    {
-        out_buf += (out_stride * (height - 1));
-        out_stride = -out_stride;
-    }
+    uint8_t* out_buf = out->buf;
+    int32_t out_stride = out->stride;
 
     int32_t out_stride_x_2 = out_stride * 2;
     int32_t in_stride_x_2 = in_stride * 2;
@@ -4029,51 +3903,21 @@ void IMCx_to_AYUV(Stage* in, Stage* out)
 
 void PackedY422_to_IMCx(Stage* in, Stage* out)
 {
-    if (!in_stride)
-        in_stride = width * 2;
+    uint8_t* in_buf = in->buf;
+    int32_t width = in->width;
+    int32_t height = in->height;
+    int32_t in_stride = in->stride;
+    int16_t in_y0 = in->y0_index;
+    int16_t in_y1 = in->y1_index;
+    int16_t in_u = in->u_index;
+    int16_t in_v = in->v_index;
 
-    int32_t uv_width = width / 2;
-    int32_t uv_height = height / 2;
-
-    if (!out_stride)
-        out_stride = width;
-
-    uint8_t* vplane;
-    uint8_t* uplane;
-    if (ufirst)
-    {
-        if (interlaced)
-        {
-            uplane = out_buf + (out_stride * height);
-            vplane = uplane + uv_width;
-        }
-        else
-        {
-            uplane = out_buf + (((height + 15) & ~15) * out_stride);
-            vplane = out_buf + (((((height * 3) / 2) + 15) & ~15) * out_stride);
-        }
-    }
-    else
-    {
-        if (interlaced)
-        {
-            vplane = out_buf + (out_stride * height);
-            uplane = vplane + uv_width;
-        }
-        else
-        {
-            vplane = out_buf + (((height + 15) & ~15) * out_stride);
-            uplane = out_buf + (((((height * 3) / 2) + 15) & ~15) * out_stride);
-        }
-    }
-
-    if (flipped)
-    {
-        out_buf += (out_stride * (height - 1));
-        uplane += (out_stride * (uv_height - 1));
-        vplane += (out_stride * (uv_height - 1));
-        out_stride = -out_stride;
-    }
+    uint8_t* out_buf = out->buf;
+    int32_t out_stride = out->stride;
+    int32_t uv_width = out->uv_width;
+    int32_t uv_height = out->uv_height;
+    uint8_t* uplane = out->uplane;
+    uint8_t* vplane = out->vplane;
 
     int32_t in_stride_x_2 = in_stride * 2;
     int32_t out_stride_x_2 = out_stride * 2;
@@ -4111,49 +3955,21 @@ void PackedY422_to_IMCx(Stage* in, Stage* out)
 
 void IMCx_to_PackedY422(Stage* in, Stage* out)
 {
-    if (!in_stride)
-        in_stride = width;
+    uint8_t* in_buf = in->buf;
+    int32_t in_stride = in->stride;
+    int32_t width = in->width;
+    int32_t height = in->height;
+    int32_t in_uv_width = in->uv_width;
+    int32_t in_uv_height = in->uv_height;
+    uint8_t* in_uplane = in->uplane;
+    uint8_t* in_vplane = in->vplane;
 
-    if (!out_stride)
-        out_stride = width * 2;
-
-    int32_t uv_width = width / 2;
-    int32_t uv_height = height / 2;
-
-    uint8_t* vplane;
-    uint8_t* uplane;
-    if (ufirst)
-    {
-        if (interlaced)
-        {
-            uplane = in_buf + (in_stride * height);
-            vplane = uplane + uv_width;
-        }
-        else
-        {
-            uplane = in_buf + (((height + 15) & ~15) * in_stride);
-            vplane = in_buf + (((((height * 3) / 2) + 15) & ~15) * in_stride);
-        }
-    }
-    else
-    {
-        if (interlaced)
-        {
-            vplane = in_buf + (in_stride * height);
-            uplane = vplane + uv_width;
-        }
-        else
-        {
-            vplane = in_buf + (((height + 15) & ~15) * in_stride);
-            uplane = in_buf + (((((height * 3) / 2) + 15) & ~15) * in_stride);
-        }
-    }
-
-    if (flipped)
-    {
-        out_buf += (out_stride * (height - 1));
-        out_stride = -out_stride;
-    }
+    uint8_t* out_buf = out->buf;
+    int32_t out_stride = out->stride;
+    int16_t out_y0 = out->y0_index;
+    int16_t out_y1 = out->y1_index;
+    int16_t out_u = out->u_index;
+    int16_t out_v = out->v_index;
 
     int32_t out_stride_x_2 = out_stride * 2;
     int32_t in_stride_x_2 = in_stride * 2;
@@ -4161,8 +3977,8 @@ void IMCx_to_PackedY422(Stage* in, Stage* out)
     for (int32_t y = 0; y < height; y += 2)
     {
         uint8_t* yp = in_buf;
-        uint8_t* up = uplane;
-        uint8_t* vp = vplane;
+        uint8_t* up = in_uplane;
+        uint8_t* vp = in_vplane;
         uint8_t* pdst = out_buf;
 
         for (int32_t x = 0; x < width; x += 2)
@@ -4192,76 +4008,23 @@ void IMCx_to_PackedY422(Stage* in, Stage* out)
 
 void PlanarYUV_to_IMCx(Stage* in, Stage* out)
 {
-    int32_t out_uv_width = width / 2;
-    int32_t out_uv_height = height / 2;
+    uint8_t* in_buf = in->buf;
+    int32_t width = in->width;
+    int32_t height = in->height;
+    int32_t in_y_stride = in->y_stride;
+    int32_t in_uv_stride = in->uv_stride;
+    int32_t in_uv_width = in->uv_width;
+    int32_t in_uv_height = in->uv_height;
+    uint8_t* in_uplane = in->uplane;
+    uint8_t* in_vplane = in->vplane;
+    int32_t in_decimation = in->decimation;
 
-    if (!out_stride)
-        out_stride = width;
-
-    uint8_t* out_vplane;
-    uint8_t* out_uplane;
-    if (out_ufirst)
-    {
-        if (interlaced)
-        {
-            out_uplane = out_buf + (out_stride * height);
-            out_vplane = out_uplane + out_uv_width;
-        }
-        else
-        {
-            out_uplane = out_buf + (((height + 15) & ~15) * out_stride);
-            out_vplane = out_buf + (((((height * 3) / 2) + 15) & ~15) * out_stride);
-        }
-    }
-    else
-    {
-        if (interlaced)
-        {
-            out_vplane = out_buf + (out_stride * height);
-            out_uplane = out_vplane + out_uv_width;
-        }
-        else
-        {
-            out_vplane = out_buf + (((height + 15) & ~15) * out_stride);
-            out_uplane = out_buf + (((((height * 3) / 2) + 15) & ~15) * out_stride);
-        }
-    }
-
-    int32_t in_uv_width = width / in_decimation;
-    int32_t in_uv_height = height / in_decimation;
-
-    int32_t in_y_stride, in_uv_stride;
-    if (!in_stride)
-    {
-        in_y_stride = width;
-        in_uv_stride = in_uv_width;
-    }
-    else
-    {
-        in_y_stride = in_stride;
-        in_uv_stride = in_stride;
-    }
-
-    uint8_t* in_vplane;
-    uint8_t* in_uplane;
-    if (in_ufirst)
-    {
-        in_uplane = in_buf + (in_y_stride * height);
-        in_vplane = in_uplane + (in_uv_stride * in_uv_height);
-    }
-    else
-    {
-        in_vplane = in_buf + (in_y_stride * height);
-        in_uplane = in_vplane + (in_uv_stride * in_uv_height);
-    }
-
-    if (flipped)
-    {
-        out_buf += (out_stride * (height - 1));
-        out_uplane += (out_stride * (out_uv_height - 1));
-        out_vplane += (out_stride * (out_uv_height - 1));
-        out_stride = -out_stride;
-    }
+    uint8_t* out_buf = out->buf;
+    int32_t out_stride = out->stride;
+    int32_t out_uv_width = out->uv_width;
+    int32_t out_uv_height = out->uv_height;
+    uint8_t* out_uplane = out->uplane;
+    uint8_t* out_vplane = out->vplane;
 
     // Copy the y plane
     if (out_stride != in_y_stride || flipped)

@@ -38,6 +38,7 @@ namespace blipvert
         uint8_t* buf;
         int32_t stride;
         bool flipped;
+        bool interlaced;
         xRGBQUAD* palette;
         bool has_odd;
         uint16_t remainder;

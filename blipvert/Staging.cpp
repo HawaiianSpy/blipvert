@@ -657,6 +657,7 @@ void Stage_IMCx(Stage* result, uint8_t thread_index, uint8_t thread_count, int32
     result->height = slice_height;
     result->stride = stride;
     result->flipped = flipped;
+    result->interlaced = interlaced;
 
     result->uv_width = width / 2;
     result->uv_height = height / 2;

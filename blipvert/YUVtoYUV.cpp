@@ -3076,9 +3076,6 @@ void IMCx_to_Y41T(Stage* in, Stage* out)
     int32_t out_stride_x_2 = out_stride * 2;
     int32_t in_stride_x_2 = in_stride * 2;
 
-    int32_t out_stride_x_2 = out_stride * 2;
-    int32_t in_stride_x_2 = in_stride * 2;
-
     uint8_t* yp;
     uint8_t* up;
     uint8_t* vp;
@@ -11314,181 +11311,152 @@ void blipvert::Y41T_to_VYUY(Stage* in, Stage* out)
 
 void Y41T_to_PlanarYUV(Stage* in, Stage* out)
 {
-    if (!in_stride)
-        in_stride = width * 12 / 8;
+    uint8_t* in_buf = in->buf;
+    int32_t in_stride = in->stride;
+    int32_t width = in->width;
+    int32_t height = in->height;
 
-    int32_t uv_width = width / out_decimation;
-    int32_t uv_height = height / out_decimation;
+    uint8_t* out_buf = out->buf;
+    int32_t out_y_stride = out->y_stride;
+    int32_t out_uv_stride = out->uv_stride;
+    int32_t out_uv_width = out->uv_width;
+    int32_t out_uv_height = out->uv_height;
+    uint8_t* out_uplane = out->uplane;
+    uint8_t* out_vplane = out->vplane;
+    int32_t out_decimation = out->decimation;
 
-    int32_t y_stride, uv_stride;
-    if (!out_stride)
-    {
-        y_stride = width;
-        uv_stride = uv_width;
-    }
-    else
-    {
-        y_stride = out_stride;
-        uv_stride = out_stride;
-    }
-
-    uint8_t* vplane;
-    uint8_t* uplane;
-    if (out_ufirst)
-    {
-        uplane = out_buf + (y_stride * height);
-        vplane = uplane + (uv_stride * uv_height);
-    }
-    else
-    {
-        vplane = out_buf + (y_stride * height);
-        uplane = vplane + (uv_stride * uv_height);
-    }
-
-    if (flipped)
-    {
-        out_buf += (y_stride * (height - 1));
-        uplane += (uv_stride * (uv_height - 1));
-        vplane += (uv_stride * (uv_height - 1));
-        y_stride = -y_stride;
-        uv_stride = -uv_stride;
-    }
 
     int32_t in_stride_x_2 = in_stride * 2;
     int32_t in_stride_x_3 = in_stride * 3;
     int32_t in_stride_x_4 = in_stride * 4;
-    int32_t y_stride_x_2 = y_stride * 2;
-    int32_t y_stride_x_3 = y_stride * 3;
-    int32_t y_stride_x_4 = y_stride * 4;
+    int32_t out_y_stride_x_2 = out_y_stride * 2;
+    int32_t out_y_stride_x_3 = out_y_stride * 3;
+    int32_t out_y_stride_x_4 = out_y_stride * 4;
 
     if (out_decimation == 2)
     {
-        for (int32_t y = 0; y < uv_height; y++)
+        for (int32_t y = 0; y < out_uv_height; y++)
         {
             uint8_t* psrc = in_buf;
             uint8_t* yp = out_buf;
-            uint8_t* up = uplane;
-            uint8_t* vp = vplane;
 
-            for (int32_t x = 0; x < uv_width; x += 4)
+            for (int32_t x = 0; x < out_uv_width; x += 4)
             {
                 yp[0] = psrc[1] & 0xFE;
-                yp[y_stride] = psrc[1 + in_stride] & 0xFE;
+                yp[out_y_stride] = psrc[1 + in_stride] & 0xFE;
                 yp[1] = psrc[3] & 0xFE;
-                yp[1 + y_stride] = psrc[3 + in_stride] & 0xFE;
+                yp[1 + out_y_stride] = psrc[3 + in_stride] & 0xFE;
 
-                up[x] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[0]) + \
+                out_uplane[x] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[0]) + \
                     static_cast<uint16_t>(psrc[in_stride])) >> 1);
 
-                vp[x] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[2]) + \
+                out_vplane[x] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[2]) + \
                     static_cast<uint16_t>(psrc[2 + in_stride])) >> 1);
 
                 yp[2] = psrc[5] & 0xFE;
-                yp[2 + y_stride] = psrc[5 + in_stride] & 0xFE;
+                yp[2 + out_y_stride] = psrc[5 + in_stride] & 0xFE;
                 yp[3] = psrc[7] & 0xFE;
-                yp[3 + y_stride] = psrc[7 + in_stride] & 0xFE;
+                yp[3 + out_y_stride] = psrc[7 + in_stride] & 0xFE;
 
-                up[x + 1] = up[x];
-                vp[x + 1] = vp[x];
+                out_uplane[x + 1] = out_uplane[x];
+                out_vplane[x + 1] = out_vplane[x];
 
                 yp[4] = psrc[8] & 0xFE;
-                yp[4 + y_stride] = psrc[8 + in_stride] & 0xFE;
+                yp[4 + out_y_stride] = psrc[8 + in_stride] & 0xFE;
                 yp[5] = psrc[9] & 0xFE;
-                yp[5 + y_stride] = psrc[9 + in_stride] & 0xFE;
+                yp[5 + out_y_stride] = psrc[9 + in_stride] & 0xFE;
 
-                up[x + 2] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[4]) + \
+                out_uplane[x + 2] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[4]) + \
                     static_cast<uint16_t>(psrc[4 + in_stride])) >> 1);
 
-                vp[x + 2] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[6]) + \
+                out_vplane[x + 2] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[6]) + \
                     static_cast<uint16_t>(psrc[6 + in_stride])) >> 1);
 
                 yp[6] = psrc[10] & 0xFE;
-                yp[6 + y_stride] = psrc[10 + in_stride] & 0xFE;
+                yp[6 + out_y_stride] = psrc[10 + in_stride] & 0xFE;
                 yp[7] = psrc[11] & 0xFE;
-                yp[7 + y_stride] = psrc[11 + in_stride] & 0xFE;
+                yp[7 + out_y_stride] = psrc[11 + in_stride] & 0xFE;
 
-                up[x + 3] = up[x + 2];
+                out_uplane[x + 3] = out_uplane[x + 2];
 
-                vp[x + 3] = vp[x + 2];
+                out_vplane[x + 3] = out_vplane[x + 2];
 
                 psrc += 12;
                 yp += 8;
             }
 
             in_buf += in_stride_x_2;
-            out_buf += y_stride_x_2;
+            out_buf += out_y_stride_x_2;
 
-            uplane += uv_stride;
-            vplane += uv_stride;
+            out_uplane += out_uv_stride;
+            out_vplane += out_uv_stride;
         }
     }
     else if (out_decimation == 4)
     {
-        for (int32_t y = 0; y < uv_height; y++)
+        for (int32_t y = 0; y < out_uv_height; y++)
         {
             uint8_t* psrc = in_buf;
             uint8_t* yp = out_buf;
-            uint8_t* up = uplane;
-            uint8_t* vp = vplane;
 
-            for (int32_t x = 0; x < uv_width; x += 2)
+            for (int32_t x = 0; x < out_uv_width; x += 2)
             {
                 yp[0] = psrc[1] & 0xFE;
-                yp[y_stride] = psrc[1 + in_stride] & 0xFE;
-                yp[y_stride_x_2] = psrc[1 + in_stride_x_2] & 0xFE;
-                yp[y_stride_x_3] = psrc[1 + in_stride_x_3] & 0xFE;
+                yp[out_y_stride] = psrc[1 + in_stride] & 0xFE;
+                yp[out_y_stride_x_2] = psrc[1 + in_stride_x_2] & 0xFE;
+                yp[out_y_stride_x_3] = psrc[1 + in_stride_x_3] & 0xFE;
 
                 yp[1] = psrc[3] & 0xFE;
-                yp[1 + y_stride] = psrc[3 + in_stride] & 0xFE;
-                yp[1 + y_stride_x_2] = psrc[3 + in_stride_x_2] & 0xFE;
-                yp[1 + y_stride_x_3] = psrc[3 + in_stride_x_3] & 0xFE;
+                yp[1 + out_y_stride] = psrc[3 + in_stride] & 0xFE;
+                yp[1 + out_y_stride_x_2] = psrc[3 + in_stride_x_2] & 0xFE;
+                yp[1 + out_y_stride_x_3] = psrc[3 + in_stride_x_3] & 0xFE;
 
                 yp[2] = psrc[5] & 0xFE;
-                yp[2 + y_stride] = psrc[5 + in_stride] & 0xFE;
-                yp[2 + y_stride_x_2] = psrc[5 + in_stride_x_2] & 0xFE;
-                yp[2 + y_stride_x_3] = psrc[5 + in_stride_x_3] & 0xFE;
+                yp[2 + out_y_stride] = psrc[5 + in_stride] & 0xFE;
+                yp[2 + out_y_stride_x_2] = psrc[5 + in_stride_x_2] & 0xFE;
+                yp[2 + out_y_stride_x_3] = psrc[5 + in_stride_x_3] & 0xFE;
 
                 yp[3] = psrc[7] & 0xFE;
-                yp[3 + y_stride] = psrc[7 + in_stride] & 0xFE;
-                yp[3 + y_stride_x_2] = psrc[7 + in_stride_x_2] & 0xFE;
-                yp[3 + y_stride_x_3] = psrc[7 + in_stride_x_3] & 0xFE;
+                yp[3 + out_y_stride] = psrc[7 + in_stride] & 0xFE;
+                yp[3 + out_y_stride_x_2] = psrc[7 + in_stride_x_2] & 0xFE;
+                yp[3 + out_y_stride_x_3] = psrc[7 + in_stride_x_3] & 0xFE;
 
-                up[x] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[0]) + \
+                out_uplane[x] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[0]) + \
                     static_cast<uint16_t>(psrc[in_stride]) + \
                     static_cast<uint16_t>(psrc[in_stride_x_2]) + \
                     static_cast<uint16_t>(psrc[in_stride_x_3])) >> 2);
 
-                vp[x] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[2]) + \
+                out_vplane[x] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[2]) + \
                     static_cast<uint16_t>(psrc[2 + in_stride]) + \
                     static_cast<uint16_t>(psrc[2 + in_stride_x_2]) + \
                     static_cast<uint16_t>(psrc[2 + in_stride_x_3])) >> 2);
 
                 yp[4] = psrc[8] & 0xFE;
-                yp[4 + y_stride] = psrc[8 + in_stride] & 0xFE;
-                yp[4 + y_stride_x_2] = psrc[8 + in_stride_x_2] & 0xFE;
-                yp[4 + y_stride_x_3] = psrc[8 + in_stride_x_3] & 0xFE;
+                yp[4 + out_y_stride] = psrc[8 + in_stride] & 0xFE;
+                yp[4 + out_y_stride_x_2] = psrc[8 + in_stride_x_2] & 0xFE;
+                yp[4 + out_y_stride_x_3] = psrc[8 + in_stride_x_3] & 0xFE;
 
                 yp[5] = psrc[9] & 0xFE;
-                yp[5 + y_stride] = psrc[9 + in_stride] & 0xFE;
-                yp[5 + y_stride_x_2] = psrc[9 + in_stride_x_2] & 0xFE;
-                yp[5 + y_stride_x_3] = psrc[9 + in_stride_x_3] & 0xFE;
+                yp[5 + out_y_stride] = psrc[9 + in_stride] & 0xFE;
+                yp[5 + out_y_stride_x_2] = psrc[9 + in_stride_x_2] & 0xFE;
+                yp[5 + out_y_stride_x_3] = psrc[9 + in_stride_x_3] & 0xFE;
 
                 yp[6] = psrc[10] & 0xFE;
-                yp[6 + y_stride] = psrc[10 + in_stride] & 0xFE;
-                yp[6 + y_stride_x_2] = psrc[10 + in_stride_x_2] & 0xFE;
-                yp[6 + y_stride_x_3] = psrc[10 + in_stride_x_3] & 0xFE;
+                yp[6 + out_y_stride] = psrc[10 + in_stride] & 0xFE;
+                yp[6 + out_y_stride_x_2] = psrc[10 + in_stride_x_2] & 0xFE;
+                yp[6 + out_y_stride_x_3] = psrc[10 + in_stride_x_3] & 0xFE;
 
                 yp[7] = psrc[11] & 0xFE;
-                yp[7 + y_stride] = psrc[11 + in_stride] & 0xFE;
-                yp[7 + y_stride_x_2] = psrc[11 + in_stride_x_2] & 0xFE;
-                yp[7 + y_stride_x_3] = psrc[11 + in_stride_x_3] & 0xFE;
+                yp[7 + out_y_stride] = psrc[11 + in_stride] & 0xFE;
+                yp[7 + out_y_stride_x_2] = psrc[11 + in_stride_x_2] & 0xFE;
+                yp[7 + out_y_stride_x_3] = psrc[11 + in_stride_x_3] & 0xFE;
 
-                up[x + 1] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[4]) + \
+                out_uplane[x + 1] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[4]) + \
                     static_cast<uint16_t>(psrc[4 + in_stride]) + \
                     static_cast<uint16_t>(psrc[4 + in_stride_x_2]) + \
                     static_cast<uint16_t>(psrc[4 + in_stride_x_3])) >> 2);
 
-                vp[x + 1] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[6]) + \
+                out_vplane[x + 1] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[6]) + \
                     static_cast<uint16_t>(psrc[6 + in_stride]) + \
                     static_cast<uint16_t>(psrc[6 + in_stride_x_2]) + \
                     static_cast<uint16_t>(psrc[6 + in_stride_x_3])) >> 2);
@@ -11498,10 +11466,10 @@ void Y41T_to_PlanarYUV(Stage* in, Stage* out)
             }
 
             in_buf += in_stride_x_4;
-            out_buf += y_stride_x_4;
+            out_buf += out_y_stride_x_4;
 
-            uplane += uv_stride;
-            vplane += uv_stride;
+            out_uplane += out_uv_stride;
+            out_vplane += out_uv_stride;
         }
     }
 }
@@ -11528,17 +11496,13 @@ void blipvert::Y41T_to_YUV9(Stage* in, Stage* out)
 
 void blipvert::Y41T_to_IYU1(Stage* in, Stage* out)
 {
-    if (!out_stride)
-        out_stride = width * 12 / 8;
+    uint8_t* in_buf = in->buf;
+    int32_t in_stride = in->stride;
+    int32_t width = in->width;
+    int32_t height = in->height;
 
-    if (!in_stride)
-        in_stride = width * 12 / 8;
-
-    if (flipped)
-    {
-        out_buf += (out_stride * (height - 1));
-        out_stride = -out_stride;
-    }
+    uint8_t* out_buf = out->buf;
+    int32_t out_stride = out->stride;
 
     for (int32_t y = 0; y < height; y++)
     {
@@ -11571,17 +11535,13 @@ void blipvert::Y41T_to_IYU1(Stage* in, Stage* out)
 
 void blipvert::Y41T_to_IYU2(Stage* in, Stage* out)
 {
-    if (!in_stride)
-        in_stride = width * 12 / 8;
+    uint8_t* in_buf = in->buf;
+    int32_t in_stride = in->stride;
+    int32_t width = in->width;
+    int32_t height = in->height;
 
-    if (!out_stride)
-        out_stride = width * 3;
-
-    if (flipped)
-    {
-        out_buf += (out_stride * (height - 1));
-        out_stride = -out_stride;
-    }
+    uint8_t* out_buf = out->buf;
+    int32_t out_stride = out->stride;
 
     for (int32_t y = 0; y < height; y++)
     {
@@ -11632,17 +11592,13 @@ void blipvert::Y41T_to_IYU2(Stage* in, Stage* out)
 
 void blipvert::Y41T_to_Y800(Stage* in, Stage* out)
 {
-    if (!out_stride)
-        out_stride = width;
+    uint8_t* in_buf = in->buf;
+    int32_t in_stride = in->stride;
+    int32_t width = in->width;
+    int32_t height = in->height;
 
-    if (!in_stride)
-        in_stride = width * 12 / 8;
-
-    if (flipped)
-    {
-        out_buf += (out_stride * (height - 1));
-        out_stride = -out_stride;
-    }
+    uint8_t* out_buf = out->buf;
+    int32_t out_stride = out->stride;
 
     for (int32_t y = 0; y < height; y++)
     {
@@ -11670,17 +11626,13 @@ void blipvert::Y41T_to_Y800(Stage* in, Stage* out)
 
 void blipvert::Y41T_to_Y16(Stage* in, Stage* out)
 {
-    if (!out_stride)
-        out_stride = width * 2;
+    uint8_t* in_buf = in->buf;
+    int32_t in_stride = in->stride;
+    int32_t width = in->width;
+    int32_t height = in->height;
 
-    if (!in_stride)
-        in_stride = width * 12 / 8;
-
-    if (flipped)
-    {
-        out_buf += (out_stride * (height - 1));
-        out_stride = -out_stride;
-    }
+    uint8_t* out_buf = out->buf;
+    int32_t out_stride = out->stride;
 
     for (int32_t y = 0; y < height; y++)
     {
@@ -11717,17 +11669,13 @@ void blipvert::Y41T_to_Y16(Stage* in, Stage* out)
 
 void blipvert::Y41T_to_CLJR(Stage* in, Stage* out)
 {
-    if (!out_stride)
-        out_stride = width;
+    uint8_t* in_buf = in->buf;
+    int32_t in_stride = in->stride;
+    int32_t width = in->width;
+    int32_t height = in->height;
 
-    if (!in_stride)
-        in_stride = width * 12 / 8;
-
-    if (flipped)
-    {
-        out_buf += (out_stride * (height - 1));
-        out_stride = -out_stride;
-    }
+    uint8_t* out_buf = out->buf;
+    int32_t out_stride = out->stride;
 
     for (int32_t y = 0; y < height; y++)
     {
@@ -11747,17 +11695,14 @@ void blipvert::Y41T_to_CLJR(Stage* in, Stage* out)
 
 void blipvert::Y41T_to_Y41P(Stage* in, Stage* out)
 {
-    if (!in_stride)
-        in_stride = width * 12 / 8;
+    uint8_t* in_buf = in->buf;
+    int32_t in_stride = in->stride;
+    int32_t width = in->width;
+    int32_t height = in->height;
 
-    if (!out_stride)
-        out_stride = width * 12 / 8;
+    uint8_t* out_buf = out->buf;
+    int32_t out_stride = out->stride;
 
-    if (flipped)
-    {
-        out_buf += (out_stride * (height - 1));
-        out_stride = -out_stride;
-    }
     while (height)
     {
         uint8_t* psrc = in_buf;
@@ -11789,17 +11734,13 @@ void blipvert::Y41T_to_Y41P(Stage* in, Stage* out)
 
 void blipvert::Y41T_to_AYUV(Stage* in, Stage* out)
 {
-    if (!out_stride)
-        out_stride = width * 4;
+    uint8_t* in_buf = in->buf;
+    int32_t in_stride = in->stride;
+    int32_t width = in->width;
+    int32_t height = in->height;
 
-    if (!in_stride)
-        in_stride = width / 8 * 12;
-
-    if (flipped)
-    {
-        out_buf += (out_stride * (height - 1));
-        out_stride = -out_stride;
-    }
+    uint8_t* out_buf = out->buf;
+    int32_t out_stride = out->stride;
 
     while (height)
     {
@@ -11868,73 +11809,37 @@ void blipvert::Y41T_to_AYUV(Stage* in, Stage* out)
 
 void Y41T_to_IMCx(Stage* in, Stage* out)
 {
-    if (!in_stride)
-        in_stride = width * 12 / 8;
+    uint8_t* in_buf = in->buf;
+    int32_t in_stride = in->stride;
+    int32_t width = in->width;
+    int32_t height = in->height;
 
-    int32_t uv_width = width / 2;
-    int32_t uv_height = height / 2;
-
-    if (!out_stride)
-        out_stride = width;
-
-    uint8_t* vplane;
-    uint8_t* uplane;
-    if (ufirst)
-    {
-        if (interlaced)
-        {
-            uplane = out_buf + (out_stride * height);
-            vplane = uplane + uv_width;
-        }
-        else
-        {
-            uplane = out_buf + (((height + 15) & ~15) * out_stride);
-            vplane = out_buf + (((((height * 3) / 2) + 15) & ~15) * out_stride);
-        }
-    }
-    else
-    {
-        if (interlaced)
-        {
-            vplane = out_buf + (out_stride * height);
-            uplane = vplane + uv_width;
-        }
-        else
-        {
-            vplane = out_buf + (((height + 15) & ~15) * out_stride);
-            uplane = out_buf + (((((height * 3) / 2) + 15) & ~15) * out_stride);
-        }
-    }
-
-    if (flipped)
-    {
-        out_buf += (out_stride * (height - 1));
-        uplane += (out_stride * (uv_height - 1));
-        vplane += (out_stride * (uv_height - 1));
-        out_stride = -out_stride;
-    }
+    uint8_t* out_buf = out->buf;
+    int32_t out_stride = out->stride;
+    int32_t out_uv_width = out->uv_width;
+    int32_t out_uv_height = out->uv_height;
+    uint8_t* out_uplane = out->uplane;
+    uint8_t* out_vplane = out->vplane;
 
     int32_t in_stride_x_2 = in_stride * 2;
     int32_t out_stride_x_2 = out_stride * 2;
 
-    for (int32_t y = 0; y < uv_height; y++)
+    for (int32_t y = 0; y < out_uv_height; y++)
     {
         uint8_t* psrc = in_buf;
         uint8_t* yp = out_buf;
-        uint8_t* up = uplane;
-        uint8_t* vp = vplane;
 
-        for (int32_t x = 0; x < uv_width; x += 4)
+        for (int32_t x = 0; x < out_uv_width; x += 4)
         {
             yp[0] = psrc[1] & 0xFE;
             yp[out_stride] = psrc[1 + in_stride] & 0xFE;
             yp[1] = psrc[3] & 0xFE;
             yp[1 + out_stride] = psrc[3 + in_stride] & 0xFE;
 
-            up[x] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[0]) + \
+            out_uplane[x] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[0]) + \
                 static_cast<uint16_t>(psrc[in_stride])) >> 1);
 
-            vp[x] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[2]) + \
+            out_vplane[x] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[2]) + \
                 static_cast<uint16_t>(psrc[2 + in_stride])) >> 1);
 
             yp[2] = psrc[5] & 0xFE;
@@ -11942,18 +11847,18 @@ void Y41T_to_IMCx(Stage* in, Stage* out)
             yp[3] = psrc[7] & 0xFE;
             yp[3 + out_stride] = psrc[7 + in_stride] & 0xFE;
 
-            up[x + 1] = up[x];
-            vp[x + 1] = vp[x];
+            out_uplane[x + 1] = out_uplane[x];
+            out_vplane[x + 1] = out_vplane[x];
 
             yp[4] = psrc[8] & 0xFE;
             yp[4 + out_stride] = psrc[8 + in_stride] & 0xFE;
             yp[5] = psrc[9] & 0xFE;
             yp[5 + out_stride] = psrc[9 + in_stride] & 0xFE;
 
-            up[x + 2] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[4]) + \
+            out_uplane[x + 2] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[4]) + \
                 static_cast<uint16_t>(psrc[4 + in_stride])) >> 1);
 
-            vp[x + 2] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[6]) + \
+            out_vplane[x + 2] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[6]) + \
                 static_cast<uint16_t>(psrc[6 + in_stride])) >> 1);
 
             yp[6] = psrc[10] & 0xFE;
@@ -11961,9 +11866,9 @@ void Y41T_to_IMCx(Stage* in, Stage* out)
             yp[7] = psrc[11] & 0xFE;
             yp[7 + out_stride] = psrc[11 + in_stride] & 0xFE;
 
-            up[x + 3] = up[x + 2];
+            out_uplane[x + 3] = out_uplane[x + 2];
 
-            vp[x + 3] = vp[x + 2];
+            out_vplane[x + 3] = out_vplane[x + 2];
 
             psrc += 12;
             yp += 8;
@@ -11972,8 +11877,8 @@ void Y41T_to_IMCx(Stage* in, Stage* out)
         in_buf += in_stride_x_2;
         out_buf += out_stride_x_2;
 
-        uplane += out_stride;
-        vplane += out_stride;
+        out_uplane += out_stride;
+        out_vplane += out_stride;
     }
 }
 
@@ -11999,37 +11904,18 @@ void blipvert::Y41T_to_IMC4(Stage* in, Stage* out)
 
 void Y41T_to_NVx(Stage* in, Stage* out)
 {
-    if (!in_stride)
-        in_stride = width * 12 / 8;
+    uint8_t* in_buf = in->buf;
+    int32_t in_stride = in->stride;
+    int32_t width = in->width;
+    int32_t height = in->height;
 
-    int32_t out_uv_width = width;
-    int32_t out_uv_height = height / 2;
-
-    if (!out_stride)
-        out_stride = width;
-
-    uint8_t* out_uvplane = out_buf + (out_stride * height);
-
-    uint8_t U;
-    uint8_t V;
-
-    if (ufirst)
-    {
-        U = 0;
-        V = 1;
-    }
-    else
-    {
-        U = 1;
-        V = 0;
-    }
-
-    if (flipped)
-    {
-        out_buf += (out_stride * (height - 1));
-        out_uvplane += (out_stride * (out_uv_height - 1));
-        out_stride = -out_stride;
-    }
+    uint8_t* out_buf = out->buf;
+    int32_t out_stride = out->stride;
+    int32_t out_uv_width = out->uv_width;
+    int32_t out_uv_height = out->uv_height;
+    uint8_t* out_uvplane = out->uvplane;
+    int16_t out_u = out->u_index;
+    int16_t out_v = out->v_index;
 
     int32_t in_stride_x_2 = in_stride * 2;
     int32_t out_stride_x_2 = out_stride * 2;
@@ -12038,8 +11924,8 @@ void Y41T_to_NVx(Stage* in, Stage* out)
     {
         uint8_t* psrc = in_buf;
         uint8_t* yp = out_buf;
-        uint8_t* up = out_uvplane + U;
-        uint8_t* vp = out_uvplane + V;
+        uint8_t* up = out_uvplane + out_u;
+        uint8_t* vp = out_uvplane + out_v;
 
         for (int32_t x = 0; x < out_uv_width; x += 8)
         {
@@ -12104,17 +11990,13 @@ void blipvert::Y41T_to_NV21(Stage* in, Stage* out)
 
 void blipvert::Y41T_to_Y42T(Stage* in, Stage* out)
 {
-    if (!in_stride)
-        in_stride = width * 12 / 8;
+    uint8_t* in_buf = in->buf;
+    int32_t in_stride = in->stride;
+    int32_t width = in->width;
+    int32_t height = in->height;
 
-    if (!out_stride)
-        out_stride = width * 2;
-
-    if (flipped)
-    {
-        out_buf += (out_stride * (height - 1));
-        out_stride = -out_stride;
-    }
+    uint8_t* out_buf = out->buf;
+    int32_t out_stride = out->stride;
 
     for (int32_t y = 0; y < height; y++)
     {
@@ -12152,73 +12034,54 @@ void blipvert::Y41T_to_Y42T(Stage* in, Stage* out)
 }
 void blipvert::Y41T_to_YV16(Stage* in, Stage* out)
 {
-    if (!in_stride)
-        in_stride = width * 12 / 8;
+    uint8_t* in_buf = in->buf;
+    int32_t in_stride = in->stride;
+    int32_t width = in->width;
+    int32_t height = in->height;
 
-    int32_t uv_width = width / 2;
-
-    int16_t y_stride, uv_stride;
-    if (out_stride <= width)
-    {
-        y_stride = width;
-        uv_stride = uv_width;
-    }
-    else
-    {
-        y_stride = out_stride;
-        uv_stride = out_stride;
-    }
-
-    uint8_t* vplane = out_buf + (y_stride * height);
-    uint8_t* uplane = vplane + (uv_stride * height);
-
-    if (flipped)
-    {
-        out_buf += (y_stride * (height - 1));
-        uplane += (uv_stride * (height - 1));
-        vplane += (uv_stride * (height - 1));
-        y_stride = -y_stride;
-        uv_stride = -uv_stride;
-    }
+    uint8_t* out_buf = out->buf;
+    int32_t out_y_stride = out->y_stride;
+    int32_t out_uv_stride = out->uv_stride;
+    int32_t out_uv_width = out->uv_width;
+    uint8_t* out_uplane = out->uplane;
+    uint8_t* out_vplane = out->vplane;
 
     for (int32_t y = 0; y < height; y++)
     {
         uint8_t* psrc = in_buf;
         uint8_t* yp = out_buf;
-        uint8_t* up = uplane;
-        uint8_t* vp = vplane;
 
-        for (int32_t x = 0; x < uv_width; x += 4)
+        for (int32_t x = 0; x < out_uv_width; x += 4)
         {
             yp[0] = psrc[1] & 0xFE;
             yp[1] = psrc[3] & 0xFE;
-            up[x] = psrc[0];
-            vp[x] = psrc[2];
+            out_uplane[x] = psrc[0];
+            out_vplane[x] = psrc[2];
 
             yp[2] = psrc[5] & 0xFE;
             yp[3] = psrc[7] & 0xFE;
-            up[x + 1] = psrc[0];
-            vp[x + 1] = psrc[2];
+            out_uplane[x + 1] = psrc[0];
+            out_vplane[x + 1] = psrc[2];
 
             yp[4] = psrc[8] & 0xFE;
             yp[5] = psrc[9] & 0xFE;
-            up[x + 2] = psrc[4];
-            vp[x + 2] = psrc[6];
+            out_uplane[x + 2] = psrc[4];
+            out_vplane[x + 2] = psrc[6];
 
             yp[6] = psrc[10] & 0xFE;
             yp[7] = psrc[11] & 0xFE;
-            up[x + 3] = psrc[4];
-            vp[x + 3] = psrc[6];
+            out_uplane[x + 3] = psrc[4];
+            out_vplane[x + 3] = psrc[6];
 
             psrc += 12;
             yp += 8;
         }
 
         in_buf += in_stride;
-        out_buf += y_stride;
+        out_buf += out_y_stride;
 
-        uplane += uv_stride;
-        vplane += uv_stride;
+        out_uplane += out_uv_stride;
+        out_vplane += out_uv_stride;
     }
 }
 
@@ -12228,40 +12091,30 @@ void blipvert::Y41T_to_YV16(Stage* in, Stage* out)
 
 void YV16_to_PackedY422(Stage* in, Stage* out)
 {
-    if (!out_stride)
-        out_stride = width * 2;
+    uint8_t* in_buf = in->buf;
+    int32_t in_y_stride = in->y_stride;
+    int32_t width = in->width;
+    int32_t height = in->height;
+    int32_t in_uv_stride = in->uv_stride;
+    int32_t in_uv_width = in->uv_width;
+    uint8_t* in_uplane = in->uplane;
+    uint8_t* in_vplane = in->vplane;
 
-    if (flipped)
-    {
-        out_buf += (out_stride * (height - 1));
-        out_stride = -out_stride;
-    }
-
-    int32_t uv_width = width / 2;
-
-    int16_t y_stride, uv_stride;
-    if (in_stride <= width)
-    {
-        y_stride = width;
-        uv_stride = uv_width;
-    }
-    else
-    {
-        y_stride = in_stride;
-        uv_stride = in_stride;
-    }
-
-    uint8_t* vplane = in_buf + (y_stride * height);
-    uint8_t* uplane = vplane + (uv_stride * height);
+    uint8_t* out_buf = out->buf;
+    int32_t out_stride = out->stride;
+    int16_t out_y0 = out->y0_index;
+    int16_t out_y1 = out->y1_index;
+    int16_t out_u = out->u_index;
+    int16_t out_v = out->v_index;
 
     for (int32_t y = 0; y < height; y++)
     {
         uint8_t* yp = in_buf;
-        uint8_t* up = uplane;
-        uint8_t* vp = vplane;
+        uint8_t* up = in_uplane;
+        uint8_t* vp = in_vplane;
         uint8_t* pdst = out_buf;
 
-        for (int32_t x = 0; x < uv_width; x++)
+        for (int32_t x = 0; x < in_uv_width; x++)
         {
             pdst[out_y0] = *yp++;
             pdst[out_y1] = *yp++;
@@ -12270,9 +12123,9 @@ void YV16_to_PackedY422(Stage* in, Stage* out)
             pdst += 4;
        }
 
-        in_buf += y_stride;
-        uplane += uv_stride;
-        vplane += uv_stride;
+        in_buf += in_y_stride;
+        in_uplane += in_uv_stride;
+        in_vplane += in_uv_stride;
         out_buf += out_stride;
     }
 }
@@ -12299,78 +12152,40 @@ void blipvert::YV16_to_VYUY(Stage* in, Stage* out)
 }
 
 
-void YV16_to_PlanarYUV(Stage* in, Stage* out
+void YV16_to_PlanarYUV(Stage* in, Stage* out)
 {
-    int32_t out_uv_width = width / out_decimation;
-    int32_t out_uv_height = height / out_decimation;
+    uint8_t* in_buf = in->buf;
+    int32_t in_y_stride = in->y_stride;
+    int32_t width = in->width;
+    int32_t height = in->height;
+    int32_t in_uv_stride = in->uv_stride;
+    int32_t in_uv_width = in->uv_width;
+    uint8_t* in_uplane = in->uplane;
+    uint8_t* in_vplane = in->vplane;
 
-    int32_t out_y_stride, out_uv_stride;
-    if (!out_stride)
-    {
-        out_y_stride = width;
-        out_uv_stride = out_uv_width;
-    }
-    else
-    {
-        out_y_stride = out_stride;
-        out_uv_stride = out_stride;
-    }
+    uint8_t* out_buf = out->buf;
+    int32_t out_y_stride = out->y_stride;
+    int32_t out_uv_stride = out->uv_stride;
+    int32_t out_uv_width = out->uv_width;
+    int32_t out_uv_height = out->uv_height;
+    uint8_t* out_uplane = out->uplane;
+    uint8_t* out_vplane = out->vplane;
+    int32_t out_decimation = out->decimation;
 
-    uint8_t* out_yplane = out_buf;
-    uint8_t* out_vplane;
-    uint8_t* out_uplane;
-
-    if (out_ufirst)
-    {
-        out_uplane = out_buf + (out_y_stride * height);
-        out_vplane = out_uplane + (out_uv_stride * out_uv_height);
-    }
-    else
-    {
-        out_vplane = out_buf + (out_y_stride * height);
-        out_uplane = out_vplane + (out_uv_stride * out_uv_height);
-    }
-
-    if (flipped)
-    {
-        out_yplane += (out_y_stride * (height - 1));
-        out_uplane += (out_uv_stride * (out_uv_height - 1));
-        out_vplane += (out_uv_stride * (out_uv_height - 1));
-        out_y_stride = -out_y_stride;
-        out_uv_stride = -out_uv_stride;
-    }
-
-    int32_t in_uv_width = width / 2;
-
-    int16_t in_y_stride, in_uv_stride;
-    if (in_stride <= width)
-    {
-        in_y_stride = width;
-        in_uv_stride = in_uv_width;
-    }
-    else
-    {
-        in_y_stride = in_stride;
-        in_uv_stride = in_stride;
-    }
-
-    uint8_t* in_yplane = in_buf;
-    uint8_t* in_vplane = in_buf + (in_y_stride * height);
-    uint8_t* in_uplane = in_vplane + (in_uv_stride * height);
 
     // Copy the y plane
-    if (out_y_stride != in_y_stride || flipped)
+    if (out_y_stride != in_y_stride || out->flipped)
     {
         for (int32_t line = 0; line < height; line++)
         {
-            memcpy(out_yplane, in_yplane, width);
-            out_yplane += out_y_stride;
-            in_yplane += in_y_stride;
+            memcpy(out_buf, in_buf, width);
+            out_buf += out_y_stride;
+            in_buf += in_y_stride;
         }
     }
     else
     {
-        memcpy(out_yplane, in_yplane, out_y_stride * height);
+        memcpy(out_buf, in_buf, out_y_stride * height);
     }
 
     int16_t in_uv_stride_x_2 = in_uv_stride * 2;
@@ -12460,37 +12275,23 @@ void blipvert::YV16_to_YUV9(Stage* in, Stage* out)
 
 void blipvert::YV16_to_IYU1(Stage* in, Stage* out)
 {
-    if (!out_stride)
-        out_stride = width * 12 / 8;
+    uint8_t* in_buf = in->buf;
+    int32_t in_y_stride = in->y_stride;
+    int32_t width = in->width;
+    int32_t height = in->height;
+    int32_t in_uv_stride = in->uv_stride;
+    int32_t in_uv_width = in->uv_width;
+    uint8_t* in_uplane = in->uplane;
+    uint8_t* in_vplane = in->vplane;
 
-    int32_t uv_width = width / 2;
-
-    int16_t y_stride, uv_stride;
-    if (in_stride <= width)
-    {
-        y_stride = width;
-        uv_stride = uv_width;
-    }
-    else
-    {
-        y_stride = in_stride;
-        uv_stride = in_stride;
-    }
-
-    uint8_t* vplane = in_buf + (y_stride * height);
-    uint8_t* uplane = vplane + (uv_stride * height);
-
-    if (flipped)
-    {
-        out_buf += (out_stride * (height - 1));
-        out_stride = -out_stride;
-    }
+    uint8_t* out_buf = out->buf;
+    int32_t out_stride = out->stride;
 
     for (int32_t y = 0; y < height; y++)
     {
         uint8_t* yp = in_buf;
-        uint8_t* up = uplane;
-        uint8_t* vp = vplane;
+        uint8_t* up = in_uplane;
+        uint8_t* vp = in_vplane;
         uint8_t* pdst = out_buf;
 
         for (int32_t x = 0; x < width; x += 4)
@@ -12503,9 +12304,9 @@ void blipvert::YV16_to_IYU1(Stage* in, Stage* out)
             *pdst++ = *yp++;
         }
 
-        in_buf += y_stride;
-        uplane += uv_stride;
-        vplane += uv_stride;
+        in_buf += in_y_stride;
+        in_uplane += in_uv_stride;
+        in_vplane += in_uv_stride;
         out_buf += out_stride;
     }
 }
@@ -12513,40 +12314,26 @@ void blipvert::YV16_to_IYU1(Stage* in, Stage* out)
 
 void blipvert::YV16_to_IYU2(Stage* in, Stage* out)
 {
-    if (!out_stride)
-        out_stride = width * 3;
+    uint8_t* in_buf = in->buf;
+    int32_t in_y_stride = in->y_stride;
+    int32_t width = in->width;
+    int32_t height = in->height;
+    int32_t in_uv_stride = in->uv_stride;
+    int32_t in_uv_width = in->uv_width;
+    uint8_t* in_uplane = in->uplane;
+    uint8_t* in_vplane = in->vplane;
 
-    if (flipped)
-    {
-        out_buf += (out_stride * (height - 1));
-        out_stride = -out_stride;
-    }
-
-    int32_t uv_width = width / 2;
-
-    int16_t y_stride, uv_stride;
-    if (in_stride <= width)
-    {
-        y_stride = width;
-        uv_stride = uv_width;
-    }
-    else
-    {
-        y_stride = in_stride;
-        uv_stride = in_stride;
-    }
-
-    uint8_t* vplane = in_buf + (y_stride * height);
-    uint8_t* uplane = vplane + (uv_stride * height);
+    uint8_t* out_buf = out->buf;
+    int32_t out_stride = out->stride;
 
     for (int32_t y = 0; y < height; y++)
     {
         uint8_t* yp = in_buf;
-        uint8_t* up = uplane;
-        uint8_t* vp = vplane;
+        uint8_t* up = in_uplane;
+        uint8_t* vp = in_vplane;
         uint8_t* pdst = out_buf;
 
-        for (int32_t x = 0; x < uv_width; x++)
+        for (int32_t x = 0; x < in_uv_width; x++)
         {
             *pdst++ = *up;
             *pdst++ = *yp++;
@@ -12557,9 +12344,9 @@ void blipvert::YV16_to_IYU2(Stage* in, Stage* out)
             *pdst++ = *vp++;
         }
 
-        in_buf += y_stride;
-        uplane += uv_stride;
-        vplane += uv_stride;
+        in_buf += in_y_stride;
+        in_uplane += in_uv_stride;
+        in_vplane += in_uv_stride;
         out_buf += out_stride;
     }
 }
@@ -12576,37 +12363,23 @@ void blipvert::YV16_to_Y16(Stage* in, Stage* out)
 
 void blipvert::YV16_to_CLJR(Stage* in, Stage* out)
 {
-    if (!out_stride)
-        out_stride = width;
+    uint8_t* in_buf = in->buf;
+    int32_t in_y_stride = in->y_stride;
+    int32_t width = in->width;
+    int32_t height = in->height;
+    int32_t in_uv_stride = in->uv_stride;
+    int32_t in_uv_width = in->uv_width;
+    uint8_t* in_uplane = in->uplane;
+    uint8_t* in_vplane = in->vplane;
 
-    if (flipped)
-    {
-        out_buf += (out_stride * (height - 1));
-        out_stride = -out_stride;
-    }
-
-    int32_t uv_width = width / 2;
-
-    int16_t y_stride, uv_stride;
-    if (in_stride <= width)
-    {
-        y_stride = width;
-        uv_stride = uv_width;
-    }
-    else
-    {
-        y_stride = in_stride;
-        uv_stride = in_stride;
-    }
-
-    uint8_t* vplane = in_buf + (y_stride * height);
-    uint8_t* uplane = vplane + (uv_stride * height);
+    uint8_t* out_buf = out->buf;
+    int32_t out_stride = out->stride;
 
     for (int32_t y = 0; y < height; y++)
     {
         uint8_t* yp = in_buf;
-        uint8_t* up = uplane;
-        uint8_t* vp = vplane;
+        uint8_t* up = in_uplane;
+        uint8_t* vp = in_vplane;
         uint8_t* pdst = out_buf;
 
         for (int32_t x = 0; x < width; x += 4)
@@ -12621,9 +12394,9 @@ void blipvert::YV16_to_CLJR(Stage* in, Stage* out)
             vp += 2;
         }
 
-        in_buf += y_stride;
-        uplane += uv_stride;
-        vplane += uv_stride;
+        in_buf += in_y_stride;
+        in_uplane += in_uv_stride;
+        in_vplane += in_uv_stride;
         out_buf += out_stride;
     }
 }
@@ -12631,37 +12404,23 @@ void blipvert::YV16_to_CLJR(Stage* in, Stage* out)
 
 void blipvert::YV16_to_Y41P(Stage* in, Stage* out)
 {
-    if (!out_stride)
-        out_stride = width * 12 / 8;
+    uint8_t* in_buf = in->buf;
+    int32_t in_y_stride = in->y_stride;
+    int32_t width = in->width;
+    int32_t height = in->height;
+    int32_t in_uv_stride = in->uv_stride;
+    int32_t in_uv_width = in->uv_width;
+    uint8_t* in_uplane = in->uplane;
+    uint8_t* in_vplane = in->vplane;
 
-    if (flipped)
-    {
-        out_buf += (out_stride * (height - 1));
-        out_stride = -out_stride;
-    }
-
-    int32_t uv_width = width / 2;
-
-    int16_t y_stride, uv_stride;
-    if (in_stride <= width)
-    {
-        y_stride = width;
-        uv_stride = uv_width;
-    }
-    else
-    {
-        y_stride = in_stride;
-        uv_stride = in_stride;
-    }
-
-    uint8_t* vplane = in_buf + (y_stride * height);
-    uint8_t* uplane = vplane + (uv_stride * height);
+    uint8_t* out_buf = out->buf;
+    int32_t out_stride = out->stride;
 
     for (int32_t y = 0; y < height; y++)
     {
         uint8_t* yp = in_buf;
-        uint8_t* up = uplane;
-        uint8_t* vp = vplane;
+        uint8_t* up = in_uplane;
+        uint8_t* vp = in_vplane;
         uint8_t* pdst = out_buf;
 
         for (int32_t x = 0; x < width; x += 8)
@@ -12685,49 +12444,35 @@ void blipvert::YV16_to_Y41P(Stage* in, Stage* out)
             vp += 4;
         }
 
-        in_buf += y_stride;
-        uplane += uv_stride;
-        vplane += uv_stride;
+        in_buf += in_y_stride;
+        in_uplane += in_uv_stride;
+        in_vplane += in_uv_stride;
         out_buf += out_stride;
     }
 }
 
 void blipvert::YV16_to_AYUV(Stage* in, Stage* out)
 {
-    if (!out_stride)
-        out_stride = width * 4;
+    uint8_t* in_buf = in->buf;
+    int32_t in_y_stride = in->y_stride;
+    int32_t width = in->width;
+    int32_t height = in->height;
+    int32_t in_uv_stride = in->uv_stride;
+    int32_t in_uv_width = in->uv_width;
+    uint8_t* in_uplane = in->uplane;
+    uint8_t* in_vplane = in->vplane;
 
-    if (flipped)
-    {
-        out_buf += (out_stride * (height - 1));
-        out_stride = -out_stride;
-    }
-
-    int32_t uv_width = width / 2;
-
-    int16_t y_stride, uv_stride;
-    if (in_stride <= width)
-    {
-        y_stride = width;
-        uv_stride = uv_width;
-    }
-    else
-    {
-        y_stride = in_stride;
-        uv_stride = in_stride;
-    }
-
-    uint8_t* vplane = in_buf + (y_stride * height);
-    uint8_t* uplane = vplane + (uv_stride * height);
+    uint8_t* out_buf = out->buf;
+    int32_t out_stride = out->stride;
 
     for (int16_t y = 0; y < height; y++)
     {
         uint8_t* yp = in_buf;
-        uint8_t* up = uplane;
-        uint8_t* vp = vplane;
+        uint8_t* up = in_uplane;
+        uint8_t* vp = in_vplane;
         uint8_t* pdst = out_buf;
 
-        for (int16_t x = 0; x < uv_width; x++)
+        for (int16_t x = 0; x < in_uv_width; x++)
         {
             *pdst++ = *vp;
             *pdst++ = *up;
@@ -12740,77 +12485,33 @@ void blipvert::YV16_to_AYUV(Stage* in, Stage* out)
             *pdst++ = 0xFF;
         }
 
-        in_buf += y_stride;
-        uplane += uv_stride;
-        vplane += uv_stride;
+        in_buf += in_y_stride;
+        in_uplane += in_uv_stride;
+        in_vplane += in_uv_stride;
         out_buf += out_stride;
     }
 }
 
 void YV16_to_IMCx(Stage* in, Stage* out)
 {
-    int32_t out_uv_width = width / 2;
-    int32_t out_uv_height = height / 2;
+    uint8_t* in_buf = in->buf;
+    int32_t in_y_stride = in->y_stride;
+    int32_t width = in->width;
+    int32_t height = in->height;
+    int32_t in_uv_stride = in->uv_stride;
+    int32_t in_uv_width = in->uv_width;
+    uint8_t* in_uplane = in->uplane;
+    uint8_t* in_vplane = in->vplane;
 
-    if (!out_stride)
-        out_stride = width;
-
-    uint8_t* out_vplane;
-    uint8_t* out_uplane;
-    if (out_ufirst)
-    {
-        if (interlaced)
-        {
-            out_uplane = out_buf + (out_stride * height);
-            out_vplane = out_uplane + out_uv_width;
-        }
-        else
-        {
-            out_uplane = out_buf + (((height + 15) & ~15) * out_stride);
-            out_vplane = out_buf + (((((height * 3) / 2) + 15) & ~15) * out_stride);
-        }
-    }
-    else
-    {
-        if (interlaced)
-        {
-            out_vplane = out_buf + (out_stride * height);
-            out_uplane = out_vplane + out_uv_width;
-        }
-        else
-        {
-            out_vplane = out_buf + (((height + 15) & ~15) * out_stride);
-            out_uplane = out_buf + (((((height * 3) / 2) + 15) & ~15) * out_stride);
-        }
-    }
-
-    if (flipped)
-    {
-        out_buf += (out_stride * (height - 1));
-        out_uplane += (out_stride * (out_uv_height - 1));
-        out_vplane += (out_stride * (out_uv_height - 1));
-        out_stride = -out_stride;
-    }
-
-    int32_t in_uv_width = width / 2;
-
-    int16_t in_y_stride, in_uv_stride;
-    if (in_stride <= width)
-    {
-        in_y_stride = width;
-        in_uv_stride = in_uv_width;
-    }
-    else
-    {
-        in_y_stride = in_stride;
-        in_uv_stride = in_stride;
-    }
-
-    uint8_t* in_vplane = in_buf + (in_y_stride * height);
-    uint8_t* in_uplane = in_vplane + (in_uv_stride * height);
+    uint8_t* out_buf = out->buf;
+    int32_t out_stride = out->stride;
+    int32_t out_uv_width = out->uv_width;
+    int32_t out_uv_height = out->uv_height;
+    uint8_t* out_uplane = out->uplane;
+    uint8_t* out_vplane = out->vplane;
 
     // Copy the y plane
-    if (out_stride != in_y_stride || flipped)
+    if (out_stride != in_y_stride || out->flipped)
     {
         for (int32_t y = 0; y < height; y++)
         {
@@ -12867,54 +12568,25 @@ void blipvert::YV16_to_IMC4(Stage* in, Stage* out)
 
 void YV16_to_NVx(Stage* in, Stage* out)
 {
-    int32_t out_uv_width = width;
-    int32_t out_uv_height = height / 2;
+    uint8_t* in_buf = in->buf;
+    int32_t in_y_stride = in->y_stride;
+    int32_t width = in->width;
+    int32_t height = in->height;
+    int32_t in_uv_stride = in->uv_stride;
+    int32_t in_uv_width = in->uv_width;
+    uint8_t* in_uplane = in->uplane;
+    uint8_t* in_vplane = in->vplane;
 
-    if (!out_stride)
-        out_stride = width;
-
-    uint8_t* out_uvplane = out_buf + (out_stride * height);
-
-    uint8_t U;
-    uint8_t V;
-
-    if (out_ufirst)
-    {
-        U = 0;
-        V = 1;
-    }
-    else
-    {
-        U = 1;
-        V = 0;
-    }
-
-    if (flipped)
-    {
-        out_buf += (out_stride * (height - 1));
-        out_uvplane += (out_stride * (out_uv_height - 1));
-        out_stride = -out_stride;
-    }
-
-    int32_t in_uv_width = width / 2;
-
-    int16_t in_y_stride, in_uv_stride;
-    if (in_stride <= width)
-    {
-        in_y_stride = width;
-        in_uv_stride = in_uv_width;
-    }
-    else
-    {
-        in_y_stride = in_stride;
-        in_uv_stride = in_stride;
-    }
-
-    uint8_t* in_vplane = in_buf + (in_y_stride * height);
-    uint8_t* in_uplane = in_vplane + (in_uv_stride * height);
+    uint8_t* out_buf = out->buf;
+    int32_t out_stride = out->stride;
+    int32_t out_uv_width = out->uv_width;
+    int32_t out_uv_height = out->uv_height;
+    uint8_t* out_uvplane = out->uvplane;
+    int16_t out_u = out->u_index;
+    int16_t out_v = out->v_index;
 
     // Copy the y plane
-    if (out_stride != in_y_stride || flipped)
+    if (out_stride != in_y_stride || out->flipped)
     {
         for (int32_t line = 0; line < height; line++)
         {
@@ -12933,8 +12605,8 @@ void YV16_to_NVx(Stage* in, Stage* out)
     {
         uint8_t* in_up = in_uplane;
         uint8_t* in_vp = in_vplane;
-        uint8_t* out_up = out_uvplane + U;
-        uint8_t* out_vp = out_uvplane + V;
+        uint8_t* out_up = out_uvplane + out_u;
+        uint8_t* out_vp = out_uvplane + out_v;
 
         for (uint16_t x = 0; x < in_uv_width; x++)
         {
@@ -12962,41 +12634,26 @@ void blipvert::YV16_to_NV21(Stage* in, Stage* out)
 
 void blipvert::YV16_to_Y42T(Stage* in, Stage* out)
 {
-    // 1 3 0 2
-    if (!out_stride)
-        out_stride = width * 2;
+    uint8_t* in_buf = in->buf;
+    int32_t in_y_stride = in->y_stride;
+    int32_t width = in->width;
+    int32_t height = in->height;
+    int32_t in_uv_stride = in->uv_stride;
+    int32_t in_uv_width = in->uv_width;
+    uint8_t* in_uplane = in->uplane;
+    uint8_t* in_vplane = in->vplane;
 
-    if (flipped)
-    {
-        out_buf += (out_stride * (height - 1));
-        out_stride = -out_stride;
-    }
-
-    int32_t uv_width = width / 2;
-
-    int16_t y_stride, uv_stride;
-    if (in_stride <= width)
-    {
-        y_stride = width;
-        uv_stride = uv_width;
-    }
-    else
-    {
-        y_stride = in_stride;
-        uv_stride = in_stride;
-    }
-
-    uint8_t* vplane = in_buf + (y_stride * height);
-    uint8_t* uplane = vplane + (uv_stride * height);
+    uint8_t* out_buf = out->buf;
+    int32_t out_stride = out->stride;
 
     for (int32_t y = 0; y < height; y++)
     {
         uint8_t* yp = in_buf;
-        uint8_t* up = uplane;
-        uint8_t* vp = vplane;
+        uint8_t* up = in_uplane;
+        uint8_t* vp = in_vplane;
         uint8_t* pdst = out_buf;
 
-        for (int32_t x = 0; x < uv_width; x++)
+        for (int32_t x = 0; x < in_uv_width; x++)
         {
             pdst[0] = *up++;
             pdst[2] = *vp++;
@@ -13007,47 +12664,32 @@ void blipvert::YV16_to_Y42T(Stage* in, Stage* out)
             yp += 2;
         }
 
-        in_buf += y_stride;
-        uplane += uv_stride;
-        vplane += uv_stride;
+        in_buf += in_y_stride;
+        in_uplane += in_uv_stride;
+        in_vplane += in_uv_stride;
         out_buf += out_stride;
     }
 }
 
 void blipvert::YV16_to_Y41T(Stage* in, Stage* out)
 {
-    if (!out_stride)
-        out_stride = width * 12 / 8;
+    uint8_t* in_buf = in->buf;
+    int32_t in_y_stride = in->y_stride;
+    int32_t width = in->width;
+    int32_t height = in->height;
+    int32_t in_uv_stride = in->uv_stride;
+    int32_t in_uv_width = in->uv_width;
+    uint8_t* in_uplane = in->uplane;
+    uint8_t* in_vplane = in->vplane;
 
-    if (flipped)
-    {
-        out_buf += (out_stride * (height - 1));
-        out_stride = -out_stride;
-    }
-
-    int32_t uv_width = width / 2;
-
-    int16_t y_stride, uv_stride;
-    if (in_stride <= width)
-    {
-        y_stride = width;
-        uv_stride = uv_width;
-    }
-    else
-    {
-        y_stride = in_stride;
-        uv_stride = in_stride;
-    }
-
-    uint8_t* vplane = in_buf + (y_stride * height);
-    uint8_t* uplane = vplane + (uv_stride * height);
-
+    uint8_t* out_buf = out->buf;
+    int32_t out_stride = out->stride;
 
     for (int32_t y = 0; y < height; y++)
     {
         uint8_t* yp = in_buf;
-        uint8_t* up = uplane;
-        uint8_t* vp = vplane;
+        uint8_t* up = in_uplane;
+        uint8_t* vp = in_vplane;
         uint8_t* pdst = out_buf;
 
         for (int32_t x = 0; x < width; x += 8)
@@ -13072,9 +12714,9 @@ void blipvert::YV16_to_Y41T(Stage* in, Stage* out)
             vp += 4;
         }
 
-        in_buf += y_stride;
-        uplane += uv_stride;
-        vplane += uv_stride;
+        in_buf += in_y_stride;
+        in_uplane += in_uv_stride;
+        in_vplane += in_uv_stride;
         out_buf += out_stride;
     }
 }

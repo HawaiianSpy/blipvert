@@ -1838,10 +1838,11 @@ void RGB32_to_NVx(Stage* in, Stage* out)
     int32_t width = in->width;
     int32_t height = in->height;
     int32_t in_stride = in->stride;
+
     int32_t out_stride = out->stride;
-    uint8_t* uvplane = out->uvplane;
-    uint8_t U = out->u_index;
-    uint8_t V = out->v_index;
+    uint8_t* out_uvplane = out->uvplane;
+    uint16_t out_u = out->u_index;
+    uint16_t out_v = out->v_index;
     int32_t in_stride_x_2 = in->stride * 2;
     int32_t out_stride_x_2 = out_stride * 2;
 
@@ -1853,8 +1854,8 @@ void RGB32_to_NVx(Stage* in, Stage* out)
     {
         uint8_t* psrc = in_buf;
         uint8_t* yp = out_buf;
-        uint8_t* up = uvplane + U;
-        uint8_t* vp = uvplane + V;
+        uint8_t* up = out_uvplane + out_u;
+        uint8_t* vp = out_uvplane + out_v;
         for (int32_t x = 0; x < width; x += 2)
         {
             yp[0] = static_cast<uint8_t>(((yr_table[psrc[2]] + yg_table[psrc[1]] + yb_table[psrc[0]]) >> 15) + 16);
@@ -1892,7 +1893,7 @@ void RGB32_to_NVx(Stage* in, Stage* out)
 
         in_buf += in_stride_x_2;
         out_buf += out_stride_x_2;
-        uvplane += out_stride;
+        out_uvplane += out_stride;
     }
 }
 
@@ -3944,8 +3945,6 @@ void RGB555_to_NVx(Stage* in, Stage* out)
     uint8_t* uvplane = out->uvplane;
     uint8_t U = out->u_index;
     uint8_t V = out->v_index;
-    int32_t in_stride_x_2 = in->stride * 2;
-    int32_t out_stride_x_2 = out_stride * 2;
 
     uint16_t red;
     uint16_t green;

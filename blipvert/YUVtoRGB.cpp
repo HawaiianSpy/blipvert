@@ -2579,9 +2579,9 @@ void NVx_to_RGB32(Stage* in, Stage* out)
     int32_t width = in->width;
     int32_t height = in->height;
     int32_t in_stride = in->stride;
-    uint8_t* uvplane = in->uvplane;
-    uint8_t U = in->u_index;
-    uint8_t V = in->v_index;
+    uint8_t* in_uvplane = in->uvplane;
+    uint16_t in_u = in->u_index;
+    uint16_t in_v = in->v_index;
 
     uint8_t* out_buf = out->buf;
     int32_t out_stride = out->stride;
@@ -2592,8 +2592,8 @@ void NVx_to_RGB32(Stage* in, Stage* out)
     for (int16_t y = 0; y < height; y += 2)
     {
         uint8_t* yp = in_buf;
-        uint8_t* up = uvplane + U;
-        uint8_t* vp = uvplane + V;
+        uint8_t* up = in_uvplane + in_u;
+        uint8_t* vp = in_uvplane + in_v;
         uint8_t* pdst = out_buf;
 
         for (int16_t x = 0; x < width; x += 2)
@@ -2637,7 +2637,7 @@ void NVx_to_RGB32(Stage* in, Stage* out)
         }
 
         in_buf += in_stride_x_2;
-        uvplane += in_stride;
+        in_uvplane += in_stride;
         out_buf += out_stride_x_2;
     }
 }
@@ -2658,9 +2658,9 @@ void NVx_to_RGB24(Stage* in, Stage* out)
     int32_t width = in->width;
     int32_t height = in->height;
     int32_t in_stride = in->stride;
-    uint8_t* uvplane = in->uvplane;
-    uint8_t U = in->u_index;
-    uint8_t V = in->v_index;
+    uint8_t* in_uvplane = in->uvplane;
+    uint16_t in_u = in->u_index;
+    uint16_t in_v = in->v_index;
 
     uint8_t* out_buf = out->buf;
     int32_t out_stride = out->stride;
@@ -2671,8 +2671,8 @@ void NVx_to_RGB24(Stage* in, Stage* out)
     for (int16_t y = 0; y < height; y += 2)
     {
         uint8_t* yp = in_buf;
-        uint8_t* up = uvplane + U;
-        uint8_t* vp = uvplane + V;
+        uint8_t* up = in_uvplane + in_u;
+        uint8_t* vp = in_uvplane + in_v;
         uint8_t* pdst = out_buf;
 
         for (int16_t x = 0; x < width; x += 2)
@@ -2712,7 +2712,7 @@ void NVx_to_RGB24(Stage* in, Stage* out)
         }
 
         in_buf += in_stride_x_2;
-        uvplane += in_stride;
+        in_uvplane += in_stride;
         out_buf += out_stride_x_2;
     }
 }
@@ -2733,9 +2733,9 @@ void NVx_to_RGB565(Stage* in, Stage* out)
     int32_t width = in->width;
     int32_t height = in->height;
     int32_t in_stride = in->stride;
-    uint8_t* uvplane = in->uvplane;
-    uint8_t U = in->u_index;
-    uint8_t V = in->v_index;
+    uint8_t* in_uvplane = in->uvplane;
+    uint16_t in_u = in->u_index;
+    uint16_t in_v = in->v_index;
 
     uint8_t* out_buf = out->buf;
     int32_t out_stride = out->stride;
@@ -2746,8 +2746,8 @@ void NVx_to_RGB565(Stage* in, Stage* out)
     for (int16_t y = 0; y < height; y += 2)
     {
         uint8_t* yp = in_buf;
-        uint8_t* up = uvplane + U;
-        uint8_t* vp = uvplane + V;
+        uint8_t* up = in_uvplane + in_u;
+        uint8_t* vp = in_uvplane + in_v;
         uint8_t* pdst = out_buf;
 
         for (int16_t x = 0; x < width; x += 2)
@@ -2791,7 +2791,7 @@ void NVx_to_RGB565(Stage* in, Stage* out)
         }
 
         in_buf += in_stride_x_2;
-        uvplane += in_stride;
+        in_uvplane += in_stride;
         out_buf += out_stride_x_2;
     }
 }
@@ -2812,9 +2812,9 @@ void NVx_to_RGB555(Stage* in, Stage* out)
     int32_t width = in->width;
     int32_t height = in->height;
     int32_t in_stride = in->stride;
-    uint8_t* uvplane = in->uvplane;
-    uint8_t U = in->u_index;
-    uint8_t V = in->v_index;
+    uint8_t* in_uvplane = in->uvplane;
+    uint16_t in_u = in->u_index;
+    uint16_t in_v = in->v_index;
 
     uint8_t* out_buf = out->buf;
     int32_t out_stride = out->stride;
@@ -2825,8 +2825,8 @@ void NVx_to_RGB555(Stage* in, Stage* out)
     for (int16_t y = 0; y < height; y += 2)
     {
         uint8_t* yp = in_buf;
-        uint8_t* up = uvplane + U;
-        uint8_t* vp = uvplane + V;
+        uint8_t* up = in_uvplane + in_u;
+        uint8_t* vp = in_uvplane + in_v;
         uint8_t* pdst = out_buf;
 
         for (int16_t x = 0; x < width; x += 2)
@@ -2870,7 +2870,7 @@ void NVx_to_RGB555(Stage* in, Stage* out)
         }
 
         in_buf += in_stride_x_2;
-        uvplane += in_stride;
+        in_uvplane += in_stride;
         out_buf += out_stride_x_2;
     }
 }

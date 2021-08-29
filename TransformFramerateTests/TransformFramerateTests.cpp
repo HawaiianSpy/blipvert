@@ -124,13 +124,21 @@ void FramerateTest(const MediaFormatID& in_format, const MediaFormatID& out_form
 		fillBufFunctPtr(red, green, blue, alpha, width, height, inBufPtr, 0);
 	}
 
+	t_stagetransformfunc pstage = FindTransformStage(in_format);
+	Stage inptr;
+	pstage(&inptr, 0, 1, width, height, inBufPtr, 0, false, nullptr);
+
+	pstage = FindTransformStage(out_format);
+	Stage outptr;
+	pstage(&outptr, 0, 1, width, height, outBufPtr, 0, false, nullptr);
+
 	std::cout << "Framerate test: " << in_format << " to " << out_format;
 
 	auto start = chrono::steady_clock::now();
 
 	for (int count = 0; count < numframes; count++)
 	{
-		encodeTransPtr(width, height, outBufPtr, 0, inBufPtr, 0, false, nullptr);
+		encodeTransPtr(&inptr, &outptr);
 	}
 
 	auto end = chrono::steady_clock::now();

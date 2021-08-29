@@ -381,7 +381,17 @@ namespace BlipvertUnitTests
 
 			fillBufFunctPtr(red, green, blue, alpha, width, height, inBufPtr, in_stride);
 
-			encodeTransPtr(width, height, outBufPtr, out_stride, inBufPtr, in_stride, false, nullptr);
+			t_stagetransformfunc pstage = FindTransformStage(inFormat);
+			Assert::IsNotNull(reinterpret_cast<void*>(pstage), L"FindTransformStage for inFormat returned a null function pointer.");
+			Stage inptr;
+			pstage(&inptr, 0, 1, width, height, inBufPtr, in_stride, false, nullptr);
+
+			pstage = FindTransformStage(outFormat);
+			Assert::IsNotNull(reinterpret_cast<void*>(pstage), L"FindTransformStage for outFormat returned a null function pointer.");
+			Stage outptr;
+			pstage(&outptr, 0, 1, width, height, outBufPtr, out_stride, false, nullptr);
+
+			encodeTransPtr(&inptr, &outptr);
 
 			Assert::IsTrue(bufCheckFunctPtr(red, green, blue, alpha, width, height, outBufPtr, out_stride), L"RGB buffer did not contain expected values.");
 		}
@@ -441,7 +451,17 @@ namespace BlipvertUnitTests
 
 			fillBufFunctPtr(red, green, blue, alpha, width, height, inBufPtr, in_stride);
 
-			encodeTransPtr(width, height, outBufPtr, out_stride, inBufPtr, in_stride, false, nullptr);
+			t_stagetransformfunc pstage = FindTransformStage(inFormat);
+			Assert::IsNotNull(reinterpret_cast<void*>(pstage), L"FindTransformStage for inFormat returned a null function pointer.");
+			Stage inptr;
+			pstage(&inptr, 0, 1, width, height, inBufPtr, in_stride, false, nullptr);
+
+			pstage = FindTransformStage(outFormat);
+			Assert::IsNotNull(reinterpret_cast<void*>(pstage), L"FindTransformStage for outFormat returned a null function pointer.");
+			Stage outptr;
+			pstage(&outptr, 0, 1, width, height, outBufPtr, out_stride, false, nullptr);
+
+			encodeTransPtr(&inptr, &outptr);
 
 			Assert::IsTrue(bufCheckFunctPtr(red & 0xF8, green & 0xFC, blue & 0xF8, alpha, width, height, outBufPtr, out_stride), L"RGB buffer did not contain expected values.");
 		}
@@ -538,7 +558,17 @@ namespace BlipvertUnitTests
 
 			fillBufFunctPtr(red, green, blue, alpha, width, height, inBufPtr, in_stride);
 
-			encodeTransPtr(width, height, outBufPtr, out_stride, inBufPtr, in_stride, false, nullptr);
+			t_stagetransformfunc pstage = FindTransformStage(inFormat);
+			Assert::IsNotNull(reinterpret_cast<void*>(pstage), L"FindTransformStage for inFormat returned a null function pointer.");
+			Stage inptr;
+			pstage(&inptr, 0, 1, width, height, inBufPtr, in_stride, false, nullptr);
+
+			pstage = FindTransformStage(outFormat);
+			Assert::IsNotNull(reinterpret_cast<void*>(pstage), L"FindTransformStage for outFormat returned a null function pointer.");
+			Stage outptr;
+			pstage(&outptr, 0, 1, width, height, outBufPtr, out_stride, false, nullptr);
+
+			encodeTransPtr(&inptr, &outptr);
 
 			Assert::IsTrue(bufCheckFunctPtr(red & 0xF8, green & 0xF8, blue & 0xF8, alpha, width, height, outBufPtr, out_stride), L"RGB buffer did not contain expected values.");
 		}
@@ -604,7 +634,17 @@ namespace BlipvertUnitTests
 			uint8_t* outBufPtr = outBuf.get();
 			memset(outBufPtr, 0, outBufBize);
 
-			encodeTransPtr(width, height, outBufPtr, out_stride, inBufPtr, in_stride, false, rgbpalette);
+			t_stagetransformfunc pstage = FindTransformStage(inFormat);
+			Assert::IsNotNull(reinterpret_cast<void*>(pstage), L"FindTransformStage for inFormat returned a null function pointer.");
+			Stage inptr;
+			pstage(&inptr, 0, 1, width, height, inBufPtr, in_stride, false, rgbpalette);
+
+			pstage = FindTransformStage(outFormat);
+			Assert::IsNotNull(reinterpret_cast<void*>(pstage), L"FindTransformStage for outFormat returned a null function pointer.");
+			Stage outptr;
+			pstage(&outptr, 0, 1, width, height, outBufPtr, out_stride, false, rgbpalette);
+
+			encodeTransPtr(&inptr, &outptr);
 
 			Assert::IsTrue(bufCheckFunctPtr(rgbpalette[index].rgbRed, rgbpalette[index].rgbGreen, rgbpalette[index].rgbBlue, 255, width, height, outBufPtr, out_stride), L"RGB buffer did not contain expected values.");
 		}
@@ -670,7 +710,17 @@ namespace BlipvertUnitTests
 			uint8_t* outBufPtr = outBuf.get();
 			memset(outBufPtr, 0, outBufBize);
 
-			encodeTransPtr(width, height, outBufPtr, out_stride, inBufPtr, in_stride, false, rgbpalette);
+			t_stagetransformfunc pstage = FindTransformStage(inFormat);
+			Assert::IsNotNull(reinterpret_cast<void*>(pstage), L"FindTransformStage for inFormat returned a null function pointer.");
+			Stage inptr;
+			pstage(&inptr, 0, 1, width, height, inBufPtr, in_stride, false, rgbpalette);
+
+			pstage = FindTransformStage(outFormat);
+			Assert::IsNotNull(reinterpret_cast<void*>(pstage), L"FindTransformStage for outFormat returned a null function pointer.");
+			Stage outptr;
+			pstage(&outptr, 0, 1, width, height, outBufPtr, out_stride, false, rgbpalette);
+
+			encodeTransPtr(&inptr, &outptr);
 
 			Assert::IsTrue(bufCheckFunctPtr(rgbpalette[index].rgbRed, rgbpalette[index].rgbGreen, rgbpalette[index].rgbBlue, 255, width, height, outBufPtr, out_stride), L"RGB buffer did not contain expected values.");
 		}
@@ -721,7 +771,17 @@ namespace BlipvertUnitTests
 			uint8_t* outBufPtr = outBuf.get();
 			memset(outBufPtr, 0, outBufBize);
 
-			encodeTransPtr(width, height, outBufPtr, out_stride, inBufPtr, in_stride, false, rgbpalette);
+			t_stagetransformfunc pstage = FindTransformStage(inFormat);
+			Assert::IsNotNull(reinterpret_cast<void*>(pstage), L"FindTransformStage for inFormat returned a null function pointer.");
+			Stage inptr;
+			pstage(&inptr, 0, 1, width, height, inBufPtr, in_stride, false, rgbpalette);
+
+			pstage = FindTransformStage(outFormat);
+			Assert::IsNotNull(reinterpret_cast<void*>(pstage), L"FindTransformStage for outFormat returned a null function pointer.");
+			Stage outptr;
+			pstage(&outptr, 0, 1, width, height, outBufPtr, out_stride, false, rgbpalette);
+
+			encodeTransPtr(&inptr, &outptr);
 
 			Assert::IsTrue(bufCheckFunctPtr(rgbpalette[index].rgbRed, rgbpalette[index].rgbGreen, rgbpalette[index].rgbBlue, 255, width, height, outBufPtr, out_stride), L"RGB buffer did not contain expected values.");
 		}

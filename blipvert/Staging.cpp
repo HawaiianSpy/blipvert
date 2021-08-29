@@ -64,7 +64,7 @@ void blipvert::Stage_RGBA(Stage* result, uint8_t thread_index, uint8_t thread_co
 
 void blipvert::Stage_RGB32(Stage* result, uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
 {
-     memset(result, 0, sizeof(Stage));
+    memset(result, 0, sizeof(Stage));
 
     int32_t slice_height = height / thread_count;
 
@@ -208,6 +208,7 @@ void blipvert::Stage_RGB8(Stage* result, uint8_t thread_index, uint8_t thread_co
     result->height = slice_height;
     result->stride = stride;
     result->flipped = flipped;
+    result->palette = palette;
 
     if (result->stride < width)
         result->stride = width;
@@ -235,6 +236,7 @@ void blipvert::Stage_RGB4(Stage* result, uint8_t thread_index, uint8_t thread_co
     result->height = slice_height;
     result->stride = stride;
     result->flipped = flipped;
+    result->palette = palette;
 
     result->has_odd = width % 2 != 0;
     if (result->stride < width / 2)
@@ -330,7 +332,7 @@ void blipvert::Stage_YUY2(Stage* result, uint8_t thread_index, uint8_t thread_co
     result->y0_index = 0;
     result->y1_index = 2;
     result->u_index = 1;
-    result->v_index = 2;
+    result->v_index = 3;
 }
 
 void blipvert::Stage_UYVY(Stage* result, uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)
@@ -612,7 +614,7 @@ void blipvert::Stage_Y16(Stage* result, uint8_t thread_index, uint8_t thread_cou
 
     if (result->flipped)
     {
-        result->buf = buf + (result->stride * ((height - 1) - thread_index * (slice_height)));
+        result->buf = buf + (result->stride * ((height - 1) - (thread_index * slice_height)));
         result->stride = -result->stride;
     }
     else
@@ -627,7 +629,8 @@ void blipvert::Stage_AYUV(Stage* result, uint8_t thread_index, uint8_t thread_co
 
     int32_t slice_height = height / thread_count;
 
-    result->format = &MVFMT_Y16;
+    result->format = &MVFMT_AYUV;
+    result->thread_index = thread_index;
     result->width = width;
     result->height = slice_height;
     result->stride = stride;
@@ -638,7 +641,7 @@ void blipvert::Stage_AYUV(Stage* result, uint8_t thread_index, uint8_t thread_co
 
     if (result->flipped)
     {
-        result->buf = buf + (result->stride * ((height - 1) - thread_index * (slice_height)));
+        result->buf = buf + (result->stride * ((height - 1) - (thread_index * slice_height)));
         result->stride = -result->stride;
     }
     else

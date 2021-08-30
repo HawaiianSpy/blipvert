@@ -671,7 +671,7 @@ void Stage_IMCx(Stage* result, uint8_t thread_index, uint8_t thread_count, int32
 
     if (flipped)
     {
-        result->buf = buf + (result->y_stride * ((height - 1) - thread_index * slice_height));
+        result->buf = buf + (result->stride * ((height - 1) - thread_index * slice_height));
 
         int32_t offset_from_bottom = result->stride * ((result->uv_height - 1) - thread_index * result->uv_slice_height);
 
@@ -813,7 +813,7 @@ void Stage_NVx(Stage* result, uint8_t thread_index, uint8_t thread_count, int32_
 
     if (flipped)
     {
-        result->buf = buf + (result->y_stride * ((height - 1) - thread_index * slice_height));
+        result->buf = buf + (result->stride * ((height - 1) - thread_index * slice_height));
         result->uvplane = uvbuf + result->stride * ((result->uv_height - 1) - thread_index * result->uv_slice_height);
         result->stride = -result->stride;
     }

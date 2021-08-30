@@ -259,6 +259,7 @@ namespace BlipvertUnitTests
 					inSetPixelFunctPtr(lower_ry, lower_gu, lower_bv, alpha, x, y, width, height, inBufPtr, in_stride);
 				}
 			}
+
 			t_stagetransformfunc pstage = FindTransformStage(inFormat);
 			Assert::IsNotNull(reinterpret_cast<void*>(pstage), L"FindTransformStage for inFormat returned a null function pointer.");
 			Stage inptr;
@@ -266,16 +267,19 @@ namespace BlipvertUnitTests
 
 			pstage = FindTransformStage(outFormat);
 			Assert::IsNotNull(reinterpret_cast<void*>(pstage), L"FindTransformStage for outFormat returned a null function pointer.");
-			Stage outptr;
-			pstage(&outptr, 0, 1, width, height, outBufPtr, out_stride, false, nullptr);
+			Stage testptr;
+			pstage(&testptr, 0, 1, width, height, outTestBufPtr, out_stride, false, nullptr);
 
 			// Use the transform to be tested to convert the input buffer into the test buffer without flipping.
-			encodeTransPtr(&inptr, &outptr);
+			encodeTransPtr(&inptr, &testptr);
 
 			// Now, manually vertically flip the test buffer here.
 			outFlipVerticalFunctPtr(width, height, outTestBufPtr, out_stride);
 
 			// Run the transform we want to test with the flipping on.
+			pstage = FindTransformStage(outFormat);
+			Assert::IsNotNull(reinterpret_cast<void*>(pstage), L"FindTransformStage for outFormat returned a null function pointer.");
+			Stage outptr;
 			pstage(&outptr, 0, 1, width, height, outBufPtr, out_stride, true, nullptr);
 			encodeTransPtr(&inptr, &outptr);
 

@@ -447,12 +447,6 @@ void blipvert::RGB555_to_ARGB1555(Stage* in, Stage* out)
         return;
     }
 
-    if (out->flipped)
-    {
-        out_buf += (out_stride * (height - 1));
-        out_stride = -out_stride;
-    }
-
     do
     {
         memcpy(out_buf, in_buf, width * 2);

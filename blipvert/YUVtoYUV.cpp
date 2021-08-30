@@ -242,7 +242,7 @@ void PackedY422_to_PlanarYUV(Stage* in, Stage* out)
                 out_uplane[x] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[in_u]) + \
                     static_cast<uint16_t>(psrc[in_u + in_stride])) >> 1);
 
-                out_vplane[x] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[in_u]) + \
+                out_vplane[x] = static_cast<uint8_t>((static_cast<uint16_t>(psrc[in_v]) + \
                     static_cast<uint16_t>(psrc[in_v + in_stride])) >> 1);
                 psrc += 4;
                 yp += 2;
@@ -10355,7 +10355,7 @@ void NVx_to_NVx(Stage* in, Stage* out)
 
     uint8_t* out_buf = out->buf;
     int32_t out_stride = out->stride;
-    int32_t out_uv_width = out->uv_width;
+    int32_t out_uv_width = out->uv_width / 2;
     int32_t out_uv_height = out->uv_height;
     uint8_t* out_uvplane = out->uvplane;
     int16_t out_u = out->u_index;
@@ -10407,8 +10407,8 @@ void blipvert::NV12_to_NV21(Stage* in, Stage* out)
 
 void NVx_to_Y42T(Stage* in, Stage* out)
 {
-    uint8_t* in_buf = out->buf;
-    int32_t in_stride = out->stride;
+    uint8_t* in_buf = in->buf;
+    int32_t in_stride = in->stride;
     int32_t width = in->width;
     int32_t height = in->height;
     int32_t in_uv_width = in->uv_width;

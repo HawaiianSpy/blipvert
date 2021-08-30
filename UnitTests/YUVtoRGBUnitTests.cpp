@@ -854,7 +854,7 @@ namespace BlipvertUnitTests
 			pstage = FindTransformStage(rgbFormat);
 			Assert::IsNotNull(reinterpret_cast<void*>(pstage), L"FindTransformStage for rgbFormat returned a null function pointer.");
 			Stage outptr;
-			pstage(&outptr, 0, 1, width, height, yuvBufPtr, out_stride, false, nullptr);
+			pstage(&outptr, 0, 1, width, height, rgbBufPtr, out_stride, false, nullptr);
 
 			encodeTransPtr(&inptr, &outptr);
 

@@ -243,9 +243,9 @@ void PlanarYUV_to_RGB32(Stage* in, Stage* out)
     int32_t out_stride = out->stride;
 
     int32_t y_stride_x_2 = y_stride * 2;
-    int32_t out_stride_x_2 = out->stride * 2;
+    int32_t out_stride_x_2 = out_stride * 2;
     int32_t y_stride_x_4 = y_stride * 4;
-    int32_t out_stride_x_4 = in->stride * 4;
+    int32_t out_stride_x_4 = out_stride * 4;
 
     if (in->decimation == 2)
     {
@@ -363,9 +363,9 @@ void PlanarYUV_to_RGB24(Stage* in, Stage* out)
     int32_t out_stride = out->stride;
 
     int32_t y_stride_x_2 = y_stride * 2;
-    int32_t out_stride_x_2 = out->stride * 2;
+    int32_t out_stride_x_2 = out_stride * 2;
     int32_t y_stride_x_4 = y_stride * 4;
-    int32_t out_stride_x_4 = in->stride * 4;
+    int32_t out_stride_x_4 = out_stride * 4;
 
     if (in->decimation == 2)
     {
@@ -478,9 +478,9 @@ void PlanarYUV_to_RGB565(Stage* in, Stage* out)
     int32_t out_stride = out->stride;
 
     int32_t y_stride_x_2 = y_stride * 2;
-    int32_t out_stride_x_2 = out->stride * 2;
+    int32_t out_stride_x_2 = out_stride * 2;
     int32_t y_stride_x_4 = y_stride * 4;
-    int32_t out_stride_x_4 = in->stride * 4;
+    int32_t out_stride_x_4 = out_stride * 4;
 
     if (in->decimation == 2)
     {
@@ -597,9 +597,9 @@ void PlanarYUV_to_RGB555(Stage* in, Stage* out)
     int32_t out_stride = out->stride;
 
     int32_t y_stride_x_2 = y_stride * 2;
-    int32_t out_stride_x_2 = out->stride * 2;
+    int32_t out_stride_x_2 = out_stride * 2;
     int32_t y_stride_x_4 = y_stride * 4;
-    int32_t out_stride_x_4 = in->stride * 4;
+    int32_t out_stride_x_4 = out_stride * 4;
 
     if (in->decimation == 2)
     {
@@ -3540,10 +3540,11 @@ void blipvert::Y41T_to_RGB555(Stage* in, Stage* out)
 void blipvert::Y41T_to_ARGB1555(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
-    uint8_t* out_buf = out->buf;
+    int32_t in_stride = in->stride;
     int32_t width = in->width;
     int32_t height = in->height;
-    int32_t in_stride = in->stride;
+
+    uint8_t* out_buf = out->buf;
     int32_t out_stride = out->stride;
 
     while (height)

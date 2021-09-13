@@ -638,7 +638,7 @@ void blipvert::PlanarYUV_to_IYU1(Stage* in, Stage* out)
     }
 }
 
-void IYU1_to_PlanarYUV(Stage* in, Stage* out)
+void blipvert::IYU1_to_PlanarYUV(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     int32_t in_stride = in->stride;
@@ -786,7 +786,7 @@ void blipvert::PackedY422_to_IYU1(Stage* in, Stage* out)
     }
 }
 
-void IYU1_to_PackedY422(Stage* in, Stage* out)
+void blipvert::IYU1_to_PackedY422(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     int32_t in_stride = in->stride;
@@ -862,7 +862,7 @@ void blipvert::PackedY422_to_IYU2(Stage* in, Stage* out)
     }
 }
 
-void IYU2_to_PackedY422(Stage* in, Stage* out)
+void blipvert::IYU2_to_PackedY422(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     int32_t in_stride = in->stride;
@@ -994,7 +994,7 @@ void blipvert::PlanarYUV_to_IYU2(Stage* in, Stage* out)
     }
 }
 
-void IYU2_to_PlanarYUV(Stage* in, Stage* out)
+void blipvert::IYU2_to_PlanarYUV(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     int32_t in_stride = in->stride;
@@ -1104,7 +1104,7 @@ void IYU2_to_PlanarYUV(Stage* in, Stage* out)
     }
 }
 
-void IYU2_to_IMCx(Stage* in, Stage* out)
+void blipvert::IYU2_to_IMCx(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     int32_t in_stride = in->stride;
@@ -1155,7 +1155,7 @@ void IYU2_to_IMCx(Stage* in, Stage* out)
     }
 }
 
-void IMCx_to_IYU2(Stage* in, Stage* out)
+void blipvert::IMCx_to_IYU2(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     int32_t in_stride = in->stride;
@@ -2090,7 +2090,7 @@ void blipvert::PlanarYUV_to_Y16(Stage* in, Stage* out)
     }
 }
 
-void Y42T_to_PackedY422(Stage* in, Stage* out)
+void blipvert::Y42T_to_PackedY422(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     int32_t width = in->width;
@@ -2157,7 +2157,7 @@ void blipvert::PackedY422_to_Y42T(Stage* in, Stage* out)
     }
 }
 
-void Y42T_to_PlanarYUV(Stage* in, Stage* out)
+void blipvert::Y42T_to_PlanarYUV(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     int32_t width = in->width;
@@ -2400,7 +2400,7 @@ void blipvert::PlanarYUV_to_Y42T(Stage* in, Stage* out)
 // Y800 to YUV
 //
 
-void Y800_to_PackedY422(Stage* in, Stage* out)
+void blipvert::Y800_to_PackedY422(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     int32_t width = in->width;
@@ -2433,7 +2433,7 @@ void Y800_to_PackedY422(Stage* in, Stage* out)
     }
 }
 
-void Y800_to_PlanarYUV(Stage* in, Stage* out)
+void blipvert::Y800_to_PlanarYUV(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     int32_t width = in->width;
@@ -2458,7 +2458,7 @@ void Y800_to_PlanarYUV(Stage* in, Stage* out)
     }
 }
 
-void Y800_to_IMCx(Stage* in, Stage* out)
+void blipvert::Y800_to_IMCx(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     int32_t in_stride = in->stride;
@@ -2495,7 +2495,7 @@ void Y800_to_IMCx(Stage* in, Stage* out)
     }
 }
 
-void IMCx_to_Y800(Stage* in, Stage* out)
+void blipvert::IMCx_to_Y800(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     int32_t in_stride = in->stride;
@@ -2526,7 +2526,7 @@ void IMCx_to_Y800(Stage* in, Stage* out)
 // Y16 to YUV
 //
 
-void Y16_to_PackedY422(Stage* in, Stage* out)
+void blipvert::Y16_to_PackedY422(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     int32_t width = in->width;
@@ -2559,7 +2559,7 @@ void Y16_to_PackedY422(Stage* in, Stage* out)
     }
 }
 
-void Y16_to_PlanarYUV(Stage* in, Stage* out)
+void blipvert::Y16_to_PlanarYUV(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     int32_t width = in->width;
@@ -2585,7 +2585,7 @@ void Y16_to_PlanarYUV(Stage* in, Stage* out)
     }
 }
 
-void Y16_to_IMCx(Stage* in, Stage* out)
+void blipvert::Y16_to_IMCx(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     int32_t in_stride = in->stride;
@@ -2623,7 +2623,7 @@ void Y16_to_IMCx(Stage* in, Stage* out)
     }
 }
 
-void IMCx_to_Y16(Stage* in, Stage* out)
+void blipvert::IMCx_to_Y16(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     int32_t in_stride = in->stride;
@@ -2655,7 +2655,7 @@ void IMCx_to_Y16(Stage* in, Stage* out)
 // Y41P to YUV
 //
 
-void Y41P_to_PackedY422(Stage* in, Stage* out)
+void blipvert::Y41P_to_PackedY422(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     int32_t width = in->width;
@@ -2704,7 +2704,7 @@ void Y41P_to_PackedY422(Stage* in, Stage* out)
     }
 }
 
-void Y41P_to_PlanarYUV(Stage* in, Stage* out)
+void blipvert::Y41P_to_PlanarYUV(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     int32_t in_stride = in->stride;
@@ -2865,7 +2865,7 @@ void Y41P_to_PlanarYUV(Stage* in, Stage* out)
     }
 }
 
-void Y41P_to_IMCx(Stage* in, Stage* out)
+void blipvert::Y41P_to_IMCx(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     int32_t in_stride = in->stride;
@@ -2937,7 +2937,7 @@ void Y41P_to_IMCx(Stage* in, Stage* out)
     }
 }
 
-void IMCx_to_Y41P(Stage* in, Stage* out)
+void blipvert::IMCx_to_Y41P(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     int32_t in_stride = in->stride;
@@ -3059,7 +3059,7 @@ void IMCx_to_Y41P(Stage* in, Stage* out)
     }
 }
 
-void IMCx_to_Y41T(Stage* in, Stage* out)
+void blipvert::IMCx_to_Y41T(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     int32_t in_stride = in->stride;
@@ -3185,7 +3185,7 @@ void IMCx_to_Y41T(Stage* in, Stage* out)
 // CLJR to YUV
 //
 
-void CLJR_to_PackedY422(Stage* in, Stage* out)
+void blipvert::CLJR_to_PackedY422(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     int32_t in_stride = in->stride;
@@ -3236,7 +3236,7 @@ void CLJR_to_PackedY422(Stage* in, Stage* out)
     }
 }
 
-void CLJR_to_IMCx(Stage* in, Stage* out)
+void blipvert::CLJR_to_IMCx(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     int32_t in_stride = in->stride;
@@ -3294,7 +3294,7 @@ void CLJR_to_IMCx(Stage* in, Stage* out)
     }
 }
 
-void IMCx_to_CLJR(Stage* in, Stage* out)
+void blipvert::IMCx_to_CLJR(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     int32_t in_stride = in->stride;
@@ -3338,7 +3338,7 @@ void IMCx_to_CLJR(Stage* in, Stage* out)
     }
 }
 
-void CLJR_to_PlanarYUV(Stage* in, Stage* out)
+void blipvert::CLJR_to_PlanarYUV(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     int32_t in_stride = in->stride;
@@ -3809,7 +3809,7 @@ void blipvert::AYUV_to_IMCx(Stage* in, Stage* out)
     }
 }
 
-void IMCx_to_AYUV(Stage* in, Stage* out)
+void blipvert::IMCx_to_AYUV(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     int32_t in_stride = in->stride;
@@ -3922,7 +3922,7 @@ void blipvert::PackedY422_to_IMCx(Stage* in, Stage* out)
     }
 }
 
-void IMCx_to_PackedY422(Stage* in, Stage* out)
+void blipvert::IMCx_to_PackedY422(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     int32_t in_stride = in->stride;
@@ -4065,7 +4065,7 @@ void blipvert::PlanarYUV_to_IMCx(Stage* in, Stage* out)
     }
 }
 
-void IMCx_to_PlanarYUV(Stage* in, Stage* out)
+void blipvert::IMCx_to_PlanarYUV(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     int32_t in_stride = in->stride;
@@ -4150,7 +4150,7 @@ void IMCx_to_PlanarYUV(Stage* in, Stage* out)
     }
 }
 
-void IYU1_to_IMCx(Stage* in, Stage* out)
+void blipvert::IYU1_to_IMCx(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     int32_t in_stride = in->stride;
@@ -4205,7 +4205,7 @@ void IYU1_to_IMCx(Stage* in, Stage* out)
     }
 }
 
-void IMCx_to_IYU1(Stage* in, Stage* out)
+void blipvert::IMCx_to_IYU1(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     int32_t in_stride = in->stride;
@@ -4345,7 +4345,7 @@ void blipvert::PackedY422_to_NVx(Stage* in, Stage* out)
     }
 }
 
-void NVx_to_PackedY422(Stage* in, Stage* out)
+void blipvert::NVx_to_PackedY422(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     int32_t in_stride = in->stride;
@@ -4490,7 +4490,7 @@ void blipvert::PlanarYUV_to_NVx(Stage* in, Stage* out)
     }
 }
 
-void NVx_to_PlanarYUV(Stage* in, Stage* out)
+void blipvert::NVx_to_PlanarYUV(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     int32_t in_stride = in->stride;
@@ -4999,7 +4999,7 @@ void blipvert::Y41P_to_YV16(Stage* in, Stage* out)
 }
 
 
-void IMCx_to_YV16(Stage* in, Stage* out)
+void blipvert::IMCx_to_YV16(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     int32_t in_stride = in->stride;
@@ -5050,7 +5050,7 @@ void IMCx_to_YV16(Stage* in, Stage* out)
 }
 
 
-void NVx_to_YV16(Stage* in, Stage* out)
+void blipvert::NVx_to_YV16(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     int32_t in_stride = in->stride;
@@ -5568,46 +5568,6 @@ void blipvert::AYUV_to_YV16(Stage* in, Stage* out)
 // IYU1 to YUV
 //
 
-void blipvert::IYU1_to_YUY2(Stage* in, Stage* out)
-{
-    IYU1_to_PackedY422(in, out);
-}
-
-void blipvert::IYU1_to_UYVY(Stage* in, Stage* out)
-{
-    IYU1_to_PackedY422(in, out);
-}
-
-void blipvert::IYU1_to_YVYU(Stage* in, Stage* out)
-{
-    IYU1_to_PackedY422(in, out);
-}
-
-void blipvert::IYU1_to_VYUY(Stage* in, Stage* out)
-{
-    IYU1_to_PackedY422(in, out);
-}
-
-void blipvert::IYU1_to_I420(Stage* in, Stage* out)
-{
-    IYU1_to_PlanarYUV(in, out);
-}
-
-void blipvert::IYU1_to_YV12(Stage* in, Stage* out)
-{
-    IYU1_to_PlanarYUV(in, out);
-}
-
-void blipvert::IYU1_to_YVU9(Stage* in, Stage* out)
-{
-    IYU1_to_PlanarYUV(in, out);
-}
-
-void blipvert::IYU1_to_YUV9(Stage* in, Stage* out)
-{
-    IYU1_to_PlanarYUV(in, out);
-}
-
 void blipvert::IYU1_to_IYU2(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
@@ -5845,27 +5805,7 @@ void blipvert::IYU1_to_AYUV(Stage* in, Stage* out)
     }
 }
 
-void blipvert::IYU1_to_IMC1(Stage* in, Stage* out)
-{
-    IYU1_to_IMCx(in, out);
-}
-
-void blipvert::IYU1_to_IMC2(Stage* in, Stage* out)
-{
-    IYU1_to_IMCx(in, out);
-}
-
-void blipvert::IYU1_to_IMC3(Stage* in, Stage* out)
-{
-    IYU1_to_IMCx(in, out);
-}
-
-void blipvert::IYU1_to_IMC4(Stage* in, Stage* out)
-{
-    IYU1_to_IMCx(in, out);
-}
-
-void IYU1_to_NVx(Stage* in, Stage* out)
+void blipvert::IYU1_to_NVx(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     int32_t in_stride = in->stride;
@@ -5919,16 +5859,6 @@ void IYU1_to_NVx(Stage* in, Stage* out)
         out_buf += out_stride_x_2;
         out_uvplane += out_stride;
     }
-}
-
-void blipvert::IYU1_to_NV12(Stage* in, Stage* out)
-{
-    IYU1_to_NVx(in, out);
-}
-
-void blipvert::IYU1_to_NV21(Stage* in, Stage* out)
-{
-    IYU1_to_NVx(in, out);
 }
 
 void blipvert::IYU1_to_Y42T(Stage* in, Stage* out)
@@ -6008,46 +5938,6 @@ void blipvert::IYU1_to_Y41T(Stage* in, Stage* out)
 //
 // IYU2 to YUV
 //
-
-void blipvert::IYU2_to_YUY2(Stage* in, Stage* out)
-{
-    IYU2_to_PackedY422(in, out);
-}
-
-void blipvert::IYU2_to_UYVY(Stage* in, Stage* out)
-{
-    IYU2_to_PackedY422(in, out);
-}
-
-void blipvert::IYU2_to_YVYU(Stage* in, Stage* out)
-{
-    IYU2_to_PackedY422(in, out);
-}
-
-void blipvert::IYU2_to_VYUY(Stage* in, Stage* out)
-{
-    IYU2_to_PackedY422(in, out);
-}
-
-void blipvert::IYU2_to_I420(Stage* in, Stage* out)
-{
-    IYU2_to_PlanarYUV(in, out);
-}
-
-void blipvert::IYU2_to_YV12(Stage* in, Stage* out)
-{
-    IYU2_to_PlanarYUV(in, out);
-}
-
-void blipvert::IYU2_to_YVU9(Stage* in, Stage* out)
-{
-    IYU2_to_PlanarYUV(in, out);
-}
-
-void blipvert::IYU2_to_YUV9(Stage* in, Stage* out)
-{
-    IYU2_to_PlanarYUV(in, out);
-}
 
 void blipvert::IYU2_to_IYU1(Stage* in, Stage* out)
 {
@@ -6239,27 +6129,7 @@ void blipvert::IYU2_to_AYUV(Stage* in, Stage* out)
     }
 }
 
-void blipvert::IYU2_to_IMC1(Stage* in, Stage* out)
-{
-    IYU2_to_IMCx(in, out);
-}
-
-void blipvert::IYU2_to_IMC2(Stage* in, Stage* out)
-{
-    IYU2_to_IMCx(in, out);
-}
-
-void blipvert::IYU2_to_IMC3(Stage* in, Stage* out)
-{
-    IYU2_to_IMCx(in, out);
-}
-
-void blipvert::IYU2_to_IMC4(Stage* in, Stage* out)
-{
-    IYU2_to_IMCx(in, out);
-}
-
-void IYU2_to_NVx(Stage* in, Stage* out)
+void blipvert::IYU2_to_NVx(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     int32_t in_stride = in->stride;
@@ -6309,16 +6179,6 @@ void IYU2_to_NVx(Stage* in, Stage* out)
         out_buf += out_stride_x_2;
         out_uvplane += out_stride;
     }
-}
-
-void blipvert::IYU2_to_NV12(Stage* in, Stage* out)
-{
-    IYU2_to_NVx(in, out);
-}
-
-void blipvert::IYU2_to_NV21(Stage* in, Stage* out)
-{
-    IYU2_to_NVx(in, out);
 }
 
 void blipvert::IYU2_to_Y42T(Stage* in, Stage* out)
@@ -6392,52 +6252,6 @@ void blipvert::IYU2_to_Y41T(Stage* in, Stage* out)
         in_buf += in_stride;
         out_buf += out_stride;
     }
-}
-
-void blipvert::Y800_to_YUY2(Stage* in, Stage* out)
-{
-    Y800_to_PackedY422(in, out);
-}
-
-void blipvert::Y800_to_UYVY(Stage* in, Stage* out)
-{
-    Y800_to_PackedY422(in, out);
-}
-
-
-void blipvert::Y800_to_YVYU(Stage* in, Stage* out)
-{
-    Y800_to_PackedY422(in, out);
-}
-
-
-void blipvert::Y800_to_VYUY(Stage* in, Stage* out)
-{
-    Y800_to_PackedY422(in, out);
-}
-
-
-void blipvert::Y800_to_I420(Stage* in, Stage* out)
-{
-    Y800_to_PlanarYUV(in, out);
-}
-
-
-void blipvert::Y800_to_YV12(Stage* in, Stage* out)
-{
-    Y800_to_PlanarYUV(in, out);
-}
-
-
-void blipvert::Y800_to_YVU9(Stage* in, Stage* out)
-{
-    Y800_to_PlanarYUV(in, out);
-}
-
-
-void blipvert::Y800_to_YUV9(Stage* in, Stage* out)
-{
-    Y800_to_PlanarYUV(in, out);
 }
 
 void blipvert::Y800_to_IYU1(Stage* in, Stage* out)
@@ -6617,27 +6431,7 @@ void blipvert::Y800_to_Y16(Stage* in, Stage* out)
     }
 }
 
-void blipvert::Y800_to_IMC1(Stage* in, Stage* out)
-{
-    Y800_to_IMCx(in, out);
-}
-
-void blipvert::Y800_to_IMC2(Stage* in, Stage* out)
-{
-    Y800_to_IMCx(in, out);
-}
-
-void blipvert::Y800_to_IMC3(Stage* in, Stage* out)
-{
-    Y800_to_IMCx(in, out);
-}
-
-void blipvert::Y800_to_IMC4(Stage* in, Stage* out)
-{
-    Y800_to_IMCx(in, out);
-}
-
-void blipvert::Y800_to_NV12(Stage* in, Stage* out)
+void blipvert::Y800_to_NVx(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     int32_t in_stride = in->stride;
@@ -6743,52 +6537,6 @@ void blipvert::Y800_to_Y41T(Stage* in, Stage* out)
 //
 // Y16 to YUV
 //
-
-void blipvert::Y16_to_YUY2(Stage* in, Stage* out)
-{
-    Y16_to_PackedY422(in, out);
-}
-
-void blipvert::Y16_to_UYVY(Stage* in, Stage* out)
-{
-    Y16_to_PackedY422(in, out);
-}
-
-
-void blipvert::Y16_to_YVYU(Stage* in, Stage* out)
-{
-    Y16_to_PackedY422(in, out);
-}
-
-
-void blipvert::Y16_to_VYUY(Stage* in, Stage* out)
-{
-    Y16_to_PackedY422(in, out);
-}
-
-
-void blipvert::Y16_to_I420(Stage* in, Stage* out)
-{
-    Y16_to_PlanarYUV(in, out);
-}
-
-
-void blipvert::Y16_to_YV12(Stage* in, Stage* out)
-{
-    Y16_to_PlanarYUV(in, out);
-}
-
-
-void blipvert::Y16_to_YVU9(Stage* in, Stage* out)
-{
-    Y16_to_PlanarYUV(in, out);
-}
-
-
-void blipvert::Y16_to_YUV9(Stage* in, Stage* out)
-{
-    Y16_to_PlanarYUV(in, out);
-}
 
 void blipvert::Y16_to_IYU1(Stage* in, Stage* out)
 {
@@ -6969,27 +6717,7 @@ void blipvert::Y16_to_Y800(Stage* in, Stage* out)
     }
 }
 
-void blipvert::Y16_to_IMC1(Stage* in, Stage* out)
-{
-    Y16_to_IMCx(in, out);
-}
-
-void blipvert::Y16_to_IMC2(Stage* in, Stage* out)
-{
-    Y16_to_IMCx(in, out);
-}
-
-void blipvert::Y16_to_IMC3(Stage* in, Stage* out)
-{
-    Y16_to_IMCx(in, out);
-}
-
-void blipvert::Y16_to_IMC4(Stage* in, Stage* out)
-{
-    Y16_to_IMCx(in, out);
-}
-
-void blipvert::Y16_to_NV12(Stage* in, Stage* out)
+void blipvert::Y16_to_NVx(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     int32_t in_stride = in->stride;
@@ -7095,46 +6823,6 @@ void blipvert::Y16_to_Y41T(Stage* in, Stage* out)
 //
 // CLJR to YUV
 //
-
-void blipvert::CLJR_to_YUY2(Stage* in, Stage* out)
-{
-    CLJR_to_PackedY422(in, out);
-}
-
-void blipvert::CLJR_to_UYVY(Stage* in, Stage* out)
-{
-    CLJR_to_PackedY422(in, out);
-}
-
-void blipvert::CLJR_to_YVYU(Stage* in, Stage* out)
-{
-    CLJR_to_PackedY422(in, out);
-}
-
-void blipvert::CLJR_to_VYUY(Stage* in, Stage* out)
-{
-    CLJR_to_PackedY422(in, out);
-}
-
-void blipvert::CLJR_to_I420(Stage* in, Stage* out)
-{
-    CLJR_to_PlanarYUV(in, out);
-}
-
-void blipvert::CLJR_to_YV12(Stage* in, Stage* out)
-{
-    CLJR_to_PlanarYUV(in, out);
-}
-
-void blipvert::CLJR_to_YVU9(Stage* in, Stage* out)
-{
-    CLJR_to_PlanarYUV(in, out);
-}
-
-void blipvert::CLJR_to_YUV9(Stage* in, Stage* out)
-{
-    CLJR_to_PlanarYUV(in, out);
-}
 
 void blipvert::CLJR_to_IYU1(Stage* in, Stage* out)
 {
@@ -7389,27 +7077,7 @@ void blipvert::CLJR_to_AYUV(Stage* in, Stage* out)
     }
 }
 
-void blipvert::CLJR_to_IMC1(Stage* in, Stage* out)
-{
-    CLJR_to_IMCx(in, out);
-}
-
-void blipvert::CLJR_to_IMC2(Stage* in, Stage* out)
-{
-    CLJR_to_IMCx(in, out);
-}
-
-void blipvert::CLJR_to_IMC3(Stage* in, Stage* out)
-{
-    CLJR_to_IMCx(in, out);
-}
-
-void blipvert::CLJR_to_IMC4(Stage* in, Stage* out)
-{
-    CLJR_to_IMCx(in, out);
-}
-
-void CLJR_to_NVx(Stage* in, Stage* out)
+void blipvert::CLJR_to_NVx(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     int32_t in_stride = in->stride;
@@ -7466,16 +7134,6 @@ void CLJR_to_NVx(Stage* in, Stage* out)
         out_buf += y_stride_x_2;
         out_uvplane += out_stride;
     }
-}
-
-void blipvert::CLJR_to_NV12(Stage* in, Stage* out)
-{
-    CLJR_to_NVx(in, out);
-}
-
-void blipvert::CLJR_to_NV21(Stage* in, Stage* out)
-{
-    CLJR_to_NVx(in, out);
 }
 
 void blipvert::CLJR_to_Y42T(Stage* in, Stage* out)
@@ -7568,46 +7226,6 @@ void blipvert::CLJR_to_Y41T(Stage* in, Stage* out)
 //
 // Y41P to YUV
 //
-
-void blipvert::Y41P_to_YUY2(Stage* in, Stage* out)
-{
-    Y41P_to_PackedY422(in, out);
-}
-
-void blipvert::Y41P_to_UYVY(Stage* in, Stage* out)
-{
-    Y41P_to_PackedY422(in, out);
-}
-
-void blipvert::Y41P_to_YVYU(Stage* in, Stage* out)
-{
-    Y41P_to_PackedY422(in, out);
-}
-
-void blipvert::Y41P_to_VYUY(Stage* in, Stage* out)
-{
-    Y41P_to_PackedY422(in, out);
-}
-
-void blipvert::Y41P_to_I420(Stage* in, Stage* out)
-{
-    Y41P_to_PlanarYUV(in, out);
-}
-
-void blipvert::Y41P_to_YV12(Stage* in, Stage* out)
-{
-    Y41P_to_PlanarYUV(in, out);
-}
-
-void blipvert::Y41P_to_YVU9(Stage* in, Stage* out)
-{
-    Y41P_to_PlanarYUV(in, out);
-}
-
-void blipvert::Y41P_to_YUV9(Stage* in, Stage* out)
-{
-    Y41P_to_PlanarYUV(in, out);
-}
 
 void blipvert::Y41P_to_IYU1(Stage* in, Stage* out)
 {
@@ -7905,27 +7523,7 @@ void blipvert::Y41P_to_AYUV(Stage* in, Stage* out)
     }
 }
 
-void blipvert::Y41P_to_IMC1(Stage* in, Stage* out)
-{
-    Y41P_to_IMCx(in, out);
-}
-
-void blipvert::Y41P_to_IMC2(Stage* in, Stage* out)
-{
-    Y41P_to_IMCx(in, out);
-}
-
-void blipvert::Y41P_to_IMC3(Stage* in, Stage* out)
-{
-    Y41P_to_IMCx(in, out);
-}
-
-void blipvert::Y41P_to_IMC4(Stage* in, Stage* out)
-{
-    Y41P_to_IMCx(in, out);
-}
-
-void Y41P_to_NVx(Stage* in, Stage* out)
+void blipvert::Y41P_to_NVx(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     int32_t in_stride = in->stride;
@@ -7999,16 +7597,6 @@ void Y41P_to_NVx(Stage* in, Stage* out)
         out_buf += out_stride_x_2;
         out_uvplane += out_stride;
     }
-}
-
-void blipvert::Y41P_to_NV12(Stage* in, Stage* out)
-{
-    Y41P_to_NVx(in, out);
-}
-
-void blipvert::Y41P_to_NV21(Stage* in, Stage* out)
-{
-    Y41P_to_NVx(in, out);
 }
 
 void blipvert::Y41P_to_Y42T(Stage* in, Stage* out)
@@ -8095,7 +7683,7 @@ void blipvert::Y41P_to_Y41T(Stage* in, Stage* out)
     }
 }
 
-void IMCx_to_IMCx(Stage* in, Stage* out)
+void blipvert::IMCx_to_IMCx(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     int32_t in_stride = in->stride;
@@ -8148,7 +7736,7 @@ void IMCx_to_IMCx(Stage* in, Stage* out)
     }
 }
 
-void IMCx_to_NVx(Stage* in, Stage* out)
+void blipvert::IMCx_to_NVx(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     int32_t in_stride = in->stride;
@@ -8204,111 +7792,7 @@ void IMCx_to_NVx(Stage* in, Stage* out)
     }
 }
 
-//
-//  IMC1 to YUV
-//
-
-void blipvert::IMC1_to_AYUV(Stage* in, Stage* out)
-{
-    IMCx_to_AYUV(in, out);
-}
-
-void blipvert::IMC1_to_YUY2(Stage* in, Stage* out)
-{
-    IMCx_to_PackedY422(in, out);
-}
-
-void blipvert::IMC1_to_UYVY(Stage* in, Stage* out)
-{
-    IMCx_to_PackedY422(in, out);
-}
-
-void blipvert::IMC1_to_YVYU(Stage* in, Stage* out)
-{
-    IMCx_to_PackedY422(in, out);
-}
-
-void blipvert::IMC1_to_VYUY(Stage* in, Stage* out)
-{
-    IMCx_to_PackedY422(in, out);
-}
-
-void blipvert::IMC1_to_I420(Stage* in, Stage* out)
-{
-    IMCx_to_PlanarYUV(in, out);
-}
-
-void blipvert::IMC1_to_YV12(Stage* in, Stage* out)
-{
-    IMCx_to_PlanarYUV(in, out);
-}
-
-void blipvert::IMC1_to_YUV9(Stage* in, Stage* out)
-{
-    IMCx_to_PlanarYUV(in, out);
-}
-
-void blipvert::IMC1_to_YVU9(Stage* in, Stage* out)
-{
-    IMCx_to_PlanarYUV(in, out);
-}
-
-void blipvert::IMC1_to_IYU1(Stage* in, Stage* out)
-{
-    IMCx_to_IYU1(in, out);
-}
-
-void blipvert::IMC1_to_IYU2(Stage* in, Stage* out)
-{
-    IMCx_to_IYU2(in, out);
-}
-
-void blipvert::IMC1_to_Y800(Stage* in, Stage* out)
-{
-    IMCx_to_Y800(in, out);
-}
-
-void blipvert::IMC1_to_Y16(Stage* in, Stage* out)
-{
-    IMCx_to_Y16(in, out);
-}
-
-void blipvert::IMC1_to_CLJR(Stage* in, Stage* out)
-{
-    IMCx_to_CLJR(in, out);
-}
-
-void blipvert::IMC1_to_Y41P(Stage* in, Stage* out)
-{
-    IMCx_to_Y41P(in, out);
-}
-
-void blipvert::IMC1_to_IMC2(Stage* in, Stage* out)
-{
-    IMCx_to_IMCx(in, out);
-}
-
-void blipvert::IMC1_to_IMC3(Stage* in, Stage* out)
-{
-    IMCx_to_IMCx(in, out);
-}
-
-void blipvert::IMC1_to_IMC4(Stage* in, Stage* out)
-{
-    IMCx_to_IMCx(in, out);
-}
-
-void blipvert::IMC1_to_NV12(Stage* in, Stage* out)
-{
-    IMCx_to_NVx(in, out);
-}
-
-void blipvert::IMC1_to_NV21(Stage* in, Stage* out)
-{
-    IMCx_to_NVx(in, out);
-}
-
-void IMCx_to_Y42T(Stage* in, Stage* out)
+void blipvert::IMCx_to_Y42T(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     int32_t in_stride = in->stride;
@@ -8357,383 +7841,11 @@ void IMCx_to_Y42T(Stage* in, Stage* out)
     }
 }
 
-void blipvert::IMC1_to_Y42T(Stage* in, Stage* out)
-{
-    IMCx_to_Y42T(in, out);
-}
-
-void blipvert::IMC1_to_Y41T(Stage* in, Stage* out)
-{
-    IMCx_to_Y41T(in, out);
-}
-
-void blipvert::IMC1_to_YV16(Stage* in, Stage* out)
-{
-    IMCx_to_YV16(in, out);
-}
-
-//
-//  IMC2 to YUV
-//
-
-void blipvert::IMC2_to_AYUV(Stage* in, Stage* out)
-{
-    IMCx_to_AYUV(in, out);
-}
-
-void blipvert::IMC2_to_YUY2(Stage* in, Stage* out)
-{
-    IMCx_to_PackedY422(in, out);
-}
-
-void blipvert::IMC2_to_UYVY(Stage* in, Stage* out)
-{
-    IMCx_to_PackedY422(in, out);
-}
-
-void blipvert::IMC2_to_YVYU(Stage* in, Stage* out)
-{
-    IMCx_to_PackedY422(in, out);
-}
-
-void blipvert::IMC2_to_VYUY(Stage* in, Stage* out)
-{
-    IMCx_to_PackedY422(in, out);
-}
-
-void blipvert::IMC2_to_I420(Stage* in, Stage* out)
-{
-    IMCx_to_PlanarYUV(in, out);
-}
-
-void blipvert::IMC2_to_YV12(Stage* in, Stage* out)
-{
-    IMCx_to_PlanarYUV(in, out);
-}
-
-void blipvert::IMC2_to_YUV9(Stage* in, Stage* out)
-{
-    IMCx_to_PlanarYUV(in, out);
-}
-
-void blipvert::IMC2_to_YVU9(Stage* in, Stage* out)
-{
-    IMCx_to_PlanarYUV(in, out);
-}
-
-void blipvert::IMC2_to_IYU1(Stage* in, Stage* out)
-{
-    IMCx_to_IYU1(in, out);
-}
-
-void blipvert::IMC2_to_IYU2(Stage* in, Stage* out)
-{
-    IMCx_to_IYU2(in, out);
-}
-
-void blipvert::IMC2_to_Y800(Stage* in, Stage* out)
-{
-    IMCx_to_Y800(in, out);
-}
-
-void blipvert::IMC2_to_Y16(Stage* in, Stage* out)
-{
-    IMCx_to_Y16(in, out);
-}
-
-void blipvert::IMC2_to_CLJR(Stage* in, Stage* out)
-{
-    IMCx_to_CLJR(in, out);
-}
-
-void blipvert::IMC2_to_Y41P(Stage* in, Stage* out)
-{
-    IMCx_to_Y41P(in, out);
-}
-
-void blipvert::IMC2_to_IMC1(Stage* in, Stage* out)
-{
-    IMCx_to_IMCx(in, out);
-}
-
-void blipvert::IMC2_to_IMC3(Stage* in, Stage* out)
-{
-    IMCx_to_IMCx(in, out);
-}
-
-void blipvert::IMC2_to_IMC4(Stage* in, Stage* out)
-{
-    IMCx_to_IMCx(in, out);
-}
-
-void blipvert::IMC2_to_NV12(Stage* in, Stage* out)
-{
-    IMCx_to_NVx(in, out);
-}
-
-void blipvert::IMC2_to_NV21(Stage* in, Stage* out)
-{
-    IMCx_to_NVx(in, out);
-}
-
-void blipvert::IMC2_to_Y42T(Stage* in, Stage* out)
-{
-    IMCx_to_Y42T(in, out);
-}
-
-void blipvert::IMC2_to_Y41T(Stage* in, Stage* out)
-{
-    IMCx_to_Y41T(in, out);
-}
-
-void blipvert::IMC2_to_YV16(Stage* in, Stage* out)
-{
-    IMCx_to_YV16(in, out);
-}
-
-//
-//  IMC3 to YUV
-//
-
-void blipvert::IMC3_to_AYUV(Stage* in, Stage* out)
-{
-    IMCx_to_AYUV(in, out);
-}
-
-void blipvert::IMC3_to_YUY2(Stage* in, Stage* out)
-{
-    IMCx_to_PackedY422(in, out);
-}
-
-void blipvert::IMC3_to_UYVY(Stage* in, Stage* out)
-{
-    IMCx_to_PackedY422(in, out);
-}
-
-void blipvert::IMC3_to_YVYU(Stage* in, Stage* out)
-{
-    IMCx_to_PackedY422(in, out);
-}
-
-void blipvert::IMC3_to_VYUY(Stage* in, Stage* out)
-{
-    IMCx_to_PackedY422(in, out);
-}
-
-void blipvert::IMC3_to_I420(Stage* in, Stage* out)
-{
-    IMCx_to_PlanarYUV(in, out);
-}
-
-void blipvert::IMC3_to_YV12(Stage* in, Stage* out)
-{
-    IMCx_to_PlanarYUV(in, out);
-}
-
-void blipvert::IMC3_to_YUV9(Stage* in, Stage* out)
-{
-    IMCx_to_PlanarYUV(in, out);
-}
-
-void blipvert::IMC3_to_YVU9(Stage* in, Stage* out)
-{
-    IMCx_to_PlanarYUV(in, out);
-}
-
-void blipvert::IMC3_to_IYU1(Stage* in, Stage* out)
-{
-    IMCx_to_IYU1(in, out);
-}
-
-void blipvert::IMC3_to_IYU2(Stage* in, Stage* out)
-{
-    IMCx_to_IYU2(in, out);
-}
-
-void blipvert::IMC3_to_Y800(Stage* in, Stage* out)
-{
-    IMCx_to_Y800(in, out);
-}
-
-void blipvert::IMC3_to_Y16(Stage* in, Stage* out)
-{
-    IMCx_to_Y16(in, out);
-}
-
-void blipvert::IMC3_to_CLJR(Stage* in, Stage* out)
-{
-    IMCx_to_CLJR(in, out);
-}
-
-void blipvert::IMC3_to_Y41P(Stage* in, Stage* out)
-{
-    IMCx_to_Y41P(in, out);
-}
-
-void blipvert::IMC3_to_IMC1(Stage* in, Stage* out)
-{
-    IMCx_to_IMCx(in, out);
-}
-
-void blipvert::IMC3_to_IMC2(Stage* in, Stage* out)
-{
-    IMCx_to_IMCx(in, out);
-}
-
-void blipvert::IMC3_to_IMC4(Stage* in, Stage* out)
-{
-    IMCx_to_IMCx(in, out);
-}
-
-void blipvert::IMC3_to_NV12(Stage* in, Stage* out)
-{
-    IMCx_to_NVx(in, out);
-}
-
-void blipvert::IMC3_to_NV21(Stage* in, Stage* out)
-{
-    IMCx_to_NVx(in, out);
-}
-
-void blipvert::IMC3_to_Y42T(Stage* in, Stage* out)
-{
-    IMCx_to_Y42T(in, out);
-}
-
-void blipvert::IMC3_to_Y41T(Stage* in, Stage* out)
-{
-    IMCx_to_Y41T(in, out);
-}
-
-void blipvert::IMC3_to_YV16(Stage* in, Stage* out)
-{
-    IMCx_to_YV16(in, out);
-}
-
-//
-//  IMC4 to YUV
-//
-
-void blipvert::IMC4_to_AYUV(Stage* in, Stage* out)
-{
-    IMCx_to_AYUV(in, out);
-}
-
-void blipvert::IMC4_to_YUY2(Stage* in, Stage* out)
-{
-    IMCx_to_PackedY422(in, out);
-}
-
-void blipvert::IMC4_to_UYVY(Stage* in, Stage* out)
-{
-    IMCx_to_PackedY422(in, out);
-}
-
-void blipvert::IMC4_to_YVYU(Stage* in, Stage* out)
-{
-    IMCx_to_PackedY422(in, out);
-}
-
-void blipvert::IMC4_to_VYUY(Stage* in, Stage* out)
-{
-    IMCx_to_PackedY422(in, out);
-}
-
-void blipvert::IMC4_to_I420(Stage* in, Stage* out)
-{
-    IMCx_to_PlanarYUV(in, out);
-}
-
-void blipvert::IMC4_to_YV12(Stage* in, Stage* out)
-{
-    IMCx_to_PlanarYUV(in, out);
-}
-
-void blipvert::IMC4_to_YUV9(Stage* in, Stage* out)
-{
-    IMCx_to_PlanarYUV(in, out);
-}
-
-void blipvert::IMC4_to_YVU9(Stage* in, Stage* out)
-{
-    IMCx_to_PlanarYUV(in, out);
-}
-
-void blipvert::IMC4_to_IYU1(Stage* in, Stage* out)
-{
-    IMCx_to_IYU1(in, out);
-}
-
-void blipvert::IMC4_to_IYU2(Stage* in, Stage* out)
-{
-    IMCx_to_IYU2(in, out);
-}
-
-void blipvert::IMC4_to_Y800(Stage* in, Stage* out)
-{
-    IMCx_to_Y800(in, out);
-}
-
-void blipvert::IMC4_to_Y16(Stage* in, Stage* out)
-{
-    IMCx_to_Y16(in, out);
-}
-
-void blipvert::IMC4_to_CLJR(Stage* in, Stage* out)
-{
-    IMCx_to_CLJR(in, out);
-}
-
-void blipvert::IMC4_to_Y41P(Stage* in, Stage* out)
-{
-    IMCx_to_Y41P(in, out);
-}
-
-void blipvert::IMC4_to_IMC1(Stage* in, Stage* out)
-{
-    IMCx_to_IMCx(in, out);
-}
-
-void blipvert::IMC4_to_IMC2(Stage* in, Stage* out)
-{
-    IMCx_to_IMCx(in, out);
-}
-
-void blipvert::IMC4_to_IMC3(Stage* in, Stage* out)
-{
-    IMCx_to_IMCx(in, out);
-}
-
-void blipvert::IMC4_to_NV12(Stage* in, Stage* out)
-{
-    IMCx_to_NVx(in, out);
-}
-
-void blipvert::IMC4_to_NV21(Stage* in, Stage* out)
-{
-    IMCx_to_NVx(in, out);
-}
-
-void blipvert::IMC4_to_Y42T(Stage* in, Stage* out)
-{
-    IMCx_to_Y42T(in, out);
-}
-
-void blipvert::IMC4_to_Y41T(Stage* in, Stage* out)
-{
-    IMCx_to_Y41T(in, out);
-}
-
-void blipvert::IMC4_to_YV16(Stage* in, Stage* out)
-{
-    IMCx_to_YV16(in, out);
-}
-
 //
 // NVx to YUV
 //
 
-void NVx_to_AYUV(Stage* in, Stage* out)
+void blipvert::NVx_to_AYUV(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     int32_t in_stride = in->stride;
@@ -8800,52 +7912,7 @@ void NVx_to_AYUV(Stage* in, Stage* out)
 // NV12 to YUV
 //
 
-void blipvert::NV12_to_AYUV(Stage* in, Stage* out)
-{
-    NVx_to_AYUV(in, out);
-}
-
-void blipvert::NV12_to_YUY2(Stage* in, Stage* out)
-{
-    NVx_to_PackedY422(in, out);
-}
-
-void blipvert::NV12_to_UYVY(Stage* in, Stage* out)
-{
-    NVx_to_PackedY422(in, out);
-}
-
-void blipvert::NV12_to_YVYU(Stage* in, Stage* out)
-{
-    NVx_to_PackedY422(in, out);
-}
-
-void blipvert::NV12_to_VYUY(Stage* in, Stage* out)
-{
-    NVx_to_PackedY422(in, out);
-}
-
-void blipvert::NV12_to_I420(Stage* in, Stage* out)
-{
-    NVx_to_PlanarYUV(in, out);
-}
-
-void blipvert::NV12_to_YV12(Stage* in, Stage* out)
-{
-    NVx_to_PlanarYUV(in, out);
-}
-
-void blipvert::NV12_to_YVU9(Stage* in, Stage* out)
-{
-    NVx_to_PlanarYUV(in, out);
-}
-
-void blipvert::NV12_to_YUV9(Stage* in, Stage* out)
-{
-    NVx_to_PlanarYUV(in, out);
-}
-
-void NVx_to_IYU1(Stage* in, Stage* out)
+void blipvert::NVx_to_IYU1(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     int32_t in_stride = in->stride;
@@ -8934,12 +8001,7 @@ void NVx_to_IYU1(Stage* in, Stage* out)
     }
 }
 
-void blipvert::NV12_to_IYU1(Stage* in, Stage* out)
-{
-    NVx_to_IYU1(in, out);
-}
-
-void NVx_to_IYU2(Stage* in, Stage* out)
+void blipvert::NVx_to_IYU2(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     int32_t in_stride = in->stride;
@@ -8998,12 +8060,7 @@ void NVx_to_IYU2(Stage* in, Stage* out)
     }
 }
 
-void blipvert::NV12_to_IYU2(Stage* in, Stage* out)
-{
-    NVx_to_IYU2(in, out);
-}
-
-void NVx_to_Y800(Stage* in, Stage* out)
+void blipvert::NVx_to_Y800(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     int32_t in_stride = in->stride;
@@ -9030,12 +8087,7 @@ void NVx_to_Y800(Stage* in, Stage* out)
     }
 }
 
-void blipvert::NV12_to_Y800(Stage* in, Stage* out)
-{
-    NVx_to_Y800(in, out);
-}
-
-void NVx_to_Y16(Stage* in, Stage* out)
+void blipvert::NVx_to_Y16(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     int32_t in_stride = in->stride;
@@ -9063,12 +8115,7 @@ void NVx_to_Y16(Stage* in, Stage* out)
     }
 }
 
-void blipvert::NV12_to_Y16(Stage* in, Stage* out)
-{
-    NVx_to_Y16(in, out);
-}
-
-void NVx_to_CLJR(Stage* in, Stage* out)
+void blipvert::NVx_to_CLJR(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     int32_t in_stride = in->stride;
@@ -9112,12 +8159,7 @@ void NVx_to_CLJR(Stage* in, Stage* out)
     }
 }
 
-void blipvert::NV12_to_CLJR(Stage* in, Stage* out)
-{
-    NVx_to_CLJR(in, out);
-}
-
-void NVx_to_Y41P(Stage* in, Stage* out)
+void blipvert::NVx_to_Y41P(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     int32_t in_stride = in->stride;
@@ -9239,12 +8281,7 @@ void NVx_to_Y41P(Stage* in, Stage* out)
     }
 }
 
-void blipvert::NV12_to_Y41P(Stage* in, Stage* out)
-{
-    NVx_to_Y41P(in, out);
-}
-
-void NVx_to_IMCx(Stage* in, Stage* out)
+void blipvert::NVx_to_IMCx(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     int32_t in_stride = in->stride;
@@ -9301,27 +8338,7 @@ void NVx_to_IMCx(Stage* in, Stage* out)
     }
 }
 
-void blipvert::NV12_to_IMC1(Stage* in, Stage* out)
-{
-    NVx_to_IMCx(in, out);
-}
-
-void blipvert::NV12_to_IMC2(Stage* in, Stage* out)
-{
-    NVx_to_IMCx(in, out);
-}
-
-void blipvert::NV12_to_IMC3(Stage* in, Stage* out)
-{
-    NVx_to_IMCx(in, out);
-}
-
-void blipvert::NV12_to_IMC4(Stage* in, Stage* out)
-{
-    NVx_to_IMCx(in, out);
-}
-
-void NVx_to_NVx(Stage* in, Stage* out)
+void blipvert::NVx_to_NVx(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     int32_t in_stride = in->stride;
@@ -9380,12 +8397,7 @@ void NVx_to_NVx(Stage* in, Stage* out)
     }
 }
 
-void blipvert::NV12_to_NV21(Stage* in, Stage* out)
-{
-    NVx_to_NVx(in, out);
-}
-
-void NVx_to_Y42T(Stage* in, Stage* out)
+void blipvert::NVx_to_Y42T(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     int32_t in_stride = in->stride;
@@ -9435,12 +8447,7 @@ void NVx_to_Y42T(Stage* in, Stage* out)
     }
 }
 
-void blipvert::NV12_to_Y42T(Stage* in, Stage* out)
-{
-    NVx_to_Y42T(in, out);
-}
-
-void NVx_to_Y41T(Stage* in, Stage* out)
+void blipvert::NVx_to_Y41T(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     int32_t in_stride = in->stride;
@@ -9562,179 +8569,10 @@ void NVx_to_Y41T(Stage* in, Stage* out)
     }
 }
 
-void blipvert::NV12_to_Y41T(Stage* in, Stage* out)
-{
-    NVx_to_Y41T(in, out);
-}
-
-void blipvert::NV12_to_YV16(Stage* in, Stage* out)
-{
-    NVx_to_YV16(in, out);
-}
-
-//
-// NV21 to YUV
-//
-
-void blipvert::NV21_to_AYUV(Stage* in, Stage* out)
-{
-    NVx_to_AYUV(in, out);
-}
-
-void blipvert::NV21_to_YUY2(Stage* in, Stage* out)
-{
-    NVx_to_PackedY422(in, out);
-}
-
-void blipvert::NV21_to_UYVY(Stage* in, Stage* out)
-{
-    NVx_to_PackedY422(in, out);
-}
-
-void blipvert::NV21_to_YVYU(Stage* in, Stage* out)
-{
-    NVx_to_PackedY422(in, out);
-}
-
-void blipvert::NV21_to_VYUY(Stage* in, Stage* out)
-{
-    NVx_to_PackedY422(in, out);
-}
-void blipvert::NV21_to_I420(Stage* in, Stage* out)
-{
-    NVx_to_PlanarYUV(in, out);
-}
-
-void blipvert::NV21_to_YV12(Stage* in, Stage* out)
-{
-    NVx_to_PlanarYUV(in, out);
-}
-
-void blipvert::NV21_to_YVU9(Stage* in, Stage* out)
-{
-    NVx_to_PlanarYUV(in, out);
-}
-
-void blipvert::NV21_to_YUV9(Stage* in, Stage* out)
-{
-    NVx_to_PlanarYUV(in, out);
-}
-
-void blipvert::NV21_to_IYU1(Stage* in, Stage* out)
-{
-    NVx_to_IYU1(in, out);
-}
-
-void blipvert::NV21_to_IYU2(Stage* in, Stage* out)
-{
-    NVx_to_IYU2(in, out);
-}
-
-void blipvert::NV21_to_Y800(Stage* in, Stage* out)
-{
-    NVx_to_Y800(in, out);
-}
-
-void blipvert::NV21_to_Y16(Stage* in, Stage* out)
-{
-    NVx_to_Y16(in, out);
-}
-
-void blipvert::NV21_to_CLJR(Stage* in, Stage* out)
-{
-    NVx_to_CLJR(in, out);
-}
-
-void blipvert::NV21_to_Y41P(Stage* in, Stage* out)
-{
-    NVx_to_Y41P(in, out);
-}
-
-void blipvert::NV21_to_IMC1(Stage* in, Stage* out)
-{
-    NVx_to_IMCx(in, out);
-}
-
-void blipvert::NV21_to_IMC2(Stage* in, Stage* out)
-{
-    NVx_to_IMCx(in, out);
-}
-
-void blipvert::NV21_to_IMC3(Stage* in, Stage* out)
-{
-    NVx_to_IMCx(in, out);
-}
-
-void blipvert::NV21_to_IMC4(Stage* in, Stage* out)
-{
-    NVx_to_IMCx(in, out);
-}
-
-void blipvert::NV21_to_NV12(Stage* in, Stage* out)
-{
-    NVx_to_NVx(in, out);
-}
-
-void blipvert::NV21_to_Y42T(Stage* in, Stage* out)
-{
-    NVx_to_Y42T(in, out);
-}
-
-void blipvert::NV21_to_Y41T(Stage* in, Stage* out)
-{
-    NVx_to_Y41T(in, out);
-}
-
-void blipvert::NV21_to_YV16(Stage* in, Stage* out)
-{
-    NVx_to_YV16(in, out);
-}
 
 //
 // Y42T to YUV
 //
-
-void blipvert::Y42T_to_YUY2(Stage* in, Stage* out)
-{
-    Y42T_to_PackedY422(in, out);
-}
-
-void blipvert::Y42T_to_UYVY(Stage* in, Stage* out)
-{
-    Y42T_to_PackedY422(in, out);
-}
-
-
-void blipvert::Y42T_to_YVYU(Stage* in, Stage* out)
-{
-    Y42T_to_PackedY422(in, out);
-}
-
-
-void blipvert::Y42T_to_VYUY(Stage* in, Stage* out)
-{
-    Y42T_to_PackedY422(in, out);
-}
-
-void blipvert::Y42T_to_I420(Stage* in, Stage* out)
-{
-    Y42T_to_PlanarYUV(in, out);
-}
-
-void blipvert::Y42T_to_YV12(Stage* in, Stage* out)
-{
-    Y42T_to_PlanarYUV(in, out);
-}
-
-void blipvert::Y42T_to_YUV9(Stage* in, Stage* out)
-{
-    Y42T_to_PlanarYUV(in, out);
-}
-
-void blipvert::Y42T_to_YVU9(Stage* in, Stage* out)
-{
-    Y42T_to_PlanarYUV(in, out);
-}
 
 void blipvert::Y42T_to_IYU1(Stage* in, Stage* out)
 {
@@ -9964,7 +8802,7 @@ void blipvert::Y42T_to_AYUV(Stage* in, Stage* out)
     }
 }
 
-void Y42T_to_IMCx(Stage* in, Stage* out)
+void blipvert::Y42T_to_IMCx(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     int32_t in_stride = in->stride;
@@ -10010,27 +8848,7 @@ void Y42T_to_IMCx(Stage* in, Stage* out)
     }
 }
 
-void blipvert::Y42T_to_IMC1(Stage* in, Stage* out)
-{
-    Y42T_to_IMCx(in, out);
-}
-
-void blipvert::Y42T_to_IMC2(Stage* in, Stage* out)
-{
-    Y42T_to_IMCx(in, out);
-}
-
-void blipvert::Y42T_to_IMC3(Stage* in, Stage* out)
-{
-    Y42T_to_IMCx(in, out);
-}
-
-void blipvert::Y42T_to_IMC4(Stage* in, Stage* out)
-{
-    Y42T_to_IMCx(in, out);
-}
-
-void Y42T_to_NVx(Stage* in, Stage* out)
+void blipvert::Y42T_to_NVx(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     int32_t in_stride = in->stride;
@@ -10077,16 +8895,6 @@ void Y42T_to_NVx(Stage* in, Stage* out)
         out_buf += out_stride_x_2;
         out_uvplane += out_stride;
     }
-}
-
-void blipvert::Y42T_to_NV12(Stage* in, Stage* out)
-{
-    Y42T_to_NVx(in, out);
-}
-
-void blipvert::Y42T_to_NV21(Stage* in, Stage* out)
-{
-    Y42T_to_NVx(in, out);
 }
 
 void blipvert::Y42T_to_Y41T(Stage* in, Stage* out)
@@ -10219,7 +9027,7 @@ void blipvert::IY41_to_Y41P(Stage* in, Stage* out)
 //
 
 
-void Y41T_to_PackedY422(Stage* in, Stage* out)
+void blipvert::Y41T_to_PackedY422(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     int32_t in_stride = in->stride;
@@ -10268,28 +9076,7 @@ void Y41T_to_PackedY422(Stage* in, Stage* out)
     }
 }
 
-
-void blipvert::Y41T_to_YUY2(Stage* in, Stage* out)
-{
-    Y41T_to_PackedY422(in, out);
-}
-
-void blipvert::Y41T_to_UYVY(Stage* in, Stage* out)
-{
-    Y41T_to_PackedY422(in, out);
-}
-
-void blipvert::Y41T_to_YVYU(Stage* in, Stage* out)
-{
-    Y41T_to_PackedY422(in, out);
-}
-
-void blipvert::Y41T_to_VYUY(Stage* in, Stage* out)
-{
-    Y41T_to_PackedY422(in, out);
-}
-
-void Y41T_to_PlanarYUV(Stage* in, Stage* out)
+void blipvert::Y41T_to_PlanarYUV(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     int32_t in_stride = in->stride;
@@ -10452,26 +9239,6 @@ void Y41T_to_PlanarYUV(Stage* in, Stage* out)
             out_vplane += out_uv_stride;
         }
     }
-}
-
-void blipvert::Y41T_to_I420(Stage* in, Stage* out)
-{
-    Y41T_to_PlanarYUV(in, out);
-}
-
-void blipvert::Y41T_to_YV12(Stage* in, Stage* out)
-{
-    Y41T_to_PlanarYUV(in, out);
-}
-
-void blipvert::Y41T_to_YVU9(Stage* in, Stage* out)
-{
-    Y41T_to_PlanarYUV(in, out);
-}
-
-void blipvert::Y41T_to_YUV9(Stage* in, Stage* out)
-{
-    Y41T_to_PlanarYUV(in, out);
 }
 
 void blipvert::Y41T_to_IYU1(Stage* in, Stage* out)
@@ -10787,7 +9554,7 @@ void blipvert::Y41T_to_AYUV(Stage* in, Stage* out)
 }
 
 
-void Y41T_to_IMCx(Stage* in, Stage* out)
+void blipvert::Y41T_to_IMCx(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     int32_t in_stride = in->stride;
@@ -10862,27 +9629,7 @@ void Y41T_to_IMCx(Stage* in, Stage* out)
     }
 }
 
-void blipvert::Y41T_to_IMC1(Stage* in, Stage* out)
-{
-    Y41T_to_IMCx(in, out);
-}
-
-void blipvert::Y41T_to_IMC2(Stage* in, Stage* out)
-{
-    Y41T_to_IMCx(in, out);
-}
-
-void blipvert::Y41T_to_IMC3(Stage* in, Stage* out)
-{
-    Y41T_to_IMCx(in, out);
-}
-
-void blipvert::Y41T_to_IMC4(Stage* in, Stage* out)
-{
-    Y41T_to_IMCx(in, out);
-}
-
-void Y41T_to_NVx(Stage* in, Stage* out)
+void blipvert::Y41T_to_NVx(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     int32_t in_stride = in->stride;
@@ -10956,16 +9703,6 @@ void Y41T_to_NVx(Stage* in, Stage* out)
         out_buf += out_stride_x_2;
         out_uvplane += out_stride;
     }
-}
-
-void blipvert::Y41T_to_NV12(Stage* in, Stage* out)
-{
-    Y41T_to_NVx(in, out);
-}
-
-void blipvert::Y41T_to_NV21(Stage* in, Stage* out)
-{
-    Y41T_to_NVx(in, out);
 }
 
 void blipvert::Y41T_to_Y42T(Stage* in, Stage* out)
@@ -11069,7 +9806,7 @@ void blipvert::Y41T_to_YV16(Stage* in, Stage* out)
 // YV16 to YUV
 //
 
-void YV16_to_PackedY422(Stage* in, Stage* out)
+void blipvert::YV16_to_PackedY422(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     int32_t in_y_stride = in->y_stride;
@@ -11110,29 +9847,7 @@ void YV16_to_PackedY422(Stage* in, Stage* out)
     }
 }
 
-
-void blipvert::YV16_to_YUY2(Stage* in, Stage* out)
-{
-    YV16_to_PackedY422(in, out);
-}
-
-void blipvert::YV16_to_UYVY(Stage* in, Stage* out)
-{
-    YV16_to_PackedY422(in, out);
-}
-
-void blipvert::YV16_to_YVYU(Stage* in, Stage* out)
-{
-    YV16_to_PackedY422(in, out);
-}
-
-void blipvert::YV16_to_VYUY(Stage* in, Stage* out)
-{
-    YV16_to_PackedY422(in, out);
-}
-
-
-void YV16_to_PlanarYUV(Stage* in, Stage* out)
+void blipvert::YV16_to_PlanarYUV(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     int32_t in_y_stride = in->y_stride;
@@ -11231,26 +9946,6 @@ void YV16_to_PlanarYUV(Stage* in, Stage* out)
             in_vplane += in_uv_stride_x_4;
         }
     }
-}
-
-void blipvert::YV16_to_I420(Stage* in, Stage* out)
-{
-    YV16_to_PlanarYUV(in, out);
-}
-
-void blipvert::YV16_to_YV12(Stage* in, Stage* out)
-{
-    YV16_to_PlanarYUV(in, out);
-}
-
-void blipvert::YV16_to_YVU9(Stage* in, Stage* out)
-{
-    YV16_to_PlanarYUV(in, out);
-}
-
-void blipvert::YV16_to_YUV9(Stage* in, Stage* out)
-{
-    YV16_to_PlanarYUV(in, out);
 }
 
 void blipvert::YV16_to_IYU1(Stage* in, Stage* out)
@@ -11462,7 +10157,7 @@ void blipvert::YV16_to_AYUV(Stage* in, Stage* out)
     }
 }
 
-void YV16_to_IMCx(Stage* in, Stage* out)
+void blipvert::YV16_to_IMCx(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     int32_t in_y_stride = in->y_stride;
@@ -11516,27 +10211,7 @@ void YV16_to_IMCx(Stage* in, Stage* out)
     }
 }
 
-void blipvert::YV16_to_IMC1(Stage* in, Stage* out)
-{
-    YV16_to_IMCx(in, out);
-}
-
-void blipvert::YV16_to_IMC2(Stage* in, Stage* out)
-{
-    YV16_to_IMCx(in, out);
-}
-
-void blipvert::YV16_to_IMC3(Stage* in, Stage* out)
-{
-    YV16_to_IMCx(in, out);
-}
-
-void blipvert::YV16_to_IMC4(Stage* in, Stage* out)
-{
-    YV16_to_IMCx(in, out);
-}
-
-void YV16_to_NVx(Stage* in, Stage* out)
+void blipvert::YV16_to_NVx(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     int32_t in_y_stride = in->y_stride;
@@ -11590,16 +10265,6 @@ void YV16_to_NVx(Stage* in, Stage* out)
         in_vplane += in_uv_stride;
         out_uvplane += out_stride;
     }
-}
-
-void blipvert::YV16_to_NV12(Stage* in, Stage* out)
-{
-    YV16_to_NVx(in, out);
-}
-
-void blipvert::YV16_to_NV21(Stage* in, Stage* out)
-{
-    YV16_to_NVx(in, out);
 }
 
 void blipvert::YV16_to_Y42T(Stage* in, Stage* out)

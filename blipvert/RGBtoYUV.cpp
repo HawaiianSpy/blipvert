@@ -111,7 +111,7 @@ void blipvert::RGB24_to_PackedY422(Stage* in, Stage* out)
     }
 }
 
-void RGB565_to_PackedY422(Stage* in, Stage* out)
+void blipvert::RGB565_to_PackedY422(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     uint8_t* out_buf = out->buf;
@@ -158,7 +158,7 @@ void RGB565_to_PackedY422(Stage* in, Stage* out)
     }
 }
 
-void RGB555_to_PackedY422(Stage* in, Stage* out)
+void blipvert::RGB555_to_PackedY422(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     uint8_t* out_buf = out->buf;
@@ -205,7 +205,7 @@ void RGB555_to_PackedY422(Stage* in, Stage* out)
     }
 }
 
-void RGB8_to_PackedY422(Stage* in, Stage* out)
+void blipvert::RGB8_to_PackedY422(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     uint8_t* out_buf = out->buf;
@@ -506,7 +506,7 @@ void blipvert::RGB24_to_PlanarYUV(Stage* in, Stage* out)
     }
 }
 
-void RGB565_to_PlanarYUV(Stage* in, Stage* out)
+void blipvert::RGB565_to_PlanarYUV(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     uint8_t* out_buf = out->buf;
@@ -652,7 +652,7 @@ void RGB565_to_PlanarYUV(Stage* in, Stage* out)
     }
 }
 
-void RGB555_to_PlanarYUV(Stage* in, Stage* out)
+void blipvert::RGB555_to_PlanarYUV(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     uint8_t* out_buf = out->buf;
@@ -801,7 +801,7 @@ void RGB555_to_PlanarYUV(Stage* in, Stage* out)
     }
 }
 
-void RGB8_to_PlanarYUV(Stage* in, Stage* out)
+void blipvert::RGB8_to_PlanarYUV(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     uint8_t* out_buf = out->buf;
@@ -1082,7 +1082,7 @@ void blipvert::RGB24_to_IMCx(Stage* in, Stage* out)
     }
 }
 
-void RGB565_to_IMCx(Stage* in, Stage* out)
+void blipvert::RGB565_to_IMCx(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     uint8_t* out_buf = out->buf;
@@ -1153,7 +1153,7 @@ void RGB565_to_IMCx(Stage* in, Stage* out)
     }
 }
 
-void RGB555_to_IMCx(Stage* in, Stage* out)
+void blipvert::RGB555_to_IMCx(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     uint8_t* out_buf = out->buf;
@@ -1224,7 +1224,7 @@ void RGB555_to_IMCx(Stage* in, Stage* out)
     }
 }
 
-void RGB8_to_IMCx(Stage* in, Stage* out)
+void blipvert::RGB8_to_IMCx(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     uint8_t* out_buf = out->buf;
@@ -2548,46 +2548,6 @@ void blipvert::RGB24_to_YV16(Stage* in, Stage* out)
 // RGB565 to YUV transforms
 //
 
-void blipvert::RGB565_to_YUY2(Stage* in, Stage* out)
-{
-    RGB565_to_PackedY422(in, out);
-}
-
-void blipvert::RGB565_to_UYVY(Stage* in, Stage* out)
-{
-    RGB565_to_PackedY422(in, out);
-}
-
-void blipvert::RGB565_to_YVYU(Stage* in, Stage* out)
-{
-    RGB565_to_PackedY422(in, out);
-}
-
-void blipvert::RGB565_to_VYUY(Stage* in, Stage* out)
-{
-    RGB565_to_PackedY422(in, out);
-}
-
-void blipvert::RGB565_to_I420(Stage* in, Stage* out)
-{
-    RGB565_to_PlanarYUV(in, out);
-}
-
-void blipvert::RGB565_to_YV12(Stage* in, Stage* out)
-{
-    RGB565_to_PlanarYUV(in, out);
-}
-
-void blipvert::RGB565_to_YVU9(Stage* in, Stage* out)
-{
-    RGB565_to_PlanarYUV(in, out);
-}
-
-void blipvert::RGB565_to_YUV9(Stage* in, Stage* out)
-{
-    RGB565_to_PlanarYUV(in, out);
-}
-
 void blipvert::RGB565_to_IYU1(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
@@ -2921,27 +2881,7 @@ void blipvert::RGB565_to_AYUV(Stage* in, Stage* out)
     }
 }
 
-void blipvert::RGB565_to_IMC1(Stage* in, Stage* out)
-{
-    RGB565_to_IMCx(in, out);
-}
-
-void blipvert::RGB565_to_IMC2(Stage* in, Stage* out)
-{
-    RGB565_to_IMCx(in, out);
-}
-
-void blipvert::RGB565_to_IMC3(Stage* in, Stage* out)
-{
-    RGB565_to_IMCx(in, out);
-}
-
-void blipvert::RGB565_to_IMC4(Stage* in, Stage* out)
-{
-    RGB565_to_IMCx(in, out);
-}
-
-void RGB565_to_NVx(Stage* in, Stage* out)
+void blipvert::RGB565_to_NVx(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     uint8_t* out_buf = out->buf;
@@ -3012,16 +2952,6 @@ void RGB565_to_NVx(Stage* in, Stage* out)
         out_buf += out_stride_x_2;
         out_uvplane += out_stride;
     }
-}
-
-void blipvert::RGB565_to_NV12(Stage* in, Stage* out)
-{
-    RGB565_to_NVx(in, out);
-}
-
-void blipvert::RGB565_to_NV21(Stage* in, Stage* out)
-{
-    RGB565_to_NVx(in, out);
 }
 
 void blipvert::RGB565_to_Y42T(Stage* in, Stage* out)
@@ -3214,46 +3144,6 @@ void blipvert::RGB565_to_YV16(Stage* in, Stage* out)
 //
 // RGB555 to YUV transforms
 //
-
-void blipvert::RGB555_to_YUY2(Stage* in, Stage* out)
-{
-    RGB555_to_PackedY422(in, out);
-}
-
-void blipvert::RGB555_to_UYVY(Stage* in, Stage* out)
-{
-    RGB555_to_PackedY422(in, out);
-}
-
-void blipvert::RGB555_to_YVYU(Stage* in, Stage* out)
-{
-    RGB555_to_PackedY422(in, out);
-}
-
-void blipvert::RGB555_to_VYUY(Stage* in, Stage* out)
-{
-    RGB555_to_PackedY422(in, out);
-}
-
-void blipvert::RGB555_to_I420(Stage* in, Stage* out)
-{
-    RGB555_to_PlanarYUV(in, out);
-}
-
-void blipvert::RGB555_to_YV12(Stage* in, Stage* out)
-{
-    RGB555_to_PlanarYUV(in, out);
-}
-
-void blipvert::RGB555_to_YVU9(Stage* in, Stage* out)
-{
-    RGB555_to_PlanarYUV(in, out);
-}
-
-void blipvert::RGB555_to_YUV9(Stage* in, Stage* out)
-{
-    RGB555_to_PlanarYUV(in, out);
-}
 
 void blipvert::RGB555_to_IYU1(Stage* in, Stage* out)
 {
@@ -3741,26 +3631,6 @@ void blipvert::ARGB1555_to_Y41T(Stage* in, Stage* out)
     }
 }
 
-void blipvert::RGB555_to_IMC1(Stage* in, Stage* out)
-{
-    RGB555_to_IMCx(in, out);
-}
-
-void blipvert::RGB555_to_IMC2(Stage* in, Stage* out)
-{
-    RGB555_to_IMCx(in, out);
-}
-
-void blipvert::RGB555_to_IMC3(Stage* in, Stage* out)
-{
-    RGB555_to_IMCx(in, out);
-}
-
-void blipvert::RGB555_to_IMC4(Stage* in, Stage* out)
-{
-    RGB555_to_IMCx(in, out);
-}
-
 void blipvert::RGB555_to_AYUV(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
@@ -3795,7 +3665,7 @@ void blipvert::RGB555_to_AYUV(Stage* in, Stage* out)
     }
 }
 
-void RGB555_to_NVx(Stage* in, Stage* out)
+void blipvert::RGB555_to_NVx(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     uint8_t* out_buf = out->buf;
@@ -3867,16 +3737,6 @@ void RGB555_to_NVx(Stage* in, Stage* out)
         out_buf += out_stride_x_2;
         out_uvplane += out_stride;
     }
-}
-
-void blipvert::RGB555_to_NV12(Stage* in, Stage* out)
-{
-    RGB555_to_NVx(in, out);
-}
-
-void blipvert::RGB555_to_NV21(Stage* in, Stage* out)
-{
-    RGB555_to_NVx(in, out);
 }
 
 void blipvert::RGB555_to_Y42T(Stage* in, Stage* out)
@@ -4069,46 +3929,6 @@ void blipvert::RGB555_to_YV16(Stage* in, Stage* out)
 //
 // RGB8 to YUV transforms
 //
-
-void blipvert::RGB8_to_YUY2(Stage* in, Stage* out)
-{
-    RGB8_to_PackedY422(in, out);
-}
-
-void blipvert::RGB8_to_UYVY(Stage* in, Stage* out)
-{
-    RGB8_to_PackedY422(in, out);
-}
-
-void blipvert::RGB8_to_YVYU(Stage* in, Stage* out)
-{
-    RGB8_to_PackedY422(in, out);
-}
-
-void blipvert::RGB8_to_VYUY(Stage* in, Stage* out)
-{
-    RGB8_to_PackedY422(in, out);
-}
-
-void blipvert::RGB8_to_I420(Stage* in, Stage* out)
-{
-    RGB8_to_PlanarYUV(in, out);
-}
-
-void blipvert::RGB8_to_YV12(Stage* in, Stage* out)
-{
-    RGB8_to_PlanarYUV(in, out);
-}
-
-void blipvert::RGB8_to_YVU9(Stage* in, Stage* out)
-{
-    RGB8_to_PlanarYUV(in, out);
-}
-
-void blipvert::RGB8_to_YUV9(Stage* in, Stage* out)
-{
-    RGB8_to_PlanarYUV(in, out);
-}
 
 void blipvert::RGB8_to_IYU1(Stage* in, Stage* out)
 {
@@ -4452,27 +4272,7 @@ void blipvert::RGB8_to_AYUV(Stage* in, Stage* out)
     }
 }
 
-void blipvert::RGB8_to_IMC1(Stage* in, Stage* out)
-{
-    RGB8_to_IMCx(in, out);
-}
-
-void blipvert::RGB8_to_IMC2(Stage* in, Stage* out)
-{
-    RGB8_to_IMCx(in, out);
-}
-
-void blipvert::RGB8_to_IMC3(Stage* in, Stage* out)
-{
-    RGB8_to_IMCx(in, out);
-}
-
-void blipvert::RGB8_to_IMC4(Stage* in, Stage* out)
-{
-    RGB8_to_IMCx(in, out);
-}
-
-void RGB8_to_NVx(Stage* in, Stage* out)
+void blipvert::RGB8_to_NVx(Stage* in, Stage* out)
 {
     uint8_t* in_buf = in->buf;
     uint8_t* out_buf = out->buf;
@@ -4549,17 +4349,6 @@ void RGB8_to_NVx(Stage* in, Stage* out)
         out_uvplane += out_stride;
     }
 }
-
-void blipvert::RGB8_to_NV12(Stage* in, Stage* out)
-{
-    RGB8_to_NVx(in, out);
-}
-
-void blipvert::RGB8_to_NV21(Stage* in, Stage* out)
-{
-    RGB8_to_NVx(in, out);
-}
-
 
 void blipvert::RGB8_to_Y42T(Stage* in, Stage* out)
 {

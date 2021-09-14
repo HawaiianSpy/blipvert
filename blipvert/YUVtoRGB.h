@@ -34,25 +34,10 @@ namespace blipvert
 {
     // YUV (YCbCr) to RGB transforms
 
-    void YUY2_to_RGB32(Stage* in, Stage* out);
-    void YUY2_to_RGB24(Stage* in, Stage* out);
-    void YUY2_to_RGB565(Stage* in, Stage* out);
-    void YUY2_to_RGB555(Stage* in, Stage* out);
-
-    void UYVY_to_RGB32(Stage* in, Stage* out);
-    void UYVY_to_RGB24(Stage* in, Stage* out);
-    void UYVY_to_RGB565(Stage* in, Stage* out);
-    void UYVY_to_RGB555(Stage* in, Stage* out);
-
-    void YVYU_to_RGB32(Stage* in, Stage* out);
-    void YVYU_to_RGB24(Stage* in, Stage* out);
-    void YVYU_to_RGB565(Stage* in, Stage* out);
-    void YVYU_to_RGB555(Stage* in, Stage* out);
-
-    void VYUY_to_RGB32(Stage* in, Stage* out);
-    void VYUY_to_RGB24(Stage* in, Stage* out);
-    void VYUY_to_RGB565(Stage* in, Stage* out);
-    void VYUY_to_RGB555(Stage* in, Stage* out);
+    void PackedY422_to_RGB32(Stage* in, Stage* out);
+    void PackedY422_to_RGB24(Stage* in, Stage* out);
+    void PackedY422_to_RGB565(Stage* in, Stage* out);
+    void PackedY422_to_RGB555(Stage* in, Stage* out);
 
     void CLJR_to_RGB32(Stage* in, Stage* out);
     void CLJR_to_RGB24(Stage* in, Stage* out);
@@ -74,45 +59,15 @@ namespace blipvert
     void IYU2_to_RGB565(Stage* in, Stage* out);
     void IYU2_to_RGB555(Stage* in, Stage* out);
 
-    void YVU9_to_RGB32(Stage* in, Stage* out);
-    void YVU9_to_RGB24(Stage* in, Stage* out);
-    void YVU9_to_RGB565(Stage* in, Stage* out);
-    void YVU9_to_RGB555(Stage* in, Stage* out);
+    void PlanarYUV_to_RGB32(Stage* in, Stage* out);
+    void PlanarYUV_to_RGB24(Stage* in, Stage* out);
+    void PlanarYUV_to_RGB565(Stage* in, Stage* out);
+    void PlanarYUV_to_RGB555(Stage* in, Stage* out);
 
-    void YUV9_to_RGB32(Stage* in, Stage* out);
-    void YUV9_to_RGB24(Stage* in, Stage* out);
-    void YUV9_to_RGB565(Stage* in, Stage* out);
-    void YUV9_to_RGB555(Stage* in, Stage* out);
-
-    void I420_to_RGB32(Stage* in, Stage* out);
-    void I420_to_RGB24(Stage* in, Stage* out);
-    void I420_to_RGB565(Stage* in, Stage* out);
-    void I420_to_RGB555(Stage* in, Stage* out);
-
-    void YV12_to_RGB32(Stage* in, Stage* out);
-    void YV12_to_RGB24(Stage* in, Stage* out);
-    void YV12_to_RGB565(Stage* in, Stage* out);
-    void YV12_to_RGB555(Stage* in, Stage* out);
-
-    void IMC1_to_RGB32(Stage* in, Stage* out);
-    void IMC1_to_RGB24(Stage* in, Stage* out);
-    void IMC1_to_RGB565(Stage* in, Stage* out);
-    void IMC1_to_RGB555(Stage* in, Stage* out);
-
-    void IMC2_to_RGB32(Stage* in, Stage* out);
-    void IMC2_to_RGB24(Stage* in, Stage* out);
-    void IMC2_to_RGB565(Stage* in, Stage* out);
-    void IMC2_to_RGB555(Stage* in, Stage* out);
-
-    void IMC3_to_RGB32(Stage* in, Stage* out);
-    void IMC3_to_RGB24(Stage* in, Stage* out);
-    void IMC3_to_RGB565(Stage* in, Stage* out);
-    void IMC3_to_RGB555(Stage* in, Stage* out);
-
-    void IMC4_to_RGB32(Stage* in, Stage* out);
-    void IMC4_to_RGB24(Stage* in, Stage* out);
-    void IMC4_to_RGB565(Stage* in, Stage* out);
-    void IMC4_to_RGB555(Stage* in, Stage* out);
+    void IMCx_to_RGB32(Stage* in, Stage* out);
+    void IMCx_to_RGB24(Stage* in, Stage* out);
+    void IMCx_to_RGB565(Stage* in, Stage* out);
+    void IMCx_to_RGB555(Stage* in, Stage* out);
 
     void Y800_to_RGB32(Stage* in, Stage* out);
     void Y800_to_RGB24(Stage* in, Stage* out);
@@ -131,15 +86,10 @@ namespace blipvert
     void AYUV_to_RGB555(Stage* in, Stage* out);
     void AYUV_to_ARGB1555(Stage* in, Stage* out);
 
-    void NV12_to_RGB32(Stage* in, Stage* out);
-    void NV12_to_RGB24(Stage* in, Stage* out);
-    void NV12_to_RGB565(Stage* in, Stage* out);
-    void NV12_to_RGB555(Stage* in, Stage* out);
-
-    void NV21_to_RGB32(Stage* in, Stage* out);
-    void NV21_to_RGB24(Stage* in, Stage* out);
-    void NV21_to_RGB565(Stage* in, Stage* out);
-    void NV21_to_RGB555(Stage* in, Stage* out);
+    void NVx_to_RGB32(Stage* in, Stage* out);
+    void NVx_to_RGB24(Stage* in, Stage* out);
+    void NVx_to_RGB565(Stage* in, Stage* out);
+    void NVx_to_RGB555(Stage* in, Stage* out);
 
     void Y42T_to_RGBA(Stage* in, Stage* out);
     void Y42T_to_RGB32(Stage* in, Stage* out);

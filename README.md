@@ -26,6 +26,8 @@ P.S. If you found this library helpful and have improvements/bug fixes to contri
 
 # Ten-Cent Tour Of The API
 
+## I have made a major change to the API: The staging for each transform pass is now setup ahead of time to eliminate redundantly doing it for each frame. This will make it more efficient and allow the use of multiple threads to perform the transforms on large bitmaps in real time. The multi-thread part has not been tested, but the single tread operation has been tested with the updated API. This documentation is still for the old API. Until I update this document one can examine the unit test source code to see how the new API works. I have a full-time job now, so that takes up most of my time. I'll set aside a weekend soon to updae this documentation and produce tests for multi-threaded processing of the transforms.   Posted: 27 October, 2021.
+
 Read the header files for the details. Fairly self-explainatory.
 
 ### Header file: blipvert.h (Start Here)

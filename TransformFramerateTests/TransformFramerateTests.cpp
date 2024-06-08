@@ -213,7 +213,7 @@ int main()
 	height = 1080;
 	RunAllTransforms();
 
-	width = 4096;
+	width = 3840;
 	height = 2160;
 	RunAllTransforms();
 

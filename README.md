@@ -19,7 +19,7 @@ P.S. If you found this library helpful and have improvements/bug fixes to contri
 
 ******************************
 
-#### The ```TransformFramerateTests``` project is a Windows console application that tests and displays the frame rates for various transforms at the HD (1920 x 1080) and 4K (4096 x 2160) video resolutions.
+#### The ```TransformFramerateTests``` project is a Windows console application that tests and displays the frame rates for various transforms at the HD (1920 x 1080) and 4K (3840 x 2160) video resolutions.
 
 ******************************
 

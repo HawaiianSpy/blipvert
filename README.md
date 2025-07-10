@@ -20,7 +20,7 @@ P.S. If you found this library helpful and have improvements/bug fixes to contri
 ******************************
 
 #### The ```TransformFramerateTests``` project is a Windows console application that tests and displays the frame rates for various transforms at the HD (1920 x 1080) and 4K (3840 x 2160) video resolutions.
-#### The ```MTTransformFramerateTests``` project is a Windows console application that tests and displays the frame rates for various transforms at the HD (1920 x 1080) and 4K (3840 x 2160) video resolutions using four worker threads for each video frame.
+
 
 ******************************
 
@@ -29,7 +29,7 @@ P.S. If you found this library helpful and have improvements/bug fixes to contri
 
 ## 27 October, 2021: I have made a major change to the API: The staging for each transform pass is now setup ahead of time to eliminate redundantly doing it for each frame. This will make it more efficient and allow the use of multiple threads to perform the transforms on large bitmaps in real time. The multi-thread part has not been tested, but the single tread operation has been tested with the updated API. This documentation is still for the old API. Until I update this document one can examine the TransformFramerateTests source code to see how the new API works. I have a full-time job now, so that takes up most of my time. I'll set aside a weekend soon to update this documentation and produce tests for multi-threaded processing of the transforms.
 
-## Update 10, July 2025: I used ChatGPT AI to rewrite the frame rate test console application using four worker threads per frame. It needs some tweaking still. I will also be updating this documentation soon.
+## Update 11, July 2025: Removed the multi-threaded frame rate test because it doen't work correctly. Needs more testing.
 
 Read the header files for the details. Fairly self-explainatory.
 

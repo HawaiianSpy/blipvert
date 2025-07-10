@@ -1,18 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36212.18 d17.14
+VisualStudioVersion = 17.14.36212.18
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "blipvert", "blipvert\blipvert.vcxproj", "{7A0AC41A-8FCC-4F95-8F58-5C2382D73A60}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BlipvertUnitTests", "UnitTests\UnitTests.vcxproj", "{B8F52108-C451-4464-A360-F756F0418A62}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TransformFramerateTests", "TransformFramerateTests\TransformFramerateTests.vcxproj", "{972AA584-5B01-4C97-B150-E9A5253781FB}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MTTransformFramerateTests", "MTTransformFramerateTests\MTTransformFramerateTests.vcxproj", "{671EE841-F267-4EA6-8561-8A1DF7E2C775}"
-	ProjectSection(ProjectDependencies) = postProject
-		{7A0AC41A-8FCC-4F95-8F58-5C2382D73A60} = {7A0AC41A-8FCC-4F95-8F58-5C2382D73A60}
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -46,14 +41,6 @@ Global
 		{972AA584-5B01-4C97-B150-E9A5253781FB}.Release|x64.Build.0 = Release|x64
 		{972AA584-5B01-4C97-B150-E9A5253781FB}.Release|x86.ActiveCfg = Release|Win32
 		{972AA584-5B01-4C97-B150-E9A5253781FB}.Release|x86.Build.0 = Release|Win32
-		{671EE841-F267-4EA6-8561-8A1DF7E2C775}.Debug|x64.ActiveCfg = Debug|x64
-		{671EE841-F267-4EA6-8561-8A1DF7E2C775}.Debug|x64.Build.0 = Debug|x64
-		{671EE841-F267-4EA6-8561-8A1DF7E2C775}.Debug|x86.ActiveCfg = Debug|Win32
-		{671EE841-F267-4EA6-8561-8A1DF7E2C775}.Debug|x86.Build.0 = Debug|Win32
-		{671EE841-F267-4EA6-8561-8A1DF7E2C775}.Release|x64.ActiveCfg = Release|x64
-		{671EE841-F267-4EA6-8561-8A1DF7E2C775}.Release|x64.Build.0 = Release|x64
-		{671EE841-F267-4EA6-8561-8A1DF7E2C775}.Release|x86.ActiveCfg = Release|Win32
-		{671EE841-F267-4EA6-8561-8A1DF7E2C775}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

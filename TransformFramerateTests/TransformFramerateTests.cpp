@@ -4,7 +4,7 @@
 //
 //  MIT License
 //
-//  Copyright(c) 2021 Don Jordan
+//  Copyright(c) 2021-2025 Don Jordan
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files(the "Software"), to deal
@@ -26,16 +26,9 @@
 //
 
 //
-// This console application runs a frames per second speed test on the transforms.
+// This console application runs a single-threaded frames per second speed test on the transforms.
 //
 // The output goes to both the console and a text file.
-//
-
-//
-//  blipvert C++ library
-//
-//  MIT License
-//  Copyright(c) 2021 Don Jordan
 //
 
 #include <iostream>

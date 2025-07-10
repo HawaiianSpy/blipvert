@@ -350,3 +350,4 @@ MigrationBackup/
 .ionide/
 MTTransformFramerateTests/Four-thread_framerate_results.txt
 TransformFramerateTests/single-thread_framerate_results.txt
+MTTransformFramerateTests/framerate_results.txt

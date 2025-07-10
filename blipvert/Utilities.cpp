@@ -220,14 +220,9 @@ bool blipvert::IsYUVColorspace(const Fourcc fourcc)
 
 bool blipvert::IsPalletizedEncoding(const MediaFormatID& encoding)
 {
-    if (encoding == MVFMT_RGB1 ||
-        encoding == MVFMT_RGB4 ||
-        encoding == MVFMT_RGB8)
-    {
-        return true;
-    }
-
-    return false;
+    return (encoding == MVFMT_RGB1 ||
+            encoding == MVFMT_RGB4 ||
+            encoding == MVFMT_RGB8);
 }
 
 bool blipvert::IsPalletizedEncoding(const Fourcc fourcc)
@@ -236,6 +231,25 @@ bool blipvert::IsPalletizedEncoding(const Fourcc fourcc)
     if (GetVideoFormatID(fourcc, mid))
     {
         return IsPalletizedEncoding(mid);
+    }
+    return false;
+}
+
+
+bool blipvert::IsPlanarYUV(const MediaFormatID& encoding)
+{
+    return  (encoding == MVFMT_I420 || encoding == MVFMT_YV12 || encoding == MVFMT_YVU9 ||
+            encoding == MVFMT_YUV9 || encoding == MVFMT_NV12 || encoding == MVFMT_NV21 ||
+            encoding == MVFMT_IMC1 || encoding == MVFMT_IMC2 || encoding == MVFMT_IMC3 ||
+            encoding == MVFMT_IMC4 || encoding == MVFMT_YV16);
+}
+
+bool blipvert::IsPlanarYUV(const Fourcc fourcc)
+{
+    MediaFormatID mid;
+    if (GetVideoFormatID(fourcc, mid))
+    {
+        return IsPlanarYUV(mid);
     }
     return false;
 }

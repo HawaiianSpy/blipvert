@@ -84,5 +84,10 @@ namespace blipvert
     // Returns TRUE if the encoding is RGB with a palette
     bool IsPalletizedEncoding(const MediaFormatID& encoding);
     bool IsPalletizedEncoding(const Fourcc fourcc);
+
+    // Returns TRUE if a format uses planar chroma layout (e.g. YV12, I420)
+    bool IsPlanarYUV(const MediaFormatID& encoding);
+    bool IsPlanarYUV(const Fourcc fourcc);
+
 }
 

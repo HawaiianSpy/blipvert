@@ -348,3 +348,5 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+MTTransformFramerateTests/Four-thread_framerate_results.txt
+TransformFramerateTests/single-thread_framerate_results.txt

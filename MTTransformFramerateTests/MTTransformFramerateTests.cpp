@@ -26,16 +26,10 @@
 //
 
 //
-// This console application runs a frames per second speed test on the transforms.
+// This console application runs a frames per second speed test on the transforms
+// using 4 worker thread per frame.
 //
 // The output goes to both the console and a text file.
-//
-
-//
-//  blipvert C++ library
-//
-//  MIT License
-//  Copyright(c) 2021 Don Jordan
 //
 
 #include <iostream>
@@ -43,6 +37,7 @@
 #include <memory>
 #include <chrono>
 #include <vector>
+#include <thread>
 
 #include "blipvert.h"
 #include "Utilities.h"
@@ -88,14 +83,14 @@ void FramerateTest(const MediaFormatID& in_format, const MediaFormatID& out_form
     t_transformfunc encodeTransPtr = FindVideoTransform(in_format, out_format);
     if (!encodeTransPtr)
     {
-        LogLine("Framerate test: " + string(in_format) + " to " + string(out_format) + " aborted: no transform of that type available.");
+        LogLine("Framerate test: " + string(in_format) + " to " + string(out_format) + " aborted: no transform available.");
         return;
     }
 
     t_fillcolorfunc fillBufFunctPtr = FindFillColorTransform(in_format);
     if (!fillBufFunctPtr)
     {
-        LogLine("Framerate test: " + string(in_format) + " to " + string(out_format) + " aborted: No transform for " + string(in_format) + " is available.");
+        LogLine("Framerate test: " + string(in_format) + " to " + string(out_format) + " aborted: no fill transform available.");
         return;
     }
 
@@ -118,25 +113,37 @@ void FramerateTest(const MediaFormatID& in_format, const MediaFormatID& out_form
         fillBufFunctPtr(red, green, blue, alpha, width, height, inBuf.get(), 0);
     }
 
-    t_stagetransformfunc pstage = FindTransformStage(in_format);
-    Stage inptr;
-    pstage(&inptr, 0, 1, width, height, inBuf.get(), 0, false, nullptr);
-
-    pstage = FindTransformStage(out_format);
-    Stage outptr;
-    pstage(&outptr, 0, 1, width, height, outBuf.get(), 0, false, nullptr);
+    t_stagetransformfunc inStager = FindTransformStage(in_format);
+    t_stagetransformfunc outStager = FindTransformStage(out_format);
 
     Log("Framerate test: " + string(in_format) + " to " + string(out_format));
 
     auto start = chrono::steady_clock::now();
 
-    for (int count = 0; count < numframes; count++)
+    for (int count = 0; count < numframes; ++count)
     {
-        encodeTransPtr(&inptr, &outptr);
+        vector<thread> threads;
+        int sliceHeight = height / 4;
+
+        for (int i = 0; i < 4; ++i)
+        {
+            int yOffset = i * sliceHeight;
+
+            threads.emplace_back([=, &inBuf, &outBuf]() {
+                Stage inStage, outStage;
+                inStager(&inStage, 0, 1, width, sliceHeight, inBuf.get(), yOffset, false, nullptr);
+                outStager(&outStage, 0, 1, width, sliceHeight, outBuf.get(), yOffset, false, nullptr);
+                encodeTransPtr(&inStage, &outStage);
+                });
+        }
+
+        for (auto& t : threads)
+        {
+            t.join();
+        }
     }
 
     auto end = chrono::steady_clock::now();
-
     double ms = static_cast<double>(chrono::duration_cast<chrono::milliseconds>(end - start).count());
     double framerate = 1000.0 / (ms / static_cast<double>(numframes));
     LogLine(" @ " + to_string(framerate) + " fps.");
@@ -149,7 +156,7 @@ void RunTest(const MediaFormatID& in_format, const MediaFormatID& out_format)
 
 void RunAllTransforms()
 {
-    LogLine("single-thread transform test run for frame resolution: " + to_string(width) + " x " + to_string(height) + "...\n");
+    LogLine("4 thread transform test run for frame resolution: " + to_string(width) + " x " + to_string(height) + "...\n");
 
     // RGB to YUV
     for (const MediaFormatID* in_format : RGBFormats)
@@ -198,7 +205,7 @@ void RunAllTransforms()
 
 int main()
 {
-    logFile.open("single-thread_framerate_results.txt");
+    logFile.open("Four-thread_framerate_results.txt");
     if (!logFile.is_open())
     {
         cerr << "Error: Could not open output log file." << endl;

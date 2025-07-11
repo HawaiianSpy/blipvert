@@ -258,17 +258,37 @@ void FlipVertical_IMCx(int32_t width, int32_t height, uint8_t* buf, int32_t stri
 
     uint8_t* vplane = nullptr;
     uint8_t* uplane = nullptr;
-    uint8_t* uvplane = buf + (stride * height);
+    uint8_t* uvplane = nullptr;
 
     if (ufirst)
     {
-        uplane = buf + (Align16(height) * stride);
-        vplane = buf + (Align16(height * 3 / 2) * stride);
+        if (interlaced)
+        {
+            uplane = buf + (stride * height);
+            vplane = uplane + uv_width;
+        }
+        else
+        {
+            int32_t uoffset = Align16(height);
+            uplane = buf + (uoffset * stride);
+            vplane = buf + (Align16(uoffset + uv_height) * stride);
+        }
+        uvplane = uplane;
     }
     else
     {
-        vplane = buf + (Align16(height) * stride);
-        uplane = buf + (Align16(height * 3 / 2) * stride);
+        if (interlaced)
+        {
+            vplane = buf + (stride * height);
+            uplane = vplane + uv_width;
+        }
+        else
+        {
+            int32_t voffset = Align16(height);
+            vplane = buf + (Align16(voffset) * stride);
+            uplane = buf + (Align16(voffset + uv_height) * stride);
+        }
+        uvplane = vplane;
     }
 
     FlipSinglePlane(height, buf, stride);

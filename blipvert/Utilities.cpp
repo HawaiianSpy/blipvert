@@ -27,6 +27,7 @@
 #include "pch.h"
 #include "Utilities.h"
 #include "LookupTables.h"
+#include "CommonMacros.h"
 #include <cstring>
 
 using namespace blipvert;
@@ -144,7 +145,7 @@ void blipvert::Interlaced_to_Progressive(int32_t height, int32_t line_bytes, boo
 
 uint32_t blipvert::CalculateBufferSize(const MediaFormatID& inFormat, uint32_t width, uint32_t height, int32_t stride)
 {
-    if (width < 8 || (width % 8 != 0) || height< 16 || (height % 8 != 0))
+    if (!ValidateGlobalBitmapDimension(width,height))
     {
         return 0;
     }
@@ -160,7 +161,7 @@ uint32_t blipvert::CalculateBufferSize(const MediaFormatID& inFormat, uint32_t w
 
 int32_t blipvert::CalculateMinimumLineStride(const MediaFormatID& inFormat, uint32_t width, uint32_t height)
 {
-    if (width < 8 || (width % 8 != 0) || height < 16 || (height % 8 != 0))
+    if (!ValidateGlobalBitmapDimension(width, height))
     {
         return 0;
     }

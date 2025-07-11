@@ -351,8 +351,9 @@ void IMCx_to_Greyscale(int32_t width, int32_t height,
     }
     else
     {
-        vplane = buf + (Align16(height) * stride);
-        uplane = buf + (Align16(height * 3 / 2) * stride);
+        int32_t voffset = Align16(height);
+        vplane = buf + (voffset * stride);
+        uplane = buf + (Align16(voffset + uv_height) * stride);
     }
 
     for (int32_t y = 0; y < uv_height; y++)

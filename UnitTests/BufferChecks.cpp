@@ -33,8 +33,8 @@
 using namespace blipvert;
 using namespace BlipvertUnitTests;
 
-const uint32_t BlipvertUnitTests::TestBufferWidth = 640;
-const uint32_t BlipvertUnitTests::TestBufferHeight = 480;
+const uint32_t BlipvertUnitTests::TestBufferWidth = 16;
+const uint32_t BlipvertUnitTests::TestBufferHeight = 16;
 const uint32_t BlipvertUnitTests::StrideBumpTestValue = 16;
 
 uint32_t BlipvertUnitTests::StrideBump = 0;
@@ -46,7 +46,7 @@ uint32_t BlipvertUnitTests::CalculateStrideBump(const MediaFormatID& inFormat, u
 		return 0;
 	}
 
-	if (width < 8 || (width % 8 != 0) || height < 16 || (height % 8 != 0))
+	if (!ValidateGlobalBitmapDimension(width, height))
 	{
 		return 0;
 	}

@@ -104,4 +104,6 @@ namespace blipvert
 #define Align(value, alignment) ((value + alignment - 1) / alignment * alignment)
 #define Align16(value) ((value + 15) & ~15)
 
+#define ValidateGlobalBitmapDimension(width, height) (width >= 8 || (width % 8 == 0) || height >= 16 || (height % 4 == 0))
+
 }

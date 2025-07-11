@@ -27,6 +27,7 @@
 #include "pch.h"
 #include "FlipVertical.h"
 #include "blipvert.h"
+#include "CommonMacros.h"
 
 using namespace blipvert;
 
@@ -261,13 +262,13 @@ void FlipVertical_IMCx(int32_t width, int32_t height, uint8_t* buf, int32_t stri
 
     if (ufirst)
     {
-        uplane = buf + (((height + 15) & ~15) * stride);
-        vplane = buf + (((((height * 3) / 2) + 15) & ~15) * stride);
+        uplane = buf + (Align16(height) * stride);
+        vplane = buf + (Align16(height * 3 / 2) * stride);
     }
     else
     {
-        vplane = buf + (((height + 15) & ~15) * stride);
-        uplane = buf + (((((height * 3) / 2) + 15) & ~15) * stride);
+        vplane = buf + (Align16(height) * stride);
+        uplane = buf + (Align16(height * 3 / 2) * stride);
     }
 
     FlipSinglePlane(height, buf, stride);

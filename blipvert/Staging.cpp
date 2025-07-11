@@ -28,7 +28,7 @@
 #include "Staging.h"
 #include "LookupTables.h"
 #include "blipvert.h"
-
+#include "CommonMacros.h"
 
 #include <cstring>
 
@@ -686,9 +686,9 @@ void Stage_IMCx(Stage* result, uint8_t thread_index, uint8_t thread_count, int32
             }
             else
             {
-                uint8_t* ubuf = buf + (((height + 15) & ~15) * result->stride);
+                uint8_t* ubuf = buf + (Align16(height) * result->stride);
                 result->uplane = ubuf + offset_from_bottom;
-                uint8_t* vbuf = buf + (((((height * 3) / 2) + 15) & ~15) * result->stride);
+                uint8_t* vbuf = buf + (Align16(height * 3 / 2) * result->stride);
                 result->vplane = vbuf + offset_from_bottom;
             }
         }
@@ -703,9 +703,9 @@ void Stage_IMCx(Stage* result, uint8_t thread_index, uint8_t thread_count, int32
             }
             else
             {
-                uint8_t* vbuf = buf + (((height + 15) & ~15) * result->stride);
+                uint8_t* vbuf = buf + (Align16(height) * result->stride);
                 result->vplane = vbuf + offset_from_bottom;
-                uint8_t* ubuf = buf + (((((height * 3) / 2) + 15) & ~15) * result->stride);
+                uint8_t* ubuf = buf + (Align16(height * 3 / 2) * result->stride);
                 result->uplane = ubuf + offset_from_bottom;
             }
         }
@@ -729,9 +729,9 @@ void Stage_IMCx(Stage* result, uint8_t thread_index, uint8_t thread_count, int32
             }
             else
             {
-                uint8_t* ubuf = buf + (((height + 15) & ~15) * result->stride);
+                uint8_t* ubuf = buf + (Align16(height) * result->stride);
                 result->uplane = ubuf + offset_from_top;
-                uint8_t* vbuf = buf + (((((height * 3) / 2) + 15) & ~15) * result->stride);
+                uint8_t* vbuf = buf + (Align16(height * 3 / 2) * result->stride);
                 result->vplane = vbuf + offset_from_top;
             }
         }
@@ -746,9 +746,9 @@ void Stage_IMCx(Stage* result, uint8_t thread_index, uint8_t thread_count, int32
             }
             else
             {
-                uint8_t* vbuf = buf + (((height + 15) & ~15) * result->stride);
+                uint8_t* vbuf = buf + (Align16(height) * result->stride);
                 result->vplane = vbuf + offset_from_top;
-                uint8_t* ubuf = buf + (((((height * 3) / 2) + 15) & ~15) * result->stride);
+                uint8_t* ubuf = buf + (Align16(height * 3 / 2) * result->stride);
                 result->uplane = ubuf + offset_from_top;
             }
         }

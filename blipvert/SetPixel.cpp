@@ -370,8 +370,8 @@ void SetPixel_IMCx(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t
         }
         else
         {
-            uplane = buf + (((height + 15) & ~15) * stride);
-            vplane = buf + (((((height * 3) / 2) + 15) & ~15) * stride);
+            uplane = buf + (Align16(height) * stride);
+            vplane = buf + (Align16(height * 3 / 2) * stride);
         }
     }
     else
@@ -383,8 +383,8 @@ void SetPixel_IMCx(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t
         }
         else
         {
-            vplane = buf + (((height + 15) & ~15) * stride);
-            uplane = buf + (((((height * 3) / 2) + 15) & ~15) * stride);
+            vplane = buf + (Align16(height) * stride);
+            uplane = buf + (Align16(height * 3 / 2) * stride);
         }
     }
 

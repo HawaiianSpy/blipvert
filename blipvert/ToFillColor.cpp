@@ -365,8 +365,8 @@ void Fill_IMCx(uint8_t y_level, uint8_t u_level, uint8_t v_level,
         }
         else
         {
-            uplane = out_buf + (((height + 15) & ~15) * out_stride);
-            vplane = out_buf + (((((height * 3) / 2) + 15) & ~15) * out_stride);
+            uplane = out_buf + (Align16(height) * out_stride);
+            vplane = out_buf + (Align16(height * 3 / 2) * out_stride);
         }
     }
     else
@@ -378,8 +378,8 @@ void Fill_IMCx(uint8_t y_level, uint8_t u_level, uint8_t v_level,
         }
         else
         {
-            vplane = out_buf + (((height + 15) & ~15) * out_stride);
-            uplane = out_buf + (((((height * 3) / 2) + 15) & ~15) * out_stride);
+            vplane = out_buf + (Align16(height) * out_stride);
+            uplane = out_buf + (Align16(height * 3 / 2) * out_stride);
         }
     }
 

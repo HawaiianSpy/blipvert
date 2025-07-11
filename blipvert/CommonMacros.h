@@ -101,4 +101,7 @@ namespace blipvert
 #define UnpackCLJR_Y2(src) ((src & 0x07C00000) >> 19)
 #define UnpackCLJR_Y3(src) ((src & 0xF8000000) >> 24)
 
+#define Align(value, alignment) ((value + alignment - 1) / alignment * alignment)
+#define Align16(value) ((value + 15) & ~15)
+
 }

@@ -53,10 +53,9 @@ namespace blipvert
     // Returns the size of the buffer in bytes. Returns 0 if the format is not found, a parameter is invalid, or the internal format info in incomplete.
     //
     // IMPORTANT:   For reasons related to the bitmap format definitions, all input parameters must follow these rules:
-    //              1. Both the width and height values must be even multiples of 8.
-    //              2. The width values must be >= 8;
-    //              3. The height value must be >= 16.
-    //              4. The stride value must be >= the minimum number of bytes-per-line needed for the width of the bitmap format.
+    //              1. The width value must be >= 8, and an even multiple of 8.
+    //              2. The height value must be >= 16, and an even multiple of 4.
+    //              3. The stride value must be >= the minimum number of bytes-per-line needed for the width of the bitmap format.
     uint32_t CalculateBufferSize(const MediaFormatID& inFormat, uint32_t width, uint32_t height, int32_t stride = 0);
 
     // Returns the minimum size in bytes needed to contain one horizontal line of the bitmap.
@@ -67,10 +66,9 @@ namespace blipvert
     // Returns the size of the line in bytes.
      //
     // IMPORTANT:   For reasons related to the bitmap format definitions, all input parameters must follow these rules:
-    //              1. Both the width and height values must be even multiples of 8.
-    //              2. The width values must be >= 8;
-    //              3. The height value must be >= 16.
-    //              4. The stride value must be >= the minimum number of bytes-per-line needed for the width of the bitmap format.
+    //              1. The width value must be >= 8, and an even multiple of 8.
+    //              2. The height value must be >= 16, and an even multiple of 4.
+    //              3. The stride value must be >= the minimum number of bytes-per-line needed for the width of the bitmap format.
     int32_t CalculateMinimumLineStride(const MediaFormatID& inFormat, uint32_t width, uint32_t height);
 
     // Returns TRUE if the colorspace is RGB
@@ -89,6 +87,9 @@ namespace blipvert
     bool IsPlanarYUV(const MediaFormatID& encoding);
     bool IsPlanarYUV(const Fourcc fourcc);
 
+    // Returns TRUE if...
+    // 1. The width value is >= 8, and is an even multiple of 8.
+    // 2. The height value is >= 16, and is an even multiple of 4.
     bool IsGloballyValidBitmapDimension(int32_t width, int32_t height);
 }
 

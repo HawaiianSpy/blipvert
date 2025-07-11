@@ -31,16 +31,17 @@ P.S. If you found this library helpful and have improvements/bug fixes to contri
 
 ## Update 11, July 2025: Removed the multi-threaded frame rate test because it doen't work correctly. Needs more testing.
 
+## Update 12, July 2025 @ 1:19 PM PDT: Reworked the broken MCIx bitmap transforms. The buffer calculations were wrong. Also revised the rules for the bitmap dimensions. See below. 
+
 Read the header files for the details. Fairly self-explainatory.
 
 ### Header file: blipvert.h (Start Here)
 
 #### IMPORTANT: For reasons related to the bitmap format definitions, all input parameters must follow these rules:
 
-1. Both the width and height values must be even multiples of 8.
-2. The width values must be >= 8;
-3. The height values must be >= 16.
-4. The stride values must be >= the minimum number of physical bytes-per-line needed to contain the logical width of the bitmap format.
+1. The width value must be >= 8, and an even multiple of 8.
+2. The height value must be >= 16, and an even multiple of 4.
+3. The stride value must be >= the minimum number of bytes-per-line needed for the width of the bitmap format.
 
 The minimum granularity for the bitmap dimensions is 8 pixels for both width and height. Transforms, like Y41P, horizontally represent the pixels in 8-pixel chunks. Other transforms, like YUV9 or YVU9, use 4x4 chunks.  All the digital video bitmaps I have seen have their dimensions in pixels at this granularity anyway.
 

@@ -27,6 +27,7 @@
 #include "pch.h"
 #include "CalculateBufferSize.h"
 #include "blipvert.h"
+#include "CommonMacros.h"
 
 using namespace blipvert;
 
@@ -281,22 +282,26 @@ uint32_t blipvert::CalcBufferSize_CLJR(int32_t width, int32_t height, int32_t& s
 uint32_t CalcBufferSize_IMCx(int32_t width, int32_t height, int32_t& stride, bool interlaced)
 {
     int32_t uv_height = height / 2;
+    int32_t final_height = 0;
 
     if (stride < width)
         stride = width;
     
     if (interlaced)
     {
-        height += uv_height;
+        final_height = height + uv_height;
     }
     else
     {
+        int32_t uoffset = Align16(height);
+        int32_t voffset = Align16(uoffset + uv_height);
+
         // Use the line # of the last UV plane on 16 line boundry + the height of the UV plane
         // for the actual number of vertical lines in the bitmap.
-        height = (((((height * 3) / 2) + 15) & (~15)) + height / 2);
+        final_height = voffset + uv_height;
     }
 
-    return height * stride;
+    return final_height * stride;
 }
 
 uint32_t blipvert::CalcBufferSize_IMC1(int32_t width, int32_t height, int32_t& stride)

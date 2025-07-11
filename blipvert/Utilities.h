@@ -89,5 +89,6 @@ namespace blipvert
     bool IsPlanarYUV(const MediaFormatID& encoding);
     bool IsPlanarYUV(const Fourcc fourcc);
 
+    bool IsGloballyValidBitmapDimension(int32_t width, int32_t height);
 }
 

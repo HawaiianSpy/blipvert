@@ -33,8 +33,8 @@
 using namespace blipvert;
 using namespace BlipvertUnitTests;
 
-const uint32_t BlipvertUnitTests::TestBufferWidth = 16;
-const uint32_t BlipvertUnitTests::TestBufferHeight = 16;
+const uint32_t BlipvertUnitTests::TestBufferWidth = 640;
+const uint32_t BlipvertUnitTests::TestBufferHeight = 480;
 const uint32_t BlipvertUnitTests::StrideBumpTestValue = 16;
 
 uint32_t BlipvertUnitTests::StrideBump = 0;
@@ -249,6 +249,7 @@ bool Check_IMCx(uint8_t y_level, uint8_t u_level, uint8_t v_level,
 	bool ufirst, bool interlaced)
 {
 	int32_t uv_width = width / 2;
+	int32_t uv_height = height / 2;
 
 	if (!out_stride)
 		out_stride = width;
@@ -264,8 +265,9 @@ bool Check_IMCx(uint8_t y_level, uint8_t u_level, uint8_t v_level,
 		}
 		else
 		{
-			uplane = out_buf + (Align16(height) * out_stride);
-			vplane = out_buf + (Align16(height * 3 / 2) * out_stride);
+			int32_t uoffset = Align16(height);
+			uplane = out_buf + (uoffset * out_stride);
+			vplane = out_buf + (Align16(uoffset + uv_height) * out_stride);
 		}
 	}
 	else
@@ -277,8 +279,9 @@ bool Check_IMCx(uint8_t y_level, uint8_t u_level, uint8_t v_level,
 		}
 		else
 		{
-			vplane = out_buf + (Align16(height) * out_stride);
-			uplane = out_buf + (Align16(height * 3 / 2) * out_stride);
+			int32_t voffset = Align16(height);
+			vplane = out_buf + (voffset * out_stride);
+			uplane = out_buf + (Align16(voffset + uv_height) * out_stride);
 		}
 	}
 

@@ -254,3 +254,8 @@ bool blipvert::IsPlanarYUV(const Fourcc fourcc)
     }
     return false;
 }
+
+bool blipvert::IsGloballyValidBitmapDimension(int32_t width, int32_t height)
+{
+    return ValidateGlobalBitmapDimension(width, height);
+}

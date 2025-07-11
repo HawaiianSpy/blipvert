@@ -31,7 +31,7 @@ P.S. If you found this library helpful and have improvements/bug fixes to contri
 
 ## Update 11, July 2025: Removed the multi-threaded frame rate test because it doen't work correctly. Needs more testing.
 
-## Update 12, July 2025 @ 1:19 PM PDT: Reworked the broken MCIx bitmap transforms. The buffer calculations were wrong. Also revised the rules for the bitmap dimensions. See below. 
+## Update 11, July 2025 @ 1:19 PM PDT: Reworked the broken MCIx bitmap transforms. The buffer calculations were wrong. Also revised the rules for the bitmap dimensions. See below. 
 
 Read the header files for the details. Fairly self-explainatory.
 

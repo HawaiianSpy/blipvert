@@ -43,7 +43,7 @@ Read the header files for the details. Fairly self-explainatory.
 2. The height value must be >= 16, and an even multiple of 4.
 3. The stride value must be >= the minimum number of bytes-per-line needed for the width of the bitmap format.
 
-The minimum granularity for the bitmap dimensions is 8 pixels for both width and height. Transforms, like Y41P, horizontally represent the pixels in 8-pixel chunks. Other transforms, like YUV9 or YVU9, use 4x4 chunks.  All the digital video bitmaps I have seen have their dimensions in pixels at this granularity anyway.
+The minimum granularity for the bitmap dimensions is 8 pixels for the width and 4 pixels for the height. Transforms, like Y41P, horizontally represent the pixels in 8-pixel chunks. Other transforms, like YUV9 or YVU9, use 4x4 chunks.  All the digital video bitmaps I have seen have their dimensions in pixels at this granularity anyway.
 
 More Information: [Wackypedia article on webcams](https://en.wikipedia.org/wiki/Webcam) and [Understanding Video Resolutions](https://web.archive.org/web/20210604160142/https://www.borrowlenses.com/blog/understanding-video-resolutions/).
 

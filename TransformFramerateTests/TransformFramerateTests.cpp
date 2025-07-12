@@ -131,7 +131,7 @@ void FramerateTest(const MediaFormatID& in_format, const MediaFormatID& out_form
     auto end = chrono::steady_clock::now();
 
     double ms = static_cast<double>(chrono::duration_cast<chrono::milliseconds>(end - start).count());
-    double framerate = 1000.0 / (ms / static_cast<double>(numframes));
+    int framerate = static_cast<int>(floor(1000.0 / (ms / static_cast<double>(numframes))));
     LogLine(" @ " + to_string(framerate) + " fps.");
 }
 
@@ -142,7 +142,9 @@ void RunTest(const MediaFormatID& in_format, const MediaFormatID& out_format)
 
 void RunAllTransforms()
 {
-    LogLine("single-thread transform test run for frame resolution: " + to_string(width) + " x " + to_string(height) + "...\n");
+    LogLine("Single-thread transform frame rate test run for resolution: " + to_string(width) + " x " + to_string(height) + "...\n");
+
+    auto start = chrono::steady_clock::now();
 
     // RGB to YUV
     for (const MediaFormatID* in_format : RGBFormats)
@@ -186,7 +188,12 @@ void RunAllTransforms()
         }
     }
 
-    LogLine("\n\n");
+    auto end = chrono::steady_clock::now();
+    long long ms = chrono::duration_cast<chrono::milliseconds>(end - start).count();
+    long long minutes = ms / 60000;
+    long long seconds = (ms % 60000) / 1000;
+    LogLine("\n\nElapsed Time For " + to_string(width) + " x " + to_string(height) + " Test = " + to_string(minutes) + ":" + to_string(seconds) + "\n\n");
+
 }
 
 int main()
@@ -203,6 +210,8 @@ int main()
     bool save = get_UseFasterLooping();
     set_UseFasterLooping(true);
 
+    auto start = chrono::steady_clock::now();
+
     width = 1920;
     height = 1080;
     RunAllTransforms();
@@ -210,6 +219,13 @@ int main()
     width = 3840;
     height = 2160;
     RunAllTransforms();
+
+    auto end = chrono::steady_clock::now();
+    long long ms = chrono::duration_cast<chrono::milliseconds>(end - start).count();
+    long long minutes = ms / 60000;
+    long long seconds = (ms % 60000) / 1000;
+    LogLine("Finished. Total Elapsed Time = " + to_string(minutes) + ":" + to_string(seconds));
+
 
     set_UseFasterLooping(save);
 

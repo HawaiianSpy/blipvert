@@ -355,3 +355,4 @@ MTTransformFramerateTests/16-thread_framerate_results.txt
 MTTransformFramerateTests/32-thread_framerate_results.txt
 MTTransformFramerateTests/4-thread_framerate_results.txt
 MTTransformFramerateTests/8-thread_framerate_results.txt
+MTTransformFramerateTests/multi-thread_framerate_results.txt

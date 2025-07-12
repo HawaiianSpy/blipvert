@@ -239,7 +239,10 @@ void RunAllTransforms(int thread_count)
 
 int main()
 {
-    logFile.open("multi-thread_framerate_results.txt");
+    int thread_count = thread::hardware_concurrency();
+    if (thread_count == 0) thread_count = 4; // Fallback.
+
+    logFile.open(to_string(thread_count) + "-thread_framerate_results.txt");
     if (!logFile.is_open())
     {
         cerr << "Error: Could not open output log file." << endl;
@@ -250,9 +253,6 @@ int main()
 
     bool save = get_UseFasterLooping();
     set_UseFasterLooping(true);
-
-    int thread_count = thread::hardware_concurrency();
-    if (thread_count == 0) thread_count = 4;
 
     auto start = chrono::steady_clock::now();
 

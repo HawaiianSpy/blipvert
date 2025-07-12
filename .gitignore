@@ -351,3 +351,7 @@ MigrationBackup/
 MTTransformFramerateTests/Four-thread_framerate_results.txt
 TransformFramerateTests/single-thread_framerate_results.txt
 MTTransformFramerateTests/framerate_results.txt
+MTTransformFramerateTests/16-thread_framerate_results.txt
+MTTransformFramerateTests/32-thread_framerate_results.txt
+MTTransformFramerateTests/4-thread_framerate_results.txt
+MTTransformFramerateTests/8-thread_framerate_results.txt

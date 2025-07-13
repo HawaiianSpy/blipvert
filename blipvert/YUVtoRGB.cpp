@@ -246,10 +246,11 @@ void blipvert::PlanarYUV_to_RGB32(Stage* in, Stage* out)
     int32_t out_stride_x_2 = out_stride * 2;
     int32_t y_stride_x_4 = y_stride * 4;
     int32_t out_stride_x_4 = out_stride * 4;
+    int32_t uv_slice_height = in->uv_slice_height;
 
     if (in->decimation == 2)
     {
-        for (int16_t y = 0; y < uv_height; y++)
+        for (int16_t y = 0; y < uv_slice_height; y++)
         {
             uint8_t* yp = in_buf;
             uint8_t* up = uplane;
@@ -304,7 +305,7 @@ void blipvert::PlanarYUV_to_RGB32(Stage* in, Stage* out)
     }
     else if (in->decimation == 4)
     {
-        for (int16_t y = 0; y < uv_height; y++)
+        for (int16_t y = 0; y < uv_slice_height; y++)
         {
             uint8_t* yp = in_buf;
             uint8_t* up = uplane;
@@ -366,10 +367,11 @@ void blipvert::PlanarYUV_to_RGB24(Stage* in, Stage* out)
     int32_t out_stride_x_2 = out_stride * 2;
     int32_t y_stride_x_4 = y_stride * 4;
     int32_t out_stride_x_4 = out_stride * 4;
+    int32_t uv_slice_height = in->uv_slice_height;
 
     if (in->decimation == 2)
     {
-        for (int16_t y = 0; y < uv_height; y++)
+        for (int16_t y = 0; y < uv_slice_height; y++)
         {
             uint8_t* yp = in_buf;
             uint8_t* up = uplane;
@@ -420,7 +422,7 @@ void blipvert::PlanarYUV_to_RGB24(Stage* in, Stage* out)
     }
     else if (in->decimation == 4)
     {
-        for (int16_t y = 0; y < uv_height; y++)
+        for (int16_t y = 0; y < uv_slice_height; y++)
         {
             uint8_t* yp = in_buf;
             uint8_t* up = uplane;
@@ -481,10 +483,11 @@ void blipvert::PlanarYUV_to_RGB565(Stage* in, Stage* out)
     int32_t out_stride_x_2 = out_stride * 2;
     int32_t y_stride_x_4 = y_stride * 4;
     int32_t out_stride_x_4 = out_stride * 4;
+    int32_t uv_slice_height = in->uv_slice_height;
 
     if (in->decimation == 2)
     {
-        for (int16_t y = 0; y < uv_height; y++)
+        for (int16_t y = 0; y < uv_slice_height; y++)
         {
             uint8_t* yp = in_buf;
             uint8_t* up = uplane;
@@ -539,7 +542,7 @@ void blipvert::PlanarYUV_to_RGB565(Stage* in, Stage* out)
     }
     else if (in->decimation == 4)
     {
-        for (int16_t y = 0; y < uv_height; y++)
+        for (int16_t y = 0; y < uv_slice_height; y++)
         {
             uint8_t* yp = in_buf;
             uint8_t* up = uplane;
@@ -600,10 +603,11 @@ void blipvert::PlanarYUV_to_RGB555(Stage* in, Stage* out)
     int32_t out_stride_x_2 = out_stride * 2;
     int32_t y_stride_x_4 = y_stride * 4;
     int32_t out_stride_x_4 = out_stride * 4;
+    int32_t uv_slice_height = in->uv_slice_height;
 
     if (in->decimation == 2)
     {
-        for (int16_t y = 0; y < uv_height; y++)
+        for (int16_t y = 0; y < uv_slice_height; y++)
         {
             uint8_t* yp = in_buf;
             uint8_t* up = uplane;
@@ -658,7 +662,7 @@ void blipvert::PlanarYUV_to_RGB555(Stage* in, Stage* out)
     }
     else if (in->decimation == 4)
     {
-        for (int16_t y = 0; y < uv_height; y++)
+        for (int16_t y = 0; y < uv_slice_height; y++)
         {
             uint8_t* yp = in_buf;
             uint8_t* up = uplane;

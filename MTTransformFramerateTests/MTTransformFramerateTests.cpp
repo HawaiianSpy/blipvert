@@ -74,8 +74,7 @@ vector<const MediaFormatID*> YUVFormats = {
 };
 
 void FramerateTest(const MediaFormatID& in_format, const MediaFormatID& out_format,
-    uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha,
-    int thread_count)
+    uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha)
 {
     t_transformfunc encodeTransPtr = FindVideoTransform(in_format, out_format);
     if (!encodeTransPtr)
@@ -89,6 +88,25 @@ void FramerateTest(const MediaFormatID& in_format, const MediaFormatID& out_form
     {
         LogLine("Framerate test: " + string(in_format) + " to " + string(out_format) + " aborted: No transform for " + string(in_format) + " is available.");
         return;
+    }
+
+    //if (in_format == MVFMT_YV12/* || out_format == MVFMT_YV12*/)
+    //{
+    //    __debugbreak();
+    //}
+
+    int thread_count = thread::hardware_concurrency();
+    int maxInputThreadCount = GetMaxSafeThreadCount(in_format, width, height, thread_count);
+    int maxOutputThreadCount = GetMaxSafeThreadCount(out_format, width, height, thread_count);
+    int maxthreadCount = min(maxInputThreadCount, maxOutputThreadCount);
+    if (maxthreadCount == 1)
+    {
+        LogLine("Framerate test: " + string(in_format) + " to " + string(out_format) + " aborted: Maximum allowed thread count for " + string(in_format) + " is 1.");
+        return;
+    }
+    else if (maxthreadCount < thread_count)
+    {
+        thread_count = maxthreadCount;
     }
 
     uint32_t inBufSize = CalculateBufferSize(in_format, width, height);
@@ -197,9 +215,9 @@ void FramerateTest(const MediaFormatID& in_format, const MediaFormatID& out_form
         t.join();
 }
 
-void RunTest(const MediaFormatID& in_format, const MediaFormatID& out_format, int thread_count)
+void RunTest(const MediaFormatID& in_format, const MediaFormatID& out_format)
 {
-    FramerateTest(in_format, out_format, 128, 128, 128, 255, thread_count);
+    FramerateTest(in_format, out_format, 128, 128, 128, 255);
 }
 
 void RunAllTransforms(int thread_count)
@@ -210,21 +228,21 @@ void RunAllTransforms(int thread_count)
 
     for (const MediaFormatID* in_format : RGBFormats)
         for (const MediaFormatID* out_format : YUVFormats)
-            RunTest(*in_format, *out_format, thread_count);
+            RunTest(*in_format, *out_format);
 
     for (const MediaFormatID* in_format : YUVFormats)
         for (const MediaFormatID* out_format : RGBFormats)
-            RunTest(*in_format, *out_format, thread_count);
+            RunTest(*in_format, *out_format);
 
     for (const MediaFormatID* in_format : RGBFormats)
         for (const MediaFormatID* out_format : RGBFormats)
             if (*in_format != *out_format)
-                RunTest(*in_format, *out_format, thread_count);
+                RunTest(*in_format, *out_format);
 
     for (const MediaFormatID* in_format : YUVFormats)
         for (const MediaFormatID* out_format : YUVFormats)
             if (*in_format != *out_format)
-                RunTest(*in_format, *out_format, thread_count);
+                RunTest(*in_format, *out_format);
 
     auto end = chrono::steady_clock::now();
     long long ms = chrono::duration_cast<chrono::milliseconds>(end - start).count();
@@ -236,9 +254,9 @@ void RunAllTransforms(int thread_count)
 int main()
 {
     int thread_count = thread::hardware_concurrency();
-    /*if (thread_count == 0) */thread_count = 4; // Fallback.
+    if (thread_count == 0) thread_count = 4; // Fallback.
 
-    logFile.open(to_string(thread_count) + "-thread_framerate_results.txt");
+    logFile.open("Multi-thread_framerate_results.txt");
     if (!logFile.is_open())
     {
         cerr << "Error: Could not open output log file." << endl;

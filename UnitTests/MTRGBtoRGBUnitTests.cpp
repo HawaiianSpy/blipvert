@@ -33,7 +33,6 @@
 #include "ToFillColor.h"
 #include "BufferChecks.h"
 
-
 #include <memory>
 #include <chrono>
 #include <vector>
@@ -302,6 +301,15 @@ namespace BlipvertUnitTests
 
 		void Run8bitTestSeries(const MediaFormatID& inFormat, const MediaFormatID& outFormat)
 		{
+			thread_count = thread::hardware_concurrency();
+			int maxInputThreadCount = GetMaxSafeThreadCount(inFormat, MTTestBufferWidth, MTTestBufferHeight, thread_count);
+			int maxOutputThreadCount = GetMaxSafeThreadCount(outFormat, MTTestBufferWidth, MTTestBufferHeight, thread_count);
+			int maxthreadCount = min(maxInputThreadCount, maxOutputThreadCount);
+			if (maxthreadCount < thread_count)
+			{
+				thread_count = maxthreadCount;
+			}
+
 			RunSingle8bitTest(inFormat, outFormat, 128, 128, 128, 255);
 			RunSingle8bitTest(inFormat, outFormat, 255, 255, 255, 255);
 			RunSingle8bitTest(inFormat, outFormat, 0, 0, 0, 255);
@@ -324,6 +332,15 @@ namespace BlipvertUnitTests
 
 		void Run8bitAlphaTestSeries(const MediaFormatID& inFormat, const MediaFormatID& outFormat)
 		{
+			thread_count = thread::hardware_concurrency();
+			int maxInputThreadCount = GetMaxSafeThreadCount(inFormat, MTTestBufferWidth, MTTestBufferHeight, thread_count);
+			int maxOutputThreadCount = GetMaxSafeThreadCount(outFormat, MTTestBufferWidth, MTTestBufferHeight, thread_count);
+			int maxthreadCount = min(maxInputThreadCount, maxOutputThreadCount);
+			if (maxthreadCount < thread_count)
+			{
+				thread_count = maxthreadCount;
+			}
+
 			RunSingle8bitTest(inFormat, outFormat, 128, 128, 128, 255);
 			RunSingle8bitTest(inFormat, outFormat, 255, 255, 255, 255);
 			RunSingle8bitTest(inFormat, outFormat, 0, 0, 0, 255);
@@ -475,6 +492,15 @@ namespace BlipvertUnitTests
 
 		void Run565bitTestSeries(const MediaFormatID& inFormat, const MediaFormatID& outFormat)
 		{
+			thread_count = thread::hardware_concurrency();
+			int maxInputThreadCount = GetMaxSafeThreadCount(inFormat, MTTestBufferWidth, MTTestBufferHeight, thread_count);
+			int maxOutputThreadCount = GetMaxSafeThreadCount(outFormat, MTTestBufferWidth, MTTestBufferHeight, thread_count);
+			int maxthreadCount = min(maxInputThreadCount, maxOutputThreadCount);
+			if (maxthreadCount < thread_count)
+			{
+				thread_count = maxthreadCount;
+			}
+
 			RunSingle565bitTest(inFormat, outFormat, 128, 128, 128, 255);
 			RunSingle565bitTest(inFormat, outFormat, 255, 255, 255, 255);
 			RunSingle565bitTest(inFormat, outFormat, 0, 0, 0, 255);
@@ -610,6 +636,15 @@ namespace BlipvertUnitTests
 
 		void Run555AlphabitTestSeries(const MediaFormatID& inFormat, const MediaFormatID& outFormat)
 		{
+			thread_count = thread::hardware_concurrency();
+			int maxInputThreadCount = GetMaxSafeThreadCount(inFormat, MTTestBufferWidth, MTTestBufferHeight, thread_count);
+			int maxOutputThreadCount = GetMaxSafeThreadCount(outFormat, MTTestBufferWidth, MTTestBufferHeight, thread_count);
+			int maxthreadCount = min(maxInputThreadCount, maxOutputThreadCount);
+			if (maxthreadCount < thread_count)
+			{
+				thread_count = maxthreadCount;
+			}
+
 			RunSingle555bitTest(inFormat, outFormat, 128, 128, 128, 255);
 			RunSingle555bitTest(inFormat, outFormat, 255, 255, 255, 255);
 			RunSingle555bitTest(inFormat, outFormat, 0, 0, 0, 255);
@@ -647,6 +682,15 @@ namespace BlipvertUnitTests
 
 		void Run555bitTestSeries(const MediaFormatID& inFormat, const MediaFormatID& outFormat)
 		{
+			thread_count = thread::hardware_concurrency();
+			int maxInputThreadCount = GetMaxSafeThreadCount(inFormat, MTTestBufferWidth, MTTestBufferHeight, thread_count);
+			int maxOutputThreadCount = GetMaxSafeThreadCount(outFormat, MTTestBufferWidth, MTTestBufferHeight, thread_count);
+			int maxthreadCount = min(maxInputThreadCount, maxOutputThreadCount);
+			if (maxthreadCount < thread_count)
+			{
+				thread_count = maxthreadCount;
+			}
+
 			RunSingle555bitTest(inFormat, outFormat, 128, 128, 128, 255);
 			RunSingle555bitTest(inFormat, outFormat, 255, 255, 255, 255);
 			RunSingle555bitTest(inFormat, outFormat, 0, 0, 0, 255);
@@ -783,6 +827,15 @@ namespace BlipvertUnitTests
 
 		void Run8bitPalletizedTestSeries(const MediaFormatID& inFormat, const MediaFormatID& outFormat)
 		{
+			thread_count = thread::hardware_concurrency();
+			int maxInputThreadCount = GetMaxSafeThreadCount(inFormat, MTTestBufferWidth, MTTestBufferHeight, thread_count);
+			int maxOutputThreadCount = GetMaxSafeThreadCount(outFormat, MTTestBufferWidth, MTTestBufferHeight, thread_count);
+			int maxthreadCount = min(maxInputThreadCount, maxOutputThreadCount);
+			if (maxthreadCount < thread_count)
+			{
+				thread_count = maxthreadCount;
+			}
+
 			Run8bitPalletizedTest(inFormat, outFormat, 0);
 			Run8bitPalletizedTest(inFormat, outFormat, 1);
 			Run8bitPalletizedTest(inFormat, outFormat, 2);
@@ -925,6 +978,15 @@ namespace BlipvertUnitTests
 
 		void Run4bitPalletizedTestSeries(const MediaFormatID& inFormat, const MediaFormatID& outFormat)
 		{
+			thread_count = thread::hardware_concurrency();
+			int maxInputThreadCount = GetMaxSafeThreadCount(inFormat, MTTestBufferWidth, MTTestBufferHeight, thread_count);
+			int maxOutputThreadCount = GetMaxSafeThreadCount(outFormat, MTTestBufferWidth, MTTestBufferHeight, thread_count);
+			int maxthreadCount = min(maxInputThreadCount, maxOutputThreadCount);
+			if (maxthreadCount < thread_count)
+			{
+				thread_count = maxthreadCount;
+			}
+
 			Run4bitPalletizedTest(inFormat, outFormat, 0);
 			Run4bitPalletizedTest(inFormat, outFormat, 1);
 			Run4bitPalletizedTest(inFormat, outFormat, 2);

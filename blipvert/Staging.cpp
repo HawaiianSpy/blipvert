@@ -1,4 +1,4 @@
-//
+﻿//
 //  blipvert C++ library
 //
 //  MIT License
@@ -382,7 +382,7 @@ void Stage_PlanarYUV(Stage* result, uint8_t thread_index, uint8_t thread_count, 
 
     result->uv_width = width / decimation;
     result->uv_height = height / decimation;
-    result->uv_slice_height = result->uv_height / thread_count;
+    result->uv_slice_height = height / decimation / thread_count;
 
     if (stride <= width)
     {
@@ -431,14 +431,14 @@ void Stage_PlanarYUV(Stage* result, uint8_t thread_index, uint8_t thread_count, 
             uint8_t* ubuf = buf + (result->y_stride * height);
             result->uplane = ubuf + offset_from_top;
             uint8_t* vbuf = ubuf + (result->uv_stride * result->uv_height);
-            result->vplane = vbuf + offset_from_top;
+            result->vplane = vbuf/* + offset_from_top*/;
         }
         else
         {
             uint8_t* vbuf = buf + (result->y_stride * height);
             result->vplane = vbuf + offset_from_top;
             uint8_t* ubuf = vbuf + (result->uv_stride * result->uv_height);
-            result->uplane = ubuf + offset_from_top;
+            result->uplane = ubuf/* + offset_from_top*/;
         }
     }
 }
@@ -940,5 +940,71 @@ void blipvert::Stage_YV16(Stage* result, uint8_t thread_index, uint8_t thread_co
         result->vplane = vbuf + offset_from_top;
         uint8_t* ubuf = vbuf + (result->uv_stride * height);
         result->uplane = ubuf + offset_from_top;
+    }
+}
+
+int blipvert::GetMaxSafeThreadCount(const MediaFormatID& format, uint32_t width, uint32_t height, int requested_threads)
+{
+    if (format == MVFMT_I420 || format == MVFMT_YV12 ||
+        format == MVFMT_NV12 || format == MVFMT_NV21 ||
+        format == MVFMT_IMC1 || format == MVFMT_IMC2 ||
+        format == MVFMT_IMC3 || format == MVFMT_IMC4)
+    {
+        int testcount = requested_threads;
+        
+        while (testcount > 1)
+        {
+            if (height % 2 == 0 && (height / 2) % testcount == 0)
+            {
+                break;
+            }
+
+            testcount--;
+        }
+        return testcount;
+    }
+    else if (format == MVFMT_YUV9 || format == MVFMT_YVU9)
+    {
+        int testcount = requested_threads;
+
+        while (testcount > 1)
+        {
+            if (height % 4 == 0 && (height / 4) % testcount == 0)
+            {
+                break;
+            }
+
+            testcount--;
+        }
+        return testcount;
+    }
+    else if (format == MVFMT_Y41T || format == MVFMT_Y42T ||
+        format == MVFMT_Y41P || format == MVFMT_CLJR ||
+        format == MVFMT_IYU1 || format == MVFMT_IYU2 ||
+        format == MVFMT_YV16 || format == MVFMT_YUY2 ||
+        format == MVFMT_UYVY || format == MVFMT_YVYU ||
+        format == MVFMT_VYUY || format == MVFMT_AYUV ||
+        format == MVFMT_Y800 || format == MVFMT_Y16 ||
+        format == MVFMT_RGBA || format == MVFMT_RGB32 ||
+        format == MVFMT_RGB24 || format == MVFMT_RGB565 ||
+        format == MVFMT_RGB555 || format == MVFMT_ARGB1555)
+    {
+        int testcount = requested_threads;
+
+        while (testcount > 1)
+        {
+            if (height % testcount == 0)
+            {
+                break;
+            }
+
+            testcount--;
+        }
+        return testcount;
+    }
+    else
+    {
+        // Unknown/unsupported — fallback
+        return 1;
     }
 }

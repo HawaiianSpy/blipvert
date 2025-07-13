@@ -388,8 +388,8 @@ namespace BlipvertUnitTests
 			t_buffercheckfunc bufCheckFunctPtr = FindBufferCheckFunction(outFormat);
 			Assert::IsNotNull(reinterpret_cast<void*>(bufCheckFunctPtr), L"bufCheckFunctPtr returned a null function pointer.");
 
-			uint32_t width = MTTestBufferHeight;
-			uint32_t height = MTTestBufferWidth;
+			uint32_t width = MTTestBufferWidth;
+			uint32_t height = MTTestBufferHeight;
 
 			uint32_t in_stride = CalculateStrideBump(inFormat, width, height);
 			uint32_t inBufBize = CalculateBufferSize(inFormat, width, height, in_stride);
@@ -533,8 +533,8 @@ namespace BlipvertUnitTests
 			t_buffercheckfunc bufCheckFunctPtr = FindBufferCheckFunction(outFormat);
 			Assert::IsNotNull(reinterpret_cast<void*>(bufCheckFunctPtr), L"yuvCheckFunctPtr returned a null function pointer.");
 
-			uint32_t width = MTTestBufferHeight;
-			uint32_t height = MTTestBufferWidth;
+			uint32_t width = MTTestBufferWidth;
+			uint32_t height = MTTestBufferHeight;
 
 			uint32_t in_stride = CalculateStrideBump(inFormat, width, height);
 			uint32_t inBufBize = CalculateBufferSize(inFormat, width, height, in_stride);
@@ -723,8 +723,8 @@ namespace BlipvertUnitTests
 			t_buffercheckfunc bufCheckFunctPtr = FindBufferCheckFunction(outFormat);
 			Assert::IsNotNull(reinterpret_cast<void*>(bufCheckFunctPtr), L"yuvCheckFunctPtr returned a null function pointer.");
 
-			uint32_t width = MTTestBufferHeight;
-			uint32_t height = MTTestBufferWidth;
+			uint32_t width = MTTestBufferWidth;
+			uint32_t height = MTTestBufferHeight;
 
 			uint32_t in_stride = CalculateStrideBump(inFormat, width, height);
 			uint32_t inBufBize = CalculateBufferSize(inFormat, width, height, in_stride);
@@ -876,8 +876,8 @@ namespace BlipvertUnitTests
 			t_buffercheckfunc bufCheckFunctPtr = FindBufferCheckFunction(outFormat);
 			Assert::IsNotNull(reinterpret_cast<void*>(bufCheckFunctPtr), L"yuvCheckFunctPtr returned a null function pointer.");
 
-			uint32_t width = MTTestBufferHeight;
-			uint32_t height = MTTestBufferWidth;
+			uint32_t width = MTTestBufferWidth;
+			uint32_t height = MTTestBufferHeight;
 
 			uint32_t in_stride = CalculateStrideBump(inFormat, width, height);
 			uint32_t inBufBize = CalculateBufferSize(inFormat, width, height, in_stride);
@@ -1027,8 +1027,8 @@ namespace BlipvertUnitTests
 			t_buffercheckfunc bufCheckFunctPtr = FindBufferCheckFunction(outFormat);
 			Assert::IsNotNull(reinterpret_cast<void*>(bufCheckFunctPtr), L"yuvCheckFunctPtr returned a null function pointer.");
 
-			uint32_t width = MTTestBufferHeight;
-			uint32_t height = MTTestBufferWidth;
+			uint32_t width = MTTestBufferWidth;
+			uint32_t height = MTTestBufferHeight;
 
 			uint32_t in_stride = CalculateStrideBump(inFormat, width, height);
 			uint32_t inBufBize = CalculateBufferSize(inFormat, width, height, in_stride);
@@ -1154,8 +1154,8 @@ namespace BlipvertUnitTests
 			t_buffercheckfunc bufCheckFunctPtr = FindBufferCheckFunction(outFormat);
 			Assert::IsNotNull(reinterpret_cast<void*>(bufCheckFunctPtr), L"yuvCheckFunctPtr returned a null function pointer.");
 
-			uint32_t width = MTTestBufferHeight;
-			uint32_t height = MTTestBufferWidth;
+			uint32_t width = MTTestBufferWidth;
+			uint32_t height = MTTestBufferHeight;
 
 			uint32_t in_stride = CalculateStrideBump(inFormat, width, height);
 			uint32_t inBufBize = CalculateBufferSize(inFormat, width, height, in_stride);

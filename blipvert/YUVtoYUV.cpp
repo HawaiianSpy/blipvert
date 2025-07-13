@@ -3554,7 +3554,7 @@ void blipvert::AYUV_to_PlanarYUV(Stage* in, Stage* out)
     int32_t out_y_stride = out->y_stride;
     int32_t out_uv_stride = out->uv_stride;
     int32_t out_uv_width = out->uv_width;
-    int32_t out_uv_height = out->uv_height;
+    int32_t out_uv_height = out->uv_slice_height;
     uint8_t* out_uplane = out->uplane;
     uint8_t* out_vplane = out->vplane;
     int32_t out_decimation = out->decimation;
@@ -3564,7 +3564,7 @@ void blipvert::AYUV_to_PlanarYUV(Stage* in, Stage* out)
 
     if (out_decimation == 2)
     {
-        for (int32_t y = 0; y < height; y += 2)
+        for (int32_t y = 0; y < out_uv_height; y++)
         {
             uint8_t* psrc = in_buf;
             uint8_t* yp = out_buf;
@@ -3604,7 +3604,7 @@ void blipvert::AYUV_to_PlanarYUV(Stage* in, Stage* out)
     }
     else if (out_decimation == 4)
     {
-        for (int32_t y = 0; y < height; y += 4)
+        for (int32_t y = 0; y < out_uv_height; y++)
         {
             uint8_t* psrc = in_buf;
             uint8_t* yp = out_buf;

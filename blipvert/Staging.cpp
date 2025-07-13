@@ -993,7 +993,7 @@ int blipvert::GetMaxSafeThreadCount(const MediaFormatID& format, uint32_t width,
 
         while (testcount > 1)
         {
-            if (height % testcount == 0)
+            if (height % testcount == 0 && height / testcount >= 16)
             {
                 break;
             }

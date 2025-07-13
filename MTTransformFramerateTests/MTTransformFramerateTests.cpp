@@ -165,15 +165,11 @@ void FramerateTest(const MediaFormatID& in_format, const MediaFormatID& out_form
             lock_guard<mutex> lock(queueMutex);
             jobsPending = thread_count;
 
-            uint32_t slice_height = height / thread_count;
-
             for (int i = 0; i < thread_count; ++i)
             {
-                uint32_t y_offset = i * slice_height;
-
                 WorkItem work;
-                pstage_in(&work.inStage, 0, 1, width, slice_height, inBuf.get(), y_offset, false, nullptr);
-                pstage_out(&work.outStage, 0, 1, width, slice_height, outBuf.get(), y_offset, false, nullptr);
+                pstage_in(&work.inStage, i, thread_count, width, height, inBuf.get(), 0, false, nullptr);
+                pstage_out(&work.outStage, i, thread_count, width, height, outBuf.get(), 0, false, nullptr);
 
                 jobQueue.push(move(work));
             }
@@ -240,7 +236,7 @@ void RunAllTransforms(int thread_count)
 int main()
 {
     int thread_count = thread::hardware_concurrency();
-    if (thread_count == 0) thread_count = 4; // Fallback.
+    /*if (thread_count == 0) */thread_count = 4; // Fallback.
 
     logFile.open(to_string(thread_count) + "-thread_framerate_results.txt");
     if (!logFile.is_open())
@@ -252,7 +248,7 @@ int main()
     InitializeLibrary();
 
     bool save = get_UseFasterLooping();
-    set_UseFasterLooping(true);
+    set_UseFasterLooping(false); // Make sure faster looping is off.
 
     auto start = chrono::steady_clock::now();
 

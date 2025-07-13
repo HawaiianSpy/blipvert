@@ -205,6 +205,8 @@ namespace blipvert
     // The functions will write outside of the logical buffer size, so this should only be used if you have control of the
     // size of the I/O buffers. The CalculateBufferSize function will take this flag into account to return a result with the
     // bumped buffer size.
+    // NOTE:    Do NOT use this with multiple threads since the last RGB24 pixel written by one thread will overwrite the first
+    //          pixel in the next thread.
     bool get_UseFasterLooping();
     void set_UseFasterLooping(bool value);
 

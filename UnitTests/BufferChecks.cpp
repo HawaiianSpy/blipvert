@@ -30,12 +30,18 @@
 #include "Utilities.h"
 #include "CommonMacros.h"
 
+#include <thread>
+
 using namespace blipvert;
 using namespace BlipvertUnitTests;
 
 const uint32_t BlipvertUnitTests::TestBufferWidth = 16;
 const uint32_t BlipvertUnitTests::TestBufferHeight = 16;
 const uint32_t BlipvertUnitTests::StrideBumpTestValue = 16;
+
+const uint32_t BlipvertUnitTests::MTTestBufferWidth = 1920;
+const uint32_t BlipvertUnitTests::MTTestBufferHeight = 1080;
+int BlipvertUnitTests::thread_count = std::thread::hardware_concurrency();
 
 uint32_t BlipvertUnitTests::StrideBump = 0;
 

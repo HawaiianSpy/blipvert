@@ -27,6 +27,7 @@
 //
 
 #include <cstdint>
+
 #include "blipvert.h"
 
 namespace BlipvertUnitTests
@@ -35,6 +36,10 @@ namespace BlipvertUnitTests
 	extern const uint32_t TestBufferHeight;
 	extern const uint32_t StrideBumpTestValue;
 	extern uint32_t StrideBump;
+
+	extern const uint32_t MTTestBufferWidth;
+	extern const uint32_t MTTestBufferHeight;
+	extern int thread_count;
 
 	extern uint32_t CalculateStrideBump(const blipvert::MediaFormatID& inFormat, uint32_t width, uint32_t height);
 

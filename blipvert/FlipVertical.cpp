@@ -285,7 +285,7 @@ void FlipVertical_IMCx(int32_t width, int32_t height, uint8_t* buf, int32_t stri
         else
         {
             int32_t voffset = Align16(height);
-            vplane = buf + (Align16(voffset) * stride);
+            vplane = buf + (voffset * stride);
             uplane = buf + (Align16(voffset + uv_height) * stride);
         }
         uvplane = vplane;

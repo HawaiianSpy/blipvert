@@ -2919,36 +2919,18 @@ namespace BlipvertUnitTests
 				thread_count = maxthreadCount;
 			}
 
-			RunSingle8bitTest(inFormat, outFormat, 128, 128, 128, 255);
-			RunSingle8bitTest(inFormat, outFormat, 255, 255, 255, 255);
-			RunSingle8bitTest(inFormat, outFormat, 0, 0, 0, 255);
-			RunSingle8bitTest(inFormat, outFormat, 255, 0, 0, 255);
-			RunSingle8bitTest(inFormat, outFormat, 0, 255, 0, 255);
-			RunSingle8bitTest(inFormat, outFormat, 0, 0, 255, 255);
-
-			RunSingle8bitTest(inFormat, outFormat, 128, 128, 128, 0);
-			RunSingle8bitTest(inFormat, outFormat, 255, 255, 255, 0);
-			RunSingle8bitTest(inFormat, outFormat, 0, 0, 0, 0);
-			RunSingle8bitTest(inFormat, outFormat, 255, 0, 0, 0);
-			RunSingle8bitTest(inFormat, outFormat, 0, 255, 0, 0);
-			RunSingle8bitTest(inFormat, outFormat, 0, 0, 255, 0);
+			for (const RGBATestData& testData : BlipvertUnitTests::AlphaTestMetaData)
+			{
+				RunSingle8bitTest(inFormat, outFormat, testData.red, testData.green, testData.blue, testData.alpha);
+			}
 
 			uint32_t saveb = StrideBump;
 			StrideBump = StrideBumpTestValue;
 
-			RunSingle8bitTest(inFormat, outFormat, 128, 128, 128, 255);
-			RunSingle8bitTest(inFormat, outFormat, 255, 255, 255, 255);
-			RunSingle8bitTest(inFormat, outFormat, 0, 0, 0, 255);
-			RunSingle8bitTest(inFormat, outFormat, 255, 0, 0, 255);
-			RunSingle8bitTest(inFormat, outFormat, 0, 255, 0, 255);
-			RunSingle8bitTest(inFormat, outFormat, 0, 0, 255, 255);
-
-			RunSingle8bitTest(inFormat, outFormat, 128, 128, 128, 0);
-			RunSingle8bitTest(inFormat, outFormat, 255, 255, 255, 0);
-			RunSingle8bitTest(inFormat, outFormat, 0, 0, 0, 0);
-			RunSingle8bitTest(inFormat, outFormat, 255, 0, 0, 0);
-			RunSingle8bitTest(inFormat, outFormat, 0, 255, 0, 0);
-			RunSingle8bitTest(inFormat, outFormat, 0, 0, 255, 0);
+			for (const RGBATestData& testData : BlipvertUnitTests::AlphaTestMetaData)
+			{
+				RunSingle8bitTest(inFormat, outFormat, testData.red, testData.green, testData.blue, testData.alpha);
+			}
 
 			StrideBump = saveb;
 		}
@@ -2964,22 +2946,18 @@ namespace BlipvertUnitTests
 				thread_count = maxthreadCount;
 			}
 
-			RunSingle8bitTest(inFormat, outFormat, 128, 128, 128, 255);
-			RunSingle8bitTest(inFormat, outFormat, 255, 255, 255, 255);
-			RunSingle8bitTest(inFormat, outFormat, 0, 0, 0, 255);
-			RunSingle8bitTest(inFormat, outFormat, 255, 0, 0, 255);
-			RunSingle8bitTest(inFormat, outFormat, 0, 255, 0, 255);
-			RunSingle8bitTest(inFormat, outFormat, 0, 0, 255, 255);
+			for (const RGBATestData& testData : BlipvertUnitTests::TestMetaData)
+			{
+				RunSingle8bitTest(inFormat, outFormat, testData.red, testData.green, testData.blue, testData.alpha);
+			}
 
 			uint32_t saveb = StrideBump;
 			StrideBump = StrideBumpTestValue;
 
-			RunSingle8bitTest(inFormat, outFormat, 128, 128, 128, 255);
-			RunSingle8bitTest(inFormat, outFormat, 255, 255, 255, 255);
-			RunSingle8bitTest(inFormat, outFormat, 0, 0, 0, 255);
-			RunSingle8bitTest(inFormat, outFormat, 255, 0, 0, 255);
-			RunSingle8bitTest(inFormat, outFormat, 0, 255, 0, 255);
-			RunSingle8bitTest(inFormat, outFormat, 0, 0, 255, 255);
+			for (const RGBATestData& testData : BlipvertUnitTests::TestMetaData)
+			{
+				RunSingle8bitTest(inFormat, outFormat, testData.red, testData.green, testData.blue, testData.alpha);
+			}
 
 			StrideBump = saveb;
 		}
@@ -3131,36 +3109,18 @@ namespace BlipvertUnitTests
 				thread_count = maxthreadCount;
 			}
 
-			RunSingleYAlphaTest(inFormat, outFormat, 128, 128, 128, 255);
-			RunSingleYAlphaTest(inFormat, outFormat, 255, 255, 255, 255);
-			RunSingleYAlphaTest(inFormat, outFormat, 0, 0, 0, 255);
-			RunSingleYAlphaTest(inFormat, outFormat, 255, 0, 0, 255);
-			RunSingleYAlphaTest(inFormat, outFormat, 0, 255, 0, 255);
-			RunSingleYAlphaTest(inFormat, outFormat, 0, 0, 255, 255);
-
-			RunSingleYAlphaTest(inFormat, outFormat, 128, 128, 128, 0);
-			RunSingleYAlphaTest(inFormat, outFormat, 255, 255, 255, 0);
-			RunSingleYAlphaTest(inFormat, outFormat, 0, 0, 0, 0);
-			RunSingleYAlphaTest(inFormat, outFormat, 255, 0, 0, 0);
-			RunSingleYAlphaTest(inFormat, outFormat, 0, 255, 0, 0);
-			RunSingleYAlphaTest(inFormat, outFormat, 0, 0, 255, 0);
+			for (const RGBATestData& testData : BlipvertUnitTests::AlphaTestMetaData)
+			{
+				RunSingleYAlphaTest(inFormat, outFormat, testData.red, testData.green, testData.blue, testData.alpha);
+			}
 
 			uint32_t saveb = StrideBump;
 			StrideBump = StrideBumpTestValue;
 
-			RunSingleYAlphaTest(inFormat, outFormat, 128, 128, 128, 255);
-			RunSingleYAlphaTest(inFormat, outFormat, 255, 255, 255, 255);
-			RunSingleYAlphaTest(inFormat, outFormat, 0, 0, 0, 255);
-			RunSingleYAlphaTest(inFormat, outFormat, 255, 0, 0, 255);
-			RunSingleYAlphaTest(inFormat, outFormat, 0, 255, 0, 255);
-			RunSingleYAlphaTest(inFormat, outFormat, 0, 0, 255, 255);
-
-			RunSingleYAlphaTest(inFormat, outFormat, 128, 128, 128, 0);
-			RunSingleYAlphaTest(inFormat, outFormat, 255, 255, 255, 0);
-			RunSingleYAlphaTest(inFormat, outFormat, 0, 0, 0, 0);
-			RunSingleYAlphaTest(inFormat, outFormat, 255, 0, 0, 0);
-			RunSingleYAlphaTest(inFormat, outFormat, 0, 255, 0, 0);
-			RunSingleYAlphaTest(inFormat, outFormat, 0, 0, 255, 0);
+			for (const RGBATestData& testData : BlipvertUnitTests::AlphaTestMetaData)
+			{
+				RunSingleYAlphaTest(inFormat, outFormat, testData.red, testData.green, testData.blue, testData.alpha);
+			}
 
 			StrideBump = saveb;
 		}
@@ -3315,22 +3275,18 @@ namespace BlipvertUnitTests
 				thread_count = maxthreadCount;
 			}
 
-			RunSingleGreyscaleTest(inFormat, outFormat, 128, 128, 128, 255);
-			RunSingleGreyscaleTest(inFormat, outFormat, 255, 255, 255, 255);
-			RunSingleGreyscaleTest(inFormat, outFormat, 0, 0, 0, 255);
-			RunSingleGreyscaleTest(inFormat, outFormat, 255, 0, 0, 255);
-			RunSingleGreyscaleTest(inFormat, outFormat, 0, 255, 0, 255);
-			RunSingleGreyscaleTest(inFormat, outFormat, 0, 0, 255, 255);
+			for (const RGBATestData& testData : BlipvertUnitTests::TestMetaData)
+			{
+				RunSingleGreyscaleTest(inFormat, outFormat, testData.red, testData.green, testData.blue, testData.alpha);
+			}
 
 			uint32_t saveb = StrideBump;
 			StrideBump = StrideBumpTestValue;
 
-			RunSingleGreyscaleTest(inFormat, outFormat, 128, 128, 128, 255);
-			RunSingleGreyscaleTest(inFormat, outFormat, 255, 255, 255, 255);
-			RunSingleGreyscaleTest(inFormat, outFormat, 0, 0, 0, 255);
-			RunSingleGreyscaleTest(inFormat, outFormat, 255, 0, 0, 255);
-			RunSingleGreyscaleTest(inFormat, outFormat, 0, 255, 0, 255);
-			RunSingleGreyscaleTest(inFormat, outFormat, 0, 0, 255, 255);
+			for (const RGBATestData& testData : BlipvertUnitTests::TestMetaData)
+			{
+				RunSingleGreyscaleTest(inFormat, outFormat, testData.red, testData.green, testData.blue, testData.alpha);
+			}
 
 			StrideBump = saveb;
 		}
@@ -3464,22 +3420,18 @@ namespace BlipvertUnitTests
 				thread_count = maxthreadCount;
 			}
 
-			RunSingleCLJRTest(inFormat, outFormat, 128, 128, 128, 255);
-			RunSingleCLJRTest(inFormat, outFormat, 255, 255, 255, 255);
-			RunSingleCLJRTest(inFormat, outFormat, 0, 0, 0, 255);
-			RunSingleCLJRTest(inFormat, outFormat, 255, 0, 0, 255);
-			RunSingleCLJRTest(inFormat, outFormat, 0, 255, 0, 255);
-			RunSingleCLJRTest(inFormat, outFormat, 0, 0, 255, 255);
+			for (const RGBATestData& testData : BlipvertUnitTests::TestMetaData)
+			{
+				RunSingleCLJRTest(inFormat, outFormat, testData.red, testData.green, testData.blue, testData.alpha);
+			}
 
 			uint32_t saveb = StrideBump;
 			StrideBump = StrideBumpTestValue;
 
-			RunSingleCLJRTest(inFormat, outFormat, 128, 128, 128, 255);
-			RunSingleCLJRTest(inFormat, outFormat, 255, 255, 255, 255);
-			RunSingleCLJRTest(inFormat, outFormat, 0, 0, 0, 255);
-			RunSingleCLJRTest(inFormat, outFormat, 255, 0, 0, 255);
-			RunSingleCLJRTest(inFormat, outFormat, 0, 255, 0, 255);
-			RunSingleCLJRTest(inFormat, outFormat, 0, 0, 255, 255);
+			for (const RGBATestData& testData : BlipvertUnitTests::TestMetaData)
+			{
+				RunSingleCLJRTest(inFormat, outFormat, testData.red, testData.green, testData.blue, testData.alpha);
+			}
 
 			StrideBump = saveb;
 		}

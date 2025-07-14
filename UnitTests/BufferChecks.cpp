@@ -38,13 +38,40 @@ using namespace BlipvertUnitTests;
 const uint32_t BlipvertUnitTests::TestBufferWidth = 320;
 const uint32_t BlipvertUnitTests::TestBufferHeight = 240;
 // Set this to to specify the number of non-visible trailing bytes added to the width for stride testing.
-const uint32_t BlipvertUnitTests::StrideBumpTestValue = 0; 
+const uint32_t BlipvertUnitTests::StrideBumpTestValue = 16; 
 
 const uint32_t BlipvertUnitTests::MTTestBufferWidth = 320;
 const uint32_t BlipvertUnitTests::MTTestBufferHeight = 240;
 int BlipvertUnitTests::thread_count = std::thread::hardware_concurrency();
 
 uint32_t BlipvertUnitTests::StrideBump = 0;
+
+// RGB pixel values for filling unit test frames
+const std::vector<RGBATestData> BlipvertUnitTests::AlphaTestMetaData = {
+
+	{128, 128, 128, 255},
+	{255, 255, 255, 255},
+	{0, 0, 0, 255},
+	{255, 0, 0, 255},
+	{0, 255, 0, 255},
+	{0, 0, 255, 255},
+
+	{128, 128, 128, 0},
+	{255, 255, 255, 0},
+	{0, 0, 0, 0},
+	{255, 0, 0, 0},
+	{0, 255, 0, 0},
+	{0, 0, 255, 0}
+};
+const std::vector<RGBATestData> BlipvertUnitTests::TestMetaData = {
+
+	{128, 128, 128, 255},
+	{255, 255, 255, 255},
+	{0, 0, 0, 255},
+	{255, 0, 0, 255},
+	{0, 255, 0, 255},
+	{0, 0, 255, 255}
+};
 
 uint32_t BlipvertUnitTests::CalculateStrideBump(const MediaFormatID& inFormat, uint32_t width, uint32_t height)
 {

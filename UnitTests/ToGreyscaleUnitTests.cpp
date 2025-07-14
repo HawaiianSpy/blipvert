@@ -179,58 +179,36 @@ namespace BlipvertUnitTests
 
 		void RunRGB8bitTestSeries(const MediaFormatID& format)
 		{
-			RunRGBSingle8bitTest(format, 128, 128, 128, 255);
-			RunRGBSingle8bitTest(format, 255, 255, 255, 255);
-			RunRGBSingle8bitTest(format, 0, 0, 0, 255);
-			RunRGBSingle8bitTest(format, 255, 0, 0, 255);
-			RunRGBSingle8bitTest(format, 0, 255, 0, 255);
-			RunRGBSingle8bitTest(format, 0, 0, 255, 255);
+			for (const RGBATestData& testData : BlipvertUnitTests::TestMetaData)
+			{
+				RunRGBSingle8bitTest(format, testData.red, testData.green, testData.blue, testData.alpha);
+			}
 
 			uint32_t saveb = StrideBump;
 			StrideBump = StrideBumpTestValue;
 
-			RunRGBSingle8bitTest(format, 128, 128, 128, 255);
-			RunRGBSingle8bitTest(format, 255, 255, 255, 255);
-			RunRGBSingle8bitTest(format, 0, 0, 0, 255);
-			RunRGBSingle8bitTest(format, 255, 0, 0, 255);
-			RunRGBSingle8bitTest(format, 0, 255, 0, 255);
-			RunRGBSingle8bitTest(format, 0, 0, 255, 255);
+			for (const RGBATestData& testData : BlipvertUnitTests::TestMetaData)
+			{
+				RunRGBSingle8bitTest(format, testData.red, testData.green, testData.blue, testData.alpha);
+			}
 
 			StrideBump = saveb;
 		}
 
 		void RunRGB8bitAlphaTestSeries(const MediaFormatID& format)
 		{
-			RunRGBSingle8bitTest(format, 128, 128, 128, 255);
-			RunRGBSingle8bitTest(format, 255, 255, 255, 255);
-			RunRGBSingle8bitTest(format, 0, 0, 0, 255);
-			RunRGBSingle8bitTest(format, 255, 0, 0, 255);
-			RunRGBSingle8bitTest(format, 0, 255, 0, 255);
-			RunRGBSingle8bitTest(format, 0, 0, 255, 255);
-
-			RunRGBSingle8bitTest(format, 128, 128, 128, 0);
-			RunRGBSingle8bitTest(format, 255, 255, 255, 0);
-			RunRGBSingle8bitTest(format, 0, 0, 0, 0);
-			RunRGBSingle8bitTest(format, 255, 0, 0, 0);
-			RunRGBSingle8bitTest(format, 0, 255, 0, 0);
-			RunRGBSingle8bitTest(format, 0, 0, 255, 0);
+			for (const RGBATestData& testData : BlipvertUnitTests::AlphaTestMetaData)
+			{
+				RunRGBSingle8bitTest(format, testData.red, testData.green, testData.blue, testData.alpha);
+			}
 
 			uint32_t saveb = StrideBump;
 			StrideBump = StrideBumpTestValue;
 
-			RunRGBSingle8bitTest(format, 128, 128, 128, 255);
-			RunRGBSingle8bitTest(format, 255, 255, 255, 255);
-			RunRGBSingle8bitTest(format, 0, 0, 0, 255);
-			RunRGBSingle8bitTest(format, 255, 0, 0, 255);
-			RunRGBSingle8bitTest(format, 0, 255, 0, 255);
-			RunRGBSingle8bitTest(format, 0, 0, 255, 255);
-
-			RunRGBSingle8bitTest(format, 128, 128, 128, 0);
-			RunRGBSingle8bitTest(format, 255, 255, 255, 0);
-			RunRGBSingle8bitTest(format, 0, 0, 0, 0);
-			RunRGBSingle8bitTest(format, 255, 0, 0, 0);
-			RunRGBSingle8bitTest(format, 0, 255, 0, 0);
-			RunRGBSingle8bitTest(format, 0, 0, 255, 0);
+			for (const RGBATestData& testData : BlipvertUnitTests::AlphaTestMetaData)
+			{
+				RunRGBSingle8bitTest(format, testData.red, testData.green, testData.blue, testData.alpha);
+			}
 
 			StrideBump = saveb;
 		}
@@ -272,22 +250,18 @@ namespace BlipvertUnitTests
 
 		void RunRGB565TestSeries(const MediaFormatID& format)
 		{
-			RunRGB565Single8bitTest(format, 128, 128, 128, 255);
-			RunRGB565Single8bitTest(format, 255, 255, 255, 255);
-			RunRGB565Single8bitTest(format, 0, 0, 0, 255);
-			RunRGB565Single8bitTest(format, 255, 0, 0, 255);
-			RunRGB565Single8bitTest(format, 0, 255, 0, 255);
-			RunRGB565Single8bitTest(format, 0, 0, 255, 255);
+			for (const RGBATestData& testData : BlipvertUnitTests::TestMetaData)
+			{
+				RunRGB565Single8bitTest(format, testData.red, testData.green, testData.blue, testData.alpha);
+			}
 
 			uint32_t saveb = StrideBump;
 			StrideBump = StrideBumpTestValue;
 
-			RunRGB565Single8bitTest(format, 128, 128, 128, 255);
-			RunRGB565Single8bitTest(format, 255, 255, 255, 255);
-			RunRGB565Single8bitTest(format, 0, 0, 0, 255);
-			RunRGB565Single8bitTest(format, 255, 0, 0, 255);
-			RunRGB565Single8bitTest(format, 0, 255, 0, 255);
-			RunRGB565Single8bitTest(format, 0, 0, 255, 255);
+			for (const RGBATestData& testData : BlipvertUnitTests::TestMetaData)
+			{
+				RunRGB565Single8bitTest(format, testData.red, testData.green, testData.blue, testData.alpha);
+			}
 
 			StrideBump = saveb;
 		}
@@ -329,36 +303,18 @@ namespace BlipvertUnitTests
 
 		void RunRGB555TestSeries(const MediaFormatID& format)
 		{
-			RunRGB555Single8bitTest(format, 128, 128, 128, 255);
-			RunRGB555Single8bitTest(format, 255, 255, 255, 255);
-			RunRGB555Single8bitTest(format, 0, 0, 0, 255);
-			RunRGB555Single8bitTest(format, 255, 0, 0, 255);
-			RunRGB555Single8bitTest(format, 0, 255, 0, 255);
-			RunRGB555Single8bitTest(format, 0, 0, 255, 255);
-
-			RunRGB555Single8bitTest(format, 128, 128, 128, 0);
-			RunRGB555Single8bitTest(format, 255, 255, 255, 0);
-			RunRGB555Single8bitTest(format, 0, 0, 0, 0);
-			RunRGB555Single8bitTest(format, 255, 0, 0, 0);
-			RunRGB555Single8bitTest(format, 0, 255, 0, 0);
-			RunRGB555Single8bitTest(format, 0, 0, 255, 0);
+			for (const RGBATestData& testData : BlipvertUnitTests::AlphaTestMetaData)
+			{
+				RunRGB555Single8bitTest(format, testData.red, testData.green, testData.blue, testData.alpha);
+			}
 
 			uint32_t saveb = StrideBump;
 			StrideBump = StrideBumpTestValue;
 
-			RunRGB555Single8bitTest(format, 128, 128, 128, 255);
-			RunRGB555Single8bitTest(format, 255, 255, 255, 255);
-			RunRGB555Single8bitTest(format, 0, 0, 0, 255);
-			RunRGB555Single8bitTest(format, 255, 0, 0, 255);
-			RunRGB555Single8bitTest(format, 0, 255, 0, 255);
-			RunRGB555Single8bitTest(format, 0, 0, 255, 255);
-
-			RunRGB555Single8bitTest(format, 128, 128, 128, 0);
-			RunRGB555Single8bitTest(format, 255, 255, 255, 0);
-			RunRGB555Single8bitTest(format, 0, 0, 0, 0);
-			RunRGB555Single8bitTest(format, 255, 0, 0, 0);
-			RunRGB555Single8bitTest(format, 0, 255, 0, 0);
-			RunRGB555Single8bitTest(format, 0, 0, 255, 0);
+			for (const RGBATestData& testData : BlipvertUnitTests::AlphaTestMetaData)
+			{
+				RunRGB555Single8bitTest(format, testData.red, testData.green, testData.blue, testData.alpha);
+			}
 
 			StrideBump = saveb;
 		}
@@ -400,58 +356,36 @@ namespace BlipvertUnitTests
 
 		void RunYUV8bitAlphaTestSeries(const MediaFormatID& format)
 		{
-			RunYUVSingle8bitTest(format, 128, 128, 128, 255);
-			RunYUVSingle8bitTest(format, 255, 255, 255, 255);
-			RunYUVSingle8bitTest(format, 0, 0, 0, 255);
-			RunYUVSingle8bitTest(format, 255, 0, 0, 255);
-			RunYUVSingle8bitTest(format, 0, 255, 0, 255);
-			RunYUVSingle8bitTest(format, 0, 0, 255, 255);
-
-			RunYUVSingle8bitTest(format, 128, 128, 128, 0);
-			RunYUVSingle8bitTest(format, 255, 255, 255, 0);
-			RunYUVSingle8bitTest(format, 0, 0, 0, 0);
-			RunYUVSingle8bitTest(format, 255, 0, 0, 0);
-			RunYUVSingle8bitTest(format, 0, 255, 0, 0);
-			RunYUVSingle8bitTest(format, 0, 0, 255, 0);
+			for (const RGBATestData& testData : BlipvertUnitTests::AlphaTestMetaData)
+			{
+				RunYUVSingle8bitTest(format, testData.red, testData.green, testData.blue, testData.alpha);
+			}
 
 			uint32_t saveb = StrideBump;
 			StrideBump = StrideBumpTestValue;
 
-			RunYUVSingle8bitTest(format, 128, 128, 128, 255);
-			RunYUVSingle8bitTest(format, 255, 255, 255, 255);
-			RunYUVSingle8bitTest(format, 0, 0, 0, 255);
-			RunYUVSingle8bitTest(format, 255, 0, 0, 255);
-			RunYUVSingle8bitTest(format, 0, 255, 0, 255);
-			RunYUVSingle8bitTest(format, 0, 0, 255, 255);
-
-			RunYUVSingle8bitTest(format, 128, 128, 128, 0);
-			RunYUVSingle8bitTest(format, 255, 255, 255, 0);
-			RunYUVSingle8bitTest(format, 0, 0, 0, 0);
-			RunYUVSingle8bitTest(format, 255, 0, 0, 0);
-			RunYUVSingle8bitTest(format, 0, 255, 0, 0);
-			RunYUVSingle8bitTest(format, 0, 0, 255, 0);
+			for (const RGBATestData& testData : BlipvertUnitTests::AlphaTestMetaData)
+			{
+				RunYUVSingle8bitTest(format, testData.red, testData.green, testData.blue, testData.alpha);
+			}
 
 			StrideBump = saveb;
 		}
 
 		void RunYUV8bitTestSeries(const MediaFormatID& format)
 		{
-			RunYUVSingle8bitTest(format, 128, 128, 128, 255);
-			RunYUVSingle8bitTest(format, 255, 255, 255, 255);
-			RunYUVSingle8bitTest(format, 0, 0, 0, 255);
-			RunYUVSingle8bitTest(format, 255, 0, 0, 255);
-			RunYUVSingle8bitTest(format, 0, 255, 0, 255);
-			RunYUVSingle8bitTest(format, 0, 0, 255, 255);
+			for (const RGBATestData& testData : BlipvertUnitTests::TestMetaData)
+			{
+				RunYUVSingle8bitTest(format, testData.red, testData.green, testData.blue, testData.alpha);
+			}
 
 			uint32_t saveb = StrideBump;
 			StrideBump = StrideBumpTestValue;
 
-			RunYUVSingle8bitTest(format, 128, 128, 128, 255);
-			RunYUVSingle8bitTest(format, 255, 255, 255, 255);
-			RunYUVSingle8bitTest(format, 0, 0, 0, 255);
-			RunYUVSingle8bitTest(format, 255, 0, 0, 255);
-			RunYUVSingle8bitTest(format, 0, 255, 0, 255);
-			RunYUVSingle8bitTest(format, 0, 0, 255, 255);
+			for (const RGBATestData& testData : BlipvertUnitTests::TestMetaData)
+			{
+				RunYUVSingle8bitTest(format, testData.red, testData.green, testData.blue, testData.alpha);
+			}
 
 			StrideBump = saveb;
 		}

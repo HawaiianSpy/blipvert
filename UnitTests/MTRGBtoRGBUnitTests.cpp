@@ -310,22 +310,18 @@ namespace BlipvertUnitTests
 				thread_count = maxthreadCount;
 			}
 
-			RunSingle8bitTest(inFormat, outFormat, 128, 128, 128, 255);
-			RunSingle8bitTest(inFormat, outFormat, 255, 255, 255, 255);
-			RunSingle8bitTest(inFormat, outFormat, 0, 0, 0, 255);
-			RunSingle8bitTest(inFormat, outFormat, 255, 0, 0, 255);
-			RunSingle8bitTest(inFormat, outFormat, 0, 255, 0, 255);
-			RunSingle8bitTest(inFormat, outFormat, 0, 0, 255, 255);
+			for (const RGBATestData& testData : BlipvertUnitTests::TestMetaData)
+			{
+				RunSingle8bitTest(inFormat, outFormat, testData.red, testData.green, testData.blue, testData.alpha);
+			}
 
 			uint32_t saveb = StrideBump;
 			StrideBump = StrideBumpTestValue;
 
-			RunSingle8bitTest(inFormat, outFormat, 128, 128, 128, 255);
-			RunSingle8bitTest(inFormat, outFormat, 255, 255, 255, 255);
-			RunSingle8bitTest(inFormat, outFormat, 0, 0, 0, 255);
-			RunSingle8bitTest(inFormat, outFormat, 255, 0, 0, 255);
-			RunSingle8bitTest(inFormat, outFormat, 0, 255, 0, 255);
-			RunSingle8bitTest(inFormat, outFormat, 0, 0, 255, 255);
+			for (const RGBATestData& testData : BlipvertUnitTests::TestMetaData)
+			{
+				RunSingle8bitTest(inFormat, outFormat, testData.red, testData.green, testData.blue, testData.alpha);
+			}
 
 			StrideBump = saveb;
 		}
@@ -341,36 +337,18 @@ namespace BlipvertUnitTests
 				thread_count = maxthreadCount;
 			}
 
-			RunSingle8bitTest(inFormat, outFormat, 128, 128, 128, 255);
-			RunSingle8bitTest(inFormat, outFormat, 255, 255, 255, 255);
-			RunSingle8bitTest(inFormat, outFormat, 0, 0, 0, 255);
-			RunSingle8bitTest(inFormat, outFormat, 255, 0, 0, 255);
-			RunSingle8bitTest(inFormat, outFormat, 0, 255, 0, 255);
-			RunSingle8bitTest(inFormat, outFormat, 0, 0, 255, 255);
-
-			RunSingle8bitTest(inFormat, outFormat, 128, 128, 128, 0);
-			RunSingle8bitTest(inFormat, outFormat, 255, 255, 255, 0);
-			RunSingle8bitTest(inFormat, outFormat, 0, 0, 0, 0);
-			RunSingle8bitTest(inFormat, outFormat, 255, 0, 0, 0);
-			RunSingle8bitTest(inFormat, outFormat, 0, 255, 0, 0);
-			RunSingle8bitTest(inFormat, outFormat, 0, 0, 255, 0);
+			for (const RGBATestData& testData : BlipvertUnitTests::AlphaTestMetaData)
+			{
+				RunSingle8bitTest(inFormat, outFormat, testData.red, testData.green, testData.blue, testData.alpha);
+			}
 
 			uint32_t saveb = StrideBump;
 			StrideBump = StrideBumpTestValue;
 
-			RunSingle8bitTest(inFormat, outFormat, 128, 128, 128, 255);
-			RunSingle8bitTest(inFormat, outFormat, 255, 255, 255, 255);
-			RunSingle8bitTest(inFormat, outFormat, 0, 0, 0, 255);
-			RunSingle8bitTest(inFormat, outFormat, 255, 0, 0, 255);
-			RunSingle8bitTest(inFormat, outFormat, 0, 255, 0, 255);
-			RunSingle8bitTest(inFormat, outFormat, 0, 0, 255, 255);
-
-			RunSingle8bitTest(inFormat, outFormat, 128, 128, 128, 0);
-			RunSingle8bitTest(inFormat, outFormat, 255, 255, 255, 0);
-			RunSingle8bitTest(inFormat, outFormat, 0, 0, 0, 0);
-			RunSingle8bitTest(inFormat, outFormat, 255, 0, 0, 0);
-			RunSingle8bitTest(inFormat, outFormat, 0, 255, 0, 0);
-			RunSingle8bitTest(inFormat, outFormat, 0, 0, 255, 0);
+			for (const RGBATestData& testData : BlipvertUnitTests::AlphaTestMetaData)
+			{
+				RunSingle8bitTest(inFormat, outFormat, testData.red, testData.green, testData.blue, testData.alpha);
+			}
 
 			StrideBump = saveb;
 
@@ -501,22 +479,18 @@ namespace BlipvertUnitTests
 				thread_count = maxthreadCount;
 			}
 
-			RunSingle565bitTest(inFormat, outFormat, 128, 128, 128, 255);
-			RunSingle565bitTest(inFormat, outFormat, 255, 255, 255, 255);
-			RunSingle565bitTest(inFormat, outFormat, 0, 0, 0, 255);
-			RunSingle565bitTest(inFormat, outFormat, 255, 0, 0, 255);
-			RunSingle565bitTest(inFormat, outFormat, 0, 255, 0, 255);
-			RunSingle565bitTest(inFormat, outFormat, 0, 0, 255, 255);
+			for (const RGBATestData& testData : BlipvertUnitTests::TestMetaData)
+			{
+				RunSingle565bitTest(inFormat, outFormat, testData.red, testData.green, testData.blue, testData.alpha);
+			}
 
 			uint32_t saveb = StrideBump;
 			StrideBump = StrideBumpTestValue;
 
-			RunSingle565bitTest(inFormat, outFormat, 128, 128, 128, 255);
-			RunSingle565bitTest(inFormat, outFormat, 255, 255, 255, 255);
-			RunSingle565bitTest(inFormat, outFormat, 0, 0, 0, 255);
-			RunSingle565bitTest(inFormat, outFormat, 255, 0, 0, 255);
-			RunSingle565bitTest(inFormat, outFormat, 0, 255, 0, 255);
-			RunSingle565bitTest(inFormat, outFormat, 0, 0, 255, 255);
+			for (const RGBATestData& testData : BlipvertUnitTests::TestMetaData)
+			{
+				RunSingle565bitTest(inFormat, outFormat, testData.red, testData.green, testData.blue, testData.alpha);
+			}
 
 			StrideBump = saveb;
 		}
@@ -645,36 +619,18 @@ namespace BlipvertUnitTests
 				thread_count = maxthreadCount;
 			}
 
-			RunSingle555bitTest(inFormat, outFormat, 128, 128, 128, 255);
-			RunSingle555bitTest(inFormat, outFormat, 255, 255, 255, 255);
-			RunSingle555bitTest(inFormat, outFormat, 0, 0, 0, 255);
-			RunSingle555bitTest(inFormat, outFormat, 255, 0, 0, 255);
-			RunSingle555bitTest(inFormat, outFormat, 0, 255, 0, 255);
-			RunSingle555bitTest(inFormat, outFormat, 0, 0, 255, 255);
-
-			RunSingle555bitTest(inFormat, outFormat, 128, 128, 128, 0);
-			RunSingle555bitTest(inFormat, outFormat, 255, 255, 255, 0);
-			RunSingle555bitTest(inFormat, outFormat, 0, 0, 0, 0);
-			RunSingle555bitTest(inFormat, outFormat, 255, 0, 0, 0);
-			RunSingle555bitTest(inFormat, outFormat, 0, 255, 0, 0);
-			RunSingle555bitTest(inFormat, outFormat, 0, 0, 255, 0);
+			for (const RGBATestData& testData : BlipvertUnitTests::AlphaTestMetaData)
+			{
+				RunSingle555bitTest(inFormat, outFormat, testData.red, testData.green, testData.blue, testData.alpha);
+			}
 
 			uint32_t saveb = StrideBump;
 			StrideBump = StrideBumpTestValue;
 
-			RunSingle555bitTest(inFormat, outFormat, 128, 128, 128, 255);
-			RunSingle555bitTest(inFormat, outFormat, 255, 255, 255, 255);
-			RunSingle555bitTest(inFormat, outFormat, 0, 0, 0, 255);
-			RunSingle555bitTest(inFormat, outFormat, 255, 0, 0, 255);
-			RunSingle555bitTest(inFormat, outFormat, 0, 255, 0, 255);
-			RunSingle555bitTest(inFormat, outFormat, 0, 0, 255, 255);
-
-			RunSingle555bitTest(inFormat, outFormat, 128, 128, 128, 0);
-			RunSingle555bitTest(inFormat, outFormat, 255, 255, 255, 0);
-			RunSingle555bitTest(inFormat, outFormat, 0, 0, 0, 0);
-			RunSingle555bitTest(inFormat, outFormat, 255, 0, 0, 0);
-			RunSingle555bitTest(inFormat, outFormat, 0, 255, 0, 0);
-			RunSingle555bitTest(inFormat, outFormat, 0, 0, 255, 0);
+			for (const RGBATestData& testData : BlipvertUnitTests::AlphaTestMetaData)
+			{
+				RunSingle555bitTest(inFormat, outFormat, testData.red, testData.green, testData.blue, testData.alpha);
+			}
 
 			StrideBump = saveb;
 		}
@@ -691,22 +647,18 @@ namespace BlipvertUnitTests
 				thread_count = maxthreadCount;
 			}
 
-			RunSingle555bitTest(inFormat, outFormat, 128, 128, 128, 255);
-			RunSingle555bitTest(inFormat, outFormat, 255, 255, 255, 255);
-			RunSingle555bitTest(inFormat, outFormat, 0, 0, 0, 255);
-			RunSingle555bitTest(inFormat, outFormat, 255, 0, 0, 255);
-			RunSingle555bitTest(inFormat, outFormat, 0, 255, 0, 255);
-			RunSingle555bitTest(inFormat, outFormat, 0, 0, 255, 255);
+			for (const RGBATestData& testData : BlipvertUnitTests::TestMetaData)
+			{
+				RunSingle555bitTest(inFormat, outFormat, testData.red, testData.green, testData.blue, testData.alpha);
+			}
 
 			uint32_t saveb = StrideBump;
 			StrideBump = StrideBumpTestValue;
 
-			RunSingle555bitTest(inFormat, outFormat, 128, 128, 128, 255);
-			RunSingle555bitTest(inFormat, outFormat, 255, 255, 255, 255);
-			RunSingle555bitTest(inFormat, outFormat, 0, 0, 0, 255);
-			RunSingle555bitTest(inFormat, outFormat, 255, 0, 0, 255);
-			RunSingle555bitTest(inFormat, outFormat, 0, 255, 0, 255);
-			RunSingle555bitTest(inFormat, outFormat, 0, 0, 255, 255);
+			for (const RGBATestData& testData : BlipvertUnitTests::TestMetaData)
+			{
+				RunSingle555bitTest(inFormat, outFormat, testData.red, testData.green, testData.blue, testData.alpha);
+			}
 
 			StrideBump = saveb;
 		}
@@ -836,12 +788,10 @@ namespace BlipvertUnitTests
 				thread_count = maxthreadCount;
 			}
 
-			Run8bitPalletizedTest(inFormat, outFormat, 0);
-			Run8bitPalletizedTest(inFormat, outFormat, 1);
-			Run8bitPalletizedTest(inFormat, outFormat, 2);
-			Run8bitPalletizedTest(inFormat, outFormat, 3);
-			Run8bitPalletizedTest(inFormat, outFormat, 4);
-			Run8bitPalletizedTest(inFormat, outFormat, 5);
+			for (int index = 0; index < 6; index++)
+			{
+				Run8bitPalletizedTest(inFormat, outFormat, index);
+			}
 
 			uint32_t saveb = StrideBump;
 			StrideBump = StrideBumpTestValue;
@@ -987,22 +937,18 @@ namespace BlipvertUnitTests
 				thread_count = maxthreadCount;
 			}
 
-			Run4bitPalletizedTest(inFormat, outFormat, 0);
-			Run4bitPalletizedTest(inFormat, outFormat, 1);
-			Run4bitPalletizedTest(inFormat, outFormat, 2);
-			Run4bitPalletizedTest(inFormat, outFormat, 3);
-			Run4bitPalletizedTest(inFormat, outFormat, 4);
-			Run4bitPalletizedTest(inFormat, outFormat, 5);
+			for (int index = 0; index < 6; index++)
+			{
+				Run4bitPalletizedTest(inFormat, outFormat, index);
+			}
 
 			uint32_t saveb = StrideBump;
 			StrideBump = StrideBumpTestValue;
 
-			Run4bitPalletizedTest(inFormat, outFormat, 0);
-			Run4bitPalletizedTest(inFormat, outFormat, 1);
-			Run4bitPalletizedTest(inFormat, outFormat, 2);
-			Run4bitPalletizedTest(inFormat, outFormat, 3);
-			Run4bitPalletizedTest(inFormat, outFormat, 4);
-			Run4bitPalletizedTest(inFormat, outFormat, 5);
+			for (int index = 0; index < 6; index++)
+			{
+				Run4bitPalletizedTest(inFormat, outFormat, index);
+			}
 
 			StrideBump = saveb;
 		}

@@ -27,11 +27,23 @@
 //
 
 #include <cstdint>
+#include <vector>
 
 #include "blipvert.h"
 
 namespace BlipvertUnitTests
 {
+	typedef struct RGBATestData {
+		uint8_t red;
+		uint8_t green;
+		uint8_t blue;
+		uint8_t alpha;
+
+	} RGBATestData;
+
+	extern const std::vector<RGBATestData> AlphaTestMetaData;
+	extern const std::vector<RGBATestData> TestMetaData;
+
 	extern const uint32_t TestBufferWidth;
 	extern const uint32_t TestBufferHeight;
 	extern const uint32_t StrideBumpTestValue;

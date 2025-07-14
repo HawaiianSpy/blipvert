@@ -431,14 +431,14 @@ void Stage_PlanarYUV(Stage* result, uint8_t thread_index, uint8_t thread_count, 
             uint8_t* ubuf = buf + (result->y_stride * height);
             result->uplane = ubuf + offset_from_top;
             uint8_t* vbuf = ubuf + (result->uv_stride * result->uv_height);
-            result->vplane = vbuf/* + offset_from_top*/;
+            result->vplane = vbuf + offset_from_top;
         }
         else
         {
             uint8_t* vbuf = buf + (result->y_stride * height);
             result->vplane = vbuf + offset_from_top;
             uint8_t* ubuf = vbuf + (result->uv_stride * result->uv_height);
-            result->uplane = ubuf/* + offset_from_top*/;
+            result->uplane = ubuf  + offset_from_top;
         }
     }
 }

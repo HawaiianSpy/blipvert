@@ -83,7 +83,7 @@ void blipvert::PlanarYUV_to_PlanarYUV(Stage* in, Stage* out)
     int32_t in_y_stride = in->y_stride;
     int32_t in_uv_stride = in->uv_stride;
     int32_t in_uv_width = in->uv_width;
-    int32_t in_uv_height = in->uv_height;
+    int32_t in_uv_height = in->uv_slice_height;
     uint8_t* in_uplane = in->uplane;
     uint8_t* in_vplane = in->vplane;
     int32_t in_decimation = in->decimation;
@@ -92,7 +92,7 @@ void blipvert::PlanarYUV_to_PlanarYUV(Stage* in, Stage* out)
     int32_t out_y_stride = out->y_stride;
     int32_t out_uv_stride = out->uv_stride;
     int32_t out_uv_width = out->uv_width;
-    int32_t out_uv_height = out->uv_height;
+    int32_t out_uv_height = out->uv_slice_height;
     uint8_t* out_uplane = out->uplane;
     uint8_t* out_vplane = out->vplane;
     int32_t out_decimation = out->decimation;
@@ -142,7 +142,7 @@ void blipvert::PlanarYUV_to_PlanarYUV(Stage* in, Stage* out)
         uint8_t* in_v_line = in_vplane;
         uint8_t* out_v_line = out_vplane;
 
-        for (int32_t y = 0; y < in_uv_height; y += 2)
+        for (int32_t y = 0; y < out_uv_height; y++)
         {
             int32_t out_index = 0;
             for (int32_t x = 0; x < in_uv_width; x += 2)

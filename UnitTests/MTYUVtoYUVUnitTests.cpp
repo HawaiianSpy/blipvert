@@ -3027,7 +3027,25 @@ namespace BlipvertUnitTests
 
 			t_stagetransformfunc pstage_out = FindTransformStage(outFormat);
 			Assert::IsNotNull(reinterpret_cast<void*>(pstage_out), L"FindTransformStage for outFormat returned a null function pointer.");
+#if 0 // For debugging 2 slices of a bitmap.
+			thread_count = 2;
 
+			Stage inStage0;
+			pstage_in(&inStage0, 0, thread_count, width, height, inBufPtr, in_stride, false, nullptr);
+
+			Stage outStage0;
+			pstage_out(&outStage0, 0, thread_count, width, height, outBufPtr, out_stride, false, nullptr);
+
+			Stage inStage1;
+			pstage_in(&inStage1, 1, thread_count, width, height, inBufPtr, in_stride, false, nullptr);
+
+			Stage outStage1;
+			pstage_out(&outStage1, 1, thread_count, width, height, outBufPtr, out_stride, false, nullptr);
+
+			encodeTransPtr(&inStage0, &outStage0);
+			encodeTransPtr(&inStage1, &outStage1);
+
+#else
 			struct WorkItem
 			{
 				Stage inStage;
@@ -3098,7 +3116,7 @@ namespace BlipvertUnitTests
 			cv.notify_all();
 			for (auto& t : workers)
 				t.join();
-
+#endif
 			Assert::IsTrue(bufCheckFunctPtr(Y, U, V, alpha, width, height, outBufPtr, out_stride), L"YUV buffer did not contain expected values.");
 		}
 
@@ -3183,11 +3201,33 @@ namespace BlipvertUnitTests
 			uint8_t V;
 			FastRGBtoYUV(red, green, blue, &Y, &U, &V);
 
+			fillBufFunctPtr(Y, U, V, alpha, width, height, inBufPtr, in_stride);
+
 			t_stagetransformfunc pstage_in = FindTransformStage(inFormat);
 			Assert::IsNotNull(reinterpret_cast<void*>(pstage_in), L"FindTransformStage for inFormat returned a null function pointer.");
 
 			t_stagetransformfunc pstage_out = FindTransformStage(outFormat);
 			Assert::IsNotNull(reinterpret_cast<void*>(pstage_out), L"FindTransformStage for outFormat returned a null function pointer.");
+
+#if 0 // For debugging 2 slices of a bitmap.
+			thread_count = 2;
+
+			Stage inStage0;
+			pstage_in(&inStage0, 0, thread_count, width, height, inBufPtr, in_stride, false, nullptr);
+
+			Stage outStage0;
+			pstage_out(&outStage0, 0, thread_count, width, height, outBufPtr, out_stride, false, nullptr);
+
+			Stage inStage1;
+			pstage_in(&inStage1, 1, thread_count, width, height, inBufPtr, in_stride, false, nullptr);
+
+			Stage outStage1;
+			pstage_out(&outStage1, 1, thread_count, width, height, outBufPtr, out_stride, false, nullptr);
+
+			encodeTransPtr(&inStage0, &outStage0);
+			encodeTransPtr(&inStage1, &outStage1);
+
+#else
 
 			struct WorkItem
 			{
@@ -3259,6 +3299,7 @@ namespace BlipvertUnitTests
 			cv.notify_all();
 			for (auto& t : workers)
 				t.join();
+#endif
 
 			Assert::IsTrue(bufCheckFunctPtr(Y & 0xFE, U, V, alpha, width, height, outBufPtr, out_stride), L"YUV buffer did not contain expected values.");
 		}

@@ -218,7 +218,7 @@ Stage outStage1;
 pstage_out(&outStage1, 1, thread_count, width, height, yuvBufPtr, out_stride, false, nullptr);
 
 
-// transform the bitmap one slcie at a time. Normally these would be assigned in worker threads.
+// Transform the bitmap one slice at a time. Normally these would be assigned in worker threads.
 
 encodeTransPtr(&inStage0, &outStage0);
 

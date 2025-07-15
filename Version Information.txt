@@ -1,5 +1,5 @@
 Blipvert - C++ library for converting between fourcc video format bitmaps.
-Version: 1.0.0
+Version: 1.1.0
 Release Date: 27 June, 2021
-Copyright (c) 2021 Don Jordan.
+Copyright (c) 2021-2025 Don Jordan.
 Distributed under the MIT License (see the LICENSE file for details).

@@ -18,6 +18,7 @@ Don Jordan
 San Diego, California, USA
 
 P.S. If you found this library helpful and have improvements/bug fixes to contribute, I would appreciate it if you would submit them back here for review. Thanks.
+P.P.S. I do intend to make a better version of this read me file.
 
 Updates:
 

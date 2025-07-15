@@ -943,7 +943,7 @@ void blipvert::Stage_YV16(Stage* result, uint8_t thread_index, uint8_t thread_co
     }
 }
 
-int blipvert::GetMaxSafeThreadCount(const MediaFormatID& format, uint32_t width, uint32_t height, int requested_threads)
+int blipvert::GetFormatMaxThreadCount(const MediaFormatID& format, uint32_t width, uint32_t height, int requested_threads)
 {
     if (format == MVFMT_I420 || format == MVFMT_YV12 ||
         format == MVFMT_NV12 || format == MVFMT_NV21 ||
@@ -1007,4 +1007,18 @@ int blipvert::GetMaxSafeThreadCount(const MediaFormatID& format, uint32_t width,
         // Unknown/unsupported — fallback
         return 1;
     }
+}
+
+int blipvert::GetCommonMaxThreadCount(const MediaFormatID& format1, const MediaFormatID& format2, uint32_t width, uint32_t height, int requested_threads)
+{
+    int result = requested_threads;
+    int maxInputThreadCount = GetFormatMaxThreadCount(format1, width, height, requested_threads);
+    int maxOutputThreadCount = GetFormatMaxThreadCount(format2, width, height, requested_threads);
+    int maxthreadCount = min(maxInputThreadCount, maxOutputThreadCount);
+    if (maxthreadCount < requested_threads)
+    {
+        result = maxthreadCount;
+    }
+
+    return result;
 }

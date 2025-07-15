@@ -59,6 +59,10 @@ namespace BlipvertUnitTests
 
 	t_buffercheckfunc FindBufferCheckFunction(const blipvert::MediaFormatID& target);
 
+	void RunMultiThreadedTransform(blipvert::t_transformfunc encodeTransPtr, uint32_t width, uint32_t height,
+		blipvert::t_stagetransformfunc pstage_in, uint8_t* inBufPtr, uint32_t in_stride, bool in_flipped, blipvert::xRGBQUAD* in_palette,
+		blipvert::t_stagetransformfunc pstage_out, uint8_t* outBufPtr, uint32_t out_stride, bool out_flipped, blipvert::xRGBQUAD* out_palette);
+
 	bool Check_YUY2(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha,int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride);
 	bool Check_UYVY(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha,int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride);
 	bool Check_YVYU(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha,int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride);

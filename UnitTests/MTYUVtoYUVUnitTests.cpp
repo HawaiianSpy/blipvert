@@ -2910,14 +2910,7 @@ namespace BlipvertUnitTests
 	private:
 		void Run8bitAlphaTestSeries(const MediaFormatID& inFormat, const MediaFormatID& outFormat)
 		{
-			thread_count = thread::hardware_concurrency();
-			int maxInputThreadCount = GetMaxSafeThreadCount(inFormat, MTTestBufferWidth, MTTestBufferHeight, thread_count);
-			int maxOutputThreadCount = GetMaxSafeThreadCount(outFormat, MTTestBufferWidth, MTTestBufferHeight, thread_count);
-			int maxthreadCount = min(maxInputThreadCount, maxOutputThreadCount);
-			if (maxthreadCount < thread_count)
-			{
-				thread_count = maxthreadCount;
-			}
+			thread_count = GetCommonMaxThreadCount(inFormat, outFormat, MTTestBufferWidth, MTTestBufferHeight, thread::hardware_concurrency());
 
 			for (const RGBATestData& testData : BlipvertUnitTests::AlphaTestMetaData)
 			{
@@ -2937,14 +2930,7 @@ namespace BlipvertUnitTests
 
 		void Run8bitTestSeries(const MediaFormatID& inFormat, const MediaFormatID& outFormat)
 		{
-			thread_count = thread::hardware_concurrency();
-			int maxInputThreadCount = GetMaxSafeThreadCount(inFormat, MTTestBufferWidth, MTTestBufferHeight, thread_count);
-			int maxOutputThreadCount = GetMaxSafeThreadCount(outFormat, MTTestBufferWidth, MTTestBufferHeight, thread_count);
-			int maxthreadCount = min(maxInputThreadCount, maxOutputThreadCount);
-			if (maxthreadCount < thread_count)
-			{
-				thread_count = maxthreadCount;
-			}
+			thread_count = GetCommonMaxThreadCount(inFormat, outFormat, MTTestBufferWidth, MTTestBufferHeight, thread::hardware_concurrency());
 
 			for (const RGBATestData& testData : BlipvertUnitTests::TestMetaData)
 			{
@@ -3024,90 +3010,14 @@ namespace BlipvertUnitTests
 			encodeTransPtr(&inStage1, &outStage1);
 
 #else
-			struct WorkItem
-			{
-				Stage inStage;
-				Stage outStage;
-			};
-
-			queue<WorkItem> jobQueue;
-			mutex queueMutex;
-			condition_variable cv;
-			bool shutdown = false;
-			int jobsPending = 0;
-
-			vector<thread> workers;
-			for (int i = 0; i < thread_count; ++i)
-			{
-				workers.emplace_back([&]() {
-					while (true)
-					{
-						WorkItem work;
-						{
-							unique_lock<mutex> lock(queueMutex);
-							cv.wait(lock, [&]() { return !jobQueue.empty() || shutdown; });
-
-							if (shutdown && jobQueue.empty())
-								return;
-
-							work = jobQueue.front();
-							jobQueue.pop();
-						}
-
-						encodeTransPtr(&work.inStage, &work.outStage);
-
-						{
-							lock_guard<mutex> lock(queueMutex);
-							--jobsPending;
-							if (jobsPending == 0)
-								cv.notify_all();
-						}
-					}
-					});
-			}
-
-
-			{
-				lock_guard<mutex> lock(queueMutex);
-				jobsPending = thread_count;
-				for (int i = 0; i < thread_count; ++i)
-				{
-					WorkItem work;
-					pstage_in(&work.inStage, i, thread_count, width, height, inBuf.get(), in_stride, false, nullptr);
-					pstage_out(&work.outStage, i, thread_count, width, height, outBuf.get(), out_stride, false, nullptr);
-
-					jobQueue.push(move(work));
-				}
-			}
-
-			cv.notify_all();
-
-			{
-				unique_lock<mutex> lock(queueMutex);
-				cv.wait(lock, [&]() { return jobsPending == 0; });
-			}
-
-			{
-				lock_guard<mutex> lock(queueMutex);
-				shutdown = true;
-			}
-			cv.notify_all();
-			for (auto& t : workers)
-				t.join();
+			RunMultiThreadedTransform(encodeTransPtr, width, height, pstage_in, inBufPtr, in_stride, false, nullptr, pstage_out, outBufPtr, out_stride, false, nullptr);
 #endif
 			Assert::IsTrue(bufCheckFunctPtr(Y, U, V, alpha, width, height, outBufPtr, out_stride), L"YUV buffer did not contain expected values.");
 		}
 
 		void RunYAlphaTestSeries(const MediaFormatID& inFormat, const MediaFormatID& outFormat)
 		{
-			thread_count = thread::hardware_concurrency();
-			int maxInputThreadCount = GetMaxSafeThreadCount(inFormat, MTTestBufferWidth, MTTestBufferHeight, thread_count);
-			int maxOutputThreadCount = GetMaxSafeThreadCount(outFormat, MTTestBufferWidth, MTTestBufferHeight, thread_count);
-			int maxthreadCount = min(maxInputThreadCount, maxOutputThreadCount);
-			if (maxthreadCount < thread_count)
-			{
-				thread_count = maxthreadCount;
-			}
+			thread_count = GetCommonMaxThreadCount(inFormat, outFormat, MTTestBufferWidth, MTTestBufferHeight, thread::hardware_concurrency());
 
 			for (const RGBATestData& testData : BlipvertUnitTests::AlphaTestMetaData)
 			{
@@ -3188,77 +3098,7 @@ namespace BlipvertUnitTests
 			encodeTransPtr(&inStage1, &outStage1);
 
 #else
-
-			struct WorkItem
-			{
-				Stage inStage;
-				Stage outStage;
-			};
-
-			queue<WorkItem> jobQueue;
-			mutex queueMutex;
-			condition_variable cv;
-			bool shutdown = false;
-			int jobsPending = 0;
-
-			vector<thread> workers;
-			for (int i = 0; i < thread_count; ++i)
-			{
-				workers.emplace_back([&]() {
-					while (true)
-					{
-						WorkItem work;
-						{
-							unique_lock<mutex> lock(queueMutex);
-							cv.wait(lock, [&]() { return !jobQueue.empty() || shutdown; });
-
-							if (shutdown && jobQueue.empty())
-								return;
-
-							work = jobQueue.front();
-							jobQueue.pop();
-						}
-
-						encodeTransPtr(&work.inStage, &work.outStage);
-
-						{
-							lock_guard<mutex> lock(queueMutex);
-							--jobsPending;
-							if (jobsPending == 0)
-								cv.notify_all();
-						}
-					}
-					});
-			}
-
-
-			{
-				lock_guard<mutex> lock(queueMutex);
-				jobsPending = thread_count;
-				for (int i = 0; i < thread_count; ++i)
-				{
-					WorkItem work;
-					pstage_in(&work.inStage, i, thread_count, width, height, inBuf.get(), in_stride, false, nullptr);
-					pstage_out(&work.outStage, i, thread_count, width, height, outBuf.get(), out_stride, false, nullptr);
-
-					jobQueue.push(move(work));
-				}
-			}
-
-			cv.notify_all();
-
-			{
-				unique_lock<mutex> lock(queueMutex);
-				cv.wait(lock, [&]() { return jobsPending == 0; });
-			}
-
-			{
-				lock_guard<mutex> lock(queueMutex);
-				shutdown = true;
-			}
-			cv.notify_all();
-			for (auto& t : workers)
-				t.join();
+			RunMultiThreadedTransform(encodeTransPtr, width, height, pstage_in, inBufPtr, in_stride, false, nullptr, pstage_out, outBufPtr, out_stride, false, nullptr);
 #endif
 
 			Assert::IsTrue(bufCheckFunctPtr(Y & 0xFE, U, V, alpha, width, height, outBufPtr, out_stride), L"YUV buffer did not contain expected values.");
@@ -3266,14 +3106,7 @@ namespace BlipvertUnitTests
 
 		void RunGreyscaleTestSeries(const MediaFormatID& inFormat, const MediaFormatID& outFormat)
 		{
-			thread_count = thread::hardware_concurrency();
-			int maxInputThreadCount = GetMaxSafeThreadCount(inFormat, MTTestBufferWidth, MTTestBufferHeight, thread_count);
-			int maxOutputThreadCount = GetMaxSafeThreadCount(outFormat, MTTestBufferWidth, MTTestBufferHeight, thread_count);
-			int maxthreadCount = min(maxInputThreadCount, maxOutputThreadCount);
-			if (maxthreadCount < thread_count)
-			{
-				thread_count = maxthreadCount;
-			}
+			thread_count = GetCommonMaxThreadCount(inFormat, outFormat, MTTestBufferWidth, MTTestBufferHeight, thread::hardware_concurrency());
 
 			for (const RGBATestData& testData : BlipvertUnitTests::TestMetaData)
 			{
@@ -3335,90 +3168,14 @@ namespace BlipvertUnitTests
 			t_stagetransformfunc pstage_out = FindTransformStage(outFormat);
 			Assert::IsNotNull(reinterpret_cast<void*>(pstage_out), L"FindTransformStage for outFormat returned a null function pointer.");
 
-			struct WorkItem
-			{
-				Stage inStage;
-				Stage outStage;
-			};
-
-			queue<WorkItem> jobQueue;
-			mutex queueMutex;
-			condition_variable cv;
-			bool shutdown = false;
-			int jobsPending = 0;
-
-			vector<thread> workers;
-			for (int i = 0; i < thread_count; ++i)
-			{
-				workers.emplace_back([&]() {
-					while (true)
-					{
-						WorkItem work;
-						{
-							unique_lock<mutex> lock(queueMutex);
-							cv.wait(lock, [&]() { return !jobQueue.empty() || shutdown; });
-
-							if (shutdown && jobQueue.empty())
-								return;
-
-							work = jobQueue.front();
-							jobQueue.pop();
-						}
-
-						encodeTransPtr(&work.inStage, &work.outStage);
-
-						{
-							lock_guard<mutex> lock(queueMutex);
-							--jobsPending;
-							if (jobsPending == 0)
-								cv.notify_all();
-						}
-					}
-					});
-			}
-
-
-			{
-				lock_guard<mutex> lock(queueMutex);
-				jobsPending = thread_count;
-				for (int i = 0; i < thread_count; ++i)
-				{
-					WorkItem work;
-					pstage_in(&work.inStage, i, thread_count, width, height, inBuf.get(), in_stride, false, nullptr);
-					pstage_out(&work.outStage, i, thread_count, width, height, outBuf.get(), out_stride, false, nullptr);
-
-					jobQueue.push(move(work));
-				}
-			}
-
-			cv.notify_all();
-
-			{
-				unique_lock<mutex> lock(queueMutex);
-				cv.wait(lock, [&]() { return jobsPending == 0; });
-			}
-
-			{
-				lock_guard<mutex> lock(queueMutex);
-				shutdown = true;
-			}
-			cv.notify_all();
-			for (auto& t : workers)
-				t.join();
+			RunMultiThreadedTransform(encodeTransPtr, width, height, pstage_in, inBufPtr, in_stride, false, nullptr, pstage_out, outBufPtr, out_stride, false, nullptr);
 
 			Assert::IsTrue(bufCheckFunctPtr(Y, 0, 0, alpha, width, height, outBufPtr, out_stride), L"YUV buffer did not contain expected values.");
 		}
 
 		void RunCLJRTestSeries(const MediaFormatID& inFormat, const MediaFormatID& outFormat)
 		{
-			thread_count = thread::hardware_concurrency();
-			int maxInputThreadCount = GetMaxSafeThreadCount(inFormat, MTTestBufferWidth, MTTestBufferHeight, thread_count);
-			int maxOutputThreadCount = GetMaxSafeThreadCount(outFormat, MTTestBufferWidth, MTTestBufferHeight, thread_count);
-			int maxthreadCount = min(maxInputThreadCount, maxOutputThreadCount);
-			if (maxthreadCount < thread_count)
-			{
-				thread_count = maxthreadCount;
-			}
+			thread_count = GetCommonMaxThreadCount(inFormat, outFormat, MTTestBufferWidth, MTTestBufferHeight, thread::hardware_concurrency());
 
 			for (const RGBATestData& testData : BlipvertUnitTests::TestMetaData)
 			{
@@ -3480,76 +3237,7 @@ namespace BlipvertUnitTests
 			t_stagetransformfunc pstage_out = FindTransformStage(outFormat);
 			Assert::IsNotNull(reinterpret_cast<void*>(pstage_out), L"FindTransformStage for outFormat returned a null function pointer.");
 
-			struct WorkItem
-			{
-				Stage inStage;
-				Stage outStage;
-			};
-
-			queue<WorkItem> jobQueue;
-			mutex queueMutex;
-			condition_variable cv;
-			bool shutdown = false;
-			int jobsPending = 0;
-
-			vector<thread> workers;
-			for (int i = 0; i < thread_count; ++i)
-			{
-				workers.emplace_back([&]() {
-					while (true)
-					{
-						WorkItem work;
-						{
-							unique_lock<mutex> lock(queueMutex);
-							cv.wait(lock, [&]() { return !jobQueue.empty() || shutdown; });
-
-							if (shutdown && jobQueue.empty())
-								return;
-
-							work = jobQueue.front();
-							jobQueue.pop();
-						}
-
-						encodeTransPtr(&work.inStage, &work.outStage);
-
-						{
-							lock_guard<mutex> lock(queueMutex);
-							--jobsPending;
-							if (jobsPending == 0)
-								cv.notify_all();
-						}
-					}
-					});
-			}
-
-
-			{
-				lock_guard<mutex> lock(queueMutex);
-				jobsPending = thread_count;
-				for (int i = 0; i < thread_count; ++i)
-				{
-					WorkItem work;
-					pstage_in(&work.inStage, i, thread_count, width, height, inBuf.get(), in_stride, false, nullptr);
-					pstage_out(&work.outStage, i, thread_count, width, height, outBuf.get(), out_stride, false, nullptr);
-
-					jobQueue.push(move(work));
-				}
-			}
-
-			cv.notify_all();
-
-			{
-				unique_lock<mutex> lock(queueMutex);
-				cv.wait(lock, [&]() { return jobsPending == 0; });
-			}
-
-			{
-				lock_guard<mutex> lock(queueMutex);
-				shutdown = true;
-			}
-			cv.notify_all();
-			for (auto& t : workers)
-				t.join();
+			RunMultiThreadedTransform(encodeTransPtr, width, height, pstage_in, inBufPtr, in_stride, false, nullptr, pstage_out, outBufPtr, out_stride, false, nullptr);
 
 			Assert::IsTrue(bufCheckFunctPtr(Y & 0xF8, U & 0xFC, V & 0xFC, alpha, width, height, outBufPtr, out_stride), L"YUV buffer did not contain expected values.");
 		}

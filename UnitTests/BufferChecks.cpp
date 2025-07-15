@@ -30,10 +30,17 @@
 #include "Utilities.h"
 #include "CommonMacros.h"
 
+#include <memory>
+#include <chrono>
+#include <vector>
+#include <queue>
 #include <thread>
+#include <mutex>
+#include <condition_variable>
 
 using namespace blipvert;
 using namespace BlipvertUnitTests;
+using namespace std;
 
 const uint32_t BlipvertUnitTests::TestBufferWidth = 320;
 const uint32_t BlipvertUnitTests::TestBufferHeight = 240;
@@ -148,6 +155,83 @@ t_buffercheckfunc BlipvertUnitTests::FindBufferCheckFunction(const MediaFormatID
 	}
 
 	return nullptr;
+}
+
+void BlipvertUnitTests::RunMultiThreadedTransform(t_transformfunc encodeTransPtr, uint32_t width, uint32_t height,
+	t_stagetransformfunc pstage_in, uint8_t* inBufPtr, uint32_t in_stride, bool in_flipped, xRGBQUAD* in_palette,
+	t_stagetransformfunc pstage_out, uint8_t* outBufPtr, uint32_t out_stride, bool out_flipped, xRGBQUAD* out_palette)
+{
+
+	struct WorkItem
+	{
+		Stage inStage;
+		Stage outStage;
+	};
+
+	queue<WorkItem> jobQueue;
+	mutex queueMutex;
+	condition_variable cv;
+	bool shutdown = false;
+	int jobsPending = 0;
+
+	vector<thread> workers;
+	for (int i = 0; i < thread_count; ++i)
+	{
+		workers.emplace_back([&]() {
+			while (true)
+			{
+				WorkItem work;
+				{
+					unique_lock<mutex> lock(queueMutex);
+					cv.wait(lock, [&]() { return !jobQueue.empty() || shutdown; });
+
+					if (shutdown && jobQueue.empty())
+						return;
+
+					work = jobQueue.front();
+					jobQueue.pop();
+				}
+
+				encodeTransPtr(&work.inStage, &work.outStage);
+
+				{
+					lock_guard<mutex> lock(queueMutex);
+					--jobsPending;
+					if (jobsPending == 0)
+						cv.notify_all();
+				}
+			}
+			});
+	}
+
+
+	{
+		lock_guard<mutex> lock(queueMutex);
+		jobsPending = thread_count;
+		for (int i = 0; i < thread_count; ++i)
+		{
+			WorkItem work;
+			pstage_in(&work.inStage, i, thread_count, width, height, inBufPtr, in_stride, in_flipped, in_palette);
+			pstage_out(&work.outStage, i, thread_count, width, height, outBufPtr, out_stride, out_flipped, out_palette);
+
+			jobQueue.push(move(work));
+		}
+	}
+
+	cv.notify_all();
+
+	{
+		unique_lock<mutex> lock(queueMutex);
+		cv.wait(lock, [&]() { return jobsPending == 0; });
+	}
+
+	{
+		lock_guard<mutex> lock(queueMutex);
+		shutdown = true;
+	}
+	cv.notify_all();
+	for (auto& t : workers)
+		t.join();
 }
 
 bool Check_PackedY422(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level,

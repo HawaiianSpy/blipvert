@@ -96,8 +96,8 @@ void FramerateTest(const MediaFormatID& in_format, const MediaFormatID& out_form
     //}
 
     int thread_count = thread::hardware_concurrency();
-    int maxInputThreadCount = GetMaxSafeThreadCount(in_format, width, height, thread_count);
-    int maxOutputThreadCount = GetMaxSafeThreadCount(out_format, width, height, thread_count);
+    int maxInputThreadCount = GetFormatMaxThreadCount(in_format, width, height, thread_count);
+    int maxOutputThreadCount = GetFormatMaxThreadCount(out_format, width, height, thread_count);
     int maxthreadCount = min(maxInputThreadCount, maxOutputThreadCount);
     if (maxthreadCount == 1)
     {

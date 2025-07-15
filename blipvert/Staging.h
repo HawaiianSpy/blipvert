@@ -99,5 +99,6 @@ namespace blipvert
     void Stage_Y41T(Stage* result, uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped = false, xRGBQUAD* palette = nullptr);
     void Stage_YV16(Stage* result, uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped = false, xRGBQUAD* palette = nullptr);
 
-    int GetMaxSafeThreadCount(const MediaFormatID& format, uint32_t width, uint32_t height, int requested_threads);
+    int GetFormatMaxThreadCount(const MediaFormatID& format, uint32_t width, uint32_t height, int requested_threads);
+    int GetCommonMaxThreadCount(const MediaFormatID& format1, const MediaFormatID& format2, uint32_t width, uint32_t height, int requested_threads);
 }

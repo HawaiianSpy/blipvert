@@ -7,9 +7,7 @@ I originally called the project "blipvert" because I was a fan of the Max Headro
 
 After looking at the code, you may be asking yourself, "Why the heck would I *ever* want to convert a Y41P bitmap to IYU2?" Probably never, nowadays. Yet, I would suggest you view this act of video programming obsessive-compulsive disorder like achieveing a gold badge on HackerRank before it was cool. Instead of whiling away the hours moving nonsensecal numbers around in random arrays, as one does on HackerRank, at least I had some, more or less, useful code to show for it afterwards. =:D
 
-As of 25 July, 2021, Blipvert now has a complete unit test suite that covers all the code in the transforms.
-
-As of 14 July, 2025, Blipvert now has official support for multi-threading in the transforms. And there are added multi-threaded versions of the single-thread unit tests.
+The IDE projects are for Visual Studio 2022 for Windows. However I have kept the core library as generic C++, so it should work under other operating systems and compilers.
 
 Regards,
 
@@ -18,6 +16,13 @@ Don Jordan
 San Diego, California, USA
 
 P.S. If you found this library helpful and have improvements/bug fixes to contribute, I would appreciate it if you would submit them back here for review. Thanks.
+
+Updates:
+
+As of 25 July, 2021, Blipvert now has a complete unit test suite that covers all the code in the transforms.
+
+As of 14 July, 2025, Blipvert now has official support for multi-threading in the transforms. And there are added multi-threaded versions of the single-thread unit tests.
+
 
 ******************************
 

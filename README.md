@@ -7,9 +7,11 @@ I originally called the project "blipvert" because I was a fan of the Max Headro
 
 After looking at the code, you may be asking yourself, "Why the heck would I *ever* want to convert a Y41P bitmap to IYU2?" Probably never, nowadays. Yet, I would suggest you view this act of video programming obsessive-compulsive disorder like achieveing a gold badge on HackerRank before it was cool. Instead of whiling away the hours moving nonsensecal numbers around in random arrays, as one does on HackerRank, at least I had some, more or less, useful code to show for it afterwards. =:D
 
-The IDE projects are for Visual Studio 2022 for Windows. However I have kept the core library as generic C++, so it should work under other operating systems and compilers.
+The IDE projects are for Visual Studio 2022 for Windows. However I have tried to keep the core library as generic C++, so it should work, with trivial changes, under other operating systems and compilers.
 
-I have not done yet done any multi-threaded testing flipping the bitmaps on the fly. That will be for the future--hopefully a lot sooner than 4 years!
+Blipvert has official support for multi-threading in the transforms. You can split up the transformation of large video frames amoung worker threads.
+
+Blipvert as a complete unit test suite that covers the single and multi-threaded code in the transforms. I have not yet done any multi-threaded testing flipping the bitmaps on the fly. That will be for the future--hopefully a lot sooner than 4 years!
 
 Regards,
 
@@ -21,18 +23,12 @@ P.S. If you found this library helpful and have improvements/bug fixes to contri
 
 P.P.S. I do intend to make a better version of this read me file.
 
-Updates:
-
-25 July, 2021: Blipvert now has a complete unit test suite that covers all the code in the transforms.
-
-14 July, 2025: Blipvert now has official support for multi-threading in the transforms. And there are added multi-threaded versions of the single-thread unit tests.
-
 
 ******************************
 
 #### The ```TransformFramerateTests``` project is a single-threaded Windows console application that tests and displays the frame rates for various transforms at the HD (1920 x 1080) and 4K (3840 x 2160) video resolutions.
 
-#### The ```MTTransformFramerateTests``` project is a multi-threaded Windows console application that tests and displays the frame rates for various transforms at the HD (1920 x 1080) and 4K (3840 x 2160) video resolutions. And it's a LOT faster than the single thread-version!
+#### The ```MTTransformFramerateTests``` project is a multi-threaded Windows console application that tests and displays the frame rates for various transforms at the HD (1920 x 1080) and 4K (3840 x 2160) video resolutions. It spawns as many threads a possible just to beat on the code. Usually, given the OS overhead, four threads would probably be faster than thirty. Experiment with the number of threads yourself.
 
 
 ******************************
@@ -78,10 +74,10 @@ The function pointer definition used for setting individual pixels in a bitmap. 
 The function pointer definition used for vertically flipping a bitmap in place. This is a hack for the unit testing for now.
 #
 #### ```t_calcbuffsizefunc```
-The function pointer definition used for calculating the size of a bitmap's buffer. Easier to use the existing ```CalculateBufferSize``` function, but that function does call this.
+The function pointer definition used for calculating the size of a bitmap's buffer.
 #
 #### ```t_stagetransformfunc```
-The function pointer definition used initializing the ```Stage``` structure.
+The function pointer definition used for initializing the ```Stage``` structure.
 #
 #### ```VideoFormatInfo```
 Structure containing info for a particular video format.
@@ -95,7 +91,7 @@ See the comments in the header files for details on parameters, etc.
 #
 #### ```bool get_UseFasterLooping();```
 #### ```void set_UseFasterLooping(bool value);```
-If set to true, the library uses faster loops with RGB24 bitmaps. The overwriting will go outside of the expected buffer size, but CalculateBufferSize will add the needed bytes to allow coloring outside of the lines. Do NOT set this value to true if using multi-threading since that will cause a race condition. See header file.
+If set to true, the library uses faster loops with RGB24 bitmaps. The overwriting will go outside of the expected buffer size, but CalculateBufferSize will add the needed bytes to allow coloring outside of the lines. *Do NOT set this value to true if using multi-threading since that will cause a race condition.* See header file.
 #
 #### ```t_transformfunc FindVideoTransform(const MediaFormatID& inFormat, const MediaFormatID& outFormat);```
 Returns a function pointer that will convert the requested input format to the requested output format.
@@ -157,13 +153,13 @@ Returns *true* if the input is what the function name states, and returns *false
 #
 
 #### ```bool IsGloballyValidBitmapDimension(int32_t width, int32_t height);```
-Returns *true* if the given bitmap logical dimenstions are within the constraints.
+Returns *true* if the given bitmap logical dimensions are within the constraints.
 
 ******************************
 
 ### Header file: Staging.h
 
-These are the staging functions. They initialize the Stage struct that tells the transforms where to work their magic. The staging function will set up all the values for slicing and dicing the bitmaps for 1 to many worker threads. The signature for all of the staging functions follow this format:
+These are the staging functions. They initialize the ```Stage``` struct that tells the transforms where to work their magic. The staging function will set up all the values for slicing and dicing the bitmaps for 1 to many worker threads. The signature for all of the staging functions follow this format:
 
 #### t_stagetransformfunc(Stage* result, uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette);
 
@@ -174,7 +170,7 @@ Stage - The pointer to the Stage struct to be initialized.
 
 thread_index - 0 based thread index this stage is for. Use 0 if running a single thread.
 
-thread_count - The total number of threads operating this bitmap. USe 1 running a single thread.
+thread_count - The total number of threads operating this bitmap. Use 1 running a single thread.
 
 width , height - The dimensions of the source bitmap.
 
@@ -188,9 +184,9 @@ palette - palette used to indexed RGB bitmaps.
 
 
 
-##### Multi-threaded pseudo-code example.
+#### Multi-threaded pseudo-code example.
 
-// Set up stuff
+### // Set up stuff
 
 t_transformfunc encodeTransPtr = FindVideoTransform(inFormat, outFormat);
 
@@ -199,12 +195,12 @@ t_stagetransformfunc pstage_in = FindTransformStage(inFormat);
 t_stagetransformfunc pstage_out = FindTransformStage(outFormat);
 
 
-// Slice bitmap up for two worker threads
+### // Slice bitmap up for two worker threads
 
 int thread_count = 2;
 
 
-// In-out for first slice.
+### // In-out stages for the first slice.
 
 Stage inStage0;
 
@@ -215,7 +211,7 @@ Stage outStage0;
 pstage_out(&outStage0, 0, thread_count, width, height, yuvBufPtr, out_stride, false, nullptr);
 
 
-// In-out for second slice.
+### // In-out stages for the second slice.
 
 Stage inStage1;
 
@@ -226,7 +222,7 @@ Stage outStage1;
 pstage_out(&outStage1, 1, thread_count, width, height, yuvBufPtr, out_stride, false, nullptr);
 
 
-// Transform the bitmap one slice at a time. Normally these would be assigned in worker threads.
+### // Transform the bitmap one slice at a time. Normally these would be placed in seperate worker threads.
 
 encodeTransPtr(&inStage0, &outStage0);
 

@@ -1,5 +1,5 @@
 # blipvert
-A C++ library for converting between [fourcc video format bitmaps](https://www.fourcc.org/).
+A C++ library for converting between [fourcc video format bitmaps](https://www.fourcc.org/) and others.
 
 I created this library as part of an old Windows C++ video project (circa 2005). One objective of that project was the support of every possible webcam and video capture card. The biggest hurdle at that time was handling all the weird bitmap formats output from these devices. So, using the information at fourcc.org, I set out to write conversion functions so that even the one-of-a-kind bitmaps generated from obscure webcams could be supported by the project.
 
@@ -19,9 +19,9 @@ P.S. If you found this library helpful and have improvements/bug fixes to contri
 
 Updates:
 
-As of 25 July, 2021, Blipvert now has a complete unit test suite that covers all the code in the transforms.
+25 July, 2021: Blipvert now has a complete unit test suite that covers all the code in the transforms.
 
-As of 14 July, 2025, Blipvert now has official support for multi-threading in the transforms. And there are added multi-threaded versions of the single-thread unit tests.
+14 July, 2025: Blipvert now has official support for multi-threading in the transforms. And there are added multi-threaded versions of the single-thread unit tests.
 
 
 ******************************
@@ -76,6 +76,9 @@ The function pointer definition used for vertically flipping a bitmap in place. 
 #### ```t_calcbuffsizefunc```
 The function pointer definition used for calculating the size of a bitmap's buffer. Easier to use the existing ```CalculateBufferSize``` function, but that function does call this.
 #
+#### ```t_stagetransformfunc```
+The function pointer definition used initializing the ```Stage``` structure.
+#
 #### ```VideoFormatInfo```
 Structure containing info for a particular video format.
 #
@@ -88,7 +91,7 @@ See the comments in the header files for details on parameters, etc.
 #
 #### ```bool get_UseFasterLooping();```
 #### ```void set_UseFasterLooping(bool value);```
-If set to true, the library uses faster loops with RGB24 bitmaps. The overwriting can go outside of the expected buffer size. See header file.
+If set to true, the library uses faster loops with RGB24 bitmaps. The overwriting will go outside of the expected buffer size, but CalculateBufferSize will add the needed bytes to allow coloring outside of the lines. Do NOT set this value to true if using multi-threading since that will cause a race condition. See header file.
 #
 #### ```t_transformfunc FindVideoTransform(const MediaFormatID& inFormat, const MediaFormatID& outFormat);```
 Returns a function pointer that will convert the requested input format to the requested output format.
@@ -107,6 +110,9 @@ Returns a function pointer for a vertical flip in place video transform for the 
 #
 #### ```t_calcbuffsizefunc FindBufSizeCalculator(const MediaFormatID& inFormat);```
 Returns a function pointer for a buffer size calculation function of the given format.
+#
+#### ```t_stagetransformfunc FindTransformStage(const MediaFormatID& format);```
+Returns a function pointer for a staging function for the given input media format. This functions will initialize the ```Stage``` struct for the specified media format.
 #
 #### ```bool GetVideoFormatInfo(const MediaFormatID& inFormat, VideoFormatInfo& info);```
 Returns useful information about the media type.

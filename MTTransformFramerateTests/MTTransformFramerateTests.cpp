@@ -90,23 +90,12 @@ void FramerateTest(const MediaFormatID& in_format, const MediaFormatID& out_form
         return;
     }
 
-    //if (in_format == MVFMT_YV12/* || out_format == MVFMT_YV12*/)
-    //{
-    //    __debugbreak();
-    //}
-
-    int thread_count = thread::hardware_concurrency();
-    int maxInputThreadCount = GetFormatMaxThreadCount(in_format, width, height, thread_count);
-    int maxOutputThreadCount = GetFormatMaxThreadCount(out_format, width, height, thread_count);
-    int maxthreadCount = min(maxInputThreadCount, maxOutputThreadCount);
-    if (maxthreadCount == 1)
+    // Determine the maximum nuber of thread that both formats support.
+    int thread_count = GetCommonMaxThreadCount(in_format, out_format, width, height, thread::hardware_concurrency());
+    if (thread_count == 1)
     {
-        LogLine("Framerate test: " + string(in_format) + " to " + string(out_format) + " aborted: Maximum allowed thread count for " + string(in_format) + " is 1.");
+        LogLine("Framerate test: " + string(in_format) + " to " + string(out_format) + " aborted: Maximum allowed thread count for both formats is 1.");
         return;
-    }
-    else if (maxthreadCount < thread_count)
-    {
-        thread_count = maxthreadCount;
     }
 
     uint32_t inBufSize = CalculateBufferSize(in_format, width, height);
@@ -128,13 +117,7 @@ void FramerateTest(const MediaFormatID& in_format, const MediaFormatID& out_form
         fillBufFunctPtr(red, green, blue, alpha, width, height, inBuf.get(), 0);
     }
 
-    struct WorkItem
-    {
-        Stage inStage;
-        Stage outStage;
-    };
-
-    queue<WorkItem> jobQueue;
+    queue<TransformStage> jobQueue;
     mutex queueMutex;
     condition_variable cv;
     bool shutdown = false;
@@ -146,7 +129,7 @@ void FramerateTest(const MediaFormatID& in_format, const MediaFormatID& out_form
         workers.emplace_back([&]() {
             while (true)
             {
-                WorkItem work;
+                TransformStage work;
                 {
                     unique_lock<mutex> lock(queueMutex);
                     cv.wait(lock, [&]() { return !jobQueue.empty() || shutdown; });
@@ -185,7 +168,7 @@ void FramerateTest(const MediaFormatID& in_format, const MediaFormatID& out_form
 
             for (int i = 0; i < thread_count; ++i)
             {
-                WorkItem work;
+                TransformStage work;
                 pstage_in(&work.inStage, i, thread_count, width, height, inBuf.get(), 0, false, nullptr);
                 pstage_out(&work.outStage, i, thread_count, width, height, outBuf.get(), 0, false, nullptr);
 
@@ -204,7 +187,7 @@ void FramerateTest(const MediaFormatID& in_format, const MediaFormatID& out_form
     auto end = chrono::steady_clock::now();
     double ms = static_cast<double>(chrono::duration_cast<chrono::milliseconds>(end - start).count());
     int framerate = static_cast<int>(floor(1000.0 / (ms / static_cast<double>(numframes))));
-    LogLine(" @ " + to_string(framerate) + " fps with " + to_string(thread_count) + " persistent threads.");
+    LogLine(" @ " + to_string(framerate) + " fps with " + to_string(thread_count) + " threads.");
 
     {
         lock_guard<mutex> lock(queueMutex);

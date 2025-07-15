@@ -5,7 +5,7 @@
 //
 //  MIT License
 //
-//  Copyright(c) 2021 Don Jordan
+//  Copyright(c) 2021-2025 Don Jordan
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files(the "Software"), to deal
@@ -251,12 +251,6 @@ namespace blipvert
     // Note: Since there exists duplicate fourcc definitions for the same bitmap format, the main 
     //       definition name will be used if a duplicate format was requested.
     t_stagetransformfunc FindTransformStage(const MediaFormatID& format);
-
-    // IMPORTANT:   For reasons related to the bitmap format definitions, all input parameters must follow these rules:
-    //              1. The width value must be >= 8, and an even multiple of 8.
-    //              2. The height value must be >= 16, and an even multiple of 4.
-    //              3. The stride value must be >= the minimum number of bytes-per-line needed for the width of the bitmap format.
-    std::shared_ptr<std::vector<TransformStage>> MakeTransformStages(const MediaFormatID& inFormat, const MediaFormatID& outFormat, uint8_t thread_count, int32_t width, int32_t height, uint8_t* in_buf, int32_t in_stride, uint8_t* out_buf, int32_t out_stride, bool flipped = false, xRGBQUAD* palette = nullptr);
 
     // Returns information about the given video format.
     //

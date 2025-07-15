@@ -4,7 +4,7 @@
 //
 //  MIT License
 //
-//  Copyright(c) 2021 Don Jordan
+//  Copyright(c) 2021-2025 Don Jordan
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files(the "Software"), to deal
@@ -1725,34 +1725,4 @@ t_stagetransformfunc blipvert::FindTransformStage(const MediaFormatID& format)
     }
 
     return nullptr;
-}
-
-shared_ptr<vector<TransformStage>> blipvert::MakeTransformStages(const MediaFormatID& inFormat, const MediaFormatID& outFormat, uint8_t thread_count, int32_t width, int32_t height, uint8_t* in_buf, int32_t in_stride, uint8_t* out_buf, int32_t out_stride, bool flipped, xRGBQUAD* palette)
-{
-    if (thread_count != 1 && thread_count != 2 && thread_count != 4 && thread_count != 8)
-    {
-        return nullptr;
-    }
-
-    if (height / static_cast<int32_t>(thread_count) < 8)
-    {
-        return nullptr;
-    }
-
-    t_stagetransformfunc inStageFunct = FindTransformStage(inFormat);
-    t_stagetransformfunc outStageFunct = FindTransformStage(outFormat);
-    if (inStageFunct == nullptr || outStageFunct == nullptr)
-    {
-        return nullptr;
-    }
-
-    shared_ptr<vector<TransformStage>> result = make_shared<vector<TransformStage>>(vector<TransformStage>(thread_count));
-
-    for (uint8_t index = 0; index < thread_count; index++)
-    {
-        inStageFunct(&(result.get()->at(index).in), index, thread_count, width, height, in_buf, in_stride, false, palette);
-        outStageFunct(&(result.get()->at(index).out), index, thread_count, width, height, out_buf, out_stride, flipped, palette);
-    }
-
-    return result;
 }

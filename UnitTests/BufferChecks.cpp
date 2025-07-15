@@ -4,7 +4,7 @@
 //
 //  MIT License
 //
-//  Copyright(c) 2021 Don Jordan
+//  Copyright(c) 2021-2025 Don Jordan
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files(the "Software"), to deal
@@ -29,6 +29,7 @@
 #include "BufferChecks.h"
 #include "Utilities.h"
 #include "CommonMacros.h"
+#include "Staging.h"
 
 #include <memory>
 #include <chrono>
@@ -161,13 +162,8 @@ void BlipvertUnitTests::RunMultiThreadedTransform(t_transformfunc encodeTransPtr
 	t_stagetransformfunc pstage_in, uint8_t* inBufPtr, uint32_t in_stride, bool in_flipped, xRGBQUAD* in_palette,
 	t_stagetransformfunc pstage_out, uint8_t* outBufPtr, uint32_t out_stride, bool out_flipped, xRGBQUAD* out_palette)
 {
-	struct WorkItem
-	{
-		Stage inStage;
-		Stage outStage;
-	};
 
-	queue<WorkItem> jobQueue;
+	queue<TransformStage> jobQueue;
 	mutex queueMutex;
 	condition_variable cv;
 	bool shutdown = false;
@@ -179,7 +175,7 @@ void BlipvertUnitTests::RunMultiThreadedTransform(t_transformfunc encodeTransPtr
 		workers.emplace_back([&]() {
 			while (true)
 			{
-				WorkItem work;
+				TransformStage work;
 				{
 					unique_lock<mutex> lock(queueMutex);
 					cv.wait(lock, [&]() { return !jobQueue.empty() || shutdown; });
@@ -209,7 +205,7 @@ void BlipvertUnitTests::RunMultiThreadedTransform(t_transformfunc encodeTransPtr
 		jobsPending = thread_count;
 		for (int i = 0; i < thread_count; ++i)
 		{
-			WorkItem work;
+			TransformStage work;
 			pstage_in(&work.inStage, i, thread_count, width, height, inBufPtr, in_stride, in_flipped, in_palette);
 			pstage_out(&work.outStage, i, thread_count, width, height, outBufPtr, out_stride, out_flipped, out_palette);
 

@@ -5,7 +5,7 @@
 //
 //  MIT License
 //
-//  Copyright(c) 2021 Don Jordan
+//  Copyright(c) 2021-2025 Don Jordan
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files(the "Software"), to deal
@@ -58,8 +58,8 @@ namespace blipvert
     } Stage;
 
     typedef struct TransformStage {
-        Stage in;
-        Stage out;
+        Stage inStage;
+        Stage outStage;
     } TransformStage;
 
     typedef void(__cdecl* t_stagetransformfunc) (Stage* result, uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette);
@@ -99,6 +99,9 @@ namespace blipvert
     void Stage_Y41T(Stage* result, uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped = false, xRGBQUAD* palette = nullptr);
     void Stage_YV16(Stage* result, uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped = false, xRGBQUAD* palette = nullptr);
 
+    // Returns the maximum number of worker threads that is compatible with the bitmap format.
     int GetFormatMaxThreadCount(const MediaFormatID& format, uint32_t width, uint32_t height, int requested_threads);
+
+    // Returns the maximum number of worker threads that is compatible with both bitmap formats.
     int GetCommonMaxThreadCount(const MediaFormatID& format1, const MediaFormatID& format2, uint32_t width, uint32_t height, int requested_threads);
 }

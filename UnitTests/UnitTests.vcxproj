@@ -163,6 +163,7 @@
   <ItemGroup>
     <ClCompile Include="BufferChecks.cpp" />
     <ClCompile Include="MTRGBtoRGBUnitTests.cpp" />
+    <ClCompile Include="MTRGBtoYUVUnitTests.cpp" />
     <ClCompile Include="MTYUVtoYUVUnitTests.cpp" />
     <ClCompile Include="ToFillColorUnitTests.cpp" />
     <ClCompile Include="pch.cpp">

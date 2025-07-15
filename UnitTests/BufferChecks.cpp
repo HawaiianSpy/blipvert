@@ -161,7 +161,6 @@ void BlipvertUnitTests::RunMultiThreadedTransform(t_transformfunc encodeTransPtr
 	t_stagetransformfunc pstage_in, uint8_t* inBufPtr, uint32_t in_stride, bool in_flipped, xRGBQUAD* in_palette,
 	t_stagetransformfunc pstage_out, uint8_t* outBufPtr, uint32_t out_stride, bool out_flipped, xRGBQUAD* out_palette)
 {
-
 	struct WorkItem
 	{
 		Stage inStage;

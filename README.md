@@ -9,6 +9,8 @@ After looking at the code, you may be asking yourself, "Why the heck would I *ev
 
 The IDE projects are for Visual Studio 2022 for Windows. However I have kept the core library as generic C++, so it should work under other operating systems and compilers.
 
+I have not done yet done any multi-threaded testing flipping the bitmaps on the fly. That will be for the future--hopefully a lot sooner than 4 years!
+
 Regards,
 
 Don Jordan
@@ -36,7 +38,7 @@ Updates:
 
 # Ten-Cent Tour Of The API
 
-Read the header files for the details. Fairly self-explainatory--more or less. Since real working code is a better explaination than a bunch of verbage, take a look at the frame rate test projects to see the transforms in action.
+Read the header files for the details. Fairly self-explainatory--more or less. Since real working code is a better explaination than a bunch of verbage, take a look at the frame rate and unit test projects to see the transforms in action.
 
 ### Header file: blipvert.h (Start Here)
 
@@ -147,4 +149,76 @@ Fast colospace conversion using lookup tables. Good enough for 99.5% of the appl
 #### ```bool IsYUVColorspace(const Fourcc fourcc));```
 #### ```bool IsPalletizedEncoding(const MediaFormatID& encoding);```
 #### ```bool IsPalletizedEncoding(const Fourcc fourcc);```
+#### ```bool IsPlanarYUV(const MediaFormatID& encoding);```
+#### ```bool IsPlanarYUV(const Fourcc fourcc);```
 Returns *true* if the input is what the function name states, and returns *false* otherwise.
+#
+
+#### ```bool IsGloballyValidBitmapDimension(int32_t width, int32_t height);```
+Returns *true* if the given bitmap logical dimenstions are within the constraints.
+
+******************************
+
+### Header file: Staging.h
+
+These are the staging functions. They initialize the Stage struct that tells the transforms where to work their magic. The staging function will set up all the values for slicing and dicing the bitmaps for 1 to many worker threads. The signature for all of the staging function follow thiws format:
+
+#### t_stagetransformfunc(Stage* result, uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette);
+
+##### Parameters:
+
+
+Stage - The pointer to the Stage struct to be initialized.
+
+thread_index - 0 based thread index this stage is for. Use 0 if running a single thread.
+
+thread_count - The total number of threads operating this bitmap. USe 1 running a single thread.
+
+width , height - The dimensions of the source bitmap.
+
+buf - pointer to the bitmap in memory.
+
+stride - numebr of bytes between horizontal lines in tthe bitmap.
+
+flipped - true if the bitmap is flipped.
+
+palette - palette used to indexed RGB bitmaps.
+
+
+
+##### Multi-threaded example.
+
+
+// Slice bitmap up for two worker threads
+
+thread_count = 2;
+
+
+// In-out for first slice.
+
+Stage inStage0;
+
+pstage_in(&inStage0, 0, thread_count, width, height, rgbBufPtr, in_stride, false, nullptr);
+
+Stage outStage0;
+
+pstage_out(&outStage0, 0, thread_count, width, height, yuvBufPtr, out_stride, false, nullptr);
+
+
+// In-out for second slice.
+
+Stage inStage1;
+
+pstage_in(&inStage1, 1, thread_count, width, height, rgbBufPtr, in_stride, false, nullptr);
+
+Stage outStage1;
+
+pstage_out(&outStage1, 1, thread_count, width, height, yuvBufPtr, out_stride, false, nullptr);
+
+
+// transform the bitmap one slcie at a time. Normally these would be assigned in worker threads.
+
+encodeTransPtr(&inStage0, &outStage0);
+
+encodeTransPtr(&inStage1, &outStage1);
+

@@ -31,13 +31,7 @@ P.S. If you found this library helpful and have improvements/bug fixes to contri
 
 # Ten-Cent Tour Of The API
 
-## 27 October, 2021: I have made a major change to the API: The staging for each transform pass is now setup ahead of time to eliminate redundantly doing it for each frame. This will make it more efficient and allow the use of multiple threads to perform the transforms on large bitmaps in real time. The multi-thread part has not been tested, but the single tread operation has been tested with the updated API. This documentation is still for the old API. Until I update this document one can examine the TransformFramerateTests source code to see how the new API works. I have a full-time job now, so that takes up most of my time. I'll set aside a weekend soon to update this documentation and produce tests for multi-threaded processing of the transforms.
-
-## Update 11, July 2025: Removed the multi-threaded frame rate test because it doen't work correctly. Needs more testing.
-
-## Update 11, July 2025 @ 1:19 PM PDT: Reworked the broken MCIx bitmap transforms. The buffer calculations were wrong. Also revised the rules for the bitmap dimensions. See below. 
-
-Read the header files for the details. Fairly self-explainatory.
+Read the header files for the details. Fairly self-explainatory--more or less. Since real working code is a better explaination than a bunch of verbage, take a look at the frame rate test projects to see the transforms in action.
 
 ### Header file: blipvert.h (Start Here)
 
@@ -47,7 +41,7 @@ Read the header files for the details. Fairly self-explainatory.
 2. The height value must be >= 16, and an even multiple of 4.
 3. The stride value must be >= the minimum number of bytes-per-line needed for the width of the bitmap format.
 
-The minimum granularity for the bitmap dimensions is 8 pixels for the width and 4 pixels for the height. Transforms, like Y41P, horizontally represent the pixels in 8-pixel chunks. Other transforms, like YUV9 or YVU9, use 4x4 chunks.  All the digital video bitmaps I have seen have their dimensions in pixels at this granularity anyway.
+The minimum granularity for the bitmap dimensions is 8 pixels for the width and 4 pixels for the height. Fourcc formats, like Y41P, horizontally represent the pixels in 8-pixel chunks. Other formats, like YUV9 or YVU9, use 4x4 chunks.  All the digital video bitmaps I have seen have their dimensions in pixels at this granularity anyway.
 
 More Information: [Wackypedia article on webcams](https://en.wikipedia.org/wiki/Webcam) and [Understanding Video Resolutions](https://web.archive.org/web/20210604160142/https://www.borrowlenses.com/blog/understanding-video-resolutions/).
 

@@ -163,7 +163,7 @@ Returns *true* if the given bitmap logical dimenstions are within the constraint
 
 ### Header file: Staging.h
 
-These are the staging functions. They initialize the Stage struct that tells the transforms where to work their magic. The staging function will set up all the values for slicing and dicing the bitmaps for 1 to many worker threads. The signature for all of the staging function follow thiws format:
+These are the staging functions. They initialize the Stage struct that tells the transforms where to work their magic. The staging function will set up all the values for slicing and dicing the bitmaps for 1 to many worker threads. The signature for all of the staging functions follow this format:
 
 #### t_stagetransformfunc(Stage* result, uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette);
 

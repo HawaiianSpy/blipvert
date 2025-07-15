@@ -188,12 +188,20 @@ palette - palette used to indexed RGB bitmaps.
 
 
 
-##### Multi-threaded example.
+##### Multi-threaded pseudo-code example.
+
+// Set up stuff
+
+t_transformfunc encodeTransPtr = FindVideoTransform(inFormat, outFormat);
+
+t_stagetransformfunc pstage_in = FindTransformStage(inFormat);
+
+t_stagetransformfunc pstage_out = FindTransformStage(outFormat);
 
 
 // Slice bitmap up for two worker threads
 
-thread_count = 2;
+int thread_count = 2;
 
 
 // In-out for first slice.

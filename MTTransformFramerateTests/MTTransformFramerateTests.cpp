@@ -248,9 +248,6 @@ int main()
 
     InitializeLibrary();
 
-    bool save = get_UseFasterLooping();
-    set_UseFasterLooping(false); // Make sure faster looping is off.
-
     auto start = chrono::steady_clock::now();
 
     width = 1920;
@@ -266,8 +263,6 @@ int main()
     long long minutes = ms / 60000;
     long long seconds = (ms % 60000) / 1000;
     LogLine("Finished. Total Elapsed Time = " + to_string(minutes) + ":" + to_string(seconds));
-
-    set_UseFasterLooping(save);
 
     logFile.close();
     return 0;

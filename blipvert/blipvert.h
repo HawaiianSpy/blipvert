@@ -190,7 +190,6 @@ namespace blipvert
     extern const MediaFormatID MVFMT_RGB_BITFIELDS;
 
     extern bool IsInitialized;      // true / false that the library has been initialized.
-    extern bool UseFasterLooping;   // true = faster looping will be used that may read/write outside of a tightly allocated buffer (mostly RGB24 for now).
     extern bool IsBigEndian;        // true indicates running on a big endian processor.
 
     //
@@ -201,15 +200,6 @@ namespace blipvert
 
     // IMPORTANT: This must be called before using any of the colorspace transforms since it initializes the lookup tables.
     void InitializeLibrary(void);
-
-    // If true, the library uses faster looping for RGB <--> RGB transforms when the RGB24 format is either a source/target.
-    // The functions will write outside of the logical buffer size, so this should only be used if you have control of the
-    // size of the I/O buffers. The CalculateBufferSize function will take this flag into account to return a result with the
-    // bumped buffer size.
-    // NOTE:    Do NOT use this with multiple threads since the last RGB24 pixel written by one thread will overwrite the first
-    //          pixel in the next thread.
-    bool get_UseFasterLooping();
-    void set_UseFasterLooping(bool value);
 
     // Finds a video transform for the given input / output media formats.
     // Returns a t_transformfunc pointer for the requested transform function. Retuns nullptr if a match couldn't be found.

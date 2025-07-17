@@ -73,16 +73,6 @@ namespace BlipvertUnitTests
 			Run8bitTestSeries(MVFMT_RGB32, MVFMT_RGB24);
 		}
 
-		TEST_METHOD(RGB32_to_RGB24_Fast_UnitTest)
-		{
-			bool savef = get_UseFasterLooping();
-			set_UseFasterLooping(true);
-
-			Run8bitTestSeries(MVFMT_RGB32, MVFMT_RGB24);
-
-			set_UseFasterLooping(savef);
-		}
-
 		TEST_METHOD(RGB32_to_RGB565_UnitTest)
 		{
 			Run8bitTestSeries(MVFMT_RGB32, MVFMT_RGB565);
@@ -100,16 +90,6 @@ namespace BlipvertUnitTests
 		TEST_METHOD(RGB24_to_RGB32_UnitTest)
 		{
 			Run8bitTestSeries(MVFMT_RGB24, MVFMT_RGB32);
-		}
-
-		TEST_METHOD(RGB24_Fast_to_RGB32_UnitTest)
-		{
-			bool savef = get_UseFasterLooping();
-			set_UseFasterLooping(true);
-
-			Run8bitTestSeries(MVFMT_RGB24, MVFMT_RGB32);
-
-			set_UseFasterLooping(savef);
 		}
 
 		TEST_METHOD(RGB24_to_RGB565_UnitTest)
@@ -198,16 +178,6 @@ namespace BlipvertUnitTests
 			Run8bitPalletizedTestSeries(MVFMT_RGB8, MVFMT_RGB24);
 		}
 
-		TEST_METHOD(RGB8_to_RGB24_Fast_UnitTest)
-		{
-			bool savef = get_UseFasterLooping();
-			set_UseFasterLooping(true);
-
-			Run8bitPalletizedTestSeries(MVFMT_RGB8, MVFMT_RGB24);
-
-			set_UseFasterLooping(savef);
-		}
-
 		TEST_METHOD(RGB8_to_RGB565_UnitTest)
 		{
 			Run8bitPalletizedTestSeries(MVFMT_RGB8, MVFMT_RGB565);
@@ -230,16 +200,6 @@ namespace BlipvertUnitTests
 		TEST_METHOD(RGB4_to_RGB24_UnitTest)
 		{
 			Run4bitPalletizedTestSeries(MVFMT_RGB4, MVFMT_RGB24);
-		}
-
-		TEST_METHOD(RGB4_to_RGB24_Fast_UnitTest)
-		{
-			bool savef = get_UseFasterLooping();
-			set_UseFasterLooping(true);
-
-			Run4bitPalletizedTestSeries(MVFMT_RGB4, MVFMT_RGB24);
-
-			set_UseFasterLooping(savef);
 		}
 
 		TEST_METHOD(RGB4_to_RGB565_UnitTest)
@@ -266,16 +226,6 @@ namespace BlipvertUnitTests
 			Run1bitPalletizedTestSeries(MVFMT_RGB1, MVFMT_RGB24);
 		}
 
-		TEST_METHOD(RGB1_to_RGB24_Fast_UnitTest)
-		{
-			bool savef = get_UseFasterLooping();
-			set_UseFasterLooping(true);
-
-			Run1bitPalletizedTestSeries(MVFMT_RGB1, MVFMT_RGB24);
-
-			set_UseFasterLooping(savef);
-		}
-
 		TEST_METHOD(RGB1_to_RGB565_UnitTest)
 		{
 			Run1bitPalletizedTestSeries(MVFMT_RGB1, MVFMT_RGB565);
@@ -291,42 +241,30 @@ namespace BlipvertUnitTests
 
 		void Run8bitTestSeries(const MediaFormatID& inFormat, const MediaFormatID& outFormat)
 		{
-			for (const RGBATestData& testData : BlipvertUnitTests::TestMetaData)
-			{
-				RunSingle8bitTest(inFormat, outFormat, testData.red, testData.green, testData.blue, testData.alpha);
-			}
+			RunSingle8bitTest(inFormat, outFormat);
 
 			uint32_t saveb = StrideBump;
 			StrideBump = StrideBumpTestValue;
 
-			for (const RGBATestData& testData : BlipvertUnitTests::TestMetaData)
-			{
-				RunSingle8bitTest(inFormat, outFormat, testData.red, testData.green, testData.blue, testData.alpha);
-			}
+			RunSingle8bitTest(inFormat, outFormat);
 
 			StrideBump = saveb;
 		}
 
 		void Run8bitAlphaTestSeries(const MediaFormatID& inFormat, const MediaFormatID& outFormat)
 		{
-			for (const RGBATestData& testData : BlipvertUnitTests::AlphaTestMetaData)
-			{
-				RunSingle8bitTest(inFormat, outFormat, testData.red, testData.green, testData.blue, testData.alpha);
-			}
+			RunSingle8bitTest(inFormat, outFormat);
 
 			uint32_t saveb = StrideBump;
 			StrideBump = StrideBumpTestValue;
 
-			for (const RGBATestData& testData : BlipvertUnitTests::AlphaTestMetaData)
-			{
-				RunSingle8bitTest(inFormat, outFormat, testData.red, testData.green, testData.blue, testData.alpha);
-			}
+			RunSingle8bitTest(inFormat, outFormat);
 
 			StrideBump = saveb;
 
 		}
 
-		void RunSingle8bitTest(const MediaFormatID& inFormat, const MediaFormatID& outFormat, uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha)
+		void RunSingle8bitTest(const MediaFormatID& inFormat, const MediaFormatID& outFormat)
 		{
 			// RGB to RGB
 			t_transformfunc encodeTransPtr = FindVideoTransform(inFormat, outFormat);
@@ -352,12 +290,17 @@ namespace BlipvertUnitTests
 			std::unique_ptr<uint8_t[]> inBuf(new uint8_t[inBufBize]);
 			uint8_t* inBufPtr = inBuf.get();
 			memset(inBufPtr, 0, inBufBize);
+			GenerateVerticalColorBars(inFormat, width, height, inBufPtr, in_stride);
 
 			std::unique_ptr<uint8_t[]> outBuf(new uint8_t[outBufBize]);
 			uint8_t* outBufPtr = outBuf.get();
 			memset(outBufPtr, 0, outBufBize);
 
-			fillBufFunctPtr(red, green, blue, alpha, width, height, inBufPtr, in_stride);
+			std::unique_ptr<uint8_t[]> testBuf(new uint8_t[outBufBize]);
+			uint8_t* testBufPtr = testBuf.get();
+			memset(testBufPtr, 0, outBufBize);
+			GenerateVerticalColorBars(outFormat, width, height, testBufPtr, out_stride);
+
 
 			t_stagetransformfunc pstage = FindTransformStage(inFormat);
 			Assert::IsNotNull(reinterpret_cast<void*>(pstage), L"FindTransformStage for inFormat returned a null function pointer.");
@@ -371,7 +314,7 @@ namespace BlipvertUnitTests
 
 			encodeTransPtr(&inptr, &outptr);
 
-			Assert::IsTrue(bufCheckFunctPtr(red, green, blue, alpha, width, height, outBufPtr, out_stride), L"RGB buffer did not contain expected values.");
+			Assert::IsTrue(memcmp(outBufPtr, testBufPtr, outBufBize) == 0, L"RGB buffer did not contain expected values.");
 		}
 
 		void Run565bitTestSeries(const MediaFormatID& inFormat, const MediaFormatID& outFormat)

@@ -75,66 +75,32 @@ void blipvert::Fill_RGB32(uint8_t red, uint8_t green, uint8_t blue, uint8_t alph
 
 void blipvert::Fill_RGB24(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha, int32_t width, int32_t height, uint8_t* buf, int32_t stride)
 {
-    if (UseFasterLooping)
+    if (!stride)
     {
-        uint32_t fill = static_cast<uint32_t>(0xFF000000 | (red << 16) | (green << 8) | blue);
-
-        if (!stride)
+        uint32_t count = width * height;
+        while (count)
         {
-            uint32_t count = width * height;
-            while (count)
-            {
-                *reinterpret_cast<uint32_t*>(buf) = fill;
-                buf += 3;
-                count--;
-            }
-        }
-        else
-        {
-            do
-            {
-                uint8_t* pdst = buf;
-                int32_t hcount = width;
-                do
-                {
-                    *reinterpret_cast<uint32_t*>(pdst) = fill;
-                    pdst += 3;
-
-                } while (--hcount);
-
-                buf += stride;
-            } while (--height);
+            *buf++ = blue;
+            *buf++ = green;
+            *buf++ = red;
+            count--;
         }
     }
     else
     {
-        if (!stride)
+        do
         {
-            uint32_t count = width * height;
-            while (count)
-            {
-                *buf++ = blue;
-                *buf++ = green;
-                *buf++ = red;
-                count--;
-            }
-        }
-        else
-        {
+            uint8_t* pdst = buf;
+            int32_t hcount = width;
             do
             {
-                uint8_t* pdst = buf;
-                int32_t hcount = width;
-                do
-                {
-                    *pdst++ = blue;
-                    *pdst++ = green;
-                    *pdst++ = red;
-                } while (--hcount);
+                *pdst++ = blue;
+                *pdst++ = green;
+                *pdst++ = red;
+            } while (--hcount);
 
-                buf += stride;
-            } while (--height);
-        }
+            buf += stride;
+        } while (--height);
     }
 }
 
@@ -551,66 +517,32 @@ void blipvert::Fill_IYU1(uint8_t y_level, uint8_t u_level, uint8_t v_level, uint
 void blipvert::Fill_IYU2(uint8_t y_level, uint8_t u_level, uint8_t v_level, uint8_t alpha,
     int32_t width, int32_t height, uint8_t* buf, int32_t stride)
 {
-    if (UseFasterLooping)
+    if (!stride)
     {
-        uint32_t fill = static_cast<uint32_t>(0xFF000000 | (v_level << 16) | (y_level  << 8) | u_level);
-
-        if (!stride)
+        uint32_t count = width * height;
+        while (count)
         {
-            uint32_t count = width * height;
-            while (count)
-            {
-                *reinterpret_cast<uint32_t*>(buf) = fill;
-                buf += 3;
-                count--;
-            }
-        }
-        else
-        {
-            do
-            {
-                uint8_t* pdst = buf;
-                int32_t hcount = width;
-                do
-                {
-                    *reinterpret_cast<uint32_t*>(pdst) = fill;
-                    pdst += 3;
-
-                } while (--hcount);
-
-                buf += stride;
-            } while (--height);
+            *buf++ = u_level;
+            *buf++ = y_level;
+            *buf++ = v_level;
+            count--;
         }
     }
     else
     {
-        if (!stride)
+        do
         {
-            uint32_t count = width * height;
-            while (count)
-            {
-                *buf++ = u_level;
-                *buf++ = y_level;
-                *buf++ = v_level;
-                count--;
-            }
-        }
-        else
-        {
+            uint8_t* pdst = buf;
+            int32_t hcount = width;
             do
             {
-                uint8_t* pdst = buf;
-                int32_t hcount = width;
-                do
-                {
-                    *pdst++ = u_level;
-                    *pdst++ = y_level;
-                    *pdst++ = v_level;
-                } while (--hcount);
+                *pdst++ = u_level;
+                *pdst++ = y_level;
+                *pdst++ = v_level;
+            } while (--hcount);
 
-                buf += stride;
-            } while (--height);
-        }
+            buf += stride;
+        } while (--height);
     }
 }
 

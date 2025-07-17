@@ -1471,7 +1471,6 @@ map<MediaFormatID, VideoFormatInfo*> MediaFormatInfoMap;
 map<Fourcc, const MediaFormatID> FourccToIDMap;
 
 bool blipvert::IsInitialized = false;
-bool blipvert::UseFasterLooping = false;
 bool blipvert::IsBigEndian = false;
 
 void blipvert::InitializeLibrary(void)
@@ -1497,16 +1496,6 @@ void blipvert::InitializeLibrary(void)
     }
 
     IsInitialized = true;
-}
-
-bool blipvert::get_UseFasterLooping()
-{
-    return UseFasterLooping;
-}
-
-void blipvert::set_UseFasterLooping(bool value)
-{
-    UseFasterLooping = value;
 }
 
 

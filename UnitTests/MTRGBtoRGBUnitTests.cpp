@@ -79,17 +79,6 @@ namespace BlipvertUnitTests
 			Run8bitTestSeries(MVFMT_RGB32, MVFMT_RGB24);
 		}
 
-		// Don't use faster-looping for multi-threaded transforming
-		//TEST_METHOD(MT_RGB32_to_RGB24_Fast_UnitTest)
-		//{
-		//	bool savef = get_UseFasterLooping();
-		//	set_UseFasterLooping(true);
-
-		//	Run8bitTestSeries(MVFMT_RGB32, MVFMT_RGB24);
-
-		//	set_UseFasterLooping(savef);
-		//}
-
 		TEST_METHOD(MT_RGB32_to_RGB565_UnitTest)
 		{
 			Run8bitTestSeries(MVFMT_RGB32, MVFMT_RGB565);
@@ -108,17 +97,6 @@ namespace BlipvertUnitTests
 		{
 			Run8bitTestSeries(MVFMT_RGB24, MVFMT_RGB32);
 		}
-
-		TEST_METHOD(MT_RGB24_Fast_to_RGB32_UnitTest)
-		{
-			bool savef = get_UseFasterLooping();
-			set_UseFasterLooping(true);
-
-			Run8bitTestSeries(MVFMT_RGB24, MVFMT_RGB32);
-
-			set_UseFasterLooping(savef);
-		}
-
 		TEST_METHOD(MT_RGB24_to_RGB565_UnitTest)
 		{
 			Run8bitTestSeries(MVFMT_RGB24, MVFMT_RGB565);
@@ -205,17 +183,6 @@ namespace BlipvertUnitTests
 			Run8bitPalletizedTestSeries(MVFMT_RGB8, MVFMT_RGB24);
 		}
 
-		// Don't use faster-looping for multi-threaded transforming
-		//TEST_METHOD(MT_RGB8_to_RGB24_Fast_UnitTest)
-		//{
-		//	bool savef = get_UseFasterLooping();
-		//	set_UseFasterLooping(true);
-
-		//	Run8bitPalletizedTestSeries(MVFMT_RGB8, MVFMT_RGB24);
-
-		//	set_UseFasterLooping(savef);
-		//}
-
 		TEST_METHOD(MT_RGB8_to_RGB565_UnitTest)
 		{
 			Run8bitPalletizedTestSeries(MVFMT_RGB8, MVFMT_RGB565);
@@ -240,17 +207,6 @@ namespace BlipvertUnitTests
 			Run4bitPalletizedTestSeries(MVFMT_RGB4, MVFMT_RGB24);
 		}
 
-		// Don't use faster-looping for multi-threaded transforming
-		//TEST_METHOD(MT_RGB4_to_RGB24_Fast_UnitTest)
-		//{
-		//	bool savef = get_UseFasterLooping();
-		//	set_UseFasterLooping(true);
-
-		//	Run4bitPalletizedTestSeries(MVFMT_RGB4, MVFMT_RGB24);
-
-		//	set_UseFasterLooping(savef);
-		//}
-
 		TEST_METHOD(MT_RGB4_to_RGB565_UnitTest)
 		{
 			Run4bitPalletizedTestSeries(MVFMT_RGB4, MVFMT_RGB565);
@@ -274,17 +230,6 @@ namespace BlipvertUnitTests
 		{
 			Run1bitPalletizedTestSeries(MVFMT_RGB1, MVFMT_RGB24);
 		}
-
-		// Don't use faster-looping for multi-threaded transforming
-		//TEST_METHOD(MT_RGB1_to_RGB24_Fast_UnitTest)
-		//{
-		//	bool savef = get_UseFasterLooping();
-		//	set_UseFasterLooping(true);
-
-		//	Run1bitPalletizedTestSeries(MVFMT_RGB1, MVFMT_RGB24);
-
-		//	set_UseFasterLooping(savef);
-		//}
 
 		TEST_METHOD(MT_RGB1_to_RGB565_UnitTest)
 		{
@@ -366,12 +311,16 @@ namespace BlipvertUnitTests
 			std::unique_ptr<uint8_t[]> inBuf(new uint8_t[inBufBize]);
 			uint8_t* inBufPtr = inBuf.get();
 			memset(inBufPtr, 0, inBufBize);
+			GenerateVerticalColorBars(inFormat, width, height, inBufPtr, in_stride);
 
 			std::unique_ptr<uint8_t[]> outBuf(new uint8_t[outBufBize]);
 			uint8_t* outBufPtr = outBuf.get();
 			memset(outBufPtr, 0, outBufBize);
 
-			fillBufFunctPtr(red, green, blue, alpha, width, height, inBufPtr, in_stride);
+			std::unique_ptr<uint8_t[]> testBuf(new uint8_t[outBufBize]);
+			uint8_t* testBufPtr = testBuf.get();
+			memset(testBufPtr, 0, outBufBize);
+			GenerateVerticalColorBars(outFormat, width, height, testBufPtr, out_stride);
 
 			t_stagetransformfunc pstage_in = FindTransformStage(inFormat);
 			Assert::IsNotNull(reinterpret_cast<void*>(pstage_in), L"FindTransformStage for inFormat returned a null function pointer.");
@@ -381,7 +330,7 @@ namespace BlipvertUnitTests
 
 			RunMultiThreadedTransform(encodeTransPtr,width, height, pstage_in, inBufPtr, in_stride, false, nullptr, pstage_out, outBufPtr, out_stride, false, nullptr);
 
-			Assert::IsTrue(bufCheckFunctPtr(red, green, blue, alpha, width, height, outBufPtr, out_stride), L"RGB buffer did not contain expected values.");
+			Assert::IsTrue(memcmp(outBufPtr, testBufPtr, outBufBize) == 0, L"RGB buffer did not contain expected values.");
 		}
 
 		void Run565bitTestSeries(const MediaFormatID& inFormat, const MediaFormatID& outFormat)

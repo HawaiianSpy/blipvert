@@ -58,9 +58,7 @@ uint32_t blipvert::CalcBufferSize_RGB24(int32_t width, int32_t height, int32_t& 
         stride = width * 3;
     }
 
-    uint32_t result = height * stride;
-    if (UseFasterLooping) result++;
-    return result;
+    return height * stride;
 }
 
 uint32_t blipvert::CalcBufferSize_RGB565(int32_t width, int32_t height, int32_t& stride)
@@ -234,9 +232,7 @@ uint32_t blipvert::CalcBufferSize_IYU2(int32_t width, int32_t height, int32_t& s
         stride = width * 3;
     }
 
-    uint32_t result = height * stride;
-    if (UseFasterLooping) result++;
-    return result;
+    return height * stride;
 }
 
 uint32_t blipvert::CalcBufferSize_Y800(int32_t width, int32_t height, int32_t& stride)

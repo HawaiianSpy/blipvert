@@ -719,18 +719,12 @@ namespace BlipvertUnitTests
 		{
 			thread_count = GetCommonMaxThreadCount(rgbFormat, yuvFormat, MTTestBufferWidth, MTTestBufferHeight, thread::hardware_concurrency());
 
-			for (const RGBATestData& testData : BlipvertUnitTests::TestMetaData)
-			{
-				RunSingle8bitTest(rgbFormat, yuvFormat, testData.red, testData.green, testData.blue, testData.alpha);
-			}
+			RunSingle8bitTest(rgbFormat, yuvFormat);
 
 			uint32_t saveb = StrideBump;
 			StrideBump = StrideBumpTestValue;
 
-			for (const RGBATestData& testData : BlipvertUnitTests::TestMetaData)
-			{
-				RunSingle8bitTest(rgbFormat, yuvFormat, testData.red, testData.green, testData.blue, testData.alpha);
-			}
+			RunSingle8bitTest(rgbFormat, yuvFormat);
 
 			StrideBump = saveb;
 		}
@@ -739,23 +733,17 @@ namespace BlipvertUnitTests
 		{
 			thread_count = GetCommonMaxThreadCount(rgbFormat, yuvFormat, MTTestBufferWidth, MTTestBufferHeight, thread::hardware_concurrency());
 
-			for (const RGBATestData& testData : BlipvertUnitTests::AlphaTestMetaData)
-			{
-				RunSingle8bitTest(rgbFormat, yuvFormat, testData.red, testData.green, testData.blue, testData.alpha);
-			}
+			RunSingle8bitTest(rgbFormat, yuvFormat);
 
 			uint32_t saveb = StrideBump;
 			StrideBump = StrideBumpTestValue;
 
-			for (const RGBATestData& testData : BlipvertUnitTests::AlphaTestMetaData)
-			{
-				RunSingle8bitTest(rgbFormat, yuvFormat, testData.red, testData.green, testData.blue, testData.alpha);
-			}
+			RunSingle8bitTest(rgbFormat, yuvFormat);
 
 			StrideBump = saveb;
 		}
 
-		void RunSingle8bitTest(const MediaFormatID& rgbFormat, const MediaFormatID& yuvFormat, uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha)
+		void RunSingle8bitTest(const MediaFormatID& rgbFormat, const MediaFormatID& yuvFormat)
 		{
 			// RGB to YUV
 			t_transformfunc encodeTransPtr = FindVideoTransform(rgbFormat, yuvFormat);
@@ -781,11 +769,16 @@ namespace BlipvertUnitTests
 			std::unique_ptr<uint8_t[]> rgbBuf(new uint8_t[rgbBufBize]);
 			uint8_t* rgbBufPtr = rgbBuf.get();
 			memset(rgbBufPtr, 0, rgbBufBize);
+			GenerateVerticalColorBars(rgbFormat, width, height, rgbBufPtr, in_stride);
+
 			std::unique_ptr<uint8_t[]> yuvBuf(new uint8_t[yuvBufBize]);
 			uint8_t* yuvBufPtr = yuvBuf.get();
 			memset(yuvBufPtr, 0, yuvBufBize);
 
-			fillBufFunctPtr(red, green, blue, alpha, width, height, rgbBufPtr, in_stride);
+			std::unique_ptr<uint8_t[]> testBuf(new uint8_t[yuvBufBize]);
+			uint8_t* testBufPtr = testBuf.get();
+			memset(testBufPtr, 0, yuvBufBize);
+			GenerateVerticalColorBars(yuvFormat, width, height, testBufPtr, out_stride);
 
 			t_stagetransformfunc pstage_in = FindTransformStage(rgbFormat);
 			Assert::IsNotNull(reinterpret_cast<void*>(pstage_in), L"FindTransformStage for rgbFormat returned a null function pointer.");
@@ -793,14 +786,9 @@ namespace BlipvertUnitTests
 			t_stagetransformfunc pstage_out = FindTransformStage(yuvFormat);
 			Assert::IsNotNull(reinterpret_cast<void*>(pstage_out), L"FindTransformStage for yuvFormat returned a null function pointer.");
 
-			uint8_t Y;
-			uint8_t U;
-			uint8_t V;
-			FastRGBtoYUV(red, green, blue, &Y, &U, &V);
-
 			RunMultiThreadedTransform(encodeTransPtr, width, height, pstage_in, rgbBufPtr, in_stride, false, nullptr, pstage_out, yuvBufPtr, out_stride, false, nullptr);
 
-			Assert::IsTrue(bufCheckFunctPtr(Y, U, V, alpha, width, height, yuvBufPtr, out_stride), L"YUV buffer did not contain expected values.");
+			Assert::IsTrue(memcmp(yuvBufPtr, testBufPtr, yuvBufBize) == 0, L"YUV buffer did not contain expected values.");
 		}
 
 		void Run565bitTestSeries(const MediaFormatID& rgbFormat, const MediaFormatID& yuvFormat)

@@ -36,6 +36,7 @@
 #include "RGBtoYUV.h"
 #include "RGBtoRGB.h"
 #include "YUVtoYUV.h"
+#include "Utilities.h"
 
 #include <map>
 
@@ -1471,9 +1472,15 @@ map<Fourcc, const MediaFormatID> FourccToIDMap;
 
 bool blipvert::IsInitialized = false;
 bool blipvert::UseFasterLooping = false;
+bool blipvert::IsBigEndian = false;
 
 void blipvert::InitializeLibrary(void)
 {
+    // Note the endianess of the processor.
+    uint16_t value = 0x0102;
+    uint8_t* ptr = reinterpret_cast<uint8_t*>(&value);
+    IsBigEndian =  ptr[0] == 0x01;
+
     InitLookupTables();
 
     uint16_t index = 0;

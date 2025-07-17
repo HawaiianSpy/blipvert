@@ -191,6 +191,7 @@ namespace blipvert
 
     extern bool IsInitialized;      // true / false that the library has been initialized.
     extern bool UseFasterLooping;   // true = faster looping will be used that may read/write outside of a tightly allocated buffer (mostly RGB24 for now).
+    extern bool IsBigEndian;        // true indicates running on a big endian processor.
 
     //
     // Function pointer type for all colorspace transforms.

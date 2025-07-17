@@ -43,6 +43,7 @@ namespace BlipvertUnitTests
 
 	extern const std::vector<RGBATestData> AlphaTestMetaData;
 	extern const std::vector<RGBATestData> TestMetaData;
+	extern const std::vector<RGBATestData> ColorbarMetaData;
 
 	extern const uint32_t TestBufferWidth;
 	extern const uint32_t TestBufferHeight;
@@ -56,6 +57,8 @@ namespace BlipvertUnitTests
 	extern uint32_t CalculateStrideBump(const blipvert::MediaFormatID& inFormat, uint32_t width, uint32_t height);
 
 	typedef bool(__cdecl* t_buffercheckfunc) (uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha,int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride);
+
+	extern void GenerateVerticalColorBars(const blipvert::MediaFormatID& target, int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride);
 
 	t_buffercheckfunc FindBufferCheckFunction(const blipvert::MediaFormatID& target);
 

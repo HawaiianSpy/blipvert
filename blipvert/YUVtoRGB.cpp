@@ -29,6 +29,7 @@
 #include "YUVtoRGB.h"
 #include "CommonMacros.h"
 #include "LookupTables.h"
+#include "blipvert.h"
 
 using namespace blipvert;
 
@@ -1980,15 +1981,30 @@ void blipvert::Y16_to_RGB32(Stage* in, Stage* out)
 
     while (height)
     {
-        uint8_t* psrc = in_buf + 1; // we want the upper 8 bits of little-endian.
+        uint16_t* psrc = reinterpret_cast<uint16_t*>(in_buf);
         uint8_t* pdst = out_buf;
         uint32_t hcount = width;
-        while (hcount)
+
+        if (IsBigEndian)
         {
-            *reinterpret_cast<uint32_t*>(pdst) = rgb32_greyscale[*psrc];
-            psrc += 2;
-            pdst += 4;
-            hcount--;
+            while (hcount)
+            {
+                uint16_t Y = *psrc++;
+                uint8_t scaled = Scale16BitTo8Bit(Swap16BitEndian(Y));
+                *reinterpret_cast<uint32_t*>(pdst) = rgb32_greyscale[scaled];
+                pdst += 4;
+                hcount--;
+            }
+        }
+        else
+        {
+            while (hcount)
+            {
+                uint16_t Y = Scale16BitTo8Bit(*psrc++);
+                *reinterpret_cast<uint32_t*>(pdst) = rgb32_greyscale[Y];
+                pdst += 4;
+                hcount--;
+            }
         }
 
         in_buf += in_stride;
@@ -2008,16 +2024,32 @@ void blipvert::Y16_to_RGB24(Stage* in, Stage* out)
 
     while (height)
     {
-        uint8_t* psrc = in_buf + 1; // we want the upper 8 bits of little-endian.
+        uint16_t* psrc = reinterpret_cast<uint16_t*>(in_buf);
         uint8_t* pdst = out_buf;
         uint32_t hcount = width;
-        while (hcount)
+
+        if (IsBigEndian)
         {
-            *pdst++ = *psrc;
-            *pdst++ = *psrc;
-            *pdst++ = *psrc;
-            psrc += 2;
-            hcount--;
+            while (hcount)
+            {
+                uint16_t Y = *psrc++;
+                uint8_t scaled = Scale16BitTo8Bit(Swap16BitEndian(Y));
+                *pdst++ = scaled;
+                *pdst++ = scaled;
+                *pdst++ = scaled;
+                hcount--;
+            }
+        }
+        else
+        {
+            while (hcount)
+            {
+                uint8_t scaled = Scale16BitTo8Bit(*psrc++);
+                *pdst++ = scaled;
+                *pdst++ = scaled;
+                *pdst++ = scaled;
+                hcount--;
+            }
         }
 
         in_buf += in_stride;
@@ -2037,15 +2069,29 @@ void blipvert::Y16_to_RGB565(Stage* in, Stage* out)
 
     while (height)
     {
-        uint8_t* psrc = in_buf + 1; // we want the upper 8 bits of little-endian.
+        uint16_t* psrc = reinterpret_cast<uint16_t*>(in_buf);
         uint8_t* pdst = out_buf;
         uint32_t hcount = width;
-        while (hcount)
+
+        if (IsBigEndian)
         {
-            *reinterpret_cast<uint16_t*>(pdst) = rgb565_greyscale[*psrc];
-            psrc += 2;
-            pdst += 2;
-            hcount--;
+            while (hcount)
+            {
+                uint16_t Y = *psrc++;
+                uint8_t scaled = Scale16BitTo8Bit(Swap16BitEndian(Y));
+                *reinterpret_cast<uint16_t*>(pdst) = rgb565_greyscale[scaled];
+                pdst += 2;
+                hcount--;
+            }
+        }
+        else
+        {
+            while (hcount)
+            {
+                *reinterpret_cast<uint16_t*>(pdst) = rgb565_greyscale[Scale16BitTo8Bit(*psrc++)];
+                pdst += 2;
+                hcount--;
+            }
         }
 
         in_buf += in_stride;
@@ -2065,15 +2111,29 @@ void blipvert::Y16_to_RGB555(Stage* in, Stage* out)
 
     while (height)
     {
-        uint8_t* psrc = in_buf + 1; // we want the upper 8 bits of little-endian.
+        uint16_t* psrc = reinterpret_cast<uint16_t*>(in_buf);
         uint8_t* pdst = out_buf;
         uint32_t hcount = width;
-        while (hcount)
+
+        if (IsBigEndian)
         {
-            *reinterpret_cast<uint16_t*>(pdst) = rgb555_greyscale[*psrc];
-            psrc += 2;
-            pdst += 2;
-            hcount--;
+            while (hcount)
+            {
+                uint16_t Y = *psrc++;
+                uint8_t scaled = Scale16BitTo8Bit(Swap16BitEndian(Y));
+                *reinterpret_cast<uint16_t*>(pdst) = rgb555_greyscale[scaled];
+                pdst += 2;
+                hcount--;
+            }
+        }
+        else
+        {
+            while (hcount)
+            {
+                *reinterpret_cast<uint16_t*>(pdst) = rgb555_greyscale[Scale16BitTo8Bit(*psrc++)];
+                pdst += 2;
+                hcount--;
+            }
         }
 
         in_buf += in_stride;

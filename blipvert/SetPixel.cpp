@@ -247,9 +247,17 @@ void blipvert::SetPixel_Y16(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level
     if (!stride)
         stride = width * 2;
 
-    uint8_t* pixel = buf + (y * stride) + (x * 2);
-    buf[0] = 0;
-    buf[1] = ry_level;
+    uint16_t* pixel = reinterpret_cast<uint16_t*>(buf + (y * stride) + (x * sizeof(uint16_t)));
+    // Y16 is little endian.
+    if (IsBigEndian)
+    {
+        uint16_t scaled = Scale8BitTo16Bit(ry_level);
+        *pixel = Swap16BitEndian(scaled);
+    }
+    else
+    {
+        *pixel = Scale8BitTo16Bit(ry_level);
+    }
 }
 
 void blipvert::SetPixel_Y41P(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha, int32_t x, int32_t y, int32_t width, int32_t height, uint8_t* buf, int32_t stride)

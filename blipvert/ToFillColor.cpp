@@ -30,6 +30,7 @@
 #include "CommonMacros.h"
 #include "LookupTables.h"
 #include <cstring>
+#include "blipvert.h"
 
 using namespace blipvert;
 
@@ -641,7 +642,11 @@ void blipvert::Fill_Y16(uint8_t y_level, uint8_t u_level, uint8_t v_level, uint8
     if (!stride)
         stride = width * 2;
 
-    uint16_t fill = static_cast<uint16_t>(y_level) << 8;
+    uint16_t fill = Scale8BitTo16Bit(y_level);
+    if (IsBigEndian)
+    {
+        fill = Swap16BitEndian(fill);
+    }
 
     for (int32_t h = 0; h < height; h++)
     {

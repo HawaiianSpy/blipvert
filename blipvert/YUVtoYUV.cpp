@@ -2021,16 +2021,28 @@ void blipvert::PackedY422_to_Y16(Stage* in, Stage* out)
     for (int32_t y = 0; y < height; y++)
     {
         uint8_t* psrc = in_buf;
-        uint8_t* pdst = out_buf;
+        uint16_t* pdst = reinterpret_cast<uint16_t*>(out_buf);
 
-        for (int32_t x = 0; x < width; x += 2)
+        if (IsBigEndian)
         {
-            *pdst++ = 0x00;
-            *pdst++ = psrc[in_y0];
-            *pdst++ = 0x00;
-            *pdst++ = psrc[in_y1];
+            for (int32_t x = 0; x < width; x += 2)
+            {
+                uint16_t scaled = Scale8BitTo16Bit(psrc[in_y0]);
+                *pdst++ = Swap16BitEndian(scaled);
 
-            psrc += 4;
+                scaled = Scale8BitTo16Bit(psrc[in_y1]);
+                *pdst++ = Swap16BitEndian(scaled);
+                psrc += 4;
+            }
+        }
+        else
+        {
+            for (int32_t x = 0; x < width; x += 2)
+            {
+                *pdst++ = Scale8BitTo16Bit(psrc[in_y0]);
+                *pdst++ = Scale8BitTo16Bit(psrc[in_y1]);
+                psrc += 4;
+            }
         }
 
         in_buf += in_stride;
@@ -2080,12 +2092,22 @@ void blipvert::PlanarYUV_to_Y16(Stage* in, Stage* out)
     for (int32_t y = 0; y < height; y++)
     {
         uint8_t* psrc = in_buf;
-        uint8_t* pdst = out_buf;
+        uint16_t* pdst = reinterpret_cast<uint16_t*>(out_buf);
 
-        for (int32_t x = 0; x < width; x++)
+        if (IsBigEndian)
         {
-            *pdst++ = 0x00;
-            *pdst++ = *psrc++;
+            for (int32_t x = 0; x < width; x++)
+            {
+                uint16_t scaled = Scale8BitTo16Bit(*psrc++);
+                *pdst++ = Swap16BitEndian(scaled);
+            }
+        }
+        else
+        {
+            for (int32_t x = 0; x < width; x++)
+            {
+                *pdst++ = Scale8BitTo16Bit(*psrc++);
+            }
         }
 
         in_buf += in_y_stride;
@@ -2546,16 +2568,32 @@ void blipvert::Y16_to_PackedY422(Stage* in, Stage* out)
 
     for (int32_t y = 0; y < height; y++)
     {
-        uint8_t* psrc = in_buf;
+        uint16_t* psrc = reinterpret_cast<uint16_t*>(in_buf);
         uint8_t* pdst = out_buf;
-        for (int32_t x = 0; x < width; x += 2)
+
+        if (IsBigEndian)
         {
-            pdst[out_y0] = psrc[1];
-            pdst[out_y1] = psrc[3];
-            pdst[out_u] = 0;
-            pdst[out_v] = 0;
-            psrc += 4;
-            pdst += 4;
+            for (int32_t x = 0; x < width; x += 2)
+            {
+                pdst[out_y0] = Scale16BitTo8Bit(Swap16BitEndian(psrc[0]));
+                pdst[out_y1] = Scale16BitTo8Bit(Swap16BitEndian(psrc[1]));
+                pdst[out_u] = 0;
+                pdst[out_v] = 0;
+                psrc += 2;
+                pdst += 4;
+            }
+        }
+        else
+        {
+            for (int32_t x = 0; x < width; x += 2)
+            {
+                pdst[out_y0] = Scale16BitTo8Bit(psrc[0]);
+                pdst[out_y1] = Scale16BitTo8Bit(psrc[1]);
+                pdst[out_u] = 0;
+                pdst[out_v] = 0;
+                psrc += 2;
+                pdst += 4;
+            }
         }
 
         in_buf += in_stride;
@@ -2575,13 +2613,23 @@ void blipvert::Y16_to_PlanarYUV(Stage* in, Stage* out)
 
     for (int32_t y = 0; y < height; y++)
     {
-        uint8_t* psrc = in_buf + 1;
+        uint16_t* psrc = reinterpret_cast<uint16_t*>(in_buf);
         uint8_t* pdst = out_buf;
 
-        for (int32_t x = 0; x < width; x++)
+        if (IsBigEndian)
         {
-            *pdst++ = *psrc;
-            psrc += 2;
+            for (int32_t x = 0; x < width; x++)
+            {
+                uint16_t Y = *psrc++;
+                *pdst++ = Scale16BitTo8Bit(Swap16BitEndian(Y));
+            }
+        }
+        else
+        {
+            for (int32_t x = 0; x < width; x++)
+            {
+                *pdst++ = Scale16BitTo8Bit(*psrc++);
+            }
         }
 
         in_buf += in_stride;
@@ -2613,13 +2661,23 @@ void blipvert::Y16_to_IMCx(Stage* in, Stage* out)
 
     for (int32_t y = 0; y < height; y++)
     {
-        uint8_t* psrc = in_buf + 1;
+        uint16_t* psrc = reinterpret_cast<uint16_t*>(in_buf);
         uint8_t* pdst = out_buf;
 
-        for (int32_t x = 0; x < width; x++)
+        if (IsBigEndian)
         {
-            *pdst++ = *psrc;
-            psrc += 2;
+            for (int32_t x = 0; x < width; x++)
+            {
+                uint16_t Y = *psrc++;
+                *pdst++ = Scale16BitTo8Bit(Swap16BitEndian(Y));
+            }
+        }
+        else
+        {
+            for (int32_t x = 0; x < width; x++)
+            {
+                *pdst++ = Scale16BitTo8Bit(*psrc++);
+            }
         }
 
         in_buf += in_stride;
@@ -2642,12 +2700,22 @@ void blipvert::IMCx_to_Y16(Stage* in, Stage* out)
     for (int32_t y = 0; y < height; y++)
     {
         uint8_t* psrc = in_buf;
-        uint8_t* pdst = out_buf;
+        uint16_t* pdst = reinterpret_cast<uint16_t*>(out_buf);
 
-        for (int32_t x = 0; x < width; x++)
+        if (IsBigEndian)
         {
-            *pdst++ = 0x00;
-            *pdst++ = *psrc++;
+            for (int32_t x = 0; x < width; x++)
+            {
+                uint16_t scaled = Scale8BitTo16Bit(*psrc++);
+                *pdst++ = Swap16BitEndian(scaled);
+            }
+        }
+        else
+        {
+            for (int32_t x = 0; x < width; x++)
+            {
+                *pdst++ = Scale8BitTo16Bit(*psrc++);
+            }
         }
 
         in_buf += in_stride;
@@ -5348,14 +5416,27 @@ void blipvert::AYUV_to_Y16(Stage* in, Stage* out)
     while (height)
     {
         uint8_t* psrc = in_buf + 2;
-        uint8_t* pdst = out_buf;
+        uint16_t* pdst = reinterpret_cast<uint16_t*>(out_buf);
         int32_t hcount = width;
-        while (hcount)
+
+        if (IsBigEndian)
         {
-            *pdst++ = 0x00;
-            *pdst++ = *psrc;
-            psrc += 4;
-            hcount--;
+            while (hcount)
+            {
+                uint16_t scaled = Scale8BitTo16Bit(*psrc);
+                *pdst++ = Swap16BitEndian(scaled);
+                psrc += 4;
+                hcount--;
+            }
+        }
+        else
+        {
+            while (hcount)
+            {
+                *pdst++ = Scale8BitTo16Bit(*psrc);
+                psrc += 4;
+                hcount--;
+            }
         }
 
         in_buf += in_stride;
@@ -5677,20 +5758,40 @@ void blipvert::IYU1_to_Y16(Stage* in, Stage* out)
     for (int32_t y = 0; y < height; y++)
     {
         uint8_t* psrc = in_buf;
-        uint8_t* pdst = out_buf;
-        for (int32_t x = 0; x < width; x += 4)
-        {
-            pdst[0] = 0;
-            pdst[1] = psrc[1];
-            pdst[2] = 0;
-            pdst[3] = psrc[2];
-            pdst[4] = 0;
-            pdst[5] = psrc[4];
-            pdst[6] = 0;
-            pdst[7] = psrc[5];
+        uint16_t* pdst = reinterpret_cast<uint16_t*>(out_buf);
 
-            pdst += 8;
-            psrc += 6;
+        if (IsBigEndian)
+        {
+            for (int32_t x = 0; x < width; x += 4)
+            {
+                uint16_t scaled = Scale8BitTo16Bit(psrc[1]);
+                pdst[0] = Swap16BitEndian(scaled);
+
+                scaled = Scale8BitTo16Bit(psrc[2]);
+                pdst[1] = Swap16BitEndian(scaled);
+
+                scaled = Scale8BitTo16Bit(psrc[4]);
+                pdst[2] = Swap16BitEndian(scaled);
+
+                scaled = Scale8BitTo16Bit(psrc[5]);
+                pdst[3] = Swap16BitEndian(scaled);
+
+                pdst += 4;
+                psrc += 6;
+            }
+        }
+        else
+        {
+            for (int32_t x = 0; x < width; x += 4)
+            {
+                pdst[0] = Scale8BitTo16Bit(psrc[1]);
+                pdst[1] = Scale8BitTo16Bit(psrc[2]);
+                pdst[2] = Scale8BitTo16Bit(psrc[4]);
+                pdst[3] = Scale8BitTo16Bit(psrc[5]);
+
+                pdst += 4;
+                psrc += 6;
+            }
         }
 
         in_buf += in_stride;
@@ -6016,12 +6117,24 @@ void blipvert::IYU2_to_Y16(Stage* in, Stage* out)
     for (int32_t y = 0; y < height; y++)
     {
         uint8_t* psrc = in_buf + 1;
-        uint8_t* pdst = out_buf;
-        for (int32_t x = 0; x < width; x++)
+        uint16_t* pdst = reinterpret_cast<uint16_t*>(out_buf);
+
+        if (IsBigEndian)
         {
-            *pdst++ = 0x00;
-            *pdst++ = *psrc;
-            psrc += 3;
+            for (int32_t x = 0; x < width; x++)
+            {
+                uint16_t scaled = Scale8BitTo16Bit(*psrc);
+                *pdst++ = Swap16BitEndian(scaled);
+                psrc += 3;
+            }
+        }
+        else
+        {
+            for (int32_t x = 0; x < width; x++)
+            {
+                *pdst++ = Scale8BitTo16Bit(*psrc);
+                psrc += 3;
+            }
         }
 
         in_buf += in_stride;
@@ -6423,11 +6536,23 @@ void blipvert::Y800_to_Y16(Stage* in, Stage* out)
     while (height)
     {
         uint8_t* psrc = in_buf;
-        uint8_t* pdst = out_buf;
-        for (uint16_t index = 0; index < width; index++)
+        uint16_t* pdst = reinterpret_cast<uint16_t*>(out_buf);
+
+        if (IsBigEndian)
         {
-            *pdst++ = 0x00;
-            *pdst++ = *psrc++;
+            for (uint16_t index = 0; index < width; index++)
+            {
+                uint16_t scaled = Scale8BitTo16Bit(*psrc++);
+                *pdst++ = Swap16BitEndian(scaled);
+            }
+        }
+        else
+        {
+            for (uint16_t index = 0; index < width; index++)
+            {
+                *pdst++ = Scale8BitTo16Bit(*psrc++);
+            }
+
         }
 
         in_buf += in_stride;
@@ -6971,19 +7096,42 @@ void blipvert::CLJR_to_Y16(Stage* in, Stage* out)
     for (int32_t y = 0; y < height; y++)
     {
         uint32_t* psrc = reinterpret_cast<uint32_t*>(in_buf);
-        uint8_t* pdst = out_buf;
-        for (int32_t x = 0; x < width; x += 4)
+        uint16_t* pdst = reinterpret_cast<uint16_t*>(out_buf);
+
+        if (IsBigEndian)
         {
-            uint32_t mpixel = *psrc++;
-            pdst[0] = 0;
-            pdst[1] = static_cast<uint8_t>(UnpackCLJR_Y0(mpixel));
-            pdst[2] = 0;
-            pdst[3] = static_cast<uint8_t>(UnpackCLJR_Y1(mpixel));
-            pdst[4] = 0;
-            pdst[5] = static_cast<uint8_t>(UnpackCLJR_Y2(mpixel));
-            pdst[6] = 0;
-            pdst[7] = static_cast<uint8_t>(UnpackCLJR_Y3(mpixel));
-            pdst += 8;
+            for (int32_t x = 0; x < width; x += 4)
+            {
+                uint32_t mpixel = *psrc++;
+
+                uint16_t scaled = Scale8BitTo16Bit(UnpackCLJR_Y0(mpixel));
+                pdst[0] = Swap16BitEndian(scaled);
+
+                scaled = Scale8BitTo16Bit(UnpackCLJR_Y1(mpixel));
+                pdst[1] = Swap16BitEndian(scaled);
+
+                scaled = Scale8BitTo16Bit(UnpackCLJR_Y2(mpixel));
+                pdst[2] = Swap16BitEndian(scaled);
+
+                scaled = Scale8BitTo16Bit(UnpackCLJR_Y3(mpixel));
+                pdst[3] = Swap16BitEndian(scaled);
+
+                pdst += 4;
+            }
+        }
+        else
+        {
+            for (int32_t x = 0; x < width; x += 4)
+            {
+                uint32_t mpixel = *psrc++;
+
+                pdst[0] = Scale8BitTo16Bit(UnpackCLJR_Y0(mpixel));
+                pdst[1] = Scale8BitTo16Bit(UnpackCLJR_Y1(mpixel));
+                pdst[2] = Scale8BitTo16Bit(UnpackCLJR_Y2(mpixel));
+                pdst[3] = Scale8BitTo16Bit(UnpackCLJR_Y3(mpixel));
+
+                pdst += 4;
+            }
         }
 
         in_buf += in_stride;
@@ -7375,28 +7523,56 @@ void blipvert::Y41P_to_Y16(Stage* in, Stage* out)
     for (int32_t y = 0; y < height; y++)
     {
         uint8_t* psrc = in_buf;
-        uint8_t* pdst = out_buf;
-        for (int32_t x = 0; x < width; x += 8)
-        {
-            pdst[0] = 0;
-            pdst[1] = psrc[1];      // Y0
-            pdst[2] = 0;
-            pdst[3] = psrc[3];      // Y1
-            pdst[4] = 0;
-            pdst[5] = psrc[5];      // Y2
-            pdst[6] = 0;
-            pdst[7] = psrc[7];      // Y3
-            pdst[8] = 0;
-            pdst[9] = psrc[8];      // Y4
-            pdst[10] = 0;
-            pdst[11] = psrc[9];      // Y5
-            pdst[12] = 0;
-            pdst[13] = psrc[10];     // Y6
-            pdst[14] = 0;
-            pdst[15] = psrc[11];     // Y7
+        uint16_t* pdst = reinterpret_cast<uint16_t*>(out_buf);
 
-            psrc += 12;
-            pdst += 16;
+        if (IsBigEndian)
+        {
+            for (int32_t x = 0; x < width; x += 8)
+            {
+                uint16_t scaled = Scale8BitTo16Bit(psrc[1]);
+                pdst[0] = Swap16BitEndian(scaled);
+
+                scaled = Scale8BitTo16Bit(psrc[3]);
+                pdst[1] = Swap16BitEndian(scaled);
+
+                scaled = Scale8BitTo16Bit(psrc[5]);
+                pdst[2] = Swap16BitEndian(scaled);
+
+                scaled = Scale8BitTo16Bit(psrc[7]);
+                pdst[3] = Swap16BitEndian(scaled);
+
+                scaled = Scale8BitTo16Bit(psrc[8]);
+                pdst[4] = Swap16BitEndian(scaled);
+
+                scaled = Scale8BitTo16Bit(psrc[9]);
+                pdst[5] = Swap16BitEndian(scaled);
+
+                scaled = Scale8BitTo16Bit(psrc[10]);
+                pdst[6] = Swap16BitEndian(scaled);
+
+                scaled = Scale8BitTo16Bit(psrc[11]);
+                pdst[7] = Swap16BitEndian(scaled);
+
+                psrc += 12;
+                pdst += 8;
+            }
+        }
+        else
+        {
+            for (int32_t x = 0; x < width; x += 8)
+            {
+                pdst[0] = Scale8BitTo16Bit(psrc[1]);
+                pdst[1] = Scale8BitTo16Bit(psrc[3]);
+                pdst[2] = Scale8BitTo16Bit(psrc[5]);
+                pdst[3] = Scale8BitTo16Bit(psrc[7]);
+                pdst[4] = Scale8BitTo16Bit(psrc[8]);
+                pdst[5] = Scale8BitTo16Bit(psrc[9]);
+                pdst[6] = Scale8BitTo16Bit(psrc[10]);
+                pdst[7] = Scale8BitTo16Bit(psrc[11]);
+
+                psrc += 12;
+                pdst += 8;
+            }
         }
 
         in_buf += in_stride;
@@ -8107,12 +8283,22 @@ void blipvert::NVx_to_Y16(Stage* in, Stage* out)
     for (int32_t y = 0; y < height; y++)
     {
         uint8_t* psrc = in_buf;
-        uint8_t* pdst = out_buf;
+        uint16_t* pdst = reinterpret_cast<uint16_t*>(out_buf);
 
-        for (int32_t x = 0; x < width; x++)
+        if (IsBigEndian)
         {
-            *pdst++ = 0x00;
-            *pdst++ = *psrc++;
+            for (int32_t x = 0; x < width; x++)
+            {
+                uint16_t scaled = Scale8BitTo16Bit(*psrc++);
+                *pdst++ = Swap16BitEndian(scaled);
+            }
+        }
+        else
+        {
+            for (int32_t x = 0; x < width; x++)
+            {
+                *pdst++ = Scale8BitTo16Bit(*psrc++);
+            }
         }
 
         in_buf += in_stride;
@@ -8686,16 +8872,30 @@ void blipvert::Y42T_to_Y16(Stage* in, Stage* out)
     for (int32_t y = 0; y < height; y++)
     {
         uint8_t* psrc = in_buf;
-        uint8_t* pdst = out_buf;
+        uint16_t* pdst = reinterpret_cast<uint16_t*>(out_buf);
 
-        for (int32_t x = 0; x < width; x += 2)
+        if (IsBigEndian)
         {
-            *pdst++ = 0x00;
-            *pdst++ = psrc[1] & 0xFE;
-            *pdst++ = 0x00;
-            *pdst++ = psrc[3] & 0xFE;
+            for (int32_t x = 0; x < width; x += 2)
+            {
+                uint16_t scaled = Scale8BitTo16Bit(psrc[1] & 0xFE);
+                *pdst++ = Swap16BitEndian(scaled);
 
-            psrc += 4;
+                scaled = Scale8BitTo16Bit(psrc[3] & 0xFE);
+                *pdst++ = Swap16BitEndian(scaled);
+
+                psrc += 4;
+            }
+        }
+        else
+        {
+            for (int32_t x = 0; x < width; x += 2)
+            {
+                *pdst++ = Scale8BitTo16Bit(psrc[1] & 0xFE);
+                *pdst++ = Scale8BitTo16Bit(psrc[3] & 0xFE);
+
+                psrc += 4;
+            }
         }
 
         in_buf += in_stride;
@@ -9389,28 +9589,56 @@ void blipvert::Y41T_to_Y16(Stage* in, Stage* out)
     for (int32_t y = 0; y < height; y++)
     {
         uint8_t* psrc = in_buf;
-        uint8_t* pdst = out_buf;
-        for (int32_t x = 0; x < width; x += 8)
-        {
-            pdst[0] = 0;
-            pdst[1] = psrc[1] & 0xFE;       // Y0
-            pdst[2] = 0;
-            pdst[3] = psrc[3] & 0xFE;       // Y1
-            pdst[4] = 0;
-            pdst[5] = psrc[5] & 0xFE;       // Y2
-            pdst[6] = 0;
-            pdst[7] = psrc[7] & 0xFE;       // Y3
-            pdst[8] = 0;
-            pdst[9] = psrc[8] & 0xFE;       // Y4
-            pdst[10] = 0;
-            pdst[11] = psrc[9] & 0xFE;      // Y5
-            pdst[12] = 0;
-            pdst[13] = psrc[10] & 0xFE;     // Y6
-            pdst[14] = 0;
-            pdst[15] = psrc[11] & 0xFE;     // Y7
+        uint16_t* pdst = reinterpret_cast<uint16_t*>(out_buf);
 
-            psrc += 12;
-            pdst += 16;
+        if (IsBigEndian)
+        {
+            for (int32_t x = 0; x < width; x += 8)
+            {
+                uint16_t scaled = Scale8BitTo16Bit(psrc[1] & 0xFE);
+                pdst[0] = Swap16BitEndian(scaled);
+
+                scaled = Scale8BitTo16Bit(psrc[3] & 0xFE);
+                pdst[1] = Swap16BitEndian(scaled);
+
+                scaled = Scale8BitTo16Bit(psrc[5] & 0xFE);
+                pdst[2] = Swap16BitEndian(scaled);
+
+                scaled = Scale8BitTo16Bit(psrc[7] & 0xFE);
+                pdst[3] = Swap16BitEndian(scaled);
+
+                scaled = Scale8BitTo16Bit(psrc[8] & 0xFE);
+                pdst[4] = Swap16BitEndian(scaled);
+
+                scaled = Scale8BitTo16Bit(psrc[9] & 0xFE);
+                pdst[5] = Swap16BitEndian(scaled);
+
+                scaled = Scale8BitTo16Bit(psrc[10] & 0xFE);
+                pdst[6] = Swap16BitEndian(scaled);
+
+                scaled = Scale8BitTo16Bit(psrc[11] & 0xFE);
+                pdst[7] = Swap16BitEndian(scaled);
+
+                psrc += 12;
+                pdst += 8;
+            }
+        }
+        else
+        {
+            for (int32_t x = 0; x < width; x += 8)
+            {
+                pdst[0] = Scale8BitTo16Bit(psrc[1] & 0xFE);
+                pdst[1] = Scale8BitTo16Bit(psrc[3] & 0xFE);
+                pdst[2] = Scale8BitTo16Bit(psrc[5] & 0xFE);
+                pdst[3] = Scale8BitTo16Bit(psrc[7] & 0xFE);
+                pdst[4] = Scale8BitTo16Bit(psrc[8] & 0xFE);
+                pdst[5] = Scale8BitTo16Bit(psrc[9] & 0xFE);
+                pdst[6] = Scale8BitTo16Bit(psrc[10] & 0xFE);
+                pdst[7] = Scale8BitTo16Bit(psrc[11] & 0xFE);
+
+                psrc += 12;
+                pdst += 8;
+            }
         }
 
         in_buf += in_stride;

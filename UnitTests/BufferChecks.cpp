@@ -81,6 +81,66 @@ const std::vector<RGBATestData> BlipvertUnitTests::TestMetaData = {
 	{0, 0, 255, 255}
 };
 
+const std::vector<RGBATestData> BlipvertUnitTests::ColorbarMetaData = {
+	{0xFF, 0xFF, 0xFF, 0xFF},	// White
+	{0xFF, 0xFF, 0x00, 0xFF},	// Yellow
+	{0x00, 0xFF, 0xFF, 0xFF},	// Cyan
+	{0x00, 0xFF, 0x00, 0xFF},	// Green
+	{0xFF, 0x00, 0xFF, 0xFF},	// Magenta
+	{0xFF, 0x00, 0x00, 0xFF},	// Red
+	{0x00, 0x00, 0xFF, 0xFF},	// Blue
+	{0x00, 0x00, 0x00, 0xFF}	// Black
+
+};
+
+// This is slow, but it doesn't matter for the unit tests. Plus it tests the setr pixel code too.
+// It is assumed that the given buffer was cleared witth zeros before being called.
+void BlipvertUnitTests::GenerateVerticalColorBars(const blipvert::MediaFormatID& target, int32_t width, int32_t height, uint8_t* pBuffer, int32_t stride)
+{
+	if (IsPalletizedEncoding(target))
+		return;
+
+	t_setpixelfunc setPixelFunctPtr = FindSetPixelColor(target);
+	if (!setPixelFunctPtr)
+		return;
+
+	if (width < 8 || width % 8 != 0 || height < 8)
+		return;
+
+	bool isYUV = IsYUVColorspace(target);
+	int32_t colorCount = width / 8;
+
+	for (int32_t y = 0; y < height; y++)
+	{
+		int32_t xStart = 0;
+		int32_t xEnd = colorCount;
+		for (const RGBATestData& vbarColor : ColorbarMetaData)
+		{
+			uint8_t ry_level;
+			uint8_t gu_level;
+			uint8_t bv_level;
+
+			if (isYUV)
+			{
+				FastRGBtoYUV(vbarColor.red, vbarColor.green, vbarColor.blue, &ry_level, &gu_level, &bv_level);
+			}
+			else
+			{
+				ry_level = vbarColor.red;
+				gu_level = vbarColor.green;
+				bv_level = vbarColor.blue;
+			}
+
+			for (int32_t x = xStart; x < xEnd; x++)
+			{
+				setPixelFunctPtr(ry_level, gu_level, bv_level, vbarColor.alpha, x, y, width, height, pBuffer, stride);
+			}
+			xStart = xEnd;
+			xEnd += colorCount;
+		}
+	}
+}
+
 uint32_t BlipvertUnitTests::CalculateStrideBump(const MediaFormatID& inFormat, uint32_t width, uint32_t height)
 {
 	if (!StrideBump)
@@ -601,7 +661,12 @@ bool BlipvertUnitTests::Check_Y16(uint8_t ry_level, uint8_t gu_level, uint8_t bv
 	if (!stride)
 		stride = width * 2;
 
-	uint16_t fill = static_cast<uint16_t>(ry_level << 8);
+	uint16_t fill = Scale8BitTo16Bit(ry_level);
+	if (IsBigEndian)
+	{
+		fill = Swap16BitEndian(fill);
+	}
+
 	do
 	{
 		uint16_t* pdst = reinterpret_cast<uint16_t*>(pBuffer);

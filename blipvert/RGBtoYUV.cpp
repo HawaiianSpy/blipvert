@@ -28,6 +28,7 @@
 #include "RGBtoYUV.h"
 #include "CommonMacros.h"
 #include "LookupTables.h"
+#include "blipvert.h"
 
 using namespace blipvert;
 
@@ -1720,14 +1721,27 @@ void blipvert::RGB32_to_Y16(Stage* in, Stage* out)
     while (height)
     {
         uint8_t* psrc = in_buf;
-        uint8_t* pdst = out_buf;
+        uint16_t* pdst = reinterpret_cast<uint16_t*>(out_buf);
         int32_t hcount = width;
-        while (hcount)
+
+        if (IsBigEndian)
         {
-            *pdst++ = 0x00;
-            *pdst++ = static_cast<uint8_t>(((yr_table[psrc[2]] + yg_table[psrc[1]] + yb_table[psrc[0]]) >> 15) + 16);
-            psrc += 4;
-            hcount--;
+            while (hcount)
+            {
+                uint16_t scaled = Scale8BitTo16Bit(((yr_table[psrc[2]] + yg_table[psrc[1]] + yb_table[psrc[0]]) >> 15) + 16);
+                *pdst++ = Swap16BitEndian(scaled);
+                psrc += 4;
+                hcount--;
+            }
+        }
+        else
+        {
+            while (hcount)
+            {
+                *pdst++ = Scale8BitTo16Bit(((yr_table[psrc[2]] + yg_table[psrc[1]] + yb_table[psrc[0]]) >> 15) + 16);
+                psrc += 4;
+                hcount--;
+            }
         }
 
         in_buf += in_stride;
@@ -2262,14 +2276,28 @@ void blipvert::RGB24_to_Y16(Stage* in, Stage* out)
     while (height)
     {
         uint8_t* psrc = in_buf;
-        uint8_t* pdst = out_buf;
+        uint16_t* pdst = reinterpret_cast<uint16_t*>(out_buf);
         int32_t hcount = width;
-        while (hcount)
+
+        if (IsBigEndian)
         {
-            *pdst++ = 0x00;
-            *pdst++ = static_cast<uint8_t>(((yr_table[psrc[2]] + yg_table[psrc[1]] + yb_table[psrc[0]]) >> 15) + 16);
-            psrc += 3;
-            hcount--;
+            while (hcount)
+            {
+                // Y16 is little endian.
+                uint16_t scaled = Scale8BitTo16Bit(((yr_table[psrc[2]] + yg_table[psrc[1]] + yb_table[psrc[0]]) >> 15) + 16);
+                *pdst++ = Swap16BitEndian(scaled);
+                psrc += 3;
+                hcount--;
+            }
+        }
+        else
+        {
+            while (hcount)
+            {
+                *pdst++ = Scale8BitTo16Bit(((yr_table[psrc[2]] + yg_table[psrc[1]] + yb_table[psrc[0]]) >> 15) + 16);
+                psrc += 3;
+                hcount--;
+            }
         }
 
         in_buf += in_stride;
@@ -2829,16 +2857,31 @@ void blipvert::RGB565_to_Y16(Stage* in, Stage* out)
     while (height)
     {
         uint16_t* psrc = reinterpret_cast<uint16_t*>(in_buf);
-        uint8_t* pdst = out_buf;
+        uint16_t* pdst = reinterpret_cast<uint16_t*>(out_buf);
         int32_t hcount = width;
-        while (hcount)
+
+        if (IsBigEndian)
         {
-            *pdst++ = 0x00;
-            *pdst++ = static_cast<uint8_t>(((yr_table[UnpackRGB565Red(*psrc)] + \
-                yg_table[UnpackRGB565Green(*psrc)] + \
-                yb_table[static_cast<int16_t>(UnpackRGB565Blue(*psrc))]) >> 15) + 16);
-            psrc++;
-            hcount--;
+            while (hcount)
+            {
+                uint16_t scaled = Scale8BitTo16Bit(((yr_table[UnpackRGB565Red(*psrc)] + \
+                                                    yg_table[UnpackRGB565Green(*psrc)] + \
+                                                    yb_table[static_cast<int16_t>(UnpackRGB565Blue(*psrc))]) >> 15) + 16);
+                *pdst++ = Swap16BitEndian(scaled);
+                psrc++;
+                hcount--;
+            }
+        }
+        else
+        {
+            while (hcount)
+            {
+                *pdst++ = Scale8BitTo16Bit(((yr_table[UnpackRGB565Red(*psrc)] + \
+                                            yg_table[UnpackRGB565Green(*psrc)] + \
+                                            yb_table[static_cast<int16_t>(UnpackRGB565Blue(*psrc))]) >> 15) + 16);
+                psrc++;
+                hcount--;
+            }
         }
 
         in_buf += in_stride;
@@ -3426,16 +3469,31 @@ void blipvert::RGB555_to_Y16(Stage* in, Stage* out)
     while (height)
     {
         uint16_t* psrc = reinterpret_cast<uint16_t*>(in_buf);
-        uint8_t* pdst = out_buf;
+        uint16_t* pdst = reinterpret_cast<uint16_t*>(out_buf);
         int32_t hcount = width;
-        while (hcount)
+
+        if (IsBigEndian)
         {
-            *pdst++ = 0x00;
-            *pdst++ = static_cast<uint8_t>(((yr_table[UnpackRGB555Red(*psrc)] + \
-                yg_table[UnpackRGB555Green(*psrc)] + \
-                yb_table[static_cast<int16_t>(UnpackRGB555Blue(*psrc))]) >> 15) + 16);
-            psrc++;
-            hcount--;
+            while (hcount)
+            {
+                uint16_t scaled = Scale8BitTo16Bit(((yr_table[UnpackRGB555Red(*psrc)] + \
+                                                    yg_table[UnpackRGB555Green(*psrc)] + \
+                                                    yb_table[static_cast<int16_t>(UnpackRGB555Blue(*psrc))]) >> 15) + 16);
+                *pdst++ = Swap16BitEndian(scaled);
+                psrc++;
+                hcount--;
+            }
+        }
+        else
+        {
+            while (hcount)
+            {
+                *pdst++ = Scale8BitTo16Bit(((yr_table[UnpackRGB555Red(*psrc)] + \
+                                            yg_table[UnpackRGB555Green(*psrc)] + \
+                                            yb_table[static_cast<int16_t>(UnpackRGB555Blue(*psrc))]) >> 15) + 16);
+                psrc++;
+                hcount--;
+            }
         }
 
         in_buf += in_stride;
@@ -4218,16 +4276,31 @@ void blipvert::RGB8_to_Y16(Stage* in, Stage* out)
     while (height)
     {
         uint8_t* psrc = in_buf;
-        uint8_t* pdst = out_buf;
+        uint16_t* pdst = reinterpret_cast<uint16_t*>(out_buf);
         int32_t hcount = width;
-        while (hcount)
+
+        if (IsBigEndian)
         {
-            *pdst++ = 0x00;
-            *pdst++ = static_cast<uint8_t>(((yr_table[in_palette[*psrc].rgbRed] + \
-                yg_table[in_palette[*psrc].rgbGreen] + \
-                yb_table[in_palette[*psrc].rgbBlue]) >> 15) + 16);
-            psrc++;
-            hcount--;
+            while (hcount)
+            {
+                uint16_t scaled = Scale8BitTo16Bit(((yr_table[in_palette[*psrc].rgbRed] + \
+                                                    yg_table[in_palette[*psrc].rgbGreen] + \
+                                                    yb_table[in_palette[*psrc].rgbBlue]) >> 15) + 16);
+                *pdst++ = Swap16BitEndian(scaled);
+                psrc++;
+                hcount--;
+            }
+        }
+        else
+        {
+            while (hcount)
+            {
+                *pdst++ = Scale8BitTo16Bit(((yr_table[in_palette[*psrc].rgbRed] + \
+                                            yg_table[in_palette[*psrc].rgbGreen] + \
+                                            yb_table[in_palette[*psrc].rgbBlue]) >> 15) + 16);
+                psrc++;
+                hcount--;
+            }
         }
 
         in_buf += in_stride;

@@ -106,4 +106,7 @@ namespace blipvert
 
 #define ValidateGlobalBitmapDimension(width, height) (width >= 8 || (width % 8 == 0) || height >= 16 || (height % 4 == 0))
 
+#define Scale8BitTo16Bit(value) (static_cast<uint16_t>(value) * 257);
+#define Scale16BitTo8Bit(value) (static_cast<uint8_t>((value + 128) / 257))
+#define Swap16BitEndian(value) ((value >> 8) | (value << 8))
 }

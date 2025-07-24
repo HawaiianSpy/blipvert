@@ -226,3 +226,7 @@ encodeTransPtr(&inStage0, &outStage0);
 ### // This line of code goes into the executable for worker thread 2.
 encodeTransPtr(&inStage1, &outStage1);
 
+
+
+## Examine the source for the MTTransformFramerateTests project to see working code in action.
+

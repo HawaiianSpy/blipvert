@@ -42,9 +42,9 @@ Read the header files for the details. Fairly self-explainatory--more or less. S
 
 #### IMPORTANT: For reasons related to the bitmap format definitions, all input parameters must follow these rules:
 
-1. The width value must be >= 8, and an even multiple of 8.
-2. The height value must be >= 16, and an even multiple of 4.
-3. The stride value must be >= the minimum number of bytes-per-line needed for the width of the bitmap format.
+1. The logical width value must be >= 8, and an even multiple of 8.
+2. The logical height value must be >= 16, and an even multiple of 4.
+3. The stride value must be >= the minimum number of bytes-per-line needed for the width of the bitmap format. *Stride* is the number of bytes between the beginning of each horizontal line in the bitmap.
 
 The minimum granularity for the bitmap dimensions is 8 pixels for the width and 4 pixels for the height. Fourcc formats, like Y41P, horizontally represent the pixels in 8-pixel chunks. Other formats, like YUV9 or YVU9, use 4x4 chunks.  All the digital video bitmaps I have seen have their dimensions in pixels at this granularity anyway.
 
@@ -145,11 +145,11 @@ Fast colospace conversion using lookup tables. Good enough for 99.5% of the appl
 #### ```bool IsPalletizedEncoding(const Fourcc fourcc);```
 #### ```bool IsPlanarYUV(const MediaFormatID& encoding);```
 #### ```bool IsPlanarYUV(const Fourcc fourcc);```
-Returns *true* if the input is what the function name states, and returns *false* otherwise.
+Returns *true* if the given MediaFormatID or fourcc code is what the function name states, and returns *false* otherwise.
 #
 
 #### ```bool IsGloballyValidBitmapDimension(int32_t width, int32_t height);```
-Returns *true* if the given bitmap logical dimensions are within the constraints.
+Returns *true* if the given bitmap's logical dimensions are within the constraints.
 
 ******************************
 
@@ -164,19 +164,19 @@ These are the staging functions. They initialize the ```Stage``` struct that tel
 
 Stage - The pointer to the Stage struct to be initialized.
 
-thread_index - 0 based thread index this stage is for. Use 0 if running a single thread.
+thread_index - 0 based thread index for this stage. Use 0 if running a single thread.
 
-thread_count - The total number of threads operating this bitmap. Use 1 running a single thread.
+thread_count - The total number of worker threads operating on this bitmap. Use 1 if running a single thread.
 
-width , height - The dimensions of the source bitmap.
+width , height - The logical dimensions of the source bitmap.
 
 buf - pointer to the bitmap in memory.
 
-stride - numebr of bytes between horizontal lines in tthe bitmap.
+stride - the number of bytes between the beginning of each horizontal line in the bitmap.
 
-flipped - true if the bitmap is flipped.
+flipped - true if the bitmap is flipped. *false* by default.
 
-palette - palette used to indexed RGB bitmaps.
+palette - palette used to indexed RGB bitmaps. *nullptr* by default.
 
 
 

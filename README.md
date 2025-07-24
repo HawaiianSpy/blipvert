@@ -200,27 +200,29 @@ int thread_count = 2;
 
 Stage inStage0;
 
-pstage_in(&inStage0, 0, thread_count, width, height, rgbBufPtr, in_stride, false, nullptr);
+pstage_in(&inStage0, 0, thread_count, width, height, inBufPtr, in_stride, false, nullptr);
 
 Stage outStage0;
 
-pstage_out(&outStage0, 0, thread_count, width, height, yuvBufPtr, out_stride, false, nullptr);
+pstage_out(&outStage0, 0, thread_count, width, height, outBufPtr, out_stride, false, nullptr);
 
 
 ### // In-out stages for the second slice.
 
 Stage inStage1;
 
-pstage_in(&inStage1, 1, thread_count, width, height, rgbBufPtr, in_stride, false, nullptr);
+pstage_in(&inStage1, 1, thread_count, width, height, inBufPtr, in_stride, false, nullptr);
 
 Stage outStage1;
 
-pstage_out(&outStage1, 1, thread_count, width, height, yuvBufPtr, out_stride, false, nullptr);
+pstage_out(&outStage1, 1, thread_count, width, height, outBufPtr, out_stride, false, nullptr);
 
 
-### // Transform the bitmap one slice at a time. Normally these would be placed in seperate worker threads.
+### // Transform the bitmap one slice at a time.
 
+### // This line of code goes into the executable for worker thread 1.
 encodeTransPtr(&inStage0, &outStage0);
 
+### // This line of code goes into the executable for worker thread 2.
 encodeTransPtr(&inStage1, &outStage1);
 

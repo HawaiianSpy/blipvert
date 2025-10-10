@@ -1,7 +1,7 @@
 # blipvert
 A C++ library for converting between [fourcc video format bitmaps](https://www.fourcc.org/) and others.
 
-I created this library as part of an old Windows C++ video project (circa 2005). One objective of that project was the support of every possible webcam and video capture card. The biggest hurdle at that time was handling all the weird bitmap formats output from these devices. So, using the information at fourcc.org, I set out to write conversion functions so that even the one-of-a-kind bitmaps generated from obscure webcams could be supported by the project.
+I created this library as part of an old Windows C++ video project (circa 2001). One objective of that project was the support of every possible webcam and video capture card. The biggest hurdle at that time was handling all the weird bitmap formats output from these devices. So, using the information at fourcc.org, I set out to write conversion functions so that even the one-of-a-kind bitmaps generated from obscure webcams could be supported by the project.
 
 I originally called the project "blipvert" because I was a fan of the Max Headroom series. I decided to keep the name because it makes a catchy C++ namespace name, too.
 
@@ -58,29 +58,132 @@ A string value representing a video bitmap format. These strings can be converte
 #### ```Fourcc```
 A 32-bit unsigned integer containing a real fourcc code.
 #
-#### ```t_transformfunc```
+#### ```t_transformfunc(Stage* in, Stage* out);```
 The function pointer definition used for all of the transform functions.
+
+Parameters:
+
+```Stage* in```:     Pointer to the Stage struct for the input bitmap format.
+
+```Stage* out```:    Pointer to the Stage struct for the output bitmap format.
 #
-#### ```t_greyscalefunc```
+#### ```t_greyscalefunc(int32_t width, int32_t height, uint8_t* buf, int32_t stride, xRGBQUAD* in_palette);```
 The function pointer definition used for in-place conversion to greyscale.
-#
-#### ```t_fillcolorfunc```
+
+Parameters:
+
+```int32_t width```:     The logical width of the bitmap in pixels.
+
+```int32_t height```:    The logical height of the bitmap in pixels.
+
+```iuint8_t* buf```:     Pointer to the buffer containing the bitmap.
+
+```int32_t stride```:    The number of bytes between the start of one row of pixels and the start of the next row of pixels.
+
+```xRGBQUAD* in_palette```:  Optional pointer to the palette values table, if this is a palleteized bitmap, nullptr otherwise.
+
+#### ```t_fillcolorfunc(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha, int32_t width, int32_t height, uint8_t* buf, int32_t stride);```
 The function pointer definition used for in-place color fills.
+
+Parameters:
+
+```uint8_t ry_level```:  The red level (0-255) of the fill color for a RGB format bitmap or the Y level (0-255) of the fill color for a YUV format bitmap.
+
+```uint8_t gu_level```:  The green level (0-255) of the fill color for a RGB format bitmap or the U level (0-255) of the fill color for a YUV format bitmap.
+
+```uint8_t bv_level```:  The blue level (0-255) of the fill color for a RGB format bitmap or the V level (0-255) of the fill color for a YUV format bitmap.
+
+```uint8_t alpha```:  The alpha (transparancy) value (0-255) of the bitmap; 0 = transparent, 255 = opaque.
+
+```int32_t width```:     The logical width of the bitmap in pixels.
+
+```int32_t height```:    The logical height of the bitmap in pixels.
+
+```iuint8_t* buf```:     Pointer to the buffer containing the bitmap.
+
+```int32_t stride```:    The number of bytes between the start of one row of pixels and the start of the next row of pixels.
 #
-#### ```t_setpixelfunc```
+#### ```t_setpixelfunc(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t alpha, int32_t x, int32_t y, int32_t width, int32_t height, uint8_t* buf, int32_t stride);```
 The function pointer definition used for setting individual pixels in a bitmap. This is a hack for the unit testing for now.
+
+Parameters:
+
+```uint8_t ry_level```:  The red level (0-255) of the target pixel for a RGB format bitmap or the Y level (0-255) of the target pixel for a YUV format bitmap.
+
+```uint8_t gu_level```:  The green level (0-255) of the target pixel for a RGB format bitmap or the U level (0-255) of the target pixel for a YUV format bitmap.
+
+```uint8_t bv_level```:  The blue level (0-255) of the target pixel for a RGB format bitmap or the V level (0-255) of the target pixel for a YUV format bitmap.
+
+```uint8_t alpha```:  The alpha (transparancy) value (0-255) of the target pixel; 0 = transparent, 255 = opaque.
+
+```int32_t x```:  The logical horizontal coordinate of the target pixel to be set, with 0 = left edge and width-1 = right edge.
+
+```int32_t y```:  logical The vertical coordinate of the target pixel to be set, with 0 = top edge and height-1 = bottom edge.
+
+```int32_t width```:  The logical width of the bitmap in pixels.
+
+```int32_t height```:  The logical height of the bitmap in pixels.
+
+```iuint8_t* buf```  Pointer to the buffer containing the bitmap.
+
+```int32_t stride```:  The number of bytes between the start of one row of pixels and the start of the next row of pixels.
 #
-#### ```t_flipverticalfunc```
+#### ```t_flipverticalfunc(int32_t width, int32_t height, uint8_t* buf, int32_t stride)```
 The function pointer definition used for vertically flipping a bitmap in place. This is a hack for the unit testing for now.
+
+Parameters:
+
+```int32_t width```:  The logical width of the bitmap in pixels.
+
+```int32_t height```:  The logical height of the bitmap in pixels.
+
+```iuint8_t* buf```  Pointer to the buffer containing the bitmap.
+
+```int32_t stride```:  The number of bytes between the start of one row of pixels and the start of the next row of pixels.
 #
-#### ```t_calcbuffsizefunc```
+#### ```t_calcbuffsizefunc(int32_t width, int32_t height, int32_t& stride)```
 The function pointer definition used for calculating the size of a bitmap's buffer.
+
+Parameters:
+
+```int32_t width```:  The logical width of the bitmap in pixels.
+
+```int32_t height```:  The logical height of the bitmap in pixels.
+
+```int32_t stride```:  The number of bytes between the start of one row of pixels and the start of the next row of pixels.
 #
-#### ```t_stagetransformfunc```
+#### ```t_stagetransformfunc(Stage* result, uint8_t thread_index, uint8_t thread_count, int32_t width, int32_t height, uint8_t* buf, int32_t stride, bool flipped, xRGBQUAD* palette)```
 The function pointer definition used for initializing the ```Stage``` structure.
+
+Parameters:
+
+```Stage* result```:  The Stage structure to be initialized based on the parameters following this.
+
+```uint8_t thread_index```:  The indexed thread number (0 to thread_count-1) handeled by this Stage. Must be 0 for single thread transform operation.
+
+```uint8_t thread_count```:  The total number of worker threads (slices) to be for this bitmap format transform. Must be 1 for a single thread transform operation.
+
+```int32_t width```:  The logical width of the bitmap in pixels.
+
+```int32_t height```:  The logical height of the bitmap in pixels.
+
+```iuint8_t* buf```  Pointer to the buffer containing the bitmap.
+
+```int32_t stride```:  The number of bytes between the start of one row of pixels and the start of the next row of pixels.
+
+```xRGBQUAD* in_palette```:  Optional pointer to the palette values table, if this is a palleteized bitmap, nullptr otherwise.
 #
 #### ```VideoFormatInfo```
 Structure containing info for a particular video format.
+
+    typedef struct {
+        const MediaFormatID formatId;       // The string format ID
+        Fourcc fourcc;                      // Fourcc code
+        Fourcc xRefFourcc;                  // Cross-referenced fourcc or what this fourcc is a duplicate of format-wise.
+        int16_t effectiveBitsPerPixel;      // Effective bits per pixel of this format.
+        ColorspaceType type;                // YUV, RGB, etc.
+        bool hasAlpha;                      // The format has an alpha / transparency value.
+    } VideoFormatInfo;
 #
 #### Functions:
 See the comments in the header files for details on parameters, etc.

@@ -30,7 +30,7 @@
 #include "CommonMacros.h"
 #include "LookupTables.h"
 #include <cstring>
-#include "blipvert.h"
+#include <algorithm>
 
 using namespace blipvert;
 
@@ -44,25 +44,16 @@ void blipvert::Fill_RGBA(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha
 
     if (!stride)
     {
+        uint32_t* buf32 = reinterpret_cast<uint32_t*>(buf);
         uint32_t count = width * height;
-        while (count)
-        {
-            *reinterpret_cast<uint32_t*>(buf) = fill;
-            buf += 4;
-            count--;
-        }
+        std::fill(buf32, buf32 + count, fill);
     }
     else
     {
         do
         {
-            uint32_t* pdst = reinterpret_cast<uint32_t*>(buf);
-            int32_t hcount = width;
-            do
-            {
-                *pdst++ = fill;
-            } while (--hcount);
-
+            uint32_t* buf32 = reinterpret_cast<uint32_t*>(buf);
+            std::fill(buf32, buf32 + width, fill);
             buf += stride;
         } while (--height);
     }
@@ -75,30 +66,20 @@ void blipvert::Fill_RGB32(uint8_t red, uint8_t green, uint8_t blue, uint8_t alph
 
 void blipvert::Fill_RGB24(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha, int32_t width, int32_t height, uint8_t* buf, int32_t stride)
 {
+    typedef struct RGB { uint8_t b, g, r; } RGB;
+    RGB pattern = { blue, green, red };
+
     if (!stride)
     {
-        uint32_t count = width * height;
-        while (count)
-        {
-            *buf++ = blue;
-            *buf++ = green;
-            *buf++ = red;
-            count--;
-        }
+        RGB* rgbdst = reinterpret_cast<RGB*>(buf);
+        std::fill_n(rgbdst, width * height, pattern);
     }
     else
     {
         do
         {
-            uint8_t* pdst = buf;
-            int32_t hcount = width;
-            do
-            {
-                *pdst++ = blue;
-                *pdst++ = green;
-                *pdst++ = red;
-            } while (--hcount);
-
+            RGB* rgbdst = reinterpret_cast<RGB*>(buf);
+            std::fill_n(rgbdst, width, pattern);
             buf += stride;
         } while (--height);
     }
@@ -111,25 +92,16 @@ void blipvert::Fill_RGB565(uint8_t red, uint8_t green, uint8_t blue, uint8_t alp
 
     if (!stride)
     {
-        uint16_t* pdst = reinterpret_cast<uint16_t*>(buf);
+        uint16_t* buf16 = reinterpret_cast<uint16_t*>(buf);
         uint32_t count = width * height;
-        while (count)
-        {
-            *pdst++ = fill;
-            count--;
-        }
+        std::fill(buf16, buf16 + count, fill);
     }
     else
     {
         do
         {
-            uint16_t* pdst = reinterpret_cast<uint16_t*>(buf);
-            int32_t hcount = width;
-            do
-            {
-                *pdst++ = fill;
-            } while (--hcount);
-
+            uint16_t* buf16 = reinterpret_cast<uint16_t*>(buf);
+            std::fill(buf16, buf16 + width, fill);
             buf += stride;
         } while (--height);
     }
@@ -142,26 +114,16 @@ void blipvert::Fill_ARGB1555(uint8_t red, uint8_t green, uint8_t blue, uint8_t a
 
     if (!stride)
     {
-        uint16_t* pdst = reinterpret_cast<uint16_t*>(buf);
+        uint16_t* buf16 = reinterpret_cast<uint16_t*>(buf);
         uint32_t count = width * height;
-        while (count)
-        {
-            *pdst++ = fill;
-            count--;
-        }
+        std::fill(buf16, buf16 + count, fill);
     }
     else
     {
-
         do
         {
-            uint16_t* pdst = reinterpret_cast<uint16_t*>(buf);
-            int32_t hcount = width;
-            do
-            {
-                *pdst++ = fill;
-            } while (--hcount);
-
+            uint16_t* buf16 = reinterpret_cast<uint16_t*>(buf);
+            std::fill(buf16, buf16 + width, fill);
             buf += stride;
         } while (--height);
     }
@@ -187,6 +149,7 @@ void Fill_PackedY422(uint8_t y_level, uint8_t u_level, uint8_t v_level,
     uint32_t fill = static_cast<uint32_t>((y_level << (y0_offset * 8)) | (y_level << (y1_offset * 8)) | \
         (u_level << (u_offset * 8)) | (v_level << (v_offset * 8)));
 
+#if 0
     for (int32_t h = 0; h < height; h++)
     {
         uint32_t* pdst = reinterpret_cast<uint32_t*>(out_buf);
@@ -197,6 +160,14 @@ void Fill_PackedY422(uint8_t y_level, uint8_t u_level, uint8_t v_level,
 
         out_buf += out_stride;
     }
+#else
+    for (int32_t h = 0; h < height; h++)
+    {
+        uint32_t* pdst = reinterpret_cast<uint32_t*>(out_buf);
+        std::fill(pdst, pdst + (width / 2), fill);
+        out_buf += out_stride;
+    }
+#endif
 }
 
 void Fill_PlanarYUV(uint8_t y_level, uint8_t u_level, uint8_t v_level,
@@ -493,54 +464,48 @@ void blipvert::Fill_IMC4(uint8_t y_level, uint8_t u_level, uint8_t v_level, uint
 void blipvert::Fill_IYU1(uint8_t y_level, uint8_t u_level, uint8_t v_level, uint8_t alpha,
     int32_t width, int32_t height, uint8_t* buf, int32_t stride)
 {
+    typedef struct IYU1 { uint8_t u, y1, y2, v, y3, y4;  } IYU1;
+    IYU1 pattern = { u_level, y_level, y_level, v_level, y_level, y_level };
+
+    //if (!stride)
+    //{
+    //    stride = width * 12 / 8;
+    //}
+
+
     if (!stride)
-        stride = width * 12 / 8;
-
-    for (int32_t h = 0; h < height; h++)
     {
-        uint8_t* pdst = buf;
-        for (int32_t w = 0; w < width; w += 4)
+        IYU1* iyu1dst = reinterpret_cast<IYU1*>(buf);
+        std::fill_n(iyu1dst, (width / 4) * height, pattern);
+    }
+    else
+    {
+        do
         {
-            pdst[0] = u_level;
-            pdst[1] = y_level;
-            pdst[2] = y_level;
-            pdst[3] = v_level;
-            pdst[4] = y_level;
-            pdst[5] = y_level;
-            pdst += 6;
-        }
-
-        buf += stride;
+            IYU1* iyu1dst = reinterpret_cast<IYU1*>(buf);
+            std::fill_n(iyu1dst, width / 4, pattern);
+            buf += stride;
+        } while (--height);
     }
 }
 
 void blipvert::Fill_IYU2(uint8_t y_level, uint8_t u_level, uint8_t v_level, uint8_t alpha,
     int32_t width, int32_t height, uint8_t* buf, int32_t stride)
 {
+    typedef struct IYU2 { uint8_t u, y, v; } IYU2;
+    IYU2 pattern = { u_level, y_level, v_level };
+
     if (!stride)
     {
-        uint32_t count = width * height;
-        while (count)
-        {
-            *buf++ = u_level;
-            *buf++ = y_level;
-            *buf++ = v_level;
-            count--;
-        }
+        IYU2* iyu2dst = reinterpret_cast<IYU2*>(buf);
+        std::fill_n(iyu2dst, width * height, pattern);
     }
     else
     {
         do
         {
-            uint8_t* pdst = buf;
-            int32_t hcount = width;
-            do
-            {
-                *pdst++ = u_level;
-                *pdst++ = y_level;
-                *pdst++ = v_level;
-            } while (--hcount);
-
+            IYU2* iyu2dst = reinterpret_cast<IYU2*>(buf);
+            std::fill_n(iyu2dst, width, pattern);
             buf += stride;
         } while (--height);
     }
@@ -553,31 +518,46 @@ void blipvert::Fill_Y800(uint8_t y_level, uint8_t u_level, uint8_t v_level, uint
     if (!stride)
     {
         memset(buf, y_level, width * height);
-        return;
     }
-
-    for (int32_t h = 0; h < height; h++)
+    else
     {
-        uint8_t* pdst = buf;
-        for (int32_t w = 0; w < width; w++)
+        for (int32_t h = 0; h < height; h++)
         {
-            *pdst++ = y_level;
+            uint8_t* pdst = buf;
+            memset(pdst, y_level, width);
+            buf += stride;
         }
-
-        buf += stride;
     }
 }
 
 void blipvert::Fill_Y16(uint8_t y_level, uint8_t u_level, uint8_t v_level, uint8_t alpha,
     int32_t width, int32_t height, uint8_t* buf, int32_t stride)
 {
-    if (!stride)
-        stride = width * 2;
-
     uint16_t fill = Scale8BitTo16Bit(y_level);
     if (IsBigEndian)
     {
         fill = Swap16BitEndian(fill);
+    }
+
+#if 1
+    if (!stride)
+    {
+        uint16_t* pdst = reinterpret_cast<uint16_t*>(buf);
+        std::fill(pdst, pdst + (width * height), fill);
+    }
+    else
+    {
+        for (int32_t h = 0; h < height; h++)
+        {
+            uint16_t* pdst = reinterpret_cast<uint16_t*>(buf);
+            std::fill(pdst, pdst + width, fill);
+            buf += stride;
+        }
+    }
+#else
+    if (!stride)
+    {
+        stride = width * 2;
     }
 
     for (int32_t h = 0; h < height; h++)
@@ -590,16 +570,41 @@ void blipvert::Fill_Y16(uint8_t y_level, uint8_t u_level, uint8_t v_level, uint8
 
         buf += stride;
     }
+#endif
 }
 
 void blipvert::Fill_Y41P(uint8_t y_level, uint8_t u_level, uint8_t v_level, uint8_t alpha,
     int32_t width, int32_t height, uint8_t* buf, int32_t stride)
 {
-    if (!stride)
-        stride = width / 8 * 12;
+    typedef struct Y41P { uint32_t yuv1, yuv2, y; } Y41P;
 
     uint32_t yuvfill = (y_level << 24 | v_level << 16 | y_level << 8 | u_level);
     uint32_t yfill = (y_level << 24 | y_level << 16 | y_level << 8 | y_level);
+
+    Y41P pattern = { yuvfill, yuvfill, yfill };
+
+#if 1
+    if (!stride)
+    {
+        Y41P* y41pdst = reinterpret_cast<Y41P*>(buf);
+        std::fill_n(y41pdst, (width / 8) * height, pattern);
+    }
+    else
+    {
+        do
+        {
+            Y41P* y41pdst = reinterpret_cast<Y41P*>(buf);
+            std::fill_n(y41pdst, width / 8, pattern);
+            buf += stride;
+        } while (--height);
+    }
+
+#else
+
+    if (!stride)
+    {
+        stride = width / 8 * 12;
+    }
 
     while (height)
     {
@@ -616,16 +621,37 @@ void blipvert::Fill_Y41P(uint8_t y_level, uint8_t u_level, uint8_t v_level, uint
         buf += stride;
         height--;
     }
+#endif
 }
 
 void blipvert::Fill_CLJR(uint8_t y_level, uint8_t u_level, uint8_t v_level, uint8_t alpha,
     int32_t width, int32_t height, uint8_t* buf, int32_t stride)
 {
-    if (!stride)
-        stride = width;
 
     uint32_t fill;
     PackCLJRDword(fill, u_level, v_level, y_level, y_level, y_level, y_level);
+
+#if 1
+    if (!stride)
+    {
+        uint32_t* pdst = reinterpret_cast<uint32_t*>(buf);
+        std::fill(pdst, pdst + (width / 4 * height), fill);
+    }
+    else
+    {
+        for (int32_t h = 0; h < height; h++)
+        {
+            uint32_t* pdst = reinterpret_cast<uint32_t*>(buf);
+            std::fill(pdst, pdst + width / 4, fill);
+            buf += stride;
+        }
+    }
+#else
+    if (!stride)
+    {
+        stride = width;
+    }
+
     while (height)
     {
         uint32_t* pdst = reinterpret_cast<uint32_t*>(buf);
@@ -639,6 +665,7 @@ void blipvert::Fill_CLJR(uint8_t y_level, uint8_t u_level, uint8_t v_level, uint
         buf += stride;
         height--;
     }
+#endif
 }
 
 void blipvert::Fill_AYUV(uint8_t y_level, uint8_t u_level, uint8_t v_level, uint8_t alpha,

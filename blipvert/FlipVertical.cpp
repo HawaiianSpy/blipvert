@@ -328,7 +328,6 @@ void FlipVertical_NVx(int32_t width, int32_t height, uint8_t* buf, int32_t strid
     if (!stride)
         stride = width;
 
-    int32_t uv_width = width;
     int32_t uv_height = height / 2;
 
     uint8_t* uvplane = buf + (stride * height);

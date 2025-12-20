@@ -967,7 +967,6 @@ void blipvert::RGB32_to_IMCx(Stage* in, Stage* out)
     int32_t out_stride = out->stride;
     uint8_t* uplane = out->uplane;
     uint8_t* vplane = out->vplane;
-    int32_t uv_stride = out->uv_stride;
 
     int32_t in_stride_x_2 = in->stride * 2;
     int32_t out_stride_x_2 = out_stride * 2;
@@ -1030,7 +1029,6 @@ void blipvert::RGB24_to_IMCx(Stage* in, Stage* out)
     int32_t out_stride = out->stride;
     uint8_t* uplane = out->uplane;
     uint8_t* vplane = out->vplane;
-    int32_t uv_stride = out->uv_stride;
 
     int32_t in_stride_x_2 = in->stride * 2;
     int32_t out_stride_x_2 = out_stride * 2;
@@ -1093,7 +1091,6 @@ void blipvert::RGB565_to_IMCx(Stage* in, Stage* out)
     int32_t out_stride = out->stride;
     uint8_t* uplane = out->uplane;
     uint8_t* vplane = out->vplane;
-    int32_t uv_stride = out->uv_stride;
 
     int32_t in_stride_x_2 = in->stride * 2;
     int32_t out_stride_x_2 = out_stride * 2;
@@ -1164,7 +1161,6 @@ void blipvert::RGB555_to_IMCx(Stage* in, Stage* out)
     int32_t out_stride = out->stride;
     uint8_t* uplane = out->uplane;
     uint8_t* vplane = out->vplane;
-    int32_t uv_stride = out->uv_stride;
 
     int32_t in_stride_x_2 = in->stride * 2;
     int32_t out_stride_x_2 = out_stride * 2;
@@ -1236,7 +1232,6 @@ void blipvert::RGB8_to_IMCx(Stage* in, Stage* out)
     xRGBQUAD* in_palette = in->palette;
     uint8_t* uplane = out->uplane;
     uint8_t* vplane = out->vplane;
-    int32_t uv_stride = out->uv_stride;
 
     int32_t in_stride_x_2 = in->stride * 2;
     int32_t out_stride_x_2 = out_stride * 2;

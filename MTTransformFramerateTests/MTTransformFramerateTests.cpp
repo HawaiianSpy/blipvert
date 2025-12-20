@@ -92,9 +92,19 @@ void FramerateTest(const MediaFormatID& in_format, const MediaFormatID& out_form
 
     // Determine the maximum nuber of thread that both formats support.
     int thread_count = GetCommonMaxThreadCount(in_format, out_format, width, height, thread::hardware_concurrency());
+    if (thread_count % 5 != 0)
+    {
+        thread_count = (thread_count / 5 * 5);
+    }
+
     if (thread_count == 1)
     {
         LogLine("Framerate test: " + string(in_format) + " to " + string(out_format) + " aborted: Maximum allowed thread count for both formats is 1.");
+        return;
+    }
+    else if (thread_count % 5 != 0)
+    {
+        LogLine("Framerate test: " + string(in_format) + " to " + string(out_format) + " aborted: The thread count must be a multiple of 5. thread_count = " + std::to_string(thread_count));
         return;
     }
 
@@ -172,7 +182,7 @@ void FramerateTest(const MediaFormatID& in_format, const MediaFormatID& out_form
                 pstage_in(&work.inStage, i, thread_count, width, height, inBuf.get(), 0, false, nullptr);
                 pstage_out(&work.outStage, i, thread_count, width, height, outBuf.get(), 0, false, nullptr);
 
-                jobQueue.push(move(work));
+                jobQueue.push(work);
             }
         }
 

@@ -431,9 +431,6 @@ void SetPixel_NVx(uint8_t ry_level, uint8_t gu_level, uint8_t bv_level, uint8_t 
     if (!stride)
         stride = width;
 
-    int32_t uv_width = width;
-    int32_t uv_height = height / 2;
-
     uint8_t* uvplane = buf + (stride * height);
 
     *(buf + (y * stride) + x) = ry_level;

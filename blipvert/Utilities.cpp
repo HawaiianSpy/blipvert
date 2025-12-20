@@ -173,8 +173,7 @@ int32_t blipvert::CalculateMinimumLineStride(const MediaFormatID& inFormat, uint
     };
 
     int32_t stride = 0;
-    uint32_t result = calcfunct(width, height, stride);
-    return stride;
+    return calcfunct(width, height, stride);
 }
 
 bool blipvert::IsRGBColorspace(const MediaFormatID& encoding)

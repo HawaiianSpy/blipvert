@@ -23,6 +23,8 @@ P.S. If you found this library helpful and have improvements/bug fixes to contri
 
 P.P.S. I do intend to make a better version of this read me file.
 
+Update: I converted the project files to build using the LLVM clang-cl C++ compiler. I used the LLVM compiler that comes with the  Visual Studio Installer. After installing the compiler, it was nothing more than changing the General Properties >> Platform Toolset to LLVM (clang-cl) in the project properties dialog, and then rebuilding the solution. The unit test project still uses MSVC because changing it over broke the connection with the Test Explorer. Maybe I'll convert the unit tests over to Google Test soon. Under an MSVC build, the multi-threaded transform frame rate test took 48 seconds to complete. Under the LLVM build, the same test took 35 seconds to complete. Nice! If you still prefer the MSVC compiler, just go to General Properties >> Platform Toolset setting in the project properties dialog and change it back.
+
 
 ******************************
 
